@@ -1,0 +1,55 @@
+en:
+  simple_form:
+    "yes": 'Yes'
+    "no": 'No'
+    required:
+      text: 'required'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Por favor reveja os erros abaixo:"
+    # Examples
+    labels:
+      defaults:
+        password: 'Senha'
+      password:
+        password: Senha
+      user:
+        new:
+          email: 'E-mail'
+          first_name: Primeiro nome
+          last_name: Sobrenome
+          cpf: CPF
+          cep: CEP
+          street_name: Logradouro
+          street_number: Número
+          address_complement: Complemento
+          neighborhood: Bairro
+          city: Cidade
+          state: Estado
+          phone_number: Telefone
+        edit:
+          email: 'E-mail.'
+      event:
+        name: Nome do evento
+        scheduled_start: Data e hora de início
+        scheduled_end: Data e hora de fim
+    hints:
+      defaults:
+        username: 'User name to sign in.'
+        password: 'No special characters, please.'
+    include_blanks:
+      defaults:
+        age: 'Rather not say'
+    prompts:
+      defaults:
+        age: 'Select your age'
+    helpers:
+      label:
+        user:
+          remember_me: Manter login
+      submit:
+        profile:
+          update: Atualizar cadastro

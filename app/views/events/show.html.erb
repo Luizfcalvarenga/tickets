@@ -1,0 +1,35 @@
+<div class="page-wrapper">
+  <h1><%= @event.name %></h1>
+
+  <% if @event.photo.attached? %>
+    <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @event.photo.key, height: 300, crop: :fill %>')">
+    </div>
+  <% end %>
+
+  <p class="fs-18">
+    <%= @event.description %>
+  </p>
+  
+  <% if @current_batch.present? %>
+    <div class="bg-gs-190 flex center around p-4 br-8 my-4">
+      <p class="f-24 fw-700 m-0"><%= @current_batch.name %></p>
+      <p class="f-24 m-0"><%= number_to_currency(@current_batch.price, unit: "R$", separator: ",", delimiter: ".") %></p>
+    </div>
+
+    <% if @best_membership_with_discount.present? %>
+      <div class="success-text flex center around p-4 br-8 my-4">
+        <p class="f-24 fw-700 m-0">Sua assinatura <%= @best_membership_with_discount.membership.name %> te oferece um desconto de <%= number_to_percentage(@best_membership_with_discount.discount * 100, precision: 1) %> para este evento!</p>
+      </div>
+    <% end %>
+
+    <%= link_to buy_event_path(@event), class: "col-12 col-md-4", method: :post do %>
+      <% if @current_price > 0 %>
+        <p class="btn btn-primary m-0 w-100">Comprar: <%= number_to_currency(@current_price, unit: "R$", separator: ",", delimiter: ".") %></p>
+      <% else %>
+        <p class="btn btn-primary m-0 w-100">Retirar ingresso gratuitamente</p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p class="danger-text p-4 br-8">Evento esgotado</p>
+  <% end %>
+</div>

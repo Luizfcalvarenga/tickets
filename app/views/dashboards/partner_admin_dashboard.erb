@@ -1,0 +1,31 @@
+<div class="page-wrapper">
+  <h1>Dashboard</h1>
+
+  <%= link_to destroy_user_session_path, method: "delete" do %>
+    <p class="btn btn-danger w-100">Logout</p>
+  <% end %>
+
+  <h2>Meus eventos</h2>
+
+  <div class="p-5">
+    <% @events.each do |event| %>
+      <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
+
+        <%= link_to read_event_path(event), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Ler QRcodes</p>
+        <% end %>
+        <%= link_to partner_admin_event_path(event), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Ver detalhes do evento</p>
+        <% end %>
+      </div>
+    <% end %> 
+  </div>
+
+  <h2>Criar eventos</h2>
+
+  <%= link_to new_event_path, class: "col-12 w-100" do %>
+    <p class="btn btn-primary m-0 w-100 my-3">Criar evento</p>
+  <% end %>
+
+</div>

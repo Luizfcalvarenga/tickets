@@ -1,0 +1,72 @@
+<div class="page-wrapper">
+  <h1>Dashboard</h1>
+
+  <%= link_to destroy_user_session_path, method: "delete" do %>
+    <p class="btn btn-danger w-100">Logout</p>
+  <% end %>
+
+  <h2>Meus QRCodes</h2>
+
+  <div class="p-5">
+    <% @qrcodes.each do |qrcode| %>
+      <div class="qrcode bg-light w-100 p-4 br-8 text-white row around flex center mb-2">
+        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
+        <%= link_to qrcode_path(qrcode), class: "col-12 col-md-3 p-0 mb-2" do %>
+          <p class="btn btn-primary m-0 w-100">Ver</p>
+        <% end %>
+        <% if qrcode.reads.exists? %>
+          <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
+        <% else %>
+          <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
+        <% end %>
+      </div>
+    <% end %>  
+  </div>
+
+  <h2>Minhas assinaturas</h2>
+
+  <div class="p-5">
+    <% @user_memberships.each do |user_membership| %>
+      <div class="bg-light w-100 p-4 br-8 text-white row mb-2 flex center start">
+        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
+        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
+        <%= link_to user_membership_path(user_membership), method: :delete, class: "text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
+          <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
+        <% end %>
+      </div>
+    <% end %>  
+  </div>
+
+  <h2>Eventos disponíveis</h2>
+
+  <div class="p-5">
+    <% @events.each do |event| %>
+      <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
+
+        <%= link_to event_path(event), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Ver evento</p>
+        <% end %>
+      </div>
+    <% end %>  
+  </div>
+
+  <h2>Assinaturas disponíveis</h2>
+
+  <div class="p-5">
+    <% @memberships.each do |membership| %>
+      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+        <p class="text-white f-20 m-0 col-12 col-md-2 m-0"><%= membership.name %></p>
+
+        <div class="f-80">
+          <%= simple_form_for(@user_membership) do |f| %>
+            <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
+            <%= f.submit "Inscrever", class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>  
+  </div>
+
+
+</div>
