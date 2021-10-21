@@ -17,10 +17,10 @@ User.create!(email: "user2@test.com", password: "123456", access: "user")
 User.create!(email: "user3@test.com", password: "123456", access: "user") 
 User.create!(email: "user4@test.com", password: "123456", access: "user") 
 User.create!(email: "user5@test.com", password: "123456", access: "user") 
-partner_user = User.create!(email: "partner@test.com", password: "123456", access: "partner_admin") 
-partner_user = User.create!(email: "partner2@test.com", password: "123456", access: "partner_admin") 
-partner_user = User.create!(email: "partner3@test.com", password: "123456", access: "partner_admin") 
-partner_user = User.create!(email: "partner4@test.com", password: "123456", access: "partner_admin") 
+partner_user1 = User.create!(email: "partner@test.com", password: "123456", access: "partner_admin") 
+partner_user2 = User.create!(email: "partner2@test.com", password: "123456", access: "partner_admin") 
+partner_user3 = User.create!(email: "partner3@test.com", password: "123456", access: "partner_admin") 
+partner_user4 = User.create!(email: "partner4@test.com", password: "123456", access: "partner_admin") 
 partner = Partner.create!(name: "Parceiro de demonstração",
                           cnpj: "44.716.365/0001-92",
                           phone_number: "(31) 3223-5655",
@@ -33,8 +33,12 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           state: "MG",
                           kind: "partner",
                           )
-partner.update(main_contact: partner_user)
-partner_user.update(partner: partner)
+partner.update(main_contact: partner_user1)
+
+partner_user1.update(partner: partner)
+partner_user2.update(partner: partner)
+partner_user3.update(partner: partner)
+partner_user4.update(partner: partner)
 
 Membership.create!(name: "Assinatura 1", price: 20, partner: partner, description: "Esta é a assinatura de nível 1")
 Membership.create!(name: "Assinatura 2", price: 40, partner: partner, description: "Esta é a assinatura de nível 2")

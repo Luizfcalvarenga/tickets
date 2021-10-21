@@ -5,7 +5,10 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @current_batch = @event.current_batch
 
-    @best_membership_with_discount = @event.membership_events.where(membership_id: current_user.memberships.where(partner: @event.partner)).where("membership_events.discount > ?", 0).order(:discount).last
+    @best_membership_with_discount = @event.membership_events
+      .where(membership_id: current_user.memberships.where(partner: @event.partner))
+        .where("membership_events.discount > ?", 0)
+        .order(:discount).last
     @current_price = @best_membership_with_discount.present? && @current_batch.present? ? @current_batch.price * (1 - @best_membership_with_discount.discount) : @current_batch&.price
   end
 
@@ -25,18 +28,17 @@ class EventsController < ApplicationController
         
         create_membership_events_params.each do |membership_events_params|
           membership = event.partner.memberships.find(membership_events_params[:id])
-          free = membership_events_params[:discount].to_s === "100"
           MembershipEvent.create!(
             event: event,
             membership: membership,
             discount: membership_events_params[:discount].to_f/100,
-            free: free 
           )
         end
         
         redirect_to dashboard_path_for_user(current_user)
       else
         raise
+        # TODO // add mensagem de erro //
       end
     end
   end
@@ -71,7 +73,7 @@ class EventsController < ApplicationController
         standalone: true,
         use_path: true,
       )
-
+      # TODO // Refatorar reduzindo para 1 a quantidade de consultas no db //
       qrcode.update(svg_source: svg_source)
     end
 
