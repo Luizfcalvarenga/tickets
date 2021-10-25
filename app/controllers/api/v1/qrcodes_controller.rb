@@ -36,7 +36,7 @@ module Api
           } and return
         end
 
-        result = !@qrcode.reads.exists?
+        result = !@qrcode.event.accesses.exists?(user: @qrcode.user)
 
         @read = Read.create!(
           qrcode: @qrcode,

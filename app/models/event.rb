@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   has_many :batches, dependent: :destroy
   has_many :accesses
 
+  has_many :accesses
   has_many :membership_events
   has_many :memberships, through: :membership_events
 

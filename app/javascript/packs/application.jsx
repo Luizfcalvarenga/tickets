@@ -12,7 +12,7 @@ import "trix";
 import "@rails/actiontext";
 
 import QrScanner from "qr-scanner";
-QrScanner.WORKER_PATH = "https://qrcode-card.herokuapp.com/qr-scanner-worker.js";
+QrScanner.WORKER_PATH = "https://bike-park.herokuapp.com/qr-scanner-worker.js";
 
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 
 export function Scanner(props) {
   const [readResult, setReadResult] = useState();

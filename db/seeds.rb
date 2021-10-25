@@ -34,7 +34,6 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           kind: "partner",
                           )
 partner.update(main_contact: partner_user1)
-
 partner_user1.update(partner: partner)
 partner_user2.update(partner: partner)
 partner_user3.update(partner: partner)
