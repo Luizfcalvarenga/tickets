@@ -48,12 +48,12 @@ module Api
           Access.create!(user: @qrcode.user, granted_by: @session.user, event: @qrcode.event, read: @read)
 
           render json: {
-            result: result,
+            result: true,
             reads: @qrcode.reads,
           } and return
         else
           render json: {
-            result: result,
+            result: false,
             error: "Acceso já liberado",
             error_details: "Esse QR code já foi utilizado anteriormente",
             reads: @qrcode.reads,

@@ -32,7 +32,6 @@ export function Scanner(props) {
       }
 
       internalLoading = true;
-
       setLoading(false);
     };
 

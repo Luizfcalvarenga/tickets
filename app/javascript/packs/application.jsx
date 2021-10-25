@@ -12,7 +12,7 @@ import "trix";
 import "@rails/actiontext";
 
 import QrScanner from "qr-scanner";
-QrScanner.WORKER_PATH = "https://bike-park.herokuapp.com/qr-scanner-worker.js";
+QrScanner.WORKER_PATH = `${window.location.origin}/qr-scanner-worker.js`;
 
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
@@ -33,7 +33,7 @@ import "bootstrap";
 
 // Internal imports
 
-document.addEventListener("turbolinks:load", () => {
+const loadReactComponent = () => {
   const reactContainer = document.querySelector("react");
 
   if (!reactContainer || !reactContainer.dataset.component) return;
@@ -53,5 +53,6 @@ document.addEventListener("turbolinks:load", () => {
     components[reactContainer.dataset.component],
     reactContainer
   );
-});
+}
 
+loadReactComponent();
