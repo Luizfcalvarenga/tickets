@@ -80,6 +80,13 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
     t.index ["event_id"], name: "index_batches_on_event_id"
   end
 
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.bigint "state_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -91,15 +98,17 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
     t.string "street_number"
     t.string "neighborhood"
     t.string "address_complement"
-    t.string "city"
-    t.string "state"
     t.datetime "sales_started_at"
     t.datetime "sales_finished_at"
+    t.bigint "city_id", null: false
+    t.bigint "state_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "created_by_id"
+    t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
     t.index ["partner_id"], name: "index_events_on_partner_id"
+    t.index ["state_id"], name: "index_events_on_state_id"
   end
 
   create_table "membership_events", force: :cascade do |t|
@@ -134,12 +143,14 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
     t.string "street_number"
     t.string "neighborhood"
     t.string "address_complement"
-    t.string "city"
-    t.string "state"
+    t.bigint "city_id", null: false
+    t.bigint "state_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "main_contact_id"
+    t.index ["city_id"], name: "index_partners_on_city_id"
     t.index ["main_contact_id"], name: "index_partners_on_main_contact_id"
+    t.index ["state_id"], name: "index_partners_on_state_id"
   end
 
   create_table "qrcodes", force: :cascade do |t|
@@ -179,6 +190,13 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "states", force: :cascade do |t|
+    t.string "acronym"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "membership_id", null: false
@@ -216,9 +234,13 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "batches", "events"
+  add_foreign_key "events", "cities"
+  add_foreign_key "events", "states"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "membership_events", "events"
   add_foreign_key "membership_events", "memberships"
+  add_foreign_key "partners", "cities"
+  add_foreign_key "partners", "states"
   add_foreign_key "partners", "users", column: "main_contact_id"
   add_foreign_key "qrcodes", "events"
   add_foreign_key "qrcodes", "memberships"

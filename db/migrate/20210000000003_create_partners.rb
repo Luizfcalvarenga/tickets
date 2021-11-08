@@ -10,9 +10,8 @@ class CreatePartners < ActiveRecord::Migration[6.1]
       t.string :street_number
       t.string :neighborhood
       t.string :address_complement
-      t.string :city
-      t.string :state
-
+      t.references :city, null: false, foreign_key: true
+      t.references :state, null: false, foreign_key: true
       t.timestamps
     end
 
