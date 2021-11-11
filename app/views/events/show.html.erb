@@ -1,17 +1,16 @@
 <div class="page-wrapper">
-  <h1><%= @event.name %></h1>
-
+  <h1 class="title"><%= @event.name %></h1>
   <% if @event.photo.attached? %>
     <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @event.photo.key, height: 300, crop: :fill %>')">
     </div>
   <% end %>
 
-  <p class="fs-18">
+  <p class="fs-18 text-white">
     <%= @event.description %>
   </p>
   
   <% if @current_batch.present? %>
-    <div class="bg-gs-190 flex center around p-4 br-8 my-4">
+    <div class="bg-primary-color flex center around p-4 br-8 my-4">
       <p class="f-24 fw-700 m-0"><%= @current_batch.name %></p>
       <p class="f-24 m-0"><%= number_to_currency(@current_batch.price, unit: "R$", separator: ",", delimiter: ".") %></p>
     </div>

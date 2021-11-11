@@ -44,6 +44,8 @@ Rails.application.routes.draw do
 
   resources :user_memberships
 
+  get '/cities_by_state' => 'cities#cities_by_state'
+
   resources :qrcodes
   get "qrcodes/:id/read", to: "qrcodes#read", as: "read_qrcode"
 end

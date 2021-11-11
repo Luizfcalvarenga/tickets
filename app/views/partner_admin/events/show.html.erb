@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h1><%= @event.name %></h1>
+  <h1 class="title"><%= @event.name %></h1>
 
   <% if @event.photo.attached? %>
     <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @event.photo.key, height: 300, crop: :fill %>')">
@@ -7,7 +7,7 @@
   <% end %>
 
   <% @event.batches.each do |batch| %>
-    <div class="bg-gs-230 flex center around p-4 br-8 my-4">
+    <div class="bg-primary-color flex center around p-4 br-8 my-4">
       <p class="f-24 fw-700 m-0 f-1x"><%= batch.name %></p>
       <p class="f-24 m-0 f-1x"><%= number_to_currency(batch.price, unit: "R$", separator: ",", delimiter: ".") %></p>
       <p class="f-24 fw-700 m-0 f-1x"><%= batch.qrcodes.count %>/<%= batch.quantity %></p>
@@ -21,7 +21,7 @@
     </div>
   <% end %>
 
-  <h3>Lista de convidados</h3>
+  <h3 class="title">Lista de convidados</h3>
   <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
   <% @users.each do |user| %>
     <li>

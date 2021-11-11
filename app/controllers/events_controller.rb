@@ -15,6 +15,8 @@ class EventsController < ApplicationController
   def new
     @event = Event.new
     @memberships = current_user.partner.memberships
+    @states = State.all
+    @cities = @event.state.present? ? @event.state.cities : []
   end
 
   def create
@@ -83,7 +85,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end)
+    params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood)
       .merge(created_by: current_user, partner: current_user.partner)
   end
 

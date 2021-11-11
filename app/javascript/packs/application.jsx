@@ -30,8 +30,20 @@ ActiveStorage.start()
 
 // External imports
 import "bootstrap";
+window.toastr = require("toastr");
+window.toastr.options = {
+  debug: false,
+  positionClass: "toast-top-full-width toastr-position",
+  fadeIn: 0,
+  fadeOut: 1000,
+  timeOut: 4000,
+  extendedTimeOut: 1000,
+};
 
 // Internal imports
+import "./events";
+import "./partners";
+
 
 const loadReactComponent = () => {
   const reactContainer = document.querySelector("react");
@@ -55,4 +67,20 @@ const loadReactComponent = () => {
   );
 }
 
-loadReactComponent();
+const loadToastr = () => {
+  document.querySelectorAll(".flash").forEach((flash) => {
+    console.log(flash);
+    if (flash.dataset.type === "alert") {
+      global.toastr.error(flash.dataset.message);
+    } else if (flash.dataset.type === "notice") {
+      global.toastr.success(flash.dataset.message);
+    } else {
+      return;
+    }
+  });
+}
+
+document.addEventListener("turbolinks:load", () => {
+  loadReactComponent();
+  loadToastr();
+})

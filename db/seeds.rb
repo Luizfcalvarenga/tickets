@@ -16,23 +16,24 @@ Read.destroy_all
 Qrcode.destroy_all
 Event.destroy_all
 User.destroy_all
+User.create!(email: "admin@app.com", password: "123456", access: "admin") 
 
 puts "Criando usuários, partner_users, partner e memberships"
-User.create!(email: "user@test.com", password: "123456", access: "user") 
-User.create!(email: "user2@test.com", password: "123456", access: "user") 
-User.create!(email: "user3@test.com", password: "123456", access: "user") 
-User.create!(email: "user4@test.com", password: "123456", access: "user") 
-User.create!(email: "user5@test.com", password: "123456", access: "user") 
-partner_user1 = User.create!(email: "partner@test.com", password: "123456", access: "partner_admin") 
-partner_user2 = User.create!(email: "partner2@test.com", password: "123456", access: "partner_admin") 
-partner_user3 = User.create!(email: "partner3@test.com", password: "123456", access: "partner_admin") 
-partner_user4 = User.create!(email: "partner4@test.com", password: "123456", access: "partner_admin")
+User.create!(email: "user@app.com", password: "123456", access: "user") 
+User.create!(email: "user2@app.com", password: "123456", access: "user") 
+User.create!(email: "user3@app.com", password: "123456", access: "user") 
+User.create!(email: "user4@app.com", password: "123456", access: "user") 
+User.create!(email: "user5@app.com", password: "123456", access: "user") 
+partner_user1 = User.create!(email: "partner@app.com", password: "123456", access: "partner_admin") 
+partner_user2 = User.create!(email: "partner2@app.com", password: "123456", access: "partner_admin") 
+partner_user3 = User.create!(email: "partner3@app.com", password: "123456", access: "partner_admin") 
+partner_user4 = User.create!(email: "partner4@app.com", password: "123456", access: "partner_admin")
 state = State.find_by(name: "Minas Gerais")
 city = City.find_by(name: "Belo Horizonte")
 partner = Partner.create!(name: "Parceiro de demonstração",
                           cnpj: "44.716.365/0001-92",
-                          phone_number: "(31) 3223-5655",
-                          cep: "30310-700",
+                          contact_phone_1: "3132235655",
+                          cep: "30310700",
                           street_name: "Av. Antônio Abrahão Caram",
                           street_number: "1001",
                           neighborhood: "São José",

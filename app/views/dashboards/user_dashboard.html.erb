@@ -9,8 +9,8 @@
 
   <div class="p-5">
     <% @qrcodes.each do |qrcode| %>
-      <div class="qrcode bg-light w-100 p-4 br-8 text-white row around flex center mb-2">
-        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
+      <div class="qrcode bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
+        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
         <%= link_to qrcode_path(qrcode), class: "col-12 col-md-3 p-0 mb-2" do %>
           <p class="btn btn-primary m-0 w-100">Ver</p>
         <% end %>
@@ -27,11 +27,11 @@
 
   <div class="p-5">
     <% @user_memberships.each do |user_membership| %>
-      <div class="bg-light w-100 p-4 br-8 text-white row mb-2 flex center start">
-        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
-        <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
-        <%= link_to user_membership_path(user_membership), method: :delete, class: "text-dark f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
-          <p class="text-dark f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
+      <div class="bg-dark w-100 p-4 br-8 text-white row mb-2 flex center start">
+        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
+        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
+        <%= link_to user_membership_path(user_membership), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
+          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
         <% end %>
       </div>
     <% end %>  

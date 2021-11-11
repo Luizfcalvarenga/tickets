@@ -48,11 +48,11 @@ export function Scanner(props) {
         <div className="flex column center vh-100">
           <div className="h-20 flex center around">
             <div>
-              <p className="fs-24 fw-700 text-center m-0 text-white">
+              <p className="fs-48 fw-700 text-center m-0 title">
                 Controle de entrada
               </p>
               <p className="fs-24 fw-700 text-center m-0 text-white">
-                {props.eventName}
+                Evento: {props.eventName}
               </p>
             </div>
           </div>

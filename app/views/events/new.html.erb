@@ -1,56 +1,70 @@
 <div class="page-wrapper">
-  <h1>Criar novo evento</h1>
+  <h1 class="title">Criar novo evento</h1>
 
   <%= simple_form_for(@event) do |f| %>
     <%= f.input :name %>
 
     <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
 
-    <h3 class="my-4">Foto do evento</h3>
+    <div class="spacer-30"></div>
     <%= f.input :photo, as: :file %>
 
     <div class="spacer-50"></div>
 
+    <h2 class="title">Local do evento</h2>
+
+    <%= f.input :cep %>
+    <%= f.input :state_id, collection: State.all.order(:name) %>
+    <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
+    <%= f.input :street_name %>
+    <%= f.input :street_number %>
+    <%= f.input :neighborhood %>
+    <%= f.input :address_complement %>
+
+    <div class="spacer-50"></div>
+
+    <h2 class="title">Data do evento</h2>
+
     <%= f.input :scheduled_start, as: :datetime %>
     <%= f.input :scheduled_end, as: :datetime %>
 
-    <h2 class="my-5">Preços e lotes</h2>
+    <h2 class="my-5 title">Preços e lotes</h2>
 
-    <div class="my-3 flex center around gap-24">
-      <input type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+    <div class="my-3 flex center around gap-24 form-group">
+      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
     </div>
 
     <div class="spacer-50"></div>
 
-    <h2 class="my-5">Descontos para assinantes</h2>
+    <h2 class="my-5 title">Descontos para assinantes</h2>
 
     <% @memberships.each do |membership| %>
       <div class="my-3 flex center around gap-24">
         <input type="hidden" name="memberships[][id]" value="<%= membership.id %> ">
-        <p class="m-0"><%= membership.name %></p>
-        <input type="text" name="memberships[][discount]" placeholder="% de desconto" class="f-1x">
+        <p class="m-0 w-10"><%= membership.name %></p>
+        <input class="form-control" type="text" name="memberships[][discount]" placeholder="% de desconto" class="f-1x">
       </div>
     <% end %>
 

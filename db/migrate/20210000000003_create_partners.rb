@@ -4,7 +4,9 @@ class CreatePartners < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :cnpj
       t.string :kind
-      t.string :phone_number
+      t.string :contact_phone_1
+      t.string :contact_phone_2
+      t.string :contact_email
       t.string :cep
       t.string :street_name
       t.string :street_number
