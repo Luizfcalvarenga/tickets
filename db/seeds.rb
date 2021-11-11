@@ -7,6 +7,13 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require Rails.root.join('db/seeds/states_and_cities_populate')
 
+Session.destroy_all
+MembershipEvent.destroy_all
+Partner.destroy_all
+User.destroy_all
+City.destroy_all
+State.destroy_all
+
 puts "Criando lista de estados e cidades"
 StatesAndCitiesPopulate.populate!
 puts "-- OK!"

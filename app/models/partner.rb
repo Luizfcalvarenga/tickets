@@ -4,6 +4,8 @@ class Partner < ApplicationRecord
   belongs_to :state
 
   attr_accessor :main_contact_email
+
+  has_one_attached :logo
   
   has_many :events
   has_many :memberships

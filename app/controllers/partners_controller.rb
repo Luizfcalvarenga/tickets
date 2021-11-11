@@ -21,8 +21,8 @@ class PartnersController < ApplicationController
     end
 
     if @partner.save
-      main_partner = User.create(email: params[:partner][:main_contact_email], password: "123456")
-      @partner.update(main_partner: main_partner)
+      main_contact = User.create(email: params[:partner][:main_contact_email], password: "123456")
+      @partner.update(main_contact: main_contact)
     else
       flash[:alert] = "Erro na criação do parceiro"
       render :new
