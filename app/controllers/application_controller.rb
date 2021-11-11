@@ -33,6 +33,7 @@ class ApplicationController < ActionController::Base
       raise
     end
   end
+  helper_method :dashboard_path_for_user
 
   def after_sign_in_path_for(resource)
     dashboard_path_for_user(resource)

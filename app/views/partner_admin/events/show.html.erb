@@ -24,7 +24,7 @@
   <h3 class="title">Lista de convidados</h3>
   <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
   <% @users.each do |user| %>
-    <li>
+    <li class="text-white">
       <%= user.email %>
       <% access = @accesses.find_by(user: user) %>
       <% if access.present? %>

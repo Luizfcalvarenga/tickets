@@ -3,7 +3,7 @@ class UserMembershipsController < ApplicationController
     user_membership = UserMembership.new(create_user_membership_params)
     
     if user_membership.save 
-      redirect_to dashboard_path_for_user(current_user)
+      redirect_to partner_path(user_membership.membership.partner)
     else
       raise
     end
@@ -13,7 +13,7 @@ class UserMembershipsController < ApplicationController
     user_membership = UserMembership.find(params[:id])
     
     if user_membership.destroy
-      redirect_to dashboard_path_for_user(current_user)
+      redirect_to partner_path(user_membership.membership.partner)
     else
       raise
     end

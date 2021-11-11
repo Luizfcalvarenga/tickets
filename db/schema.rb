@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_10_15_013359) do
 
   create_table "partners", force: :cascade do |t|
     t.string "name"
+    t.string "slug"
     t.string "cnpj"
     t.string "kind"
     t.string "contact_phone_1"

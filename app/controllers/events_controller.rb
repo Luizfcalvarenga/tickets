@@ -90,10 +90,10 @@ class EventsController < ApplicationController
   end
 
   def create_batch_params
-    params[:batches].select { |batch_params| batch_params[:name].present? || batch_params[:quantity].present? || batch_params[:price].present? } 
+    (params[:batches] || []).select { |batch_params| batch_params[:name].present? || batch_params[:quantity].present? || batch_params[:price].present? } 
   end
 
   def create_membership_events_params
-    params[:memberships]
+    params[:memberships] || []
   end
 end

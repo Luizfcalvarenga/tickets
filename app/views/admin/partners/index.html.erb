@@ -3,13 +3,18 @@
     <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
   <% end %>
   
-  <h1 class="title">Lista de parceiros</h1>
+  <h1 class="title">Lista de parceiros cadastrados</h1>
+
+  <%= link_to new_admin_partner_path do %>
+    <p class="btn btn-primary mb-5 w-100 px-5">Criar novo parceiro</p>
+  <% end %>
 
   <table>
     <thead>
       <tr>
         <th scope="col">Nome do parceiro</th>
         <th scope="col">Cidade/Estado</th>
+        <th scope="col">Contato principal</th>
         <th scope="col">Ações</th>
       </tr>
     </thead>
@@ -18,9 +23,10 @@
       <tr>
         <td data-label="Nome do parceiro"><%= partner.name %></td>
         <td data-label="Cidade/Estado"><%= partner.city.name %> - <%= partner.state.acronym %></td>
+        <td data-label="Contato principal"><%= partner.main_contact.email %></td>
         <td data-label="Ações">
           <%= link_to partner_path(partner) do %>
-            <p class="btn btn-primary m-0 px-5">Ver página</p>
+            <p class="btn btn-primary m-0 px-5">Ver</p>
           <% end %>
         </td>
       </tr>

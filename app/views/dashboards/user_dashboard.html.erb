@@ -37,36 +37,7 @@
     <% end %>  
   </div>
 
-  <h2>Eventos disponíveis</h2>
-
-  <div class="p-5">
-    <% @events.each do |event| %>
-      <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
-
-        <%= link_to event_path(event), class: "col-12 col-md-4" do %>
-          <p class="btn btn-primary m-0">Ver evento</p>
-        <% end %>
-      </div>
-    <% end %>  
-  </div>
-
-  <h2>Assinaturas disponíveis</h2>
-
-  <div class="p-5">
-    <% @memberships.each do |membership| %>
-      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 m-0"><%= membership.name %></p>
-
-        <div class="f-80">
-          <%= simple_form_for(@user_membership) do |f| %>
-            <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
-            <%= f.submit "Inscrever", class: "btn btn-primary" %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>  
-  </div>
-
-
+  <%= link_to partners_path do %>
+    <p class="btn btn-primary w-100">Ver parceiros</p>
+  <% end %>
 </div>

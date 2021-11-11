@@ -5,45 +5,15 @@ class PartnersController < ApplicationController
   end
   
   def show
-    @partner = Partner.find(params[:id])
-  end
-  
-  def new
-    @partner = Partner.new
-  end
-  
-  def create
-    @partner = Partner.new(partner_params)
+    @partner = Partner.find_by!(slug: params[:id])
 
-    if User.exists?(email: params[:partner][:main_contact_email])
-      flash[:alert] = "O contato principal já existe"
-      render :new and return
-    end
+    @events = @partner.events.where.not(id: current_user.events.ids)
+    @memberships = @partner.memberships.where.not(id: current_user.memberships.ids)
 
-    if @partner.save
-      main_contact = User.create(email: params[:partner][:main_contact_email], password: "123456")
-      @partner.update(main_contact: main_contact)
-    else
-      flash[:alert] = "Erro na criação do parceiro"
-      render :new
-    end
-  end
-  
-  def edit
+    @qrcodes = current_user.qrcodes.joins(event: :partner).where(partners: {id: @partner.id})
+    @user_memberships = current_user.user_memberships.joins(membership: :partner).where(partners: {id: @partner.id})
 
-  end
-  
-  def update
 
-  end
-  
-  def destroy
-
-  end
-
-  private
-
-  def partner_params
-    params.require(:partner).permit(:name, :cnpj, :contact_phone_1, :contact_phone_2, :contact_email, :cep, :state_id, :city_id, :street_name, :street_number, :neighborhood, :address_complement)
+    @user_membership = UserMembership.new
   end
 end

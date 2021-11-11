@@ -2,6 +2,7 @@ class CreatePartners < ActiveRecord::Migration[6.1]
   def change
     create_table :partners do |t|
       t.string :name
+      t.string :slug
       t.string :cnpj
       t.string :kind
       t.string :contact_phone_1

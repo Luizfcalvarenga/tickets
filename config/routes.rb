@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     resources :events, only: [:index, :show]
   end
 
+  namespace :admin do
+    resources :partners
+  end
+
   resources :events
   get "events/:id/read", to: "events#read", as: "read_event" 
   post "events/:id/buy", to: "events#buy", as: "buy_event"
@@ -48,4 +52,6 @@ Rails.application.routes.draw do
 
   resources :qrcodes
   get "qrcodes/:id/read", to: "qrcodes#read", as: "read_qrcode"
+
+  get "/:id", to: "partners#show"
 end
