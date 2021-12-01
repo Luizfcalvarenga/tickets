@@ -16,6 +16,7 @@ QrScanner.WORKER_PATH = `${window.location.origin}/qr-scanner-worker.js`;
 
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
+import { EventQuestions } from "../react_pages/EventQuestions";
 
 import "../stylesheets/application";
 
@@ -59,6 +60,7 @@ const loadReactComponent = () => {
       />
     ),
     ReactPage: <ReactPage message={reactContainer.dataset.message} />,
+    EventQuestions: <EventQuestions />,
   };
 
   ReactDOM.render(

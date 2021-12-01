@@ -40,9 +40,10 @@ Rails.application.routes.draw do
     resources :partners
   end
 
-  resources :events
+  resources :events do
+    resources :qrcodes, only: [:create]
+  end
   get "events/:id/read", to: "events#read", as: "read_event" 
-  post "events/:id/buy", to: "events#buy", as: "buy_event"
   
   resources :memberships
 
