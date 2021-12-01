@@ -23,14 +23,32 @@
 
   <h3 class="title">Lista de convidados</h3>
   <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
-  <% @users.each do |user| %>
-    <li class="text-white">
-      <%= user.email %>
-      <% access = @accesses.find_by(user: user) %>
-      <% if access.present? %>
-        <span class="text-success"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></span>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Email</th>
+        <th scope="col">Acesso</th>
+        <% @event.event_questions.order(:order).each do |event_question| %>
+          <th><%= event_question.prompt %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td data-label="Email"><%= user.email %></td>
+          <td>
+            <% access = @accesses.find_by(user: user) %>
+            <% if access.present? %>
+              <p class="text-success m-0"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></p>
+            <% end %>
+          </td>
+          <% Qrcode.find_by(user: user, event: @event).event_question_qrcode_answers.joins(:event_question).order("event_questions.order").each do |event_question_qrcode_answer| %>
+            <td><%= event_question_qrcode_answer.value %></td>
+          <% end %>
+        </tr>
       <% end %>
-    </li>
-  <% end %>
+    </tbody>
+  </table>
 </div>
 

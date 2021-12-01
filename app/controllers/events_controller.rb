@@ -10,6 +10,8 @@ class EventsController < ApplicationController
         .where("membership_events.discount > ?", 0)
         .order(:discount).last
     @current_price = @best_membership_with_discount.present? && @current_batch.present? ? @current_batch.price * (1 - @best_membership_with_discount.discount) : @current_batch&.price
+  
+    @qrcode = Qrcode.new
   end
 
   def new
@@ -36,6 +38,17 @@ class EventsController < ApplicationController
             discount: membership_events_params[:discount].to_f/100,
           )
         end
+
+        event_questions_params.each do |event_question_params|
+          EventQuestion.create!(
+            event: event,
+            kind: event_question_params[:kind],
+            prompt: event_question_params[:prompt],
+            optional: event_question_params[:optional].present?,
+            options: event_question_params[:options],
+            order: event_question_params[:order],
+          )
+        end
         
         redirect_to dashboard_path_for_user(current_user)
       else
@@ -48,38 +61,6 @@ class EventsController < ApplicationController
   def read
     @event = Event.find(params[:id])
     @session = Session.create(user: current_user, event: @event)
-  end
-
-  def buy
-    event = Event.find(params[:id])
-
-    current_batch = event.current_batch
-
-    raise "Ingressos esgotados" if current_batch.blank? 
-
-    ActiveRecord::Base.transaction do
-      qrcode = Qrcode.create(
-        user: current_user,
-        event: event,
-        batch: current_batch,
-      )
-
-      if current_batch.qrcodes.length == current_batch.quantity
-        current_batch.touch(:ended_at)
-      end
-
-      svg_source = RQRCode::QRCode.new(qrcode.identifier).as_svg(
-        color: "000",
-        shape_rendering: "crispEdges",
-        module_size: 5,
-        standalone: true,
-        use_path: true,
-      )
-      # TODO // Refatorar reduzindo para 1 a quantidade de consultas no db //
-      qrcode.update(svg_source: svg_source)
-    end
-
-    redirect_to dashboard_path_for_user(current_user)
   end
 
   private
@@ -95,5 +76,9 @@ class EventsController < ApplicationController
 
   def create_membership_events_params
     params[:memberships] || []
+  end
+
+  def event_questions_params
+    params[:event_questions] || []
   end
 end
