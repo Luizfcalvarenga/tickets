@@ -9,6 +9,7 @@ class DashboardsController < ApplicationController
   end
 
   def partner_admin_dashboard
+    @partner = Partner.all
     @events = current_user.partner.events
   end
 
