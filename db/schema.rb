@@ -157,9 +157,12 @@ ActiveRecord::Schema.define(version: 2021_12_01_054237) do
 
   create_table "partners", force: :cascade do |t|
     t.string "name"
+    t.string "slug"
     t.string "cnpj"
     t.string "kind"
-    t.string "phone_number"
+    t.string "contact_phone_1"
+    t.string "contact_phone_2"
+    t.string "contact_email"
     t.string "cep"
     t.string "street_name"
     t.string "street_number"
