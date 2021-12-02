@@ -1,26 +1,32 @@
 // Specific CSS for your home-page
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap");
 @import "toastr/toastr";
 @import "trix/dist/trix";
-$color-primary: #00893B;
+$color-primary: #00893b;
 $color-darker: #101010;
 
 body {
   background-color: $color-darker !important;
 }
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   color: white;
 }
 
 .f-roboto {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .f-bebas {
-  font-family: 'Bebas Neue', cursive;
+  font-family: "Bebas Neue", cursive;
   letter-spacing: 1px;
 }
 .title {
-  font-family: 'Bebas Neue', cursive;
+  font-family: "Bebas Neue", cursive;
   letter-spacing: 1px;
   color: $color-primary;
   text-transform: uppercase;
@@ -39,7 +45,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 .page-wrapper {
   padding: 100px 200px;
-
+  min-height: calc(100vh - 120px);
   @media screen and (max-width: 768px) {
     padding: 20px;
   }
@@ -86,7 +92,7 @@ h1, h2, h3, h4, h5, h6, p {
   pointer-events: none;
 
   @media screen and (max-width: 768px) {
-     height: 20vmin;
+    height: 20vmin;
   }
 }
 
@@ -105,11 +111,17 @@ h1, h2, h3, h4, h5, h6, p {
   }
 }
 
-.hide {display: none;}
+.hide {
+  display: none;
+}
 
 .page-gradient {
-  background: rgb(34,136,255);
-  background: linear-gradient(220deg, rgba(34,136,255,1) 55%, rgba(1,242,186,1) 100%);
+  background: rgb(34, 136, 255);
+  background: linear-gradient(
+    220deg,
+    rgba(34, 136, 255, 1) 55%,
+    rgba(1, 242, 186, 1) 100%
+  );
 }
 .logo {
   height: 200px;
@@ -120,18 +132,18 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 form {
-  width: 100%; 
+  width: 100%;
 
   label {
     font-size: 20px;
     color: $color-primary;
-    font-family: 'Bebas Neue', cursive;
+    font-family: "Bebas Neue", cursive;
     letter-spacing: 1px;
   }
-  
+
   .form-group {
     color: white;
-     width: 100%;
+    width: 100%;
   }
 
   input {
@@ -300,8 +312,8 @@ label > input[type="radio"]:checked + * {
   }
 }
 
-a:link { 
-    text-decoration:none; 
+a:link {
+  text-decoration: none;
 }
 
 .vh-navbar {
@@ -331,7 +343,7 @@ trix-toolbar {
 trix-editor {
   background: white !important;
   padding: 20px !important;
-  color: rgb(50,50,50) !important;
+  color: rgb(50, 50, 50) !important;
 }
 .trix-content {
   color: white;
@@ -351,18 +363,18 @@ table tr {
   background-color: #212529;
   color: white;
   border: 1px solid #ddd;
-  padding: .35em;
+  padding: 0.35em;
 }
 
 table th,
 table td {
-  padding: .625em;
+  padding: 0.625em;
   text-align: center;
 }
 
 table th {
-  font-size: .85em;
-  letter-spacing: .1em;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -374,7 +386,7 @@ table th {
   table caption {
     font-size: 1.3em;
   }
-  
+
   table thead {
     border: none;
     clip: rect(0 0 0 0);
@@ -385,20 +397,20 @@ table th {
     position: absolute;
     width: 1px;
   }
-  
+
   table tr {
     border-bottom: 3px solid #ddd;
     display: block;
-    margin-bottom: .625em;
+    margin-bottom: 0.625em;
   }
-  
+
   table td {
     border-bottom: 1px solid #ddd;
     display: block;
-    font-size: .8em;
+    font-size: 0.8em;
     text-align: right;
   }
-  
+
   table td::before {
     /*
     * aria-label has no advantage, it won't be read inside a table
@@ -409,7 +421,7 @@ table th {
     font-weight: bold;
     text-transform: uppercase;
   }
-  
+
   table td:last-child {
     border-bottom: 0;
   }

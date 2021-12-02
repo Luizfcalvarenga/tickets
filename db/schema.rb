@@ -87,16 +87,6 @@ ActiveRecord::Schema.define(version: 2021_12_01_054237) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "event_qrcode_answers", force: :cascade do |t|
-    t.bigint "event_question_id", null: false
-    t.bigint "qrcode_id", null: false
-    t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_question_id"], name: "index_event_qrcode_answers_on_event_question_id"
-    t.index ["qrcode_id"], name: "index_event_qrcode_answers_on_qrcode_id"
-  end
-
   create_table "event_question_qrcode_answers", force: :cascade do |t|
     t.bigint "event_question_id", null: false
     t.bigint "qrcode_id", null: false
@@ -167,12 +157,9 @@ ActiveRecord::Schema.define(version: 2021_12_01_054237) do
 
   create_table "partners", force: :cascade do |t|
     t.string "name"
-    t.string "slug"
     t.string "cnpj"
     t.string "kind"
-    t.string "contact_phone_1"
-    t.string "contact_phone_2"
-    t.string "contact_email"
+    t.string "phone_number"
     t.string "cep"
     t.string "street_name"
     t.string "street_number"
@@ -269,8 +256,6 @@ ActiveRecord::Schema.define(version: 2021_12_01_054237) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "batches", "events"
-  add_foreign_key "event_qrcode_answers", "event_questions"
-  add_foreign_key "event_qrcode_answers", "qrcodes"
   add_foreign_key "event_question_qrcode_answers", "event_questions"
   add_foreign_key "event_question_qrcode_answers", "qrcodes"
   add_foreign_key "event_questions", "events"
