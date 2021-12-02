@@ -45,7 +45,7 @@ p {
 
 .page-wrapper {
   padding: 100px 200px;
-
+  min-height: calc(100vh - 120px);
   @media screen and (max-width: 768px) {
     padding: 20px;
   }

@@ -8,7 +8,7 @@
 }
 
 .navbar-lewagon .navbar-brand img {
-  width: 40px;
+  width: 100px !important;
 }
 
 // Navbar Gillys
@@ -21,7 +21,16 @@
 .navbar {
   height: 120px;
   background: #00893b !important;
-  color: #fff;
+  color: #fff !important;
   font-family: "Nunito", "Helvetica", "sans-serif";
   justify-content: space-between !important;
+  font-weight: bold !important;
+}
+
+.nav-link {
+  color: #fff !important;
+}
+
+.navbar-nav {
+  background-color: #00893b !important;
 }
