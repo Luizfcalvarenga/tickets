@@ -4,6 +4,11 @@
     <div class="flex center around h-100">
       <div class="h-80 qrcode-wrapper flex column center around">
         <div>
+        <% if @qrcode.event.partner.logo.attached? %>
+          <div class="my-5 flex center around">
+          <%= cl_image_tag @qrcode.event.partner.logo.key, height: 200, width: 220, crop: :fit %>
+          </div>
+        <% end %>
           <h1 class="text-center mb-2 fw-700 text-dark"><%= @qrcode.event.partner.name %></h1>
           <h1 class="text-center mb-2 fw-700 text-dark"><%= @qrcode.event.name %></h1>
           <h3 class="text-center mb-5 text-dark"><%= @qrcode.batch.name %></h3>

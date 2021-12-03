@@ -42,6 +42,8 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           state: state,
                           kind: "partner",
                           )
+                          partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/redbull_logo.png')),
+                  filename: 'redbull_logo.png')
 partner.update(main_contact: partner_user1)
 partner_user1.update(partner: partner)
 partner_user2.update(partner: partner)
