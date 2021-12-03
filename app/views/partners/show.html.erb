@@ -6,7 +6,7 @@
   
   <% if @partner.logo.attached? %>
     <div class="my-5 flex center around">
-      <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fill %>
+      <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit %>
     </div>
   <% end %>
   <h1 class="title"><%= @partner.name %></h1>
