@@ -1,9 +1,10 @@
 <%= render 'shared/navbar' %>
 <div class="page-wrapper">
-  <h1 class="title">Criar novo parceiro</h1>
+  <h1 class="title">Editar parceiro</h1>
 
   <%= simple_form_for([:admin, @partner]) do |f| %>
     <%= f.input :name %>
+    <%= f.input :slug %>
     <%= f.input :cnpj %>
     <%= f.input :contact_phone_1 %>
     <%= f.input :contact_phone_2 %>
@@ -23,8 +24,6 @@
 
     <div class="spacer-50"></div>
 
-    <%= f.input :main_contact_email %>
-
-    <%= f.submit "Criar parceiro", class: "btn btn-primary mt-5 w-100" %>
+    <%= f.submit "Editar parceiro", class: "btn btn-primary mt-5 w-100" %>
   <% end %>
 </div>

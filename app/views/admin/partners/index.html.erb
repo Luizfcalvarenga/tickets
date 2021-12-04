@@ -29,6 +29,9 @@
           <%= link_to partner_path(partner) do %>
             <p class="btn btn-primary m-0 px-5">Ver</p>
           <% end %>
+          <%= link_to edit_admin_partner_path(partner.id) do %>
+            <p class="btn btn-primary m-0 px-5">Edit</p>
+          <% end %>
         </td>
       </tr>
       <% end %>

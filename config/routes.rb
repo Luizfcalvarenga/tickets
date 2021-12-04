@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :partners
+    get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
   end
 
   resources :events do

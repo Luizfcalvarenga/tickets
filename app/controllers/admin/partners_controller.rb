@@ -44,11 +44,17 @@ module Admin
     end
     
     def edit
-
+      @partner = Partner.find(params[:id])
     end
     
     def update
-
+      @partner = Partner.find(params[:id])
+      if @partner.update(partner_params)
+        flash[:notice] = "Parceiro atualizado com sucesso"
+        redirect_to admin_partner_path(@partner.slug)
+      else
+        render :new
+      end
     end
     
     def destroy
