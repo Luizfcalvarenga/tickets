@@ -12,7 +12,7 @@
 
     <%= f.input :cep %>
     <%= f.input :state_id, collection: State.all.order(:name) %>
-    <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
+    <%= f.input :city_id, as: :select, collection: @partner.state.cities, input_html: { id: 'cities_select' }, required: true %>
     <%= f.input :street_name %>
     <%= f.input :street_number %>
     <%= f.input :neighborhood %>
