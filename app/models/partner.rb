@@ -3,7 +3,7 @@ class Partner < ApplicationRecord
   belongs_to :city
   belongs_to :state
 
-  before_save :slugify
+  before_create :slugify
 
   def to_param
     slug

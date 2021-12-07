@@ -29,20 +29,22 @@ Rails.application.routes.draw do
   end
   
   namespace :partner_admin do
-    resources :events, only: [:show]
+    resources :events, only: [:show, :new, :create]
   end
 
   resources :partners do
-    resources :events, only: [:index, :show]
+    resources :events, only: [:show]
   end
 
   namespace :admin do
     resources :partners
+    get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
   end
 
   resources :events do
     resources :qrcodes, only: [:create]
   end
+
   get "events/:id/read", to: "events#read", as: "read_event" 
   
   resources :memberships
