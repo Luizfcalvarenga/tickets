@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  namespace :partner_admin do
+    get 'memberships/show'
+    get 'memberships/new'
+    get 'memberships/create'
+    get 'memberships/update'
+    get 'memberships/delete'
+  end
   devise_for :users
   root to: 'pages#home'
 
@@ -29,7 +36,8 @@ Rails.application.routes.draw do
   end
   
   namespace :partner_admin do
-    resources :events, only: [:show, :new, :create]
+    resources :events, only: [:show]
+    resources :memberships
   end
 
   resources :partners do

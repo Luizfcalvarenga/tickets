@@ -11,6 +11,7 @@ class DashboardsController < ApplicationController
   def partner_admin_dashboard
     @partner = Partner.all
     @events = current_user.partner.events
+    @memberships = Membership.where(partner_id: current_user.partner.id)
   end
 
   def admin_dashboard

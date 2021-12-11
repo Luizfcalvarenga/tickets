@@ -34,5 +34,22 @@
   <%= link_to new_event_path, class: "col-12 w-100" do %>
     <p class="btn btn-primary m-0 w-100 my-3">Convidar colaboradores</p>
   <% end %>
+  <h2>Meus Memberships</h2>
 
+  <div class="p-5">
+    <% @memberships.each do |membership| %>
+      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.name %></p>
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.short_description %></p>
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.description %></p>
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.price %></p>
+        <%= link_to read_event_path(membership), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Ler QRcodes</p>
+        <% end %>
+        <%= link_to partner_admin_event_path(membership), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Ver detalhes do evento</p>
+        <% end %>
+      </div>
+    <% end %> 
+  </div>
 </div>
