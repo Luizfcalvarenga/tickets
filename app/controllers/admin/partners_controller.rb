@@ -44,11 +44,18 @@ module Admin
     end
     
     def edit
-
+      @partner = Partner.find_by(slug: params[:id])
     end
     
     def update
-
+      @partner = Partner.find_by(slug: params[:id])
+      if @partner.update(partner_params)
+        flash[:notice] = "Parceiro atualizado com sucesso"
+        redirect_to admin_partners_path
+      else
+        raise
+        render :edit
+      end
     end
     
     def destroy
@@ -58,7 +65,7 @@ module Admin
     private
 
     def partner_params
-      params.require(:partner).permit(:name, :cnpj, :contact_phone_1, :contact_phone_2, :contact_email, :cep, :state_id, :city_id, :street_name, :street_number, :neighborhood, :address_complement, :logo)
+      params.require(:partner).permit(:name, :cnpj, :contact_phone_1, :contact_phone_2, :contact_email, :cep, :state_id, :city_id, :street_name, :street_number, :neighborhood, :address_complement, :logo, :slug)
     end
   end
 
