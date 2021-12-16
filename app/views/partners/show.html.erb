@@ -1,15 +1,17 @@
 <%= render 'shared/navbar' %>
 <div class="page-wrapper">
-  <%= link_to dashboard_path_for_user(current_user) do %>
-    <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+  <% if user_signed_in? %>
+      <%= link_to dashboard_path_for_user(current_user) do %>
+      <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+    <% end %>
   <% end %>
-  
+
   <% if @partner.logo.attached? %>
     <div class="my-5 flex center around">
       <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit %>
     </div>
   <% end %>
-  <h1 class="title"><%= @partner.name %></h1>
+  <h1 class="title text-center"><%= @partner.name %></h1>
 
   <h2>Eventos disponíveis</h2>
 
@@ -32,47 +34,53 @@
       <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
         <p class="text-white f-20 m-0 col-12 col-md-2 m-0"><%= membership.name %></p>
 
-        <div class="f-80">
-          <%= simple_form_for(@user_membership) do |f| %>
-            <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
-            <%= f.submit "Inscrever", class: "btn btn-primary" %>
+        <% if user_signed_in? %>
+          <div class="f-80">
+            <%= simple_form_for(@user_membership) do |f| %>
+              <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
+              <%= f.submit "Inscrever", class: "btn btn-primary" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>  
+  </div>
+
+  <% if user_signed_in? %>
+    <h2>Meus QRCodes para <%= @partner.name %></h2>
+
+    <div class="p-5">
+      <% @qrcodes.each do |qrcode| %>
+        <div class="qrcode bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
+          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
+          <%= link_to qrcode_path(qrcode), class: "col-12 col-md-3 p-0 mb-2" do %>
+            <p class="btn btn-primary m-0 w-100">Ver</p>
+          <% end %>
+          <% if qrcode.reads.exists? %>
+            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
+          <% else %>
+            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
           <% end %>
         </div>
-      </div>
-    <% end %>  
-  </div>
+      <% end %>  
+    </div>
 
-  <h2>Meus QRCodes para <%= @partner.name %></h2>
+    <h2>Minhas assinaturas ativas em <%= @partner.name %></h2>
 
-  <div class="p-5">
-    <% @qrcodes.each do |qrcode| %>
-      <div class="qrcode bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
-        <%= link_to qrcode_path(qrcode), class: "col-12 col-md-3 p-0 mb-2" do %>
-          <p class="btn btn-primary m-0 w-100">Ver</p>
-        <% end %>
-        <% if qrcode.reads.exists? %>
-          <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
-        <% else %>
-          <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
-        <% end %>
-      </div>
-    <% end %>  
-  </div>
-
-  <h2>Minhas assinaturas ativas em <%= @partner.name %></h2>
-
-  <div class="p-5">
-    <% @user_memberships.each do |user_membership| %>
-      <div class="bg-dark w-100 p-4 br-8 text-white row mb-2 flex center start">
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
-        <%= link_to user_membership_path(user_membership), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
-          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
-        <% end %>
-      </div>
-    <% end %>  
-  </div>
+    <div class="p-5">
+      <% @user_memberships.each do |user_membership| %>
+        <div class="bg-dark w-100 p-4 br-8 text-white row mb-2 flex center start">
+          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
+          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
+          <%= link_to user_membership_path(user_membership), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
+            <p class="text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
+          <% end %>
+        </div>
+      <% end %>  
+    </div>
+  <% else %>
+    <h3 class="text-white">Faça login para ver seus ingressos e assinaturas para esse parceiro, ou comprar ingressos e assinaturas.</h3>
+  <% end %>
 
 </div>
 
