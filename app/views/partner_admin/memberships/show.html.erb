@@ -1,2 +1,10 @@
-<h1>PartnerAdmin::Memberships#show</h1>
-<p>Find me in app/views/partner_admin/memberships/show.html.erb</p>
+<%= render 'shared/navbar' %>
+<div class="page-wrapper">
+  <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+    <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= @membership.name %></p>
+    <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= @membership.short_description %></p>
+    <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= @membership.description %></p>
+    <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= @membership.price %></p>
+    <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= @membership.users.count %></p>
+  </div>
+</div>
