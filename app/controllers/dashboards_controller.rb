@@ -12,6 +12,16 @@ class DashboardsController < ApplicationController
     @partner = Partner.all
     @events = current_user.partner.events
     @memberships = Membership.where(partner_id: current_user.partner.id)
+
+    qrcode = RQRCode::QRCode.new(url_for controller: 'partners', action: 'show', host: 'localhost:3000', id: current_user.partner.id)
+
+    @svg = qrcode.as_svg(
+      color: "000",
+      shape_rendering: "crispEdges",
+      module_size: 11,
+      standalone: true,
+      use_path: true
+    )
   end
 
   def admin_dashboard

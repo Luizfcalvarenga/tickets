@@ -1,10 +1,12 @@
 <div class="page-wrapper">
+  <div class="p-1 w-25 bg-gs-250 d-flex mx-auto d-block">
+    <%= @svg.html_safe %>
+  </div>
   <h1>Dashboard</h1>
   <h2>Assinaturas</h2>
   <%= link_to partner_admin_memberships_path do %>
     <p class="btn btn-primary w-10">Assinaturas</p>
   <% end %>
-
   <h2>Meus eventos</h2>
 
   <div class="p-5">
