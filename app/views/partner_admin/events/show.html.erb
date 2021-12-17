@@ -22,6 +22,11 @@
     </div>
   <% end %>
 
+  <h3>Comunicados do evento</h3>
+  <%= link_to event_event_communications_path(event_id: @event.id) do %>
+    <p class="btn btn-primary w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
+  <% end %>
+
   <h3 class="title">Lista de convidados</h3>
   <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
   <table>

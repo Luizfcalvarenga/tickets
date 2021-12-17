@@ -1,0 +1,40 @@
+<%= render 'shared/navbar' %>
+<div class="page-wrapper">
+  <%= link_to dashboard_path_for_user(current_user) do %>
+    <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+  <% end %>
+  
+  <h1 class="title">Lista de parceiros cadastrados</h1>
+
+  <%= link_to new_event_event_communication_path(event_id: @event.id) do %>
+    <p class="btn btn-primary mb-5 w-100 px-5">Disparar nova comunicação</p>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Data</th>
+        <th scope="col">Comunicado</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @event_communications.each do |event_communication| %>
+      <tr>
+        <td data-label="Data"><%= event_communication.created_at.strftime("%d/%m/%Y") %></td>
+        <td data-label="Comunicado">
+          <p class="fw-700 mb-2"><%= event_communication.subject %></p>
+        </td>
+        <td data-label="Ações">
+          <%= link_to event_event_communication_path(event_id: @event.id, id: event_communication.id) do %>
+            <p class="btn btn-primary m-0 px-5">Ver comunicado</p>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+
+</div>
+

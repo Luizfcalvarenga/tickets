@@ -1,0 +1,40 @@
+<%= render 'shared/navbar' %>
+<div class="page-wrapper">
+  <h1 class="title">Comunicado de evento</h1>
+  <%= link_to event_path(id: @event_communication.event.id) do %>
+    <h2 class="title"><%= @event_communication.event.name %></h2>
+  <% end %>
+
+  <div class="spacer-50"></div>
+  
+  <h3 class="text-white mb-4"><%= @event_communication.created_at.strftime("%d/%m/%Y") %></h3>
+  <h4 class="text-white fw-700 mb-4"><%= @event_communication.subject %></h4>
+
+  <div class="text-white"><%= @event_communication.content.html_safe %></div>
+
+  <div class="spacer-100"></div>
+  <h3 class="mb-4">Anexos</h3>
+
+  <div class="row">
+    <% @event_communication.files.each do |file| %>
+      <div class="col-12 col-md-3 mb-3 flex center around">
+        <%= link_to file.url, target: :_blank do %>
+          <div class="event-communication-download flex column center">
+            <% if file.blob.content_type.include?("image") %>
+              <i class="fas fa-images text-center fs-80 h-50"></i>
+            <% elsif file.blob.content_type.include?("pdf") %>
+              <i class="fas fa-file-pdf text-center fs-80 h-50"></i>
+            <% else %>
+              <i class="fa fa-file text-center fs-80 h-50"></i>
+            <% end %>
+
+            <div class="h-50 flex center around">
+              <p class="m-0 text-center"><%= file.blob.filename %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

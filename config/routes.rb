@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 
   resources :events, only: [:index, :show] do
     resources :qrcodes, only: [:create]
+    resources :event_communications, only: [:index, :show, :new, :create]
   end
 
   get "events/:id/read", to: "events#read", as: "read_event" 

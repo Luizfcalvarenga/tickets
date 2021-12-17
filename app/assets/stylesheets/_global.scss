@@ -426,3 +426,19 @@ table th {
     border-bottom: 0;
   }
 }
+
+.event-communication-download {
+  height: 300px;
+  width: 300px;
+  border: 1px solid white;
+  padding: 30px;
+  i { color: white; }
+
+  &:hover {
+    color: $color-darker;
+    background: white;
+    transition: 300ms;
+    p { color: $color-darker; }
+    i { color: $color-darker; }
+  }
+}

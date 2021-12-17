@@ -1,0 +1,15 @@
+<%= render 'shared/navbar' %>
+<div class="page-wrapper">
+  <h1 class="title">Disparar novo comunicado</h1>
+
+  <%= simple_form_for([@event, @event_communication]) do |f| %>
+    <%= f.input :subject %>
+    <%= f.rich_text_area :content, placeholder: "Texto do comunicado" %>
+
+    <div class="spacer-50"></div>
+
+    <%= f.input :files, as: :file, input_html: { multiple: true } %>
+
+    <%= f.submit "Disparar comunicação", class: "btn btn-primary mt-5 w-100" %>
+  <% end %>
+</div>

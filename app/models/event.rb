@@ -8,6 +8,7 @@ class Event < ApplicationRecord
   has_many :batches, dependent: :destroy
   has_many :accesses
   has_many :event_questions
+  has_many :event_communications
 
   has_many :accesses
   has_many :membership_events
