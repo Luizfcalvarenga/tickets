@@ -21,6 +21,11 @@
   <body> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
+    <% if controller_name == "qrcodes" && action_name == "show" %> 
+    <% else %> 
+      <%= render partial: "shared/navbar" %> 
+    <% end %>
+
     <%= render 'shared/flashes' %>
 
     <%= yield %>

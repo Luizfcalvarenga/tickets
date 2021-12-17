@@ -96,16 +96,6 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.index ["event_id"], name: "index_event_communications_on_event_id"
   end
 
-  create_table "event_qrcode_answers", force: :cascade do |t|
-    t.bigint "event_question_id", null: false
-    t.bigint "qrcode_id", null: false
-    t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_question_id"], name: "index_event_qrcode_answers_on_event_question_id"
-    t.index ["qrcode_id"], name: "index_event_qrcode_answers_on_qrcode_id"
-  end
-
   create_table "event_question_qrcode_answers", force: :cascade do |t|
     t.bigint "event_question_id", null: false
     t.bigint "qrcode_id", null: false
@@ -279,8 +269,6 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "batches", "events"
   add_foreign_key "event_communications", "events"
-  add_foreign_key "event_qrcode_answers", "event_questions"
-  add_foreign_key "event_qrcode_answers", "qrcodes"
   add_foreign_key "event_question_qrcode_answers", "event_questions"
   add_foreign_key "event_question_qrcode_answers", "qrcodes"
   add_foreign_key "event_questions", "events"
