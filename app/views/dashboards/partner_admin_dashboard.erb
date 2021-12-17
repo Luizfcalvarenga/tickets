@@ -2,26 +2,8 @@
   <h1>Dashboard</h1>
   <h2>Assinaturas</h2>
   <%= link_to partner_admin_memberships_path do %>
-    <p class="btn btn-primary w-10">Nova Assinatura</p>
+    <p class="btn btn-primary w-10">Assinaturas</p>
   <% end %>
-
-  <div class="p-5">
-    <% @memberships.each do |membership| %>
-      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.name %></p>
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.short_description %></p>
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.description %></p>
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= membership.price %></p>
-        <%= link_to edit_partner_admin_membership_path(membership), class: "col-12 col-md-2" do %>
-          <p class="btn btn-primary m-0">Edit</p>
-        <% end %>
-        <%= link_to partner_admin_membership_path(membership), method: :delete, class: "col-12 col-md-2" do %>
-          <p class="btn btn-primary m-0">Delete</p>
-        <% end %>
-      </div>
-    <% end %> 
-  </div>
-
 
   <h2>Meus eventos</h2>
 
