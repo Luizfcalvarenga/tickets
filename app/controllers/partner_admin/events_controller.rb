@@ -6,6 +6,12 @@ module PartnerAdmin
         .joins("left join accesses on accesses.event_id = events.id")
         .where(events: { id: @event.id })
       @accesses = @event.accesses
+
+      # export to csv
+      respond_to do |format|
+        format.html
+        format.csv { send_data @event.to_csv }
+      end
     end
 
     def new
