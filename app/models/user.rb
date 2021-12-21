@@ -20,4 +20,15 @@ class User < ApplicationRecord
     partner_admin: "partner_admin",
     admin: "admin",
   }
+
+  def self.to_csv
+    attributes = %w[email access]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.each do |user|
+          csv << user.attributes.values_at(*attributes)
+          # csv << [user.email, user.access]
+      end
+    end
+  end
 end

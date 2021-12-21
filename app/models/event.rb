@@ -24,15 +24,4 @@ class Event < ApplicationRecord
     batches.order(:order).not_ended.first
   end
 
-    def self.to_csv
-      attributes = %w{name created_at}
-    
-      CSV.generate(headers: true) do |csv|
-        csv << attributes
-  
-        all.each do |event|
-          csv << event.attributes.values_at(*attributes)
-        end
-      end
-    end
 end
