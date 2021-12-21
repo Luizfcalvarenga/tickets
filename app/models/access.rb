@@ -4,4 +4,5 @@ class Access < ApplicationRecord
   belongs_to :read
   belongs_to :user
   belongs_to :granted_by, class_name: "User"
+
 end

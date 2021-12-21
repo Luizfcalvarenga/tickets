@@ -28,6 +28,11 @@
 
   <h3 class="title">Lista de convidados</h3>
   <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
+
+  <%= link_to partner_admin_event_path(format: "csv") do %>
+    <p class="btn btn-primary m-0 mb-3">Baixar CSV</p>
+  <% end %>
+
   <table>
     <thead>
       <tr>

@@ -23,4 +23,5 @@ class Event < ApplicationRecord
   def current_batch
     batches.order(:order).not_ended.first
   end
+
 end
