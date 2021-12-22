@@ -22,40 +22,51 @@
     <% end %>
 
     <%= simple_form_for([@event, @qrcode]) do |f| %>
-      <% @event.event_questions.order(:order).each do |event_question| %>
-        <div class="my-4">
-          <input
-            type="hidden"
-            name="event_user_answers[][order]"
-            value="<%= event_question.order %>"
-          />
-          <input
-            type="hidden"
-            name="event_user_answers[][optional]"
-            value="<%= event_question.optional %>"
-          />
-          <% if event_question.multiple_choice? %>
+      <input
+        id="qrcode-quantity"
+        type="number"
+        name="quantity"
+        value="1"
+        min="1"
+      />
 
-            <p><%= event_question.prompt %></p>
-            <select
-              name="event_user_answers[][answer]"
-            >
-              <% event_question.options.each do |option| %>
-                <option value="<%= option %>"><%= option %></option>
+      <div id="qrcode-answers">
+        <div>
+          <% @event.event_questions.order(:order).each do |event_question| %>
+            <div class="my-4">
+              <input
+                type="hidden"
+                name="event_user_answers[0][][order]"
+                value="<%= event_question.order %>"
+              />
+              <input
+                type="hidden"
+                name="event_user_answers[0][][optional]"
+                value="<%= event_question.optional %>"
+              />
+              <% if event_question.multiple_choice? %>
+                <p><%= event_question.prompt %></p>
+                <select
+                  name="event_user_answers[0][][answer]"
+                >
+                  <% event_question.options.each do |option| %>
+                    <option value="<%= option %>"><%= option %></option>
+                  <% end %>
+                </select>
+              <% else %>
+                <p><%= event_question.prompt %></p>
+                <input
+                  class="form-control my-2 f-60"
+                  type="text"
+                  name="event_user_answers[0][][answer]"
+                  placeholder="Sua resposta..."
+                />
               <% end %>
-            </select>
-          <% else %>
-            <p><%= event_question.prompt %></p>
-            <input
-              class="form-control my-2 f-60"
-              type="text"
-              name="event_user_answers[][answer]"
-              placeholder="Sua resposta..."
-            />
+            </div>
           <% end %>
         </div>
-      <% end %>
-
+      </div>
+      
       <% if @current_price > 0 %>
         <%= f.submit "Comprar: #{number_to_currency(@current_price, unit: "R$", separator: ",", delimiter: ".")}", class: "btn btn-primary mt-5 w-100" %>
       <% else %>

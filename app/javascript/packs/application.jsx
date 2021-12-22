@@ -44,6 +44,7 @@ window.toastr.options = {
 // Internal imports
 import "./events";
 import "./partners";
+import "./buyEvent";
 
 
 const loadReactComponent = () => {

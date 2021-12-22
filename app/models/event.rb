@@ -9,7 +9,8 @@ class Event < ApplicationRecord
   has_many :accesses
   has_many :event_questions
   has_many :event_communications
-
+  
+  has_many :qrcodes
   has_many :accesses
   has_many :membership_events
   has_many :memberships, through: :membership_events
@@ -23,5 +24,4 @@ class Event < ApplicationRecord
   def current_batch
     batches.order(:order).not_ended.first
   end
-
 end

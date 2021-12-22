@@ -44,16 +44,16 @@
       </tr>
     </thead>
     <tbody>
-      <% @users.each do |user| %>
+      <% @qrcodes.each do |qrcode| %>
         <tr>
-          <td data-label="Email"><%= user.email %></td>
+          <td data-label="Email"><%= qrcode.user.email %></td>
           <td>
-            <% access = @accesses.find_by(user: user) %>
+            <% access = @accesses.find_by(user: qrcode.user) %>
             <% if access.present? %>
               <p class="text-success m-0"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></p>
             <% end %>
           </td>
-          <% Qrcode.find_by(user: user, event: @event).event_question_qrcode_answers.joins(:event_question).order("event_questions.order").each do |event_question_qrcode_answer| %>
+          <% qrcode.event_question_qrcode_answers.joins(:event_question).order("event_questions.order").each do |event_question_qrcode_answer| %>
             <td><%= event_question_qrcode_answer.value %></td>
           <% end %>
         </tr>
@@ -61,4 +61,3 @@
     </tbody>
   </table>
 </div>
-

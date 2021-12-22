@@ -7,7 +7,7 @@ class Qrcode < ApplicationRecord
   before_create :create_identifier
 
   has_many :reads
-  has_many :event_question_qrcode_answers
+  has_many :event_question_qrcode_answers, dependent: :destroy
 
   def create_identifier
     self.identifier = SecureRandom.uuid
