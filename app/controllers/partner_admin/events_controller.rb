@@ -5,6 +5,7 @@ module PartnerAdmin
       @users = User.select('distinct(users.id), users.email, users.access').joins(qrcodes: :event)
         .joins("left join accesses on accesses.event_id = events.id")
         .where(events: { id: @event.id })
+      @qrcodes = @event.qrcodes
       @accesses = @event.accesses
 
       respond_to do |format|

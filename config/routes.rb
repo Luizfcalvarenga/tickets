@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do  
   devise_for :users
   root to: 'pages#home'
 
@@ -56,5 +56,5 @@ Rails.application.routes.draw do
   resources :qrcodes
   get "qrcodes/:id/read", to: "qrcodes#read", as: "read_qrcode"
 
-  get "/:id", to: "partners#show"
+  get "/:id", to: "partners#show", as: "partner_shortcut"
 end
