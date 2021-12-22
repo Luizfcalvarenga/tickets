@@ -22,6 +22,9 @@ class QrcodesController < ApplicationController
           batch: current_batch,
         )
 
+        # TODO: COLOCAR A VALIDAÇÃO DA NECESSIDADE DE RESPOSTA NO EVENTQUESTIONQRCODEANSWER, OU SEJA: 
+        # CASO O EVENT_QUESTION TENHA OPTIONAL: FALSE, O EVENTQUESTIONQRCODEANSWER DEVE OBRIGATORIAMENTE TER UM VALUE
+
         each_answer[1].each do |event_answer_params|
           EventQuestionQrcodeAnswer.create!(
             qrcode: qrcode,

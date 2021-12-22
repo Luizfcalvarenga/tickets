@@ -4,8 +4,6 @@ module Api
       skip_before_action :authenticate_user!
       
       def show
-        render json: params and return
-
         @qrcode = Qrcode.find_by(identifier: params[:identifier])
       end
 
