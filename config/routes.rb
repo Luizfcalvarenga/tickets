@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     end
   end
   
+  resource :profiles
+
   namespace :partner_admin do
     resources :events, only: [:show, :new, :create]
     resources :memberships

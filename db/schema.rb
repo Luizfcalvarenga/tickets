@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "access", default: "user"
     t.bigint "partner_id"
+    t.string "name"
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.boolean "allow_password_change", default: false

@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :user_memberships
   has_many :memberships, through: :user_memberships
 
+  has_one_attached :photo
+  
   belongs_to :partner, optional: true
 
   enum access: {
