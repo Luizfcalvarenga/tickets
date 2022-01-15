@@ -1,13 +1,97 @@
-.navbar-lewagon {
-    justify-content: space-between;
-    background: white;
+// .navbar-lewagon {
+//     justify-content: space-between;
+//     background: white;
+//   }
+
+//   .navbar-lewagon .navbar-collapse {
+//     flex-grow: 0;
+//   }
+
+//   .navbar-lewagon .navbar-brand img {
+//     width: 40px;
+//   }
+
+// @media only screen and (max-width: 768px) {
+
+.first-section {
+  background-image: image-url("background_1.png");
+  background-size: 100% 100%;
+  height: 860px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-top: -150px;
+  padding-top: 326px;
+  p {
+    font-size: 24px !important;
+    font-weight: 400 !important;
+    line-height: 36px !important;
   }
-  
-  .navbar-lewagon .navbar-collapse {
-    flex-grow: 0;
+  h1 {
+    font-size: 64px !important;
   }
-  
-  .navbar-lewagon .navbar-brand img {
-    width: 40px;
+
+  .d-flex {
+    margin-top: 40px !important;
   }
-  
+}
+
+.btn-success {
+  background-color: #00c454 !important;
+  font-size: 2rem !important;
+  border: none !important;
+  height: 60px !important;
+  width: 300px !important;
+  margin-right: 47px !important;
+}
+.green-btn {
+  background: #00c454;
+  border-radius: 5px;
+  height: 45px;
+  width: auto;
+  color: #fff;
+  border: 1px solid #b6b6b6;
+  padding-top: 4px;
+}
+.second-section {
+}
+.square {
+  // background-color: rgba(0, 0, 0, 0.25);
+  background-color: pink;
+  min-width: 283.59px;
+  min-height: 283.59px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 50px;
+  margin-bottom: 25px;
+  p {
+    width: 50%;
+  }
+}
+
+.square-container {
+  text-align: left;
+  align-items: space-between;
+  display: flex !important;
+  justify-content: space-between;
+}
+.third-section {
+  background-image: image-url("background_2.png");
+  height: 580px;
+  width: 100%;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.qualquer-coisa {
+  padding-top: 96px;
+}
+
+.fourth-section {
+}
+
+.fifth-section {
+  background-image: image-url("background_3.png");
+  height: 895px;
+}
+// }

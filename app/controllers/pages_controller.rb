@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  skip_before_action :authenticate_user!, except: [:dashboard, :clean]
+  skip_before_action :authenticate_user!, except: [:dashboard, :partnership, :clean]
 
   def home
     qrcode = RQRCode::QRCode.new("https://www.lunacali.com")
@@ -11,6 +11,9 @@ class PagesController < ApplicationController
       standalone: true,
       use_path: true
     )
+  end
+
+  def partnership
   end
 
   def clean

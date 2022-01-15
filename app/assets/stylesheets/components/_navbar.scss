@@ -1,36 +1,58 @@
-.navbar-lewagon {
-  justify-content: space-between;
-  background: white;
-}
+// .navbar-lewagon {
+//   justify-content: space-between;
+//   background: white;
+// }
 
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
-}
+// .navbar-lewagon .navbar-collapse {
+//   flex-grow: 0;
+// }
 
-.navbar-lewagon .navbar-brand img {
-  width: 100px !important;
-}
+// .navbar-lewagon .navbar-brand img {
+//   width: 100px !important;
+// }
 
 // Navbar Gillys
 
-.logo {
-  height: auto !important;
-  max-width: 100% !important;
+.navbar {
+  height: 150px;
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: #fff !important;
+  font-family: "Bebas Neue", "sans-serif";
+  // justify-content: space-between !important;
+  font-weight: bold !important;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
 }
 
-.navbar {
-  height: 120px;
-  background: #00893b !important;
-  color: #fff !important;
-  font-family: "Nunito", "Helvetica", "sans-serif";
-  justify-content: space-between !important;
-  font-weight: bold !important;
+.navbar-nav {
+  margin-left: auto;
+  padding: 8px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .nav-link {
   color: #fff !important;
+  padding: 0 15px !important;
 }
 
-.navbar-nav {
-  background-color: #00893b !important;
+.navbar-brand {
+  margin-left: 160px;
+}
+
+.log-btn {
+  background: black;
+  border-radius: 5px;
+  height: 45px;
+  width: auto;
+  // padding: 8px 20px;
+  color: #fff;
+  border: 1px solid #b6b6b6;
+  padding-top: 4px;
+}
+
+button {
+  background-color: green;
 }

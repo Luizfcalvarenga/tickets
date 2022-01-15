@@ -1,12 +1,104 @@
-<div class="page-wrapper bg-darker vh-100">
-  <div class="flex center around column mb-5 bg-dark py-5">
-    <img src="https://nuflowshop.com.br/wp-content/uploads/2020/08/logo-branca.png" style="height: 200px;" alt="">
-    <h1 class="text-uppercase fw-700 text-center text-color-primary f-bebas">Bikepark</h1>
-    <p class="text-white text-center">Está é a homepage da aplicação</p>
+<div class="">
+  <div class="first-section">
+     <%# video_tag "nuflow.mp4", :size => "1920x1080", autoplay: true, muted: :muted, :loop => true, :style=> "z-index: -1" %>
+    <div class="container align-self-center">
+    <div class="flex-column align-self-center">
+      <h1>ENCONTRE OS MELHORES
+      <br><em>BIKE PARKS</em>.</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-success">ACESSAR NUFLOW PASS</button>
+        <h5><em>Saiba mais</em></h5>
+      </div>
+    </div>
+    </div>
   </div>
-
-  <%= link_to new_user_session_path do %>
-    <p class="btn btn-primary w-100">Log in</p>
-  <% end %>
+  <div class="second-section ">
+    <div class="d-flex justify-content-between mt-5 container mb-3">
+      <div>
+        <%= image_tag 'arrows.png' %>
+      </div>
+      <div class="align-self-center">
+        <h2>CATEGORIAS <em>BIKE PARK</em></h2>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="d-flex justify-content-around">
+          <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+            <div class="square">
+              <h1><em>INSCRIÇÕES E COMPETIÇÕES</em></h1>
+            </div>
+            <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </h5>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+            <div class="square">
+              <h1><em>AULAS E AGENDAMENTOS</em></h1>
+            </div>
+          <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </h5>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+            <h1 class="square"><em>PISTAS E BIKE PARKS</em></h1>
+            <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </h5>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+            <h1 class="square"><em>ASSINATURAS</em></h1>
+            <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="third-section">
+    <div class="container">
+      <div class="qualquer-coisa">
+        <h2>SEJA NOSSO <em>PARCEIRO</em></h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hendrerit mattis quam placerat felis vitae nisl, sed. Vitae purus morbi maecenas odio amet amet, aliquet hac bibendum. Id sapien dis pharetra tellus. Scelerisque id laoreet gravida feugiat in sollicitudin elit, a. Nulla dictum quis habitasse id arcu velit duis. A nunc tortor, tellus mauris ut nec semper.
+        Aliquam, nibh erat fringilla neque, a vitae placerat. Est amet, nulla mi in quam massa enim mauris. Volutpat a purus facilisi euismod aliquet quam amet tempor viverra. Cursus ante arcu est, lectus. Purus ac vivamus dignissim cursus. Quisque sed vel pellentesque eget turpis pharetra, varius integer tincidunt. Aliquam sed et pellentesque auctor tempor libero. Urna luctus fames scelerisque turpis euismod pretium vel in ullamcorper. Est senectus neque elementum congue luctus elit. Mollis nibh arcu tortor sit lorem.</p>
+        <button class="btn btn-success">ENTENDA COMO FUNCIONA</button>
+      </div>
+    </div>
+  </div>
+  <div class="fourth-section">
+    <div class="d-flex justify-content-between mt-5 container mb-3">
+      <div>
+        <%= image_tag 'arrows.png' %>
+      </div>
+      <div class="align-self-center">
+        <h2>ÚLTIMAS <em>COMPETIÇÕES</em></h2>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+          <h1><em>COMPETIÇÃO 1</em></h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+          <p>Localização - Belo Horizonte, MG</p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+          <h1><em>COMPETIÇÃO 2</em></h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+          <p>Localização - Belo Horizonte, MG</p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+          <h1><em>COMPETIÇÃO 3</em></h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+          <p>Localização - Belo Horizonte, MG</p>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+          <h1><em>COMPETIÇÃO 4</em></h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+          <p>Localização - Belo Horizonte, MG</p>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  </div>
+  <div class="fifth-section">
+    <h2>CONHEÇA O <em>NUFLOW PASS</em></h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rhoncus netus cursus auctor nulla lorem dui nunc sollicitudin sagittis. Arcu diam duis condimentum suspendisse tincidunt viverra adipiscing vel. At condimentum neque non, at semper lacus. Urna et vel amet arcu feugiat eu, sodales. Nec, amet elementum convallis elit. Morbi integer integer quis imperdiet tellus fermentum lectus. Placerat malesuada nisl, egestas nisl cursus eros sit faucibus at.</p>
+    <button class="btn btn-success">ENTENDA COMO FUNCIONA</button>
+  </div>
 </div>
-
+    

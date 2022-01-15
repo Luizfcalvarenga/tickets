@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   get "dashboard", to: "pages#dashboard", as: "dashboard" 
-  get "clean", to: "pages#clean", as: "clean" 
+  get "partnership", to: "pages#partnership", as: "partnership"
+  get "clean", to: "pages#clean", as: "clean"
 
   get "user_dashboard", to: "dashboards#user_dashboard", as: "user_dashboard"
   get "partner_user_dashboard", to: "dashboards#partner_user_dashboard", as: "partner_user_dashboard"
