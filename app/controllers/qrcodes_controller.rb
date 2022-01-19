@@ -15,7 +15,7 @@ class QrcodesController < ApplicationController
     # end
     
     ActiveRecord::Base.transaction do
-      params[:event_user_answers].to_unsafe_h.each do |each_answer|
+      (params[:event_user_answers]&.to_unsafe_h || [0]).each do |each_answer|
         qrcode = Qrcode.create(
           user: current_user,
           event: event,
@@ -25,12 +25,14 @@ class QrcodesController < ApplicationController
         # TODO: COLOCAR A VALIDAÇÃO DA NECESSIDADE DE RESPOSTA NO EVENTQUESTIONQRCODEANSWER, OU SEJA: 
         # CASO O EVENT_QUESTION TENHA OPTIONAL: FALSE, O EVENTQUESTIONQRCODEANSWER DEVE OBRIGATORIAMENTE TER UM VALUE
 
-        each_answer[1].each do |event_answer_params|
-          EventQuestionQrcodeAnswer.create!(
-            qrcode: qrcode,
-            event_question: event.event_questions.find_by(order: event_answer_params[:order]),
-            value: event_answer_params[:answer],
-          )
+        if params[:evnt_user_answers]
+          each_answer[1].each do |event_answer_params|
+            EventQuestionQrcodeAnswer.create!(
+              qrcode: qrcode,
+              event_question: event.event_questions.find_by(order: event_answer_params[:order]),
+              value: event_answer_params[:answer],
+            )
+          end
         end
 
         if current_batch.qrcodes.length == current_batch.quantity
