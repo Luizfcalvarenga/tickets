@@ -13,6 +13,9 @@ class PagesController < ApplicationController
     )
   end
 
+  def partnership
+  end
+
   def clean
     Read.destroy_all
     Qrcode.destroy_all

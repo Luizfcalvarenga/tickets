@@ -23,11 +23,17 @@
     
     <% if controller_name == "qrcodes" && action_name == "show" %> 
     <% else %> 
-      <%= render partial: "shared/navbar" %> 
+      <%= render partial: "shared/navbar" %>
     <% end %>
 
     <%= render 'shared/flashes' %>
 
     <%= yield %>
+
+    <% if controller_name == "qrcodes" && action_name == "show" %> 
+    <% else %> 
+      <%= render partial: "shared/footer" %>
+    <% end %>
+    
   </body>
 </html>
