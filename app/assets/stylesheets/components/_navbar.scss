@@ -12,9 +12,31 @@
 // }
 
 // Navbar Gillys
-
+@media (max-width: 768px) {
+  .first-section-home {
+    width: 80px !important;
+    h1 {
+      font-size: 36px !important;
+      margin-top: -300px;
+    }
+    .btn-success {
+      height: 38px !important;
+      width: 166px !important;
+      font-size: 16px !important;
+      margin-top: -40px;
+    }
+    img {
+      background-size: cover;
+      width: 100% !important;
+      margin-top: 3px !important;
+      height: 237px !important;
+    }
+  }
+}
+nav {
+}
 .navbar {
-  height: 150px;
+  max-height: 150px;
   background: rgba(0, 0, 0, 0.7) !important;
   color: #fff !important;
   font-family: "Bebas Neue", "sans-serif";
@@ -39,7 +61,6 @@
 }
 
 .navbar-brand {
-  margin-left: 160px;
 }
 
 .log-btn {
@@ -48,11 +69,22 @@
   height: 45px;
   width: auto;
   // padding: 8px 20px;
-  color: #fff;
+  color: #b6b6b6 !important;
   border: 1px solid #b6b6b6;
   padding-top: 4px;
 }
+.navbar {
+  .btn-success {
+    background-color: #00c454 !important;
+    font-size: 1.5rem !important;
+    border: none !important;
+    height: 45px !important;
+    width: 139px !important;
+    margin-left: 30px !important;
+    padding: 0px !important;
+  }
+}
 
 button {
-  background-color: green;
+  background-color: #00c454 !important;
 }

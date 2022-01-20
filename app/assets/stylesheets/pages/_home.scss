@@ -12,9 +12,29 @@
 //   }
 
 // @media only screen and (max-width: 768px) {
-
-.first-section {
-  background-image: image-url("background_1.png");
+@media (max-width: 768px) {
+  .first-section-home {
+    width: 80px !important;
+    h1 {
+      font-size: 36px !important;
+      margin-top: -300px;
+    }
+    .btn-success {
+      height: 38px !important;
+      width: 166px !important;
+      font-size: 16px !important;
+      margin-top: -40px;
+    }
+    img {
+      background-size: cover;
+      width: 100% !important;
+      margin-top: 3px !important;
+      height: 237px !important;
+    }
+  }
+}
+.first-section-home {
+  // background-image: image-url("background_1.png");
   background-size: 100% 100%;
   height: 860px;
   background-size: 100%;
@@ -22,12 +42,13 @@
   margin-top: -150px;
   padding-top: 326px;
   p {
-    font-size: 24px !important;
+    font-size: 1.5rem !important;
     font-weight: 400 !important;
     line-height: 36px !important;
   }
   h1 {
-    font-size: 64px !important;
+    font-size: 6rem;
+    font-family: "Bebas Neue", cursive !important;
   }
 
   .d-flex {
@@ -43,6 +64,7 @@
   width: 300px !important;
   margin-right: 47px !important;
 }
+
 .green-btn {
   background: #00c454;
   border-radius: 5px;
@@ -52,18 +74,24 @@
   border: 1px solid #b6b6b6;
   padding-top: 4px;
 }
-.second-section {
+.second-section-home {
 }
 .square {
   // background-color: rgba(0, 0, 0, 0.25);
   background-color: pink;
-  min-width: 283.59px;
-  min-height: 283.59px;
+  // min-width: 283.59px;
+  // min-height: 283.59px;
+  height: 100%;
+  width: 100%;
+  // height: 300px;
+  // width: 300px;
   display: flex;
   align-items: center;
   text-align: center;
   padding: 50px;
   margin-bottom: 25px;
+  font-size: 36px;
+  word-break: break-word;
   p {
     width: 50%;
   }
@@ -87,11 +115,43 @@
   padding-top: 96px;
 }
 
-.fourth-section {
+.fourth-section-home {
+  h3 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 14px;
+  }
+}
+.square2 {
+  width: 100%;
+  height: 238px;
+  background-color: #5d5d5d;
 }
 
-.fifth-section {
+.section-test {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 16px;
+  margin: 10px;
+}
+
+.test-box {
+  margin: 10px 0;
+  border: 2px solid red;
+}
+.test-square {
+  width: 100%;
+  height: 200px;
+  background-color: pink;
+}
+.fifth-section-home {
   background-image: image-url("background_3.png");
   height: 895px;
+  display: flex;
+}
+
+.testiculo {
+  align-items: center;
 }
 // }
