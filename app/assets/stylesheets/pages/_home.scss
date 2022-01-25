@@ -47,7 +47,6 @@ h2 {
 }
 
 .btn-success {
-  background-color: #00c454 !important;
   font-size: 2rem !important;
   border: none !important;
   height: 60px !important;
@@ -56,27 +55,13 @@ h2 {
   font-family: "Bebas Neue", cursive !important;
 }
 
-.green-btn {
-  background: #00c454;
-  border-radius: 5px;
-  height: 45px;
-  width: auto;
-  color: #fff;
-  border: 1px solid #b6b6b6;
-  padding-top: 4px;
-}
 .second-section-home {
   font-size: 1.5rem;
   height: 700px;
-  p {
-    color: rgba(182, 182, 182, 1) !important;
-  }
 }
 .square {
-  background-color: rgb(34, 34, 34);
-  // background-color: gray;
-  height: 100%;
-  width: 100%;
+  // height: 100%;
+  // width: 100%;
   display: flex;
   align-items: center;
   text-align: center;
@@ -100,7 +85,6 @@ h2 {
   }
   p {
     font-weight: 500;
-    color: rgba(182, 182, 182, 1) !important;
   }
 }
 
@@ -112,21 +96,11 @@ h2 {
   h4 {
     font-size: 14px;
   }
-  .bg-secondary {
-    background-color: rgb(34, 34, 34) !important;
-  }
 }
 .square2 {
   width: 100%;
   height: 238px;
   background-color: #5d5d5d;
-}
-
-.section-test {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 16px;
-  margin: 10px;
 }
 
 .fifth-section-home {
@@ -135,8 +109,4 @@ h2 {
   display: flex;
   font-weight: 500;
   margin-bottom: -150px;
-}
-
-.gray {
-  background-color: rgb(34, 34, 34);
 }

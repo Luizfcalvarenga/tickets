@@ -1,7 +1,52 @@
+.first-section-partnership {
+  // background-image: image-url("background_1.png");
+  background-size: 100% 100%;
+  height: 860px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-top: -150px;
+  padding-top: 326px;
+  h1 {
+    font-size: 6rem;
+    font-family: "Bebas Neue", cursive !important;
+  }
+
+  .d-flex {
+    margin-top: 40px !important;
+  }
+}
+
+.second-section-partnership {
+  margin-top: 100px;
+  font-size: 1.5rem;
+  height: 700px;
+  .container {
+    margin-top: 100px;
+  }
+}
+
 .third-section-partnership {
-  background-image: image-url("background_2.png");
-  height: 708px;
+  background-image: image-url("partnership_background_2.png");
+  height: 580px;
   width: 100%;
   background-size: 100%;
   background-repeat: no-repeat;
+  .container {
+    padding-top: 96px;
+  }
+  p {
+    font-size: 24px;
+    font-weight: 500;
+  }
+}
+
+.fourth-section-partnership {
+  margin-top: 100px;
+  height: 500px;
+  p {
+    font-size: 24px;
+  }
+  .container {
+    margin-top: 100px;
+  }
 }

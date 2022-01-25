@@ -18,3 +18,34 @@
     width: 90%;
   }
 }
+.first-section-event {
+  // background-image: image-url("background_1.png");
+  background-size: 100% 100%;
+  height: 860px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-top: -150px;
+  padding-top: 326px;
+  h1 {
+    font-size: 6rem;
+    font-family: "Bebas Neue", cursive !important;
+  }
+
+  .d-flex {
+    margin-top: 40px !important;
+  }
+}
+
+.second-section-event {
+  .invert-image {
+    transform: rotate(180deg);
+  }
+  .btn-success {
+    font-size: 2rem !important;
+    border: none !important;
+    height: 60px !important;
+    width: 154px !important;
+    margin-right: 47px !important;
+    font-family: "Bebas Neue", cursive !important;
+  }
+}
