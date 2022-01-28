@@ -1,22 +1,12 @@
-// .navbar-lewagon {
-//   justify-content: space-between;
-//   background: white;
-// }
-
-// .navbar-lewagon .navbar-collapse {
-//   flex-grow: 0;
-// }
-
-// .navbar-lewagon .navbar-brand img {
-//   width: 100px !important;
-// }
-
-// Navbar Gillys
-
+@media (max-width: 768px) {
+  body::before {
+    // height: 100px;
+  }
+}
 nav {
 }
 .navbar {
-  max-height: 150px;
+  // max-height: 150px;
   background: rgba(0, 0, 0, 0.7) !important;
   color: #fff !important;
   font-family: "Bebas Neue", "sans-serif";
@@ -29,7 +19,7 @@ nav {
 
 .navbar-nav {
   margin-left: auto;
-  padding: 8px 20px;
+  // padding: 8px 20px;
   display: flex;
   flex-direction: row;
   align-items: center;

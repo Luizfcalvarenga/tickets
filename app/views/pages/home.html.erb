@@ -1,17 +1,17 @@
-<div class="first-section-home" style="background-image: url(<%= asset_path 'background_1.png' %>)">
+<div class="first-section-home">
   <%# video_tag "nuflow.mp4", :size => "1920x1080", autoplay: true, muted: :muted, :loop => true, :style=> "z-index: -1" %>
   <div class="container align-self-start">
-    <h1>ENCONTRE OS MELHORES<br><em>BIKE PARKS</em>.</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
+    <h1 class="">ENCONTRE OS MELHORES<br><em>BIKE PARKS</em>.</h1>
+    <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
     <div class="d-flex align-items-center">
       <button class="btn btn-success">ACESSAR NUFLOW PASS</button>
-      <p><em>Saiba mais</em></p>
+      <p class="page-desktop"><em>Saiba mais</em></p>
     </div>
   </div>
 </div>
 
 <div class="second-section-home">
-  <div class="d-flex justify-content-between mt-5 container mb-3">
+  <div class="d-flex justify-content-between mt-5 container mb-3 mobile-arrow">
     <div>
       <%= image_tag 'arrows.png' %>
     </div>
@@ -21,26 +21,26 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="square">
+      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
+        <div class="img-spot">
           <h3><em>INSCRIÇÕES E COMPETIÇÕES</em></h3>
         </div>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
       </div>
-      <div class="col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="square">
+      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
+        <div class="img-spot">
           <h3><em>AULAS E AGENDAMENTOS</em></h3>
         </div>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
       </div>
-      <div class="col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="square">
+      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
+        <div class="img-spot">
           <h3><em>PISTAS E BIKE PARKS</em></h3>
         </div>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
       </div>
-      <div class="col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="square">
+      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
+        <div class="img-spot">
           <h3><em>ASSINATURAS</em></h3>
         </div>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
@@ -52,8 +52,9 @@
 <div class="third-section-home">
   <div class="container">
     <h2>SEJA NOSSO <em>PARCEIRO</em></h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hendrerit mattis quam placerat felis vitae nisl, sed. Vitae purus morbi maecenas odio amet amet, aliquet hac bibendum. Id sapien dis pharetra tellus. Scelerisque id laoreet gravida feugiat in sollicitudin elit, a. Nulla dictum quis habitasse id arcu velit duis. A nunc tortor, tellus mauris ut nec semper.
+    <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hendrerit mattis quam placerat felis vitae nisl, sed. Vitae purus morbi maecenas odio amet amet, aliquet hac bibendum. Id sapien dis pharetra tellus. Scelerisque id laoreet gravida feugiat in sollicitudin elit, a. Nulla dictum quis habitasse id arcu velit duis. A nunc tortor, tellus mauris ut nec semper.
     Aliquam, nibh erat fringilla neque, a vitae placerat. Est amet, nulla mi in quam massa enim mauris. Volutpat a purus facilisi euismod aliquet quam amet tempor viverra. Cursus ante arcu est, lectus. Purus ac vivamus dignissim cursus. Quisque sed vel pellentesque eget turpis pharetra, varius integer tincidunt. Aliquam sed et pellentesque auctor tempor libero. Urna luctus fames scelerisque turpis euismod pretium vel in ullamcorper. Est senectus neque elementum congue luctus elit. Mollis nibh arcu tortor sit lorem.</p>
+    <p class="page-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rhoncus netus cursus auctor nulla lorem dui nunc sollicitudin sagittis. Arcu diam duis condimentum suspendisse tincidunt viverra adipiscing vel.</p>
     <button class="btn btn-success">ENTENDA COMO FUNCIONA</button>
   </div>
 </div>
@@ -67,10 +68,24 @@
       <h2>ÚLTIMAS <em>COMPETIÇÕES</em></h2>
     </div>
   </div>
-  <div class="container mt-5">
+  <div class="container mt-5 d-none d-sm-none d-md-none d-lg-none d-xl-block">
     <div class="row">
       <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-        <div class="square2">
+        <div class="img-spot2">
+        </div>
+        <div class="bg-dark">
+          <div class="d-flex justify-content-between p-2">
+            <h3><em>COMPETIÇÃO 1</em></h3>
+            <h4><em>DOM / 21 NOV / 08:00</em></h4>
+          </div>
+          <div class="p-2">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
+            <p>Localização - Belo Horizonte, MG</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-3 p-3">
+        <div class="img-spot2">
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
@@ -84,7 +99,7 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-        <div class="square2">
+        <div class="img-spot2">
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
@@ -98,7 +113,7 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-        <div class="square2">
+        <div class="img-spot2">
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
@@ -111,19 +126,62 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-        <div class="square2">
-        </div>
-        <div class="bg-dark">
-          <div class="d-flex justify-content-between p-2">
-            <h3><em>COMPETIÇÃO 1</em></h3>
-            <h4><em>DOM / 21 NOV / 08:00</em></h4>
+    </div>
+  </div>
+  <div class="d-lg-none carousel-mobile">
+    <div id="carouselExampleCaptions" class="carousel slide .d-none .d-sm-block .d-md-none" data-bs-ride="carousel"  data-bs-interval="false">
+      
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="img-spot2">
+            </div>
+              <div class="bg-dark">
+                <div class="p-2">
+                  <h3><em>COMPETIÇÃO 1</em></h3>
+                  <h4><em>DOM / 21 NOV / 08:00</em></h4>
+                </div>
+                <div class="p-2">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+                  <p>Localização - Belo Horizonte, MG</p>
+                </div>
+              </div>
+            </div>
+          <div class="carousel-item">
+            <div class="img-spot2">
+            </div>
+              <div class="bg-dark">
+                <div class="p-2">
+                  <h3><em>COMPETIÇÃO 1</em></h3>
+                  <h4><em>DOM / 21 NOV / 08:00</em></h4>
+                </div>
+                <div class="p-2">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+                  <p>Localização - Belo Horizonte, MG</p>
+                </div>
+              </div>
           </div>
-          <div class="p-2">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
-            <p>Localização - Belo Horizonte, MG</p>
-          </div>
+          <div class="carousel-item">
+            <div class="img-spot2">
+            </div>
+              <div class="bg-dark">
+                <div class="p-2">
+                  <h3><em>COMPETIÇÃO 1</em></h3>
+                  <h4><em>DOM / 21 NOV / 08:00</em></h4>
+                </div>
+                <div class="p-2">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
+                  <p>Localização - Belo Horizonte, MG</p>
+                </div>
+              </div>
         </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
   </div>
