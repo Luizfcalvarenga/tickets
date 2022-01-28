@@ -1,29 +1,97 @@
 @media (max-width: 768px) {
   .first-section-home {
-    width: 80px !important;
+    margin-top: 0px !important;
+    height: 237px !important;
+    // flex como o banner do Wagon
+    padding: 30px !important;
     h1 {
       font-size: 36px !important;
-      margin-top: -300px;
     }
     .btn-success {
-      height: 38px !important;
-      width: 166px !important;
-      font-size: 16px !important;
-      margin-top: -40px;
+      font-size: 18px !important;
     }
-    img {
-      background-size: cover;
-      width: 100% !important;
-      margin-top: 3px !important;
-      height: 237px !important;
+    .d-flex {
+      margin-top: 0px !important;
     }
   }
+  .second-section-home {
+    height: 640px !important;
+    h2 {
+      font-size: 36px !important;
+    }
+    img {
+      height: 40px;
+    }
+    .img-spot {
+      height: 160px;
+      width: 160px;
+    }
+
+    h3 {
+      font-size: 18px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .third-section-home {
+    height: 318px !important;
+    .container {
+      padding-top: 40px !important;
+    }
+
+    h2 {
+      font-size: 36px !important;
+    }
+
+    p {
+      font-size: 14px;
+    }
+    .btn-success {
+      font-size: 18px !important;
+    }
+  }
+
+  .fourth-section-home {
+    height: 560px !important;
+    img {
+      height: 40px;
+    }
+
+    h2 {
+      font-size: 36px !important;
+    }
+  }
+  .fifth-section-home {
+    padding-top: 20px;
+    height: 100% !important;
+    margin-bottom: 0px !important;
+    h2 {
+      font-size: 36px !important;
+    }
+    p {
+      font-size: 14px !important;
+    }
+    .btn-success {
+      font-size: 18px !important;
+    }
+  }
+  .carousel-mobile {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (min-width: 768px) {
 }
 .first-section-home {
-  // background-image: image-url("background_1.png");
+  background-image: image-url("background_1.png");
   background-size: 100% 100%;
-  height: 860px;
   background-size: 100%;
+  background-size: cover;
+  background-position: cover;
+  height: 860px;
   background-repeat: no-repeat;
   margin-top: -150px;
   padding-top: 326px;
@@ -49,8 +117,8 @@ h2 {
 .btn-success {
   font-size: 2rem !important;
   border: none !important;
-  height: 60px !important;
-  width: 300px !important;
+  // height: 60px !important;
+  // width: 300px !important;
   margin-right: 47px !important;
   font-family: "Bebas Neue", cursive !important;
 }
@@ -59,9 +127,10 @@ h2 {
   font-size: 1.5rem;
   height: 700px;
 }
-.square {
-  // height: 100%;
-  // width: 100%;
+.img-spot {
+  background-color: rgba(34, 34, 34, 1);
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   text-align: center;
@@ -69,16 +138,20 @@ h2 {
   margin-bottom: 25px;
   font-size: 36px;
   word-break: break-word;
+  justify-content: space-around;
   p {
     width: 50%;
   }
 }
-
+// mb-0 para p ou h
 .third-section-home {
   background-image: image-url("background_2.png");
   height: 580px;
   width: 100%;
+  background-size: 100% 100%;
   background-size: 100%;
+  background-size: cover;
+  background-position: cover;
   background-repeat: no-repeat;
   .container {
     padding-top: 96px;
@@ -97,7 +170,7 @@ h2 {
     font-size: 14px;
   }
 }
-.square2 {
+.img-spot2 {
   width: 100%;
   height: 238px;
   background-color: #5d5d5d;

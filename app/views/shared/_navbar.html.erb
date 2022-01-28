@@ -1,31 +1,32 @@
-<div class="navbar navbar-expand-md navbar-light p-5">
+<div class="navbar navbar-expand-md navbar-light-lg">
   <div class="container">
 
   <%= link_to user_signed_in? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
     <%= image_tag "green_logo.png", class: "navbar-brand" %>
     <% end %>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <%# <span class="navbar-toggler-icon"></span> %>
+    <i class="text-success fas fa-bars"></i>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav">
         <li class="nav-item active">
-          <%= link_to "COMPETIÇÕES", "/events", class: "nav-link" %>
+          <%= link_to "COMPETIÇÕES", "/events", class: "nav-link text-success" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "AULAS", "#", class: "nav-link" %>
+          <%= link_to "AULAS", "#", class: "nav-link text-success" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "DAY USE", "#", class: "nav-link" %>
+          <%= link_to "DAY USE", "#", class: "nav-link text-success" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "ASSINATURAS", "#", class: "nav-link" %>
+          <%= link_to "ASSINATURAS", "#", class: "nav-link text-success" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "NUFLOW PASS", "#", class: "nav-link" %>
+          <%= link_to "NUFLOW PASS", "#", class: "nav-link text-success" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "PARCERIAS", "/partnership", class: "nav-link" %>
+          <%= link_to "PARCERIAS", "/partnership", class: "nav-link text-success" %>
         </li>
       <% if user_signed_in? %>
         <li class="nav-item active">
