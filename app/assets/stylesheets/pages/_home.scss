@@ -1,4 +1,7 @@
 @media (max-width: 768px) {
+  p {
+    font-family: "Poppins", cursive !important;
+  }
   .first-section-home {
     margin-top: 0px !important;
     height: 237px !important;
@@ -37,6 +40,7 @@
   }
 
   .third-section-home {
+    margin-top: 50px;
     height: 318px !important;
     .container {
       padding-top: 40px !important;
@@ -83,8 +87,6 @@
   }
 }
 
-@media (min-width: 768px) {
-}
 .first-section-home {
   background-image: image-url("background_1.png");
   background-size: 100% 100%;
