@@ -18,23 +18,52 @@
     width: 90%;
   }
 }
-// .first-section-event {
-//   // background-image: image-url("background_1.png");
-//   background-size: 100% 100%;
-//   height: 860px;
-//   background-size: 100%;
-//   background-repeat: no-repeat;
-//   margin-top: -150px;
-//   padding-top: 326px;
-//   h1 {
-//     font-size: 6rem;
-//     font-family: "Bebas Neue", cursive !important;
-//   }
 
-//   .d-flex {
-//     margin-top: 40px !important;
-//   }
-// }
+@media (max-width: 768px) {
+  p {
+    font-family: "Poppins", cursive !important;
+    font-size: 14px !important;
+  }
+  h2 {
+    font-size: 36px !important;
+  }
+  img {
+    height: 40px;
+  }
+  .first-section-event {
+    margin-top: 0px !important;
+    height: 237px !important;
+    padding: 30px !important;
+    img {
+      height: 100px;
+    }
+    h1 {
+      font-size: 36px !important;
+    }
+    .btn-success {
+      font-size: 18px !important;
+    }
+    .d-flex {
+      margin-top: 0px !important;
+    }
+  }
+}
+
+.first-section-event {
+  background-image: image-url("event_background_1.png");
+  height: 860px;
+  background-size: cover;
+  margin-top: -150px;
+  padding-top: 326px;
+  h1 {
+    font-size: 6rem;
+    font-family: "Bebas Neue", cursive !important;
+  }
+
+  .d-flex {
+    margin-top: 40px !important;
+  }
+}
 
 .second-section-event {
   .invert-image {
