@@ -1,11 +1,11 @@
 <div class="footer">
   <div class="navbar navbar-expand-lg p-5">
     <div class="container">
-      <div class="d-flex flex-md-column justify-content-between">
+      <div class="d-flex flex-md-column justify-content-between align-items-center w100">
         <%= link_to user_signed_in? ? dashboard_path_for_user(current_user) : root_path, class: "navbar-brand" do %>
           <%= image_tag "green_logo.png" %>
         <% end %>
-          <div class="d-flex align-self-sm-center justify-content-md-between gx-5">
+          <div class="d-flex align-self-sm-center justify-content-md-between gx-5 gap-16 fs-24">
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-whatsapp"></i></a>

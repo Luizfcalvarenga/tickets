@@ -78,3 +78,37 @@
     font-family: "Bebas Neue", cursive !important;
   }
 }
+// ---------------------
+p {
+  font-family: "Poppins", cursive !important;
+}
+.share-button {
+  border: 2px solid green;
+  font-family: "Poppins", cursive !important;
+  font-weight: bold;
+  height: 60px;
+  width: 183px;
+}
+
+.btn-special {
+  font-family: "Bebas Neue", cursive !important;
+  font-weight: 400;
+  font-size: 36px;
+  color: rgba(182, 182, 182, 1);
+  border: 1px solid gray;
+  background-color: black;
+  padding: 5px 10px;
+}
+
+.second-section-event-show {
+  em {
+    border-left: 3px solid green;
+  }
+  .rectangle {
+    width: 930px;
+    background-color: black;
+  }
+  i {
+    color: #00c454;
+  }
+}
