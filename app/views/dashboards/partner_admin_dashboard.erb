@@ -5,6 +5,9 @@
     </div>
   </div>
   <h1>Dashboard</h1>
+    <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
+      <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
+    <% end %>
   <h2>Assinaturas</h2>
   <%= link_to partner_admin_memberships_path do %>
     <p class="btn btn-primary px-5">Assinaturas</p>
