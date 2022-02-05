@@ -30,10 +30,13 @@ Rails.application.routes.draw do
   end
   
   resource :profiles
-
+  
   namespace :partner_admin do
     resources :events, only: [:show, :new, :create]
     resources :memberships
+    resources :partners
+    # get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
+    # dúvida
   end
 
   resources :partners do
