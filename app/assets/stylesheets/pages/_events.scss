@@ -59,7 +59,6 @@
     font-size: 6rem;
     font-family: "Bebas Neue", cursive !important;
   }
-
   .d-flex {
     margin-top: 40px !important;
   }
@@ -78,16 +77,50 @@
     font-family: "Bebas Neue", cursive !important;
   }
 }
-// ---------------------
+// ----------------------------------------------
+@media (max-width: 768px) {
+  p {
+    font-family: "Poppins", cursive !important;
+    font-size: 14px !important;
+  }
+  h2 {
+    font-size: 36px !important;
+  }
+  img {
+    height: 40px;
+  }
+  .first-section-event-show {
+    margin-top: 0px !important;
+    height: 237px !important;
+    padding: 30px !important;
+    img {
+      height: 100px;
+    }
+    .d-flex {
+      margin-top: 0px !important;
+    }
+  }
+}
+.first-section-event-show {
+  background-image: image-url("event_example_show.png");
+  height: 860px;
+  background-size: cover;
+  margin-top: -150px;
+  padding-top: 326px;
+}
+
 p {
   font-family: "Poppins", cursive !important;
 }
 .share-button {
-  border: 2px solid green;
+  border: 2px solid #00c454;
   font-family: "Poppins", cursive !important;
   font-weight: bold;
   height: 60px;
   width: 183px;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
 }
 
 .btn-special {
@@ -101,14 +134,13 @@ p {
 }
 
 .second-section-event-show {
-  em {
-    border-left: 3px solid green;
-  }
   .rectangle {
-    width: 930px;
     background-color: black;
   }
   i {
     color: #00c454;
   }
+}
+.vbar {
+  border-left: 3px solid #00c454;
 }
