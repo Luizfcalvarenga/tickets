@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.string "street_number"
     t.string "neighborhood"
     t.string "address_complement"
+    t.text "about"
     t.bigint "city_id", null: false
     t.bigint "state_id", null: false
     t.datetime "created_at", precision: 6, null: false
