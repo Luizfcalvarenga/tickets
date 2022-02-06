@@ -1,6 +1,6 @@
 class DashboardsController < ApplicationController
   def user_dashboard
-    @qrcodes = current_user.qrcodes
+    @passes = current_user.passes
     @user_memberships = current_user.user_memberships
   end
 
@@ -14,8 +14,8 @@ class DashboardsController < ApplicationController
     @memberships = Membership.where(partner_id: current_user.partner.id)
 
     # qrcode = RQRCode::QRCode.new(url_for controller: 'partners', action: 'show', host: 'bike-park.herokuapp.com', id: current_user.partner.id)
-    qrcode = RQRCode::QRCode.new(partner_shortcut_url(id: current_user.partner.slug))
-    @svg = qrcode.as_svg(
+    pass = RQRCode::QRCode.new(partner_shortcut_url(id: current_user.partner.slug))
+    @svg = pass.as_svg(
       color: "000",
       shape_rendering: "crispEdges",
       module_size: 7,

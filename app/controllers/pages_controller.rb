@@ -18,7 +18,7 @@ class PagesController < ApplicationController
 
   def clean
     Read.destroy_all
-    Qrcode.destroy_all
+    Pass.destroy_all
     Event.destroy_all
     redirect_to dashboard_path
   end

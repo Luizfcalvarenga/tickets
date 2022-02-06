@@ -4,13 +4,13 @@ module Api
       skip_before_action :authenticate_user!
       
       def show
-        @qrcode = Qrcode.find_by(identifier: params[:identifier])
+        @pass = Pass.find_by(identifier: params[:identifier])
       end
 
       def scan
-        @qrcode = Qrcode.find_by(identifier: params[:identifier])
+        @pass = Pass.find_by(identifier: params[:identifier])
 
-        if @qrcode.blank? 
+        if @pass.blank? 
           render json: {
             result: false,
             error: "Código não encontado",
@@ -18,27 +18,27 @@ module Api
           } and return
         end
       
-        result = !@qrcode.event.accesses.exists?(user: @qrcode.user)
+        result = !@pass.event.accesses.exists?(user: @pass.user)
 
         @read = Read.create!(
-          qrcode: @qrcode,
+          pass: @pass,
           result: result,
           session: @session
         )
 
         if result
-          Access.create!(user: @qrcode.user, granted_by: @session.user, event: @qrcode.event, read: @read)
+          Access.create!(user: @pass.user, granted_by: @session.user, event: @pass.event, read: @read)
 
           render json: {
             result: true,
-            reads: @qrcode.reads,
+            reads: @pass.reads,
           } and return
         else
           render json: {
             result: false,
             error: "Acceso já liberado",
             error_details: "Esse QR code já foi utilizado anteriormente",
-            reads: @qrcode.reads,
+            reads: @pass.reads,
           } and return
         end
       end

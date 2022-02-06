@@ -2,10 +2,10 @@ module PartnerAdmin
   class EventsController < ApplicationController
     def show
       @event = Event.find(params[:id])
-      @users = User.select('distinct(users.id), users.email, users.access').joins(qrcodes: :event)
+      @users = User.select('distinct(users.id), users.email, users.access').joins(passes: :event)
         .joins("left join accesses on accesses.event_id = events.id")
         .where(events: { id: @event.id })
-      @qrcodes = @event.qrcodes
+      @passes = @event.passes
       @accesses = @event.accesses
 
       respond_to do |format|
@@ -27,12 +27,12 @@ module PartnerAdmin
       ActiveRecord::Base.transaction do
         if event.save
           create_batch_params.each_with_index do |batch_params, index|
-            Batch.create!(event: event, name: batch_params[:name], quantity: batch_params[:quantity], price: batch_params[:price], order: index)
+            EventBatch.create!(event: event, name: batch_params[:name], quantity: batch_params[:quantity], price_in_cents: batch_params[:price_in_cents], order: index)
           end
           
           create_membership_events_params.each do |membership_events_params|
             membership = event.partner.memberships.find(membership_events_params[:id])
-            MembershipEvent.create!(
+            MembershipDiscount.create!(
               event: event,
               membership: membership,
               discount: membership_events_params[:discount].to_f/100,
@@ -61,12 +61,12 @@ module PartnerAdmin
     private
 
     def event_params
-      params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood)
+      params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
         .merge(created_by: current_user, partner: current_user.partner)
     end
   
     def create_batch_params
-      (params[:batches] || []).select { |batch_params| batch_params[:name].present? || batch_params[:quantity].present? || batch_params[:price].present? } 
+      (params[:event_batches] || []).select { |batch_params| batch_params[:name].present? || batch_params[:quantity].present? || batch_params[:price_in_cents].present? } 
     end
   
     def create_membership_events_params

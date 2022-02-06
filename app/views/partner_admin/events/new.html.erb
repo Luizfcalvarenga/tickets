@@ -31,29 +31,29 @@
     <h2 class="my-5 title">Preços e lotes</h2>
 
     <div class="my-3 flex center around gap-24 form-group">
-      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][price_in_cents]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][price_in_cents]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][price_in_cents]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][price_in_cents]" placeholder="Preço" class="f-1x">
     </div>
     <div class="my-3 flex center around gap-24">
-      <input class="form-control" type="text" name="batches[][name]" placeholder="Nome do lote" class="f-1x">
-      <input class="form-control" type="text" name="batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
-      <input class="form-control" type="text" name="batches[][price]" placeholder="Preço" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][name]" placeholder="Nome do lote" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][quantity]" placeholder="Quantidade de entradas" class="f-1x">
+      <input class="form-control" type="text" name="event_batches[][price_in_cents]" placeholder="Preço" class="f-1x">
     </div>
 
     <div class="spacer-25"></div>
@@ -64,7 +64,7 @@
       <div class="my-3 flex center around gap-24">
         <input type="hidden" name="memberships[][id]" value="<%= membership.id %> ">
         <p class="m-0 w-10"><%= membership.name %></p>
-        <input class="form-control" type="text" name="memberships[][discount]" placeholder="% de desconto" class="f-1x">
+        <input class="form-control" type="text" name="memberships[][discount_percentage]" placeholder="% de desconto" class="f-1x">
       </div>
     <% end %>
 

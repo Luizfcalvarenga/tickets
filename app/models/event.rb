@@ -5,7 +5,7 @@ class Event < ApplicationRecord
   belongs_to :state
 
   has_one_attached :photo
-  has_many :batches, dependent: :destroy
+  has_many :event_batches, dependent: :destroy
   has_many :accesses
   has_many :event_questions
   has_many :event_communications
@@ -22,6 +22,6 @@ class Event < ApplicationRecord
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
   def current_batch
-    batches.order(:order).not_ended.first
+    event_batches.order(:order).not_ended.first
   end
 end
