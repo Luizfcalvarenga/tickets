@@ -4,7 +4,7 @@ class CreateMemberships < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :short_description
       t.string :description
-      t.decimal :price
+      t.integer :price_in_cents
       t.references :partner, null: false
 
       t.timestamps

@@ -10,7 +10,7 @@
     <div class="bg-primary-color flex center around p-4 br-8 my-4">
       <p class="f-24 fw-700 m-0 f-1x"><%= batch.name %></p>
       <p class="f-24 m-0 f-1x"><%= number_to_currency(batch.price, unit: "R$", separator: ",", delimiter: ".") %></p>
-      <p class="f-24 fw-700 m-0 f-1x"><%= batch.qrcodes.count %>/<%= batch.quantity %></p>
+      <p class="f-24 fw-700 m-0 f-1x"><%= batch.passes.count %>/<%= batch.quantity %></p>
       <% if batch.ended_at.present? %>
         <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= batch.ended_at.strftime("%d/%m às %H:%M:%S") %></p>
       <% elsif batch == @event.current_batch %>
@@ -44,17 +44,17 @@
       </tr>
     </thead>
     <tbody>
-      <% @qrcodes.each do |qrcode| %>
+      <% @passes.each do |pass| %>
         <tr>
-          <td data-label="Email"><%= qrcode.user.email %></td>
+          <td data-label="Email"><%= pass.user.email %></td>
           <td>
-            <% access = @accesses.find_by(user: qrcode.user) %>
+            <% access = @accesses.find_by(user: pass.user) %>
             <% if access.present? %>
               <p class="text-success m-0"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></p>
             <% end %>
           </td>
-          <% qrcode.event_question_qrcode_answers.joins(:event_question).order("event_questions.order").each do |event_question_qrcode_answer| %>
-            <td><%= event_question_qrcode_answer.value %></td>
+          <% pass.question_answers.joins(:event_question).order("event_questions.order").each do |question_answer| %>
+            <td><%= question_answer.value %></td>
           <% end %>
         </tr>
       <% end %>

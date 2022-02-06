@@ -6,8 +6,8 @@ class User < ApplicationRecord
 
   include DeviseTokenAuth::Concerns::User
 
-  has_many :qrcodes
-  has_many :events, through: :qrcodes
+  has_many :passes
+  has_many :events, through: :passes
 
   has_many :user_memberships
   has_many :memberships, through: :user_memberships

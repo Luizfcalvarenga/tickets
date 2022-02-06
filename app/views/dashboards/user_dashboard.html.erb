@@ -9,13 +9,13 @@
   <h2>Meus QRCodes</h2>
 
   <div class="p-5">
-    <% @qrcodes.each do |qrcode| %>
-      <div class="qrcode bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= qrcode.event.name %></p>
-        <%= link_to qrcode_path(qrcode), class: "col-12 col-md-3 p-0 mb-2" do %>
+    <% @passes.each do |pass| %>
+      <div class="pass bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
+        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= pass.event.name %></p>
+        <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
           <p class="btn btn-primary m-0 w-100">Ver</p>
         <% end %>
-        <% if qrcode.reads.exists? %>
+        <% if pass.reads.exists? %>
           <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
         <% else %>
           <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>

@@ -13,7 +13,7 @@ puts "-- OK!"
 
 Partner.destroy_all
 Read.destroy_all
-Qrcode.destroy_all
+Pass.destroy_all
 Event.destroy_all
 User.destroy_all
 User.create!(email: "admin@app.com", password: "123456", access: "admin") 
@@ -40,7 +40,7 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           address_complement: "",
                           city: city,
                           state: state,
-                          about: "Morbi enim nunc faucibus a pellentesque sit amet porttitor. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Mi sit amet mauris commodo quis imperdiet massa tincidunt nunc. Arcu odio ut sem nulla pharetra diam sit amet."
+                          about: "Morbi enim nunc faucibus a pellentesque sit amet porttitor. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Mi sit amet mauris commodo quis imperdiet massa tincidunt nunc. Arcu odio ut sem nulla pharetra diam sit amet.",
                           kind: "partner",
                           )
                           partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/redbull_logo.png')),
@@ -51,8 +51,8 @@ partner_user2.update(partner: partner)
 partner_user3.update(partner: partner)
 partner_user4.update(partner: partner)
 
-Membership.create!(name: "Assinatura 1", price: 20, partner: partner, description: "Esta é a assinatura de nível 1")
-Membership.create!(name: "Assinatura 2", price: 40, partner: partner, description: "Esta é a assinatura de nível 2")
-Membership.create!(name: "Assinatura 3", price: 80, partner: partner, description: "Esta é a assinatura de nível 3")
+Membership.create!(name: "Assinatura 1", price_in_cents: 20, partner: partner, description: "Esta é a assinatura de nível 1")
+Membership.create!(name: "Assinatura 2", price_in_cents: 40, partner: partner, description: "Esta é a assinatura de nível 2")
+Membership.create!(name: "Assinatura 3", price_in_cents: 80, partner: partner, description: "Esta é a assinatura de nível 3")
 
 puts "All done!"

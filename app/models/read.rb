@@ -1,4 +1,3 @@
 class Read < ApplicationRecord
-  belongs_to :qrcode
-  belongs_to :session
+  belongs_to :passes
 end

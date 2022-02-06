@@ -1,8 +1,7 @@
 class CreateAccesses < ActiveRecord::Migration[6.1]
   def change
     create_table :accesses do |t|
-      t.references :event, foreign_key: true
-      t.references :membership, foreign_key: true
+      t.references :pass, foreign_key: true
       t.references :read, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
 

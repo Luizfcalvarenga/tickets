@@ -92,16 +92,16 @@
       </div>
     <% end %>
 
-    <%= simple_form_for([@event, @qrcode]) do |f| %>
+    <%= simple_form_for([@event, @pass]) do |f| %>
       <input
-        id="qrcode-quantity"
+        id="pass-quantity"
         type="number"
         name="quantity"
         value="1"
         min="1"
       />
 
-      <div id="qrcode-answers">
+      <div id="pass-answers">
         <div>
           <% @event.event_questions.order(:order).each do |event_question| %>
             <div class="my-4">

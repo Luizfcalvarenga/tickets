@@ -10,22 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_16_233638) do
+ActiveRecord::Schema.define(version: 2022_02_06_010612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accesses", force: :cascade do |t|
-    t.bigint "event_id"
-    t.bigint "membership_id"
+    t.bigint "pass_id"
     t.bigint "read_id", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "granted_by_id"
-    t.index ["event_id"], name: "index_accesses_on_event_id"
     t.index ["granted_by_id"], name: "index_accesses_on_granted_by_id"
-    t.index ["membership_id"], name: "index_accesses_on_membership_id"
+    t.index ["pass_id"], name: "index_accesses_on_pass_id"
     t.index ["read_id"], name: "index_accesses_on_read_id"
     t.index ["user_id"], name: "index_accesses_on_user_id"
   end
@@ -68,23 +66,53 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "batches", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.string "name"
-    t.integer "quantity"
-    t.decimal "price"
-    t.integer "order"
-    t.datetime "ended_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_id"], name: "index_batches_on_event_id"
-  end
-
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.bigint "state_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "day_use_blocks", force: :cascade do |t|
+    t.bigint "day_use_id"
+    t.datetime "block_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_id"], name: "index_day_use_blocks_on_day_use_id"
+  end
+
+  create_table "day_use_schedules", force: :cascade do |t|
+    t.string "weekday"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer "price_in_cents"
+    t.bigint "day_use_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_id"], name: "index_day_use_schedules_on_day_use_id"
+  end
+
+  create_table "day_uses", force: :cascade do |t|
+    t.string "name"
+    t.string "track"
+    t.bigint "partner_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["partner_id"], name: "index_day_uses_on_partner_id"
+  end
+
+  create_table "event_batches", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "name"
+    t.string "pass_type"
+    t.integer "quantity"
+    t.integer "price_in_cents"
+    t.integer "order"
+    t.datetime "ended_at"
+    t.datetime "ends_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_event_batches_on_event_id"
   end
 
   create_table "event_communications", force: :cascade do |t|
@@ -94,16 +122,6 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_event_communications_on_event_id"
-  end
-
-  create_table "event_question_qrcode_answers", force: :cascade do |t|
-    t.bigint "event_question_id", null: false
-    t.bigint "qrcode_id", null: false
-    t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_question_id"], name: "index_event_question_qrcode_answers_on_event_question_id"
-    t.index ["qrcode_id"], name: "index_event_question_qrcode_answers_on_qrcode_id"
   end
 
   create_table "event_questions", force: :cascade do |t|
@@ -142,26 +160,57 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.index ["state_id"], name: "index_events_on_state_id"
   end
 
-  create_table "membership_events", force: :cascade do |t|
-    t.bigint "event_id", null: false
+  create_table "membership_discounts", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "day_use_id"
     t.bigint "membership_id", null: false
-    t.boolean "free"
-    t.decimal "discount"
+    t.decimal "discount_percentage"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_id"], name: "index_membership_events_on_event_id"
-    t.index ["membership_id"], name: "index_membership_events_on_membership_id"
+    t.index ["day_use_id"], name: "index_membership_discounts_on_day_use_id"
+    t.index ["event_id"], name: "index_membership_discounts_on_event_id"
+    t.index ["membership_id"], name: "index_membership_discounts_on_membership_id"
   end
 
   create_table "memberships", force: :cascade do |t|
     t.string "name"
     t.string "short_description"
     t.string "description"
-    t.decimal "price"
+    t.integer "price_in_cents"
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "event_batch_id", null: false
+    t.bigint "day_use_id", null: false
+    t.integer "price_in_cents"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_id"], name: "index_order_items_on_day_use_id"
+    t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "invoice_id"
+    t.string "invoice_url"
+    t.string "invoice_pdf"
+    t.string "invoice_status"
+    t.string "net_value"
+    t.string "price_in_cents"
+    t.string "value"
+    t.datetime "paid_at"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_orders_on_created_by_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "partners", force: :cascade do |t|
@@ -188,41 +237,44 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.index ["state_id"], name: "index_partners_on_state_id"
   end
 
-  create_table "qrcodes", force: :cascade do |t|
-    t.string "svg_source"
+  create_table "passes", force: :cascade do |t|
+    t.string "qrcode_svg"
     t.string "identifier"
     t.bigint "event_id"
+    t.bigint "event_batch_id"
     t.bigint "membership_id"
+    t.bigint "day_use_id"
+    t.bigint "order_item_id"
     t.bigint "user_id", null: false
     t.decimal "amount_paid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "batch_id"
-    t.index ["batch_id"], name: "index_qrcodes_on_batch_id"
-    t.index ["event_id"], name: "index_qrcodes_on_event_id"
-    t.index ["membership_id"], name: "index_qrcodes_on_membership_id"
-    t.index ["user_id"], name: "index_qrcodes_on_user_id"
+    t.index ["day_use_id"], name: "index_passes_on_day_use_id"
+    t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
+    t.index ["event_id"], name: "index_passes_on_event_id"
+    t.index ["membership_id"], name: "index_passes_on_membership_id"
+    t.index ["order_item_id"], name: "index_passes_on_order_item_id"
+    t.index ["user_id"], name: "index_passes_on_user_id"
+  end
+
+  create_table "question_answers", force: :cascade do |t|
+    t.bigint "event_question_id", null: false
+    t.bigint "order_item_id", null: false
+    t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_question_id"], name: "index_question_answers_on_event_question_id"
+    t.index ["order_item_id"], name: "index_question_answers_on_order_item_id"
   end
 
   create_table "reads", force: :cascade do |t|
-    t.bigint "qrcode_id", null: false
-    t.bigint "session_id", null: false
+    t.bigint "pass_id", null: false
     t.boolean "result"
+    t.string "error"
+    t.string "error_details"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["qrcode_id"], name: "index_reads_on_qrcode_id"
-    t.index ["session_id"], name: "index_reads_on_session_id"
-  end
-
-  create_table "sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "event_id"
-    t.datetime "ended_at"
-    t.string "identifier"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_id"], name: "index_sessions_on_event_id"
-    t.index ["user_id"], name: "index_sessions_on_user_id"
+    t.index ["pass_id"], name: "index_reads_on_pass_id"
   end
 
   create_table "states", force: :cascade do |t|
@@ -253,6 +305,8 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.string "access", default: "user"
     t.bigint "partner_id"
     t.string "name"
+    t.string "document_type"
+    t.string "document_number"
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.boolean "allow_password_change", default: false
@@ -262,33 +316,40 @@ ActiveRecord::Schema.define(version: 2021_12_16_233638) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "accesses", "events"
-  add_foreign_key "accesses", "memberships"
+  add_foreign_key "accesses", "passes"
   add_foreign_key "accesses", "reads"
   add_foreign_key "accesses", "users"
   add_foreign_key "accesses", "users", column: "granted_by_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "batches", "events"
+  add_foreign_key "day_use_schedules", "day_uses"
+  add_foreign_key "day_uses", "partners"
+  add_foreign_key "event_batches", "events"
   add_foreign_key "event_communications", "events"
-  add_foreign_key "event_question_qrcode_answers", "event_questions"
-  add_foreign_key "event_question_qrcode_answers", "qrcodes"
   add_foreign_key "event_questions", "events"
   add_foreign_key "events", "cities"
   add_foreign_key "events", "states"
   add_foreign_key "events", "users", column: "created_by_id"
-  add_foreign_key "membership_events", "events"
-  add_foreign_key "membership_events", "memberships"
+  add_foreign_key "membership_discounts", "day_uses"
+  add_foreign_key "membership_discounts", "events"
+  add_foreign_key "membership_discounts", "memberships"
+  add_foreign_key "order_items", "day_uses"
+  add_foreign_key "order_items", "event_batches"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "users"
+  add_foreign_key "orders", "users", column: "created_by_id"
   add_foreign_key "partners", "cities"
   add_foreign_key "partners", "states"
   add_foreign_key "partners", "users", column: "main_contact_id"
-  add_foreign_key "qrcodes", "events"
-  add_foreign_key "qrcodes", "memberships"
-  add_foreign_key "qrcodes", "users"
-  add_foreign_key "reads", "qrcodes"
-  add_foreign_key "reads", "sessions"
-  add_foreign_key "sessions", "events"
-  add_foreign_key "sessions", "users"
+  add_foreign_key "passes", "day_uses"
+  add_foreign_key "passes", "event_batches"
+  add_foreign_key "passes", "events"
+  add_foreign_key "passes", "memberships"
+  add_foreign_key "passes", "order_items"
+  add_foreign_key "passes", "users"
+  add_foreign_key "question_answers", "event_questions"
+  add_foreign_key "question_answers", "order_items"
+  add_foreign_key "reads", "passes"
   add_foreign_key "user_memberships", "memberships"
   add_foreign_key "user_memberships", "users"
 end

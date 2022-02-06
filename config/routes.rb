@@ -22,8 +22,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       mount_devise_token_auth_for 'User', at: 'auth'
 
-      get 'qrcodes/:identifier/show', to: 'qrcodes#show', as: "qrcode_show"
-      get 'qrcodes/:identifier/scan', to: 'qrcodes#scan', as: "qrcode_scan"
+      get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
+      get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"
 
       get 'users/me', to: 'users#me'
     end
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:index, :show] do
-    resources :qrcodes, only: [:create]
+    resources :passes, only: [:create]
     resources :event_communications, only: [:index, :show, :new, :create]
   end
 
@@ -59,8 +59,8 @@ Rails.application.routes.draw do
 
   get '/cities_by_state' => 'cities#cities_by_state'
 
-  resources :qrcodes
-  get "qrcodes/:id/read", to: "qrcodes#read", as: "read_qrcode"
+  resources :passes
+  get "passes/:id/read", to: "passes#read", as: "read_pass"
 
   get "/:id", to: "partners#show", as: "partner_shortcut"
 end

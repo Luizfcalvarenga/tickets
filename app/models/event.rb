@@ -10,10 +10,10 @@ class Event < ApplicationRecord
   has_many :event_questions
   has_many :event_communications
   
-  has_many :qrcodes
+  has_many :passes
   has_many :accesses
-  has_many :membership_events
-  has_many :memberships, through: :membership_events
+  has_many :membership_discounts
+  has_many :memberships, through: :membership_discounts
 
   has_rich_text :description
 

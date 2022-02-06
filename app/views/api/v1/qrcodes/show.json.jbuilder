@@ -1,3 +1,3 @@
-json.identifier @qrcode.identifier
-json.svg_source @qrcode.svg_source
-json.event_name @qrcode.event.name
+json.identifier @pass.identifier
+json.svg_source @pass.svg_source
+json.event_name @pass.event.name

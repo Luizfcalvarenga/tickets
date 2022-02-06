@@ -11,7 +11,7 @@ export function Scanner(props) {
 
     let internalLoading = false;
 
-    const onSuccess = async (qrcodeIdentifier) => {
+    const onSuccess = async (passIdentifier) => {
       if (internalLoading) return;
       internalLoading = true;
       if (readResult || loading) return;
@@ -20,7 +20,7 @@ export function Scanner(props) {
 
       try {
         const response = await axios.get(
-          `/api/v1/qrcodes/${qrcodeIdentifier}/scan?session_identifier=${props.sessionIdentifier}`
+          `/api/v1/qrcodes/${passIdentifier}/scan?session_identifier=${props.sessionIdentifier}`
         );
         setReadResult(response.data);
       } catch {
