@@ -3,7 +3,7 @@ class Batch < ApplicationRecord
 
   validates :price, :quantity, :name, presence: true
 
-  has_many :qrcodes
+  has_many :passes
 
   scope :not_ended, -> { where(ended_at: nil) }
 end

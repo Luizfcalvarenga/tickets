@@ -31,6 +31,8 @@ const ufMap = {
 };
 
 document.addEventListener("turbolinks:load", () => {
+  if (!document.querySelector("partner-form")) return;
+
   function getLocation(setCity = "") {
     const id = document.querySelector("#partner_state_id").value;
     fetch(`/cities_by_state?state_id=${id}`)

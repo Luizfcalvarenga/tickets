@@ -3,9 +3,9 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
-import * as ActiveStorage from "@rails/activestorage"
+import Rails from "@rails/ujs";
+import Turbolinks from "turbolinks";
+import * as ActiveStorage from "@rails/activestorage";
 import React from "react";
 import ReactDOM from "react-dom";
 import "trix";
@@ -17,12 +17,13 @@ QrScanner.WORKER_PATH = `${window.location.origin}/qr-scanner-worker.js`;
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
 import { EventQuestions } from "../react_pages/EventQuestions";
+import { EventBatches } from "../react_pages/EventBatches";
 
 import "../stylesheets/application";
 
-Rails.start()
-Turbolinks.start()
-ActiveStorage.start()
+Rails.start();
+Turbolinks.start();
+ActiveStorage.start();
 
 // ----------------------------------------------------
 // Note(lewagon): ABOVE IS RAILS DEFAULT CONFIGURATION
@@ -44,31 +45,29 @@ window.toastr.options = {
 // Internal imports
 import "./events";
 import "./partners";
-import "./buyEvent";
-
 
 const loadReactComponent = () => {
-  const reactContainer = document.querySelector("react");
+  const reactContainers = document.querySelectorAll("react");
 
-  if (!reactContainer || !reactContainer.dataset.component) return;
+  if (!reactContainers) return;
 
-  const components = {
-    Scanner: (
-      <Scanner
-        scanner={QrScanner}
-        sessionIdentifier={reactContainer.dataset.sessionIdentifier}
-        eventName={reactContainer.dataset.eventName}
-      />
-    ),
-    ReactPage: <ReactPage message={reactContainer.dataset.message} />,
-    EventQuestions: <EventQuestions />,
-  };
+  reactContainers.forEach((container) => {
+    const components = {
+      Scanner: (
+        <Scanner
+          scanner={QrScanner}
+          sessionIdentifier={container.dataset.sessionIdentifier}
+          eventName={container.dataset.eventName}
+        />
+      ),
+      ReactPage: <ReactPage message={container.dataset.message} />,
+      EventQuestions: <EventQuestions />,
+      EventBatches: <EventBatches />,
+    };
 
-  ReactDOM.render(
-    components[reactContainer.dataset.component],
-    reactContainer
-  );
-}
+    ReactDOM.render(components[container.dataset.component], container);
+  });
+};
 
 const loadToastr = () => {
   document.querySelectorAll(".flash").forEach((flash) => {
@@ -81,9 +80,9 @@ const loadToastr = () => {
       return;
     }
   });
-}
+};
 
 document.addEventListener("turbolinks:load", () => {
   loadReactComponent();
   loadToastr();
-})
+});
