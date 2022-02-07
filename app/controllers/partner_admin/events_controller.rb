@@ -27,18 +27,15 @@ module PartnerAdmin
       ActiveRecord::Base.transaction do
         if event.save
           create_batch_params.each_with_index do |batch_params, index|
-            EventBatch.create!(event: event, name: batch_params[:name], quantity: batch_params[:quantity], price_in_cents: batch_params[:price_in_cents], order: index)
+            EventBatch.create!(event: event, 
+              pass_type: batch_params[:pass_type],
+              name: batch_params[:name],
+              quantity: batch_params[:quantity],
+              price_in_cents: batch_params[:price_in_cents],
+              ends_at: batch_params[:ends_at],
+              order: index)
           end
-          
-          create_membership_events_params.each do |membership_events_params|
-            membership = event.partner.memberships.find(membership_events_params[:id])
-            MembershipDiscount.create!(
-              event: event,
-              membership: membership,
-              discount: membership_events_params[:discount].to_f/100,
-            )
-          end
-  
+        
           event_questions_params.each do |event_question_params|
             EventQuestion.create!(
               event: event,
@@ -66,11 +63,7 @@ module PartnerAdmin
     end
   
     def create_batch_params
-      (params[:event_batches] || []).select { |batch_params| batch_params[:name].present? || batch_params[:quantity].present? || batch_params[:price_in_cents].present? } 
-    end
-  
-    def create_membership_events_params
-      params[:memberships] || []
+      (params[:event_batches] || [])
     end
   
     def event_questions_params

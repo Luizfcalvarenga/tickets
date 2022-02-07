@@ -5,6 +5,6 @@ class CreateDayUseBlocks < ActiveRecord::Migration[6.1]
       t.datetime :block_date
 
       t.timestamps
-    end
+    ends
   end
 end
