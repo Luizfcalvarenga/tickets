@@ -20,7 +20,7 @@ class PartnersController < ApplicationController
     end
 
     if current_user.present?
-      @qrcodes = current_user.qrcodes.joins(event: :partner).where(partners: {id: @partner.id})
+      @passes = current_user.passes.joins(event: :partner).where(partners: {id: @partner.id})
       @user_memberships = current_user.user_memberships.joins(membership: :partner).where(partners: {id: @partner.id})
 
       @user_membership = UserMembership.new

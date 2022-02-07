@@ -1,6 +1,6 @@
-class QrcodesController < ApplicationController
+class PassessController < ApplicationController
   def show
-    @qrcode = Qrcode.find(params[:id])
+    @pass = Pass.find(params[:id])
   end
 
   def create
@@ -16,7 +16,7 @@ class QrcodesController < ApplicationController
     
     ActiveRecord::Base.transaction do
       (params[:event_user_answers]&.to_unsafe_h || [0]).each do |each_answer|
-        qrcode = Qrcode.create(
+        pass = Pass.create(
           user: current_user,
           event: event,
           batch: current_batch,
@@ -27,19 +27,19 @@ class QrcodesController < ApplicationController
 
         if params[:evnt_user_answers]
           each_answer[1].each do |event_answer_params|
-            EventQuestionQrcodeAnswer.create!(
-              qrcode: qrcode,
+            EventQuestionPassAnswer.create!(
+              pass: pass,
               event_question: event.event_questions.find_by(order: event_answer_params[:order]),
               value: event_answer_params[:answer],
             )
           end
         end
 
-        if current_batch.qrcodes.length == current_batch.quantity
+        if current_batch.passes.length == current_batch.quantity
           current_batch.touch(:ended_at)
         end
 
-        svg_source = RQRCode::QRCode.new(qrcode.identifier).as_svg(
+        svg_source = RQRCode::QRCode.new(pass.identifier).as_svg(
           color: "000",
           shape_rendering: "crispEdges",
           module_size: 5,
@@ -47,7 +47,7 @@ class QrcodesController < ApplicationController
           use_path: true,
         )
         # TODO // Refatorar reduzindo para 1 a quantidade de consultas no db //
-        qrcode.update(svg_source: svg_source)
+        pass.update(svg_source: svg_source)
       end
     end
 
@@ -55,15 +55,15 @@ class QrcodesController < ApplicationController
   end
 
   def read
-    @qrcode = Qrcode.find(params[:id])
+    @pass = Pass.find(params[:id])
 
-    result = !@qrcode.reads.exists?
+    result = !@pass.reads.exists?
 
     @read = Read.create(
-      qrcode: @qrcode,
+      pass: @pass,
       result: result
     )
-    @reads = @qrcode.reads
+    @reads = @pass.reads
   end
 
   private

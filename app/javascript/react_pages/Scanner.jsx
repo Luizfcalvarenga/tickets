@@ -20,14 +20,14 @@ export function Scanner(props) {
 
       try {
         const response = await axios.get(
-          `/api/v1/qrcodes/${passIdentifier}/scan?session_identifier=${props.sessionIdentifier}`
+          `/api/v1/passes/${passIdentifier}/scan?session_identifier=${props.sessionIdentifier}`
         );
         setReadResult(response.data);
       } catch {
         setReadResult({
           result: false,
           error: "Erro de requisição",
-          error_details: `Status ${response.status}`
+          error_details: `Status ${response.status}`,
         });
       }
 

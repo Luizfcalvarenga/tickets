@@ -1,6 +1,6 @@
 class DashboardsController < ApplicationController
   def user_dashboard
-    @qrcodes = current_user.qrcodes
+    @passes = current_user.passes
     @user_memberships = current_user.user_memberships
   end
 

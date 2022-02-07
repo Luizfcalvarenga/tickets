@@ -6,10 +6,10 @@
     </div>
   <% end %>
 
-  <% @event.batches.each do |batch| %>
+  <% @event.event_batches.each do |batch| %>
     <div class="bg-primary-color flex center around p-4 br-8 my-4">
       <p class="f-24 fw-700 m-0 f-1x"><%= batch.name %></p>
-      <p class="f-24 m-0 f-1x"><%= number_to_currency(batch.price, unit: "R$", separator: ",", delimiter: ".") %></p>
+      <p class="f-24 m-0 f-1x"><%= number_to_currency(batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
       <p class="f-24 fw-700 m-0 f-1x"><%= batch.passes.count %>/<%= batch.quantity %></p>
       <% if batch.ended_at.present? %>
         <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= batch.ended_at.strftime("%d/%m às %H:%M:%S") %></p>

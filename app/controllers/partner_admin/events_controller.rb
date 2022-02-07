@@ -2,10 +2,10 @@ module PartnerAdmin
   class EventsController < ApplicationController
     def show
       @event = Event.find(params[:id])
-      @users = User.select('distinct(users.id), users.email, users.access').joins(qrcodes: :event)
+      @users = User.select('distinct(users.id), users.email, users.access').joins(passes: :event)
         .joins("left join accesses on accesses.event_id = events.id")
         .where(events: { id: @event.id })
-      @qrcodes = @event.qrcodes
+      @passes = @event.passes
       @accesses = @event.accesses
 
       respond_to do |format|
@@ -31,7 +31,7 @@ module PartnerAdmin
               pass_type: batch_params[:pass_type],
               name: batch_params[:name],
               quantity: batch_params[:quantity],
-              price: batch_params[:price_in_cents],
+              price_in_cents: batch_params[:price_in_cents],
               ends_at: batch_params[:ends_at],
               order: index)
           end
@@ -58,12 +58,12 @@ module PartnerAdmin
     private
 
     def event_params
-      params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood)
+      params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
         .merge(created_by: current_user, partner: current_user.partner)
     end
   
     def create_batch_params
-      (params[:batches] || [])
+      (params[:event_batches] || [])
     end
   
     def event_questions_params
