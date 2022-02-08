@@ -1,4 +1,4 @@
-class PassessController < ApplicationController
+class PassesController < ApplicationController
   def show
     @pass = Pass.find(params[:id])
   end
