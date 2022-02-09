@@ -43,6 +43,11 @@ Rails.application.routes.draw do
     resources :events, only: [:show]
   end
 
+  resources :orders do
+    resources :question_answers, only: [:new, :create]
+  end
+  get "orders/:id/pay", to: "orders#pay", as: "order_pay"
+
   namespace :admin do
     resources :partners
     get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"

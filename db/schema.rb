@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_06_010612) do
+ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,6 +124,15 @@ ActiveRecord::Schema.define(version: 2022_02_06_010612) do
     t.index ["event_id"], name: "index_event_communications_on_event_id"
   end
 
+  create_table "event_question_batches", force: :cascade do |t|
+    t.bigint "event_question_id", null: false
+    t.bigint "event_batch_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_batch_id"], name: "index_event_question_batches_on_event_batch_id"
+    t.index ["event_question_id"], name: "index_event_question_batches_on_event_question_id"
+  end
+
   create_table "event_questions", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.string "prompt"
@@ -185,8 +194,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_010612) do
 
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
-    t.bigint "event_batch_id", null: false
-    t.bigint "day_use_id", null: false
+    t.bigint "event_batch_id"
+    t.bigint "day_use_id"
     t.integer "price_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -326,6 +335,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_010612) do
   add_foreign_key "day_uses", "partners"
   add_foreign_key "event_batches", "events"
   add_foreign_key "event_communications", "events"
+  add_foreign_key "event_question_batches", "event_batches"
+  add_foreign_key "event_question_batches", "event_questions"
   add_foreign_key "event_questions", "events"
   add_foreign_key "events", "cities"
   add_foreign_key "events", "states"

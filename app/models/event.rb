@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   has_one_attached :photo
   has_many :event_batches, dependent: :destroy
   has_many :accesses
-  has_many :event_questions
+  has_many :event_questions, dependent: :destroy
   has_many :event_communications
   
   has_many :passes
@@ -21,7 +21,7 @@ class Event < ApplicationRecord
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
-  def current_batch
-    event_batches.order(:order).not_ended.first
+  def open_batches
+    event_batches.available.joins("left join event_batches eb on event_batches.pass_type = eb.pass_type and event_batches.order > eb.order").where("eb.order is null").order(:order)
   end
 end

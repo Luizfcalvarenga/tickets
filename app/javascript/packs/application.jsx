@@ -10,6 +10,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "trix";
 import "@rails/actiontext";
+import flatpickr from "flatpickr";
+import { Portuguese } from "flatpickr/dist/l10n/pt.js";
 
 import QrScanner from "qr-scanner";
 QrScanner.WORKER_PATH = `${window.location.origin}/qr-scanner-worker.js`;
@@ -18,8 +20,10 @@ import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
 import { EventQuestions } from "../react_pages/EventQuestions";
 import { EventBatches } from "../react_pages/EventBatches";
+import { EventOrderItems } from "../react_pages/EventOrderItems";
 
 import "../stylesheets/application";
+import "flatpickr/dist/flatpickr.min.css";
 
 Rails.start();
 Turbolinks.start();
@@ -63,6 +67,11 @@ const loadReactComponent = () => {
       ReactPage: <ReactPage message={container.dataset.message} />,
       EventQuestions: <EventQuestions />,
       EventBatches: <EventBatches />,
+      EventOrderItems: (
+        <EventOrderItems
+          eventBatches={container.dataset.eventBatches ? JSON.parse(container.dataset.eventBatches) : null}
+        />
+      ),
     };
 
     ReactDOM.render(components[container.dataset.component], container);
@@ -85,4 +94,6 @@ const loadToastr = () => {
 document.addEventListener("turbolinks:load", () => {
   loadReactComponent();
   loadToastr();
+  
+  flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese });
 });

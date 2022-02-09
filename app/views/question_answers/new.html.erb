@@ -1,0 +1,57 @@
+<div class="page-wrapper">
+  <h1 class="title">Respostas para o evento <%= @event.name %></h1>
+
+  <p class="text-white">O produtor do evento pede para que você responda as seguintes perguntas para comprar seus ingressos:</p>
+
+  <%= simple_form_for([@order, @question_answer]) do |f| %>
+    <% @order_items.each_with_index do |order_item, index| %>
+      <div class="mb-5 p-4 bg-dark">
+        <p>Ingresso #<%= index + 1 %> <%= order_item.event_batch.pass_type %> - <%= order_item.event_batch.name %> </p>
+
+        <% order_item.event_batch.event_questions.each_with_index do |event_question, index| %>
+          <p>Pergunta <%= index + 1 %>: <%= event_question.prompt %></p>
+          <div class="my-4">
+            <input
+              type="hidden"
+              name="event_user_answers[][order_item_id]"
+              value="<%= order_item.id %>"
+              class="w-100"
+            />
+            <input
+              type="hidden"
+              name="event_user_answers[][event_question_id]"
+              value="<%= event_question.id %>"
+              class="w-100"
+            />
+            <input
+              type="hidden"
+              name="event_user_answers[][optional]"
+              value="<%= event_question.optional %>"
+              class="w-100"
+            />
+            <% if event_question.multiple_choice? %>
+              <p></p>
+              <select
+                name="event_user_answers[][answer]"
+                class="w-100"
+              >
+                <% event_question.options.each do |option| %>
+                  <option value="<%= option %>"><%= option %></option>
+                <% end %>
+              </select>
+            <% else %>
+              <textarea
+                class="form-control my-2 f-60"
+                type="text"
+                name="event_user_answers[][answer]"
+                placeholder="Sua resposta..."></textarea>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Enviar respostas", class: "btn btn-primary mt-5 w-100" %>
+
+  <% end %>
+</div>

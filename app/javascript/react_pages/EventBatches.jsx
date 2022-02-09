@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import DateTimePicker from "react-datetime-picker";
 
 export function EventBatches(props) {
   const [passTypes, setPassTypes] = useState([]);
@@ -32,7 +33,7 @@ export function EventBatches(props) {
         quantity: 0,
         price_in_cents: 0,
         ends_at: Date.new,
-        order: editedPassType.eventBatches.length + 1,
+        order: editedPassType.eventBatches.length,
       },
     ];
 
@@ -46,11 +47,21 @@ export function EventBatches(props) {
       (currentPassType) => currentPassType.name === passType.name
     );
 
-    console.log(editedPassType.eventBatches.splice(eventBatchIndex, 1));
+    editedPassType.eventBatches.splice(eventBatchIndex, 1);
 
-    // editedPassType.eventBatches = editedPassType.eventBatches.splice(eventBatchIndex, 1)
+    setPassTypes(currentPassTypes);
+  };
 
-    // setPassTypes(currentPassTypes);
+  const updateEventBatchName = (value, passType, eventBatchIndex) => {
+    const currentPassTypes = [...passTypes];
+
+    const editedPassType = currentPassTypes.find(
+      (currentPassType) => currentPassType.name === passType.name
+    );
+
+    editedPassType.eventBatches[eventBatchIndex].name = value
+
+    setPassTypes(currentPassTypes);
   };
 
   const addPassType = () => {
@@ -84,7 +95,7 @@ export function EventBatches(props) {
     <div className="">
       {passTypes.map((passType, index) => {
         return (
-          <div key={index} className="mb-4">
+          <div key={index} className="mb-4 p-4 bg-dark">
             <div>
               <input
                 class="form-control my-2"
@@ -100,24 +111,35 @@ export function EventBatches(props) {
                 <div key={eventBatch.order} className="mb-4">
                   <input
                     type="hidden"
-                    name="event_batches[][order]"
+                    name="event[event_batches][][order]"
                     value={eventBatch.order}
+                  />
+                  <input
+                    type="hidden"
+                    name="event[event_batches][][pass_type]"
+                    value={passType.name}
                   />
                   <div className="flex center between gap-24">
                     <input
                       class="form-control my-2"
                       type="text"
                       value={eventBatch.name}
-                      name="event_batches[][name]"
+                      onChange={(e) =>
+                        updateEventBatchName(
+                          e.target.value,
+                          passType,
+                          eventBatchIndex
+                        )
+                      }
+                      name="event[event_batches][][name]"
                       placeholder="Nome do lote"
                     />
                     <input
                       class="form-control my-2"
                       type="text"
-                      name="event_batches[][price_in_cents]"
+                      name="event[event_batches][][price_in_cents]"
                       placeholder="Preço"
                     />
-                    <p>{eventBatchIndex}</p>
                     <p
                       className="btn btn-danger w-20 text-center"
                       onClick={() =>
@@ -132,13 +154,13 @@ export function EventBatches(props) {
                     <input
                       class="form-control my-2"
                       type="text"
-                      name="event_batches[][quantity]"
+                      name="event[event_batches][][quantity]"
                       placeholder="Quantidade máxima de ingressos"
                     />
                     <input
-                      class="form-control my-2"
-                      type="text"
-                      name="event_batches[][price_in_cents]"
+                      class="form-control my-2 datetime"
+                      type="date"
+                      name="event[event_batches][][ends_at]"
                       placeholder="Data limite do lote"
                     />
                   </div>
