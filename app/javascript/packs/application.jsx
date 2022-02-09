@@ -91,9 +91,16 @@ const loadToastr = () => {
   });
 };
 
+const fillInputs = () => {
+  document.querySelectorAll("textarea").forEach((textarea) => {
+    textarea.innerHTML = textarea.dataset.fillInnerHtml || ""
+  })
+}
+
 document.addEventListener("turbolinks:load", () => {
   loadReactComponent();
   loadToastr();
+  fillInputs();
   
   flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese });
 });

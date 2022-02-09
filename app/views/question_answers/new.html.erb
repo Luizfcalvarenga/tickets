@@ -3,6 +3,10 @@
 
   <p class="text-white">O produtor do evento pede para que você responda as seguintes perguntas para comprar seus ingressos:</p>
 
+  <% if @errors %>
+    <p class="p-3 bg-danger br-8">Alguma resposta não foi preenchida corretamente. Favor rever os erros abaixo:</p>
+  <% end %>
+
   <%= simple_form_for([@order, @question_answer]) do |f| %>
     <% @order_items.each_with_index do |order_item, index| %>
       <div class="mb-5 p-4 bg-dark">
@@ -30,21 +34,26 @@
               class="w-100"
             />
             <% if event_question.multiple_choice? %>
-              <p></p>
               <select
-                name="event_user_answers[][answer]"
+                name="event_user_answers[][value]"
+                value="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value %>"
                 class="w-100"
               >
                 <% event_question.options.each do |option| %>
-                  <option value="<%= option %>"><%= option %></option>
+                  <option value="<%= option %>" <%= "selected" if @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value == option %>><%= option %></option>
                 <% end %>
               </select>
             <% else %>
               <textarea
                 class="form-control my-2 f-60"
                 type="text"
-                name="event_user_answers[][answer]"
+                name="event_user_answers[][value]"
+                data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
                 placeholder="Sua resposta..."></textarea>
+              
+              <% if @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.errors&.present? %>
+                <p class="text-danger"><%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }.errors.full_messages.first %></p>
+              <% end %>
             <% end %>
           </div>
         <% end %>

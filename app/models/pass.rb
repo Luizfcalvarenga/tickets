@@ -1,16 +1,14 @@
 class Pass < ApplicationRecord
   belongs_to :user
-  belongs_to :event
+  belongs_to :order_item
+  
   belongs_to :event_batch, optional: true
+  belongs_to :day_use, optional: true
   belongs_to :membership, optional: true
 
-  belongs_to :batch, optional: true
-
-  before_create :create_identifier
+  has_one :event, through: :event_batch
 
   has_many :reads
 
-  def create_identifier
-    self.identifier = SecureRandom.uuid
-  end
+  validates :identifier, presence: true
 end

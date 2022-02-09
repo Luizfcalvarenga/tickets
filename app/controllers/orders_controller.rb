@@ -20,7 +20,8 @@ class OrdersController < ApplicationController
     if order.has_any_event_questions?
       redirect_to new_order_question_answer_path(order_id: order.id)
     else 
-      redirect_to root_path
+      OrderPassesGenerator.new(order).call
+      redirect_to dashboard_path_for_user(current_user)
     end
   end
 
