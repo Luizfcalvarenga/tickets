@@ -1,0 +1,54 @@
+<div class="page-wrapper">
+  <h1 class="title">Criar novo evento</h1>
+
+  <%= simple_form_for([:partner_admin, @day_use]) do |f| %>
+    <%= f.input :name %>
+
+    <%= f.rich_text_area :description, placeholder: "Descrição do day use..." %>
+
+    <div class="spacer-30"></div>
+
+    <%= f.input :photo, as: :file %>
+
+    <div class="spacer-50"></div>
+
+    <h2 class="title">Cronograma</h2>
+
+    <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Para um day-use ser considerado aberto no dia, é necessário preencher um horário de início e um horário de fim. Para deixar o day-use fechado em algum dia da semana, não preencha as informações de horário.</p>
+
+    <% @weekdays.each do |weekday| %>
+      <input
+        class="form-control my-2 f-40"
+        type="hidden"
+        name="day_use[day_use_schedules][][weekday]"
+        value="<%= weekday[:value] %>"
+      />
+      <div class="flex center between bg-dark p-4 br-8 mb-2">
+        <p class="m-0 f-30"><%= weekday[:label] %></p>
+        <div class="flex center around f-40">
+          <input
+            class="form-control my-2 f-40"
+            type="time"
+            name="day_use[day_use_schedules][][start_time]"
+            placeholder="Horário início"
+          />
+          <p class="m-0">até</p>
+          <input
+            class="form-control my-2 f-40"
+            type="time"
+            name="day_use[day_use_schedules][][end_time]"
+            placeholder="Horário fim"
+          />
+        </div>
+        <input
+          class="form-control my-2 f-20"
+          type="text"
+          name="day_use[day_use_schedules][][price_in_cents]"
+          placeholder="Preço"
+        />
+      </div>
+    <% end %>
+
+    <%= f.submit "Criar day use", class: "btn btn-primary mt-5 w-100" %>
+  <% end %>
+</div>

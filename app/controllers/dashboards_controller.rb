@@ -12,6 +12,7 @@ class DashboardsController < ApplicationController
     @partner = Partner.all
     @events = current_user.partner.events
     @memberships = Membership.where(partner_id: current_user.partner.id)
+    @day_uses = current_user.partner.day_uses
 
     # qrcode = RQRCode::QRCode.new(url_for controller: 'partners', action: 'show', host: 'bike-park.herokuapp.com', id: current_user.partner.id)
     qrcode = RQRCode::QRCode.new(partner_shortcut_url(id: current_user.partner.slug))

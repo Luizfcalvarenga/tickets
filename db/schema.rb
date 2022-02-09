@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "day_uses", force: :cascade do |t|
     t.string "name"
+    t.text "description"
     t.string "track"
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -184,7 +185,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   create_table "memberships", force: :cascade do |t|
     t.string "name"
     t.string "short_description"
-    t.string "description"
+    t.text "description"
     t.integer "price_in_cents"
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false

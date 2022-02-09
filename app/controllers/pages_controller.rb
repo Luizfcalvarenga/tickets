@@ -20,6 +20,6 @@ class PagesController < ApplicationController
     Read.destroy_all
     Pass.destroy_all
     Event.destroy_all
-    redirect_to dashboard_path
+    redirect_to dashboard_path_for_user(current_user)
   end
 end

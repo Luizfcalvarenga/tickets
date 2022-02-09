@@ -14,17 +14,39 @@
 
   <h2>Eventos disponíveis</h2>
 
-  <div class="p-5">
-    <% @events.each do |event| %>
-      <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
+  <% @events.each do |event| %>
+    <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
 
-        <%= link_to event_path(event), class: "col-12 col-md-4" do %>
-          <p class="btn btn-primary m-0">Ver evento</p>
+      <%= link_to event_path(event), class: "col-12 col-md-4" do %>
+        <p class="btn btn-primary m-0">Ver evento</p>
+      <% end %>
+    </div>
+  <% end %>
+  <% if @events.blank? %>
+    <p class="text-white">Nenhum evento programado até o momento.</p>
+  <% end %>
+
+  <div class="spacer-100"></div>
+
+  <h2>Day Uses disponíveis</h2>
+
+  <% @weekdays.each do |weekday| %>
+    <p><%= weekday[:label] %></p>
+
+    <% weekday[:day_uses].each do |day_use| %>
+        <div class="bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= day_use.name %></p>
+
+        <%= link_to day_use_path(weekday[:value]), class: "col-12 col-md-4" do %>
+          <p class="btn btn-primary m-0">Comprar</p>
         <% end %>
       </div>
-    <% end %>  
-  </div>
+    <% end %>
+    <% if weekday[:day_uses].blank? %>
+      <p class="text-white">Nenhum day use programado para esse dia.</p>
+    <% end %>
+  <% end %>  
 
   <h2>Assinaturas disponíveis</h2>
 

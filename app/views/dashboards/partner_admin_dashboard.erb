@@ -6,33 +6,56 @@
     </div>
   </div>
   <h1>Dashboard</h1>
-    <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
-      <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
-    <% end %>
-  <h2>Assinaturas</h2>
-  <%= link_to partner_admin_memberships_path do %>
-    <p class="btn btn-primary px-5">Assinaturas</p>
+  <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
+    <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
   <% end %>
+
+  <div class="spacer-100"></div>
+
   <h2>Meus eventos</h2>
 
-  <div class="p-5">
-    <% @events.each do |event| %>
-      <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
+  <% @events.each do |event| %>
+    <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
 
-        <%= link_to read_event_path(event), class: "col-12 col-md-4" do %>
-          <p class="btn btn-primary m-0">Ler QRcodes</p>
-        <% end %>
-        <%= link_to partner_admin_event_path(event), class: "col-12 col-md-4" do %>
-          <p class="btn btn-primary m-0">Ver detalhes do evento</p>
-        <% end %>
-      </div>
-    <% end %> 
-  </div>
+      <%= link_to read_event_path(event), class: "col-12 col-md-4" do %>
+        <p class="btn btn-primary m-0">Ler QRcodes</p>
+      <% end %>
+      <%= link_to partner_admin_event_path(event), class: "col-12 col-md-4" do %>
+        <p class="btn btn-primary m-0">Ver detalhes do evento</p>
+      <% end %>
+    </div>
+  <% end %> 
 
   <h2 class="title">Criar eventos</h2>
 
   <%= link_to new_partner_admin_event_path, class: "col-12 w-100" do %>
     <p class="btn btn-primary m-0 w-100 my-3">Criar evento</p>
+  <% end %>
+
+  <div class="spacer-100"></div>
+
+  <h2>Meus day uses</h2>
+  <% @day_uses.each do |day_use| %>
+    <div class="day_use bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
+      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= day_use.name %></p>
+
+      <%= link_to partner_admin_day_use_path(day_use), class: "col-12 col-md-4" do %>
+        <p class="btn btn-primary m-0">Ver detalhes do Day Use</p>
+      <% end %>
+    </div>
+  <% end %> 
+
+  <h2 class="title">Criar day uses</h2>
+
+  <%= link_to new_partner_admin_day_use_path, class: "col-12 w-100" do %>
+    <p class="btn btn-primary m-0 w-100 my-3">Criar Day Use</p>
+  <% end %>
+
+  <div class="spacer-100"></div>
+
+  <h2>Assinaturas</h2>
+  <%= link_to partner_admin_memberships_path do %>
+    <p class="btn btn-primary px-5">Assinaturas</p>
   <% end %>
 </div>

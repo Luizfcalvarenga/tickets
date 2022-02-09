@@ -19,4 +19,5 @@ class Partner < ApplicationRecord
   
   has_many :events
   has_many :memberships
+  has_many :day_uses
 end

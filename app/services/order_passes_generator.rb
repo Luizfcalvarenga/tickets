@@ -7,6 +7,7 @@ class OrderPassesGenerator
   
   def call
     @order.order_items.each do |order_item|
+      # identifier = "#{"%04d" %  order_item.order.user_id}#{"%04d" %  order_item.order.user.passes.count}"
       identifier = SecureRandom.uuid
 
       Pass.create(
