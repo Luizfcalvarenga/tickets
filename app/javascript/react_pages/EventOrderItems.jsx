@@ -20,8 +20,6 @@ export function EventOrderItems(props) {
 
     if (editedBatchItem.quantity === 0 && amount < 0) return;
 
-    console.log(editedBatchItem);
-
     currentBatches[batchIndex].quantity =
       currentBatches[batchIndex].quantity + amount;
 

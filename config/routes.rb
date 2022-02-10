@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     resources :passes, only: [:create]
     resources :event_communications, only: [:index, :show, :new, :create]
   end
-  get "day_uses/:weekday", to: "day_uses#show", as: "day_use"
+  get "day_uses/:id/:weekday", to: "day_uses#show", as: "day_use"
 
   get "events/:id/read", to: "events#read", as: "read_event" 
 

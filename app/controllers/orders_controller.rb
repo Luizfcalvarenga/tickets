@@ -3,14 +3,14 @@ class OrdersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
   
   def create
-    order = Order.create(user: current_user)
+    order = Order.create(user: current_user, status: "confirmed")
 
     ActiveRecord::Base.transaction do
       order_items_params.each do |order_item_params|
         order_item_params[:quantity].to_i.times do 
           OrderItem.create(order: order,
             event_batch_id: order_item_params[:event_batch_id],
-            day_use_id: order_item_params[:day_use_id],
+            day_use_schedule_id: order_item_params[:day_use_schedule_id],
             price_in_cents: order_item_params[:price_in_cents],
           )
         end
@@ -32,6 +32,6 @@ class OrdersController < ApplicationController
   private
 
   def order_items_params
-    params.require(:order).permit(order_items: [:event_batch_id, :day_use_id, :quantity, :price_in_cents])[:order_items]
+    params.require(:order).permit(order_items: [:event_batch_id, :day_use_schedule_id, :quantity, :price_in_cents])[:order_items]
   end
 end

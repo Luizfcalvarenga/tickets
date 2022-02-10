@@ -17,13 +17,13 @@ class PartnersController < ApplicationController
     @events = @partner.events.where.not(id: current_user&.events&.ids)
     @day_uses = @partner.day_uses
     @weekdays = [
-      {value: "sunday", label: "Domingo", day_uses: @day_uses.open_for_weekday("sunday"), order: 0 },
-      {value: "monday", label: "Segunda-feira", day_uses: @day_uses.open_for_weekday("monday"), order: 1 },
-      {value: "tuesday", label: "Terça-feira", day_uses: @day_uses.open_for_weekday("tuesday"), order: 2},
-      {value: "wednesday", label: "Quarta-feira", day_uses: @day_uses.open_for_weekday("wednesday"), order: 3},
-      {value: "thursday", label: "Quinta-feira", day_uses: @day_uses.open_for_weekday("thursday"), order: 4},
-      {value: "friday", label: "Sexta-feira", day_uses: @day_uses.open_for_weekday("friday"), order: 5},
-      {value: "saturday", label: "Sábado", day_uses: @day_uses.open_for_weekday("saturday"), order: 6},
+      {value: "sunday", label: "Domingo", day_uses: @day_uses.open_for_weekday("sunday"), order: 0, date: next_date_for_weekday("sunday")},
+      {value: "monday", label: "Segunda-feira", day_uses: @day_uses.open_for_weekday("monday"), order: 1, date: next_date_for_weekday("monday")},
+      {value: "tuesday", label: "Terça-feira", day_uses: @day_uses.open_for_weekday("tuesday"), order: 2, date: next_date_for_weekday("tuesday")},
+      {value: "wednesday", label: "Quarta-feira", day_uses: @day_uses.open_for_weekday("wednesday"), order: 3, date: next_date_for_weekday("wednesday")},
+      {value: "thursday", label: "Quinta-feira", day_uses: @day_uses.open_for_weekday("thursday"), order: 4, date: next_date_for_weekday("thursday")},
+      {value: "friday", label: "Sexta-feira", day_uses: @day_uses.open_for_weekday("friday"), order: 5, date: next_date_for_weekday("friday")},
+      {value: "saturday", label: "Sábado", day_uses: @day_uses.open_for_weekday("saturday"), order: 6, date: next_date_for_weekday("saturday")},
     ]
     current_weekday_value = Time.current.wday
     @weekdays = @weekdays.select { |wd| wd[:order] >= current_weekday_value } + @weekdays.select { |wd| wd[:order] < current_weekday_value }

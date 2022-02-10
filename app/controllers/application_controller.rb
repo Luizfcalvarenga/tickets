@@ -42,4 +42,10 @@ class ApplicationController < ActionController::Base
   def after_sign_up_path_for(resource)
     dashboard_path_for_user(resource)
   end
+
+  def next_date_for_weekday(weekday_name)
+    return Date.today if Time.current.strftime("%A").downcase.to_sym == weekday_name.downcase.to_sym
+
+    Date.today.next_occurring(weekday_name.downcase.to_sym)
+  end
 end

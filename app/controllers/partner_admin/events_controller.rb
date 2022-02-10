@@ -2,15 +2,11 @@ module PartnerAdmin
   class EventsController < ApplicationController
     def show
       @event = Event.find(params[:id])
-      @users = User.select('distinct(users.id), users.email, users.access').joins(passes: :event)
-        .joins("left join accesses on accesses.event_id = events.id")
-        .where(events: { id: @event.id })
       @passes = @event.passes
-      @accesses = @event.accesses
 
       respond_to do |format|
         format.html
-        format.csv { send_data @users.to_csv }
+        format.csv { send_data @event.passes_csv }
       end
     end
 

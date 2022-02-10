@@ -6,11 +6,11 @@ class Event < ApplicationRecord
 
   has_one_attached :photo
   has_many :event_batches, dependent: :destroy
+  has_many :passes, through: :event_batches
   has_many :accesses
   has_many :event_questions, dependent: :destroy
   has_many :event_communications
   
-  has_many :passes
   has_many :accesses
   has_many :membership_discounts
   has_many :memberships, through: :membership_discounts
@@ -22,6 +22,18 @@ class Event < ApplicationRecord
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
   def open_batches
-    event_batches.available.joins("left join event_batches eb on event_batches.pass_type = eb.pass_type and event_batches.order > eb.order").where("eb.order is null").order(:order)
+    event_batches.available.pluck(:pass_type).uniq.map do |pass_type|
+      event_batches.available.where(pass_type: pass_type).order(:order).first      
+    end
+  end
+
+  def passes_csv
+    attributes = ["Email", "Acesso", "Tipo do passe", "Lote", "Valor pago"] + event_questions.order("event_questions.order").map(&:prompt)
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      passes.each do |pass|
+        csv << [pass.user.email, nil, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:event_question).order("event_questions.order").map(&:value)
+      end
+    end
   end
 end

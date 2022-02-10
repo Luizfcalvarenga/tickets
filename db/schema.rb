@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "day_use_schedules", force: :cascade do |t|
     t.string "weekday"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.time "start_time"
+    t.time "end_time"
     t.integer "price_in_cents"
     t.bigint "day_use_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -196,11 +196,11 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "event_batch_id"
-    t.bigint "day_use_id"
+    t.bigint "day_use_schedule_id"
     t.integer "price_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["day_use_id"], name: "index_order_items_on_day_use_id"
+    t.index ["day_use_schedule_id"], name: "index_order_items_on_day_use_schedule_id"
     t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
   end
@@ -249,21 +249,24 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "passes", force: :cascade do |t|
     t.string "qrcode_svg"
+    t.string "name"
     t.string "identifier"
     t.bigint "event_id"
     t.bigint "event_batch_id"
     t.bigint "membership_id"
-    t.bigint "day_use_id"
+    t.bigint "day_use_schedule_id"
+    t.bigint "partner_id"
     t.bigint "order_item_id"
     t.bigint "user_id", null: false
     t.decimal "amount_paid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["day_use_id"], name: "index_passes_on_day_use_id"
+    t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
     t.index ["event_id"], name: "index_passes_on_event_id"
     t.index ["membership_id"], name: "index_passes_on_membership_id"
     t.index ["order_item_id"], name: "index_passes_on_order_item_id"
+    t.index ["partner_id"], name: "index_passes_on_partner_id"
     t.index ["user_id"], name: "index_passes_on_user_id"
   end
 
@@ -345,7 +348,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "membership_discounts", "day_uses"
   add_foreign_key "membership_discounts", "events"
   add_foreign_key "membership_discounts", "memberships"
-  add_foreign_key "order_items", "day_uses"
+  add_foreign_key "order_items", "day_use_schedules"
   add_foreign_key "order_items", "event_batches"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
@@ -353,11 +356,12 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "partners", "cities"
   add_foreign_key "partners", "states"
   add_foreign_key "partners", "users", column: "main_contact_id"
-  add_foreign_key "passes", "day_uses"
+  add_foreign_key "passes", "day_use_schedules"
   add_foreign_key "passes", "event_batches"
   add_foreign_key "passes", "events"
   add_foreign_key "passes", "memberships"
   add_foreign_key "passes", "order_items"
+  add_foreign_key "passes", "partners"
   add_foreign_key "passes", "users"
   add_foreign_key "question_answers", "event_questions"
   add_foreign_key "question_answers", "order_items"

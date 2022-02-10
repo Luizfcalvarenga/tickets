@@ -32,13 +32,13 @@
   <h2>Day Uses disponíveis</h2>
 
   <% @weekdays.each do |weekday| %>
-    <p><%= weekday[:label] %></p>
+    <p><%= weekday[:label] %> - <%= weekday[:date].strftime("%d/%m/%Y") %></p>
 
     <% weekday[:day_uses].each do |day_use| %>
         <div class="bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
         <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= day_use.name %></p>
 
-        <%= link_to day_use_path(weekday[:value]), class: "col-12 col-md-4" do %>
+        <%= link_to day_use_path(day_use, weekday[:value]), class: "col-12 col-md-4" do %>
           <p class="btn btn-primary m-0">Comprar</p>
         <% end %>
       </div>

@@ -3,7 +3,7 @@ class CreateOrderItems < ActiveRecord::Migration[6.1]
     create_table :order_items do |t|
       t.references :order, null: false, foreign_key: true
       t.references :event_batch, foreign_key: true
-      t.references :day_use, foreign_key: true
+      t.references :day_use_schedule, foreign_key: true
       t.integer :price_in_cents
 
       t.timestamps

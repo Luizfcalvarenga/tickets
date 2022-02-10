@@ -10,10 +10,24 @@ class OrderPassesGenerator
       # identifier = "#{"%04d" %  order_item.order.user_id}#{"%04d" %  order_item.order.user.passes.count}"
       identifier = SecureRandom.uuid
 
-      Pass.create(
+      name = if order_item.event_batch.present?
+        "#{order_item.event_batch.event.name} - #{order_item.event_batch.name}"
+      elsif order_item.day_use_schedule.present?
+        "#{order_item.day_use_schedule.day_use.name} - #{next_date_for_weekday(order_item.day_use_schedule.weekday).strftime("%d/%m/%Y")}"
+      end
+
+      partner_id = if order_item.event_batch.present?
+        order_item.event_batch.event.partner_id
+      elsif order_item.day_use_schedule.present?
+        order_item.day_use_schedule.day_use.partner_id
+      end
+
+      pass = Pass.create(
         identifier: identifier,
+        name: name,
+        partner_id: partner_id,
         event_batch_id: order_item.event_batch_id,
-        day_use_id: order_item.day_use_id,
+        day_use_schedule_id: order_item.day_use_schedule_id,
         user: order_item.order.user,
         order_item: order_item,
         qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
@@ -25,5 +39,13 @@ class OrderPassesGenerator
         ),
       )
     end
+  end
+
+  private
+
+  def next_date_for_weekday(weekday_name)
+    return Date.today if Time.current.strftime("%A").downcase.to_sym == weekday_name.downcase.to_sym
+
+    Date.today.next_occurring(weekday_name.downcase.to_sym)
   end
 end

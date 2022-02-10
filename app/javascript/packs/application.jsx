@@ -21,6 +21,7 @@ import { ReactPage } from "../react_pages/ReactPage";
 import { EventQuestions } from "../react_pages/EventQuestions";
 import { EventBatches } from "../react_pages/EventBatches";
 import { EventOrderItems } from "../react_pages/EventOrderItems";
+import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
 
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
@@ -69,7 +70,30 @@ const loadReactComponent = () => {
       EventBatches: <EventBatches />,
       EventOrderItems: (
         <EventOrderItems
-          eventBatches={container.dataset.eventBatches ? JSON.parse(container.dataset.eventBatches) : null}
+          eventBatches={
+            container.dataset.eventBatches
+              ? JSON.parse(container.dataset.eventBatches)
+              : null
+          }
+        />
+      ),
+      DayUseOrderItems: (
+        <DayUseOrderItems
+          dayUse={
+            container.dataset.dayUse
+              ? JSON.parse(container.dataset.dayUse)
+              : null
+          }
+          dayUseSchedule={
+            container.dataset.dayUseSchedule
+              ? JSON.parse(container.dataset.dayUseSchedule)
+              : null
+          }
+          dayUseScheduleName={
+            container.dataset.dayUseScheduleName
+              ? JSON.parse(container.dataset.dayUseScheduleName)
+              : null
+          }
         />
       ),
     };

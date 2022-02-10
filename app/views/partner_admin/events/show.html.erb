@@ -6,17 +6,18 @@
     </div>
   <% end %>
 
-  <% @event.event_batches.each do |batch| %>
+  <% @event.event_batches.each do |event_batch| %>
     <div class="bg-primary-color flex center around p-4 br-8 my-4">
-      <p class="f-24 fw-700 m-0 f-1x"><%= batch.name %></p>
-      <p class="f-24 m-0 f-1x"><%= number_to_currency(batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
-      <p class="f-24 fw-700 m-0 f-1x"><%= batch.passes.count %>/<%= batch.quantity %></p>
-      <% if batch.ended_at.present? %>
-        <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= batch.ended_at.strftime("%d/%m às %H:%M:%S") %></p>
-      <% elsif batch == @event.current_batch %>
+      <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
+      <p class="f-24 m-0 f-1x"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
+      <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
+      <p class="f-24 fw-700 m-0 f-1x">Finaliza em <%= event_batch.ends_at.strftime("%d/%m") %></p>
+      <% if event_batch.in_sales? %>
         <p class="success-text br-8 p-3 m-0 f-1x text-center">Em vendas</p>
-      <% else %>
+      <% elsif event_batch.available? %>
         <p class="info-text br-8 p-3 m-0 f-1x text-center">Em aberto</p>
+      <% else %>
+        <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= event_batch.ended_at_datetime.strftime("%d/%m às %H:%M:%S") %></p>
       <% end %>
     </div>
   <% end %>
@@ -27,7 +28,7 @@
   <% end %>
 
   <h3 class="title">Lista de convidados</h3>
-  <p><b> Total de convidados: </b> <%= @users.length %> | <b> Total de acessos: </b> <%= @accesses.count %> </p>
+  <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
   <%= link_to partner_admin_event_path(format: "csv") do %>
     <p class="btn btn-primary m-0 mb-3">Baixar CSV</p>
@@ -48,7 +49,7 @@
         <tr>
           <td data-label="Email"><%= pass.user.email %></td>
           <td>
-            <% access = @accesses.find_by(user: pass.user) %>
+            <% access = Access.find_by(pass: pass) %>
             <% if access.present? %>
               <p class="text-success m-0"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></p>
             <% end %>
