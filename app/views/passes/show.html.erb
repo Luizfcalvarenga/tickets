@@ -17,6 +17,8 @@
         </div>
         <div>
           <p class="my-3 text-center mt-5 text-dark"><%= @pass.identifier %></p>
+          <p class="my-3 text-center mt-5 text-dark">Nome: <%= @pass.user.name%></p>
+          <p class="my-3 text-center mt-5 text-dark">Documento: <%= @pass.user.document_type %> - Número: <%= @pass.user.document_number%></p>
         </div>
       </div>
     </div>

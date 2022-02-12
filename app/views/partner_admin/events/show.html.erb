@@ -37,6 +37,7 @@
   <table>
     <thead>
       <tr>
+        <th scope="col">Nome</th>
         <th scope="col">Email</th>
         <th scope="col">Acesso</th>
         <% @event.event_questions.order(:order).each do |event_question| %>
@@ -47,6 +48,7 @@
     <tbody>
       <% @passes.each do |pass| %>
         <tr>
+          <td data-label="Nome"><%= pass.user.name %></td>
           <td data-label="Email"><%= pass.user.email %></td>
           <td>
             <% access = Access.find_by(pass: pass) %>

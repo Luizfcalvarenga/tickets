@@ -20,7 +20,11 @@ puts "Criando usuários, partner_users, partner e memberships..."
 User.create!(email: "admin@app.com", password: "123456", access: "admin") 
 
 (1..5).each do |user|
-  User.create!(email: "user" + user.to_s + "@app.com", password: "123456", access: "user") 
+  if user == 1
+    User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
+  else
+    User.create!(email: "user" + user.to_s + "@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
+  end
 end
 
 (1..5).each do |partner|
