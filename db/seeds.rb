@@ -11,6 +11,9 @@ Read.destroy_all
 Pass.destroy_all
 Event.destroy_all
 User.destroy_all
+Membership.destroy_all
+DayUse.destroy_all
+DayUseSchedule.destroy_all
 
 puts "Criando usuários, partner_users, partner e memberships..."
 
@@ -40,7 +43,7 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           address_complement: "",
                           city: city,
                           state: state,
-                          about: "Morbi enim nunc faucibus a pellentesque sit amet porttitor. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Mi sit amet mauris commodo quis imperdiet massa tincidunt nunc. Arcu odio ut sem nulla pharetra diam sit amet.",
+                          about: "Morbi enim nunc faucibus a pellentesque sit amet porttitor. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Mi sit ame mauris commodo quis imperdiet massa tincidunt nunc. Arcu odio ut sem nulla pharetra diam sit amet.",
                           kind: "partner",
                           )
                           
@@ -75,7 +78,7 @@ puts 'Criando eventos...'
   )
   
   event = Event.last
-  url = Faker::LoremFlickr.image(size: "1024x720", search_terms: ['mountain+bike', 'downhill+bike+race', 'speed+bike+race'])
+  url = Faker::LoremFlickr.image(size: "640x480", search_terms: ['bike+race'])
   filename = File.basename(URI.parse(url.to_s).path)
   file = URI.open(url.to_s)
   event.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
@@ -116,4 +119,4 @@ rand(1..8).times do |dayuse|
 )
 end
 
-puts "All done!"
+puts "All done!!!"
