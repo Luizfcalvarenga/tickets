@@ -45,6 +45,10 @@ gem 'font-awesome-sass'
 gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'rexml'
+
+# mover para apenas development depois de testar em produção
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+
 group :development, :test do  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
