@@ -25,6 +25,13 @@ User.create!(email: "admin@app.com", password: "123456", access: "admin")
   else
     User.create!(email: "user" + user.to_s + "@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
   end
+
+  user = User.last
+  url = "https://placebeard.it/640x360"
+  filename = File.basename(URI.parse(url).path)
+  file = URI.open(url.to_s)
+  user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+
 end
 
 (1..5).each do |partner|
@@ -33,6 +40,12 @@ end
   else
     User.create!(email: "partner" + partner.to_s + "@app.com", password: "123456", access: "partner_admin")
   end
+  
+  user = User.last
+  url = "https://placebeard.it/640x360"
+  filename = File.basename(URI.parse(url).path)
+  file = URI.open(url.to_s)
+  user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 end
 
 state = State.find_by(name: "Minas Gerais")
@@ -59,7 +72,7 @@ User.where(access: "partner_admin").update(partner: Partner.first)
 
 (1..3).each do |assinatura|
   puts "Criando assinatura " + assinatura.to_s + "..."
-  Membership.create!(name: assinatura.to_s, price_in_cents: [20, 50, 100].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
+  Membership.create!(name: assinatura.to_s, price_in_cents: [2000, 5000, 10000].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
 end
 
 puts "-- OK!"
@@ -94,7 +107,7 @@ end
                     name: ['Primeiro lote', 'Segundo lote'].sample,
                     quantity: [10, 20, 30, 40].sample,
                     pass_type: %w[Arquibancada Pista Camarote VIP].sample,
-                    price_in_cents: [20, 50, 75, 100].pop,
+                    price_in_cents: [2000, 5000, 7500, 10000].pop,
                     ends_at: Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now),
   )
 end
@@ -119,7 +132,7 @@ rand(1..8).times do |dayuse|
                           weekday: %w[monday tuesday wednesday thursday friday saturday sunday].sample,
                           start_time: Time.new.beginning_of_day + rand(0..3).hours,
                           end_time: Time.new.middle_of_day + rand(0..6).hours,
-                          price_in_cents: [25, 50, 75, 100].sample,
+                          price_in_cents: [2500, 5000, 7500, 10000].sample,
 )
 end
 

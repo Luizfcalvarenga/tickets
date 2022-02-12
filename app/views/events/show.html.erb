@@ -73,7 +73,7 @@
 <div class="page-wrapper">
   <h1 class="title"><%= @event.name %></h1>
   <% if @event.photo.attached? %>
-    <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @event.photo.key, height: 300, crop: :fill %>')">
+    <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @event.photo.key, height: 300, crop: :fit %>')">
     </div>
   <% end %>
 
