@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "day_use_schedules", force: :cascade do |t|
     t.string "weekday"
+    t.string "name"
     t.time "start_time"
     t.time "end_time"
     t.integer "price_in_cents"
@@ -197,6 +198,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "order_id", null: false
     t.bigint "event_batch_id"
     t.bigint "day_use_schedule_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.integer "price_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -258,6 +261,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "partner_id"
     t.bigint "order_item_id"
     t.bigint "user_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.decimal "amount_paid"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

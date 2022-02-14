@@ -89,9 +89,9 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.dayUseSchedule)
               : null
           }
-          dayUseScheduleName={
-            container.dataset.dayUseScheduleName
-              ? JSON.parse(container.dataset.dayUseScheduleName)
+          date={
+            container.dataset.date
+              ? JSON.parse(container.dataset.date)
               : null
           }
         />

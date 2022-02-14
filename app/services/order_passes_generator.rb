@@ -30,6 +30,8 @@ class OrderPassesGenerator
         day_use_schedule_id: order_item.day_use_schedule_id,
         user: order_item.order.user,
         order_item: order_item,
+        start_time: order_item.start_time,
+        end_time: order_item.end_time,
         qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
           color: "000",
           shape_rendering: "crispEdges",

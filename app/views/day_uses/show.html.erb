@@ -9,12 +9,16 @@
     <%= @day_use.description %>
   </p>
   
-  <%= simple_form_for(@order) do |f| %>
-    <react data-component="DayUseOrderItems" 
-      data-day-use="<%= @day_use.to_json %>" 
-      data-day-use-schedule="<%= @day_use_schedule.to_json %>"
-      data-day-use-schedule-name="<%= @day_use_schedule_name.to_json %>"></react>
+  <% if @day_use_schedule.open? %>
+    <%= simple_form_for(@order) do |f| %>
+      <react data-component="DayUseOrderItems" 
+        data-day-use="<%= @day_use.to_json %>" 
+        data-day-use-schedule="<%= @day_use_schedule.to_json %>"
+        data-date="<%= @date.to_json %>"></react>
 
-    <%= f.submit "Comprar ingressos", class: "btn btn-primary mt-5 w-100 p-3" %>
+      <%= f.submit "Comprar ingressos", class: "btn btn-primary mt-5 w-100 p-3" %>
+    <% end %>
+  <% else %>
+    <p class="danger-text p-4 br-8">Nenhum ingresso disponível para essa data.</p>
   <% end %>
 </div>

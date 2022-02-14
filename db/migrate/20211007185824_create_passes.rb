@@ -11,6 +11,8 @@ class CreatePasses < ActiveRecord::Migration[6.1]
       t.references :partner, foreign_key: true
       t.references :order_item, foreign_key: true
       t.references :user, null: false, foreign_key: true
+      t.datetime :start_time
+      t.datetime :end_time
       t.decimal :amount_paid
 
       t.timestamps

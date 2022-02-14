@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export function DayUseOrderItems(props) {
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(0);
 
   const updateQuantity = (amount) => {
     if (quantity === 0 && amount < 0) return;
@@ -10,7 +10,24 @@ export function DayUseOrderItems(props) {
   };
 
   const cartTotalInCents = () => {
-    return props.dayUseSchedule.price_in_cents * quantity
+    return props.dayUseSchedule.price_in_cents * quantity;
+  };
+
+  const startTime = () => {
+    const timeObject = new Date(props.date);
+    timeObject.setHours(
+      new Date(props.dayUseSchedule.start_time).getHours(),
+      new Date(props.dayUseSchedule.start_time).getMinutes()
+    );
+    return timeObject;
+  };
+  const endTime = () => {
+    const timeObject = new Date(props.date);
+    timeObject.setHours(
+      new Date(props.dayUseSchedule.end_time).getHours(),
+      new Date(props.dayUseSchedule.end_time).getMinutes()
+    );
+    return timeObject;
   };
 
   return (
@@ -54,6 +71,16 @@ export function DayUseOrderItems(props) {
             type="hidden"
             name="order[order_items][][day_use_schedule_id]"
             value={props.dayUseSchedule.id}
+          />
+          <input
+            type="hidden"
+            name="order[order_items][][start_time]"
+            value={startTime()}
+          />
+          <input
+            type="hidden"
+            name="order[order_items][][end_time]"
+            value={endTime()}
           />
           <input
             type="hidden"

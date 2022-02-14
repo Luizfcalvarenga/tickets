@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export function EventOrderItems(props) {
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
@@ -12,6 +12,7 @@ export function EventOrderItems(props) {
       };
     })
   );
+
 
   const updateQuantity = (batchIndex, amount) => {    
     const currentBatches = [...batchesInfosAndQuantities];
@@ -78,6 +79,11 @@ export function EventOrderItems(props) {
                 type="hidden"
                 name="order[order_items][][quantity]"
                 value={batch.quantity}
+              />
+              <input
+                type="hidden"
+                name="order[order_items][][schedule_datetime]"
+                value={new Date()}
               />
               <input
                 type="hidden"
