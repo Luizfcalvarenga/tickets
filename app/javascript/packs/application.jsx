@@ -70,6 +70,9 @@ const loadReactComponent = () => {
       EventBatches: <EventBatches />,
       EventOrderItems: (
         <EventOrderItems
+          event={
+            container.dataset.event ? JSON.parse(container.dataset.event) : null
+          }
           eventBatches={
             container.dataset.eventBatches
               ? JSON.parse(container.dataset.eventBatches)
@@ -90,9 +93,7 @@ const loadReactComponent = () => {
               : null
           }
           date={
-            container.dataset.date
-              ? JSON.parse(container.dataset.date)
-              : null
+            container.dataset.date ? JSON.parse(container.dataset.date) : null
           }
         />
       ),
@@ -117,14 +118,19 @@ const loadToastr = () => {
 
 const fillInputs = () => {
   document.querySelectorAll("textarea").forEach((textarea) => {
-    textarea.innerHTML = textarea.dataset.fillInnerHtml || ""
-  })
-}
+    textarea.innerHTML = textarea.dataset.fillInnerHtml || "";
+  });
+  document.querySelectorAll("input").forEach((input) => {
+    if (input.value || !input.dataset.fillInnerHtml) return;
+    
+    input.value = input.dataset.fillInnerHtml || "";
+  });
+};
 
 document.addEventListener("turbolinks:load", () => {
   loadReactComponent();
   loadToastr();
   fillInputs();
-  
+
   flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese });
 });

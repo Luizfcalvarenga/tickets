@@ -24,6 +24,7 @@ module PartnerAdmin
         day_use_schedule_params.each do |day_use_schedule_param|
           DayUseSchedule.create!(
             weekday: day_use_schedule_param[:weekday],
+            name: day_use_schedule_param[:name],
             start_time: day_use_schedule_param[:start_time],
             end_time: day_use_schedule_param[:end_time],
             price_in_cents: day_use_schedule_param[:price_in_cents],
@@ -43,7 +44,7 @@ module PartnerAdmin
     end
 
     def day_use_schedule_params
-      params.require(:day_use).permit(day_use_schedules: [:weekday, :start_time, :end_time, :price_in_cents])[:day_use_schedules]
+      params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :start_time, :end_time, :price_in_cents])[:day_use_schedules]
     end
   end
 end

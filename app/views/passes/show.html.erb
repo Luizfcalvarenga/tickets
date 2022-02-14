@@ -9,17 +9,22 @@
           <%= cl_image_tag @pass.partner.logo.key, height: 200, width: 220, crop: :fit %>
           </div>
         <% end %>
-          <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.partner.name %></h1>
-          <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.name %></h1>
+        <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.partner.name %></h1>
+        <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.name %></h1>
         </div>
+        <% if @pass.start_time.present? %>
+          <p class="text-dark text-center"><i class="fa fa-clock fs-20 px-3"></i><%= @pass.start_time.strftime("%d/%m/%Y %H:%M") %><%= @pass.end_time.present? && " até #{@pass.end_time.strftime("%d/%m/%Y %H:%M")}" %></p>
+        <% end %>
         <div class="mx-auto text-center">
           <%= @pass.qrcode_svg.html_safe %>
         </div>
+        <p class="mb-5 mt-2 text-center text-dark"><%= @pass.identifier %></p>
+
         <div>
-          <p class="my-3 text-center mt-5 text-dark"><%= @pass.identifier %></p>
-          <p class="my-3 text-center mt-5 text-dark">Nome: <%= @pass.user.name%></p>
-          <p class="my-3 text-center mt-5 text-dark">Documento: <%= @pass.user.document_type %> - Número: <%= @pass.user.document_number%></p>
-        </div>
+          <p class="text-center text-dark m-0">Nome: <%= @pass.holder_name %></p>
+          <p class="text-center text-dark">CPF: <%= cpf_mask(@pass.holder_cpf) %></p>
+       </div>
+
       </div>
     </div>
   </div>

@@ -11,9 +11,9 @@ class OrderPassesGenerator
       identifier = SecureRandom.uuid
 
       name = if order_item.event_batch.present?
-        "#{order_item.event_batch.event.name} - #{order_item.event_batch.name}"
+        "#{order_item.event_batch.event.name} - #{order_item.event_batch.pass_type} - #{order_item.event_batch.name}"
       elsif order_item.day_use_schedule.present?
-        "#{order_item.day_use_schedule.day_use.name} - #{next_date_for_weekday(order_item.day_use_schedule.weekday).strftime("%d/%m/%Y")}"
+        "#{order_item.day_use_schedule.day_use.name} - #{order_item.day_use_schedule.name} - #{order_item.start_time.strftime("%d/%m/%Y")}"
       end
 
       partner_id = if order_item.event_batch.present?

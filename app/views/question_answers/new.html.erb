@@ -10,11 +10,11 @@
   <%= simple_form_for([@order, @question_answer]) do |f| %>
     <% @order_items.each_with_index do |order_item, index| %>
       <div class="mb-5 p-4 bg-dark">
-        <p>Ingresso #<%= index + 1 %> <%= order_item.event_batch.pass_type %> - <%= order_item.event_batch.name %> </p>
+        <p><span class="fw-700">Ingresso #<%= index + 1 %>:</span> <%= order_item.event_batch.pass_type %> - <%= order_item.event_batch.name %> </p>
 
         <% order_item.event_batch.event_questions.each_with_index do |event_question, index| %>
-          <p>Pergunta <%= index + 1 %>: <%= event_question.prompt %></p>
-          <div class="my-4">
+          <p class="mb-3">Pergunta <%= index + 1 %>: <%= event_question.prompt %></p>
+          <div class="my-2">
             <input
               type="hidden"
               name="event_user_answers[][order_item_id]"
@@ -44,12 +44,21 @@
                 <% end %>
               </select>
             <% else %>
-              <textarea
-                class="form-control my-2 f-60"
-                type="text"
-                name="event_user_answers[][value]"
-                data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
-                placeholder="Sua resposta..."></textarea>
+              <% if ["Nome completo", "CPF"].include?(event_question.prompt) %>
+                <input
+                  type="text"
+                  name="event_user_answers[][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
+                  class="w-100"
+                />
+              <% else %>
+                <textarea
+                  class="form-control my-2 f-60"
+                  type="text"
+                  name="event_user_answers[][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
+                  placeholder="Sua resposta..."></textarea>
+              <% end %>
               
               <% if @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.errors&.present? %>
                 <p class="text-danger"><%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }.errors.full_messages.first %></p>

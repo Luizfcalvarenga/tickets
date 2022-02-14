@@ -13,8 +13,7 @@ export function EventOrderItems(props) {
     })
   );
 
-
-  const updateQuantity = (batchIndex, amount) => {    
+  const updateQuantity = (batchIndex, amount) => {
     const currentBatches = [...batchesInfosAndQuantities];
 
     const editedBatchItem = currentBatches[batchIndex];
@@ -34,7 +33,22 @@ export function EventOrderItems(props) {
         batchInfosAndQuantities.quantity * batchInfosAndQuantities.priceInCents,
       0
     );
-  }
+  };
+
+  const startTime = () => {
+    const date = new Date(props.event.scheduled_start);
+    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const timeObject = new Date(date.getTime() + userTimezoneOffset);
+
+    return timeObject;
+  };
+  const endTime = () => {
+    const date = new Date(props.event.scheduled_end);
+    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const timeObject = new Date(date.getTime() + userTimezoneOffset);
+
+    return timeObject;
+  };
 
   return (
     <div className="event-batches-order">
@@ -82,8 +96,13 @@ export function EventOrderItems(props) {
               />
               <input
                 type="hidden"
-                name="order[order_items][][schedule_datetime]"
-                value={new Date()}
+                name="order[order_items][][start_time]"
+                value={startTime()}
+              />
+              <input
+                type="hidden"
+                name="order[order_items][][end_time]"
+                value={endTime()}
               />
               <input
                 type="hidden"
@@ -104,8 +123,6 @@ export function EventOrderItems(props) {
           })}
         </span>
       </p>
-
-
     </div>
   );
 }

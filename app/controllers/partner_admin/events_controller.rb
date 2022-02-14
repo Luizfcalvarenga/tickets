@@ -31,6 +31,8 @@ module PartnerAdmin
               ends_at: batch_params[:ends_at],
               order: batch_params[:order])
           end
+
+          event.create_default_event_questions
         
           event_questions_params.each do |event_question_params|
             event_question = EventQuestion.create!(
@@ -39,7 +41,7 @@ module PartnerAdmin
               prompt: event_question_params[:prompt],
               optional: event_question_params[:optional].present?,
               options: event_question_params[:options],
-              order: event_question_params[:order],
+              order: event.event_questions.count,
             )
             event.event_batches.each do |event_batch|
               EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)

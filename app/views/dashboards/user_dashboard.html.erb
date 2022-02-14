@@ -11,28 +11,26 @@
   <div class="p-5">
     <% @passes.each do |pass| %>
       <div class="pass bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= pass.name %></p>
+        <div class="f-20 col-12 col-md-4">
+          <p class="text-white p-0 mb-0 fw-700"><%= pass.name %></p>
+          <p class="text-white p-0 mb-0"><%= pass.holder_name %></p>
+          <p class="text-white p-0 mb-0"><%= pass.partner.name %></p>
+        </div>
         <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
           <p class="btn btn-primary m-0 w-100">Ver</p>
         <% end %>
-        <% if pass.reads.exists? %>
-          <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
+        <% if pass.user_membership.present? %>
+          <% if pass.user_membership.active? %>
+            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Ativo</p>
+          <% else %>
+            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Inativo</p>
+          <% end %>
         <% else %>
-          <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
-        <% end %>
-      </div>
-    <% end %>  
-  </div>
-
-  <h2>Minhas assinaturas</h2>
-
-  <div class="p-5">
-    <% @user_memberships.each do |user_membership| %>
-      <div class="bg-dark w-100 p-4 br-8 text-white row mb-2 flex center start">
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
-        <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
-        <%= link_to user_membership_path(user_membership), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
-          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
+          <% if pass.reads.blank? %>
+            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
+          <% else %>
+            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
+          <% end %>
         <% end %>
       </div>
     <% end %>  

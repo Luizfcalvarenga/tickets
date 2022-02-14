@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment-strftime";
 
 export function DayUseOrderItems(props) {
   const [quantity, setQuantity] = useState(0);
@@ -14,19 +15,27 @@ export function DayUseOrderItems(props) {
   };
 
   const startTime = () => {
-    const timeObject = new Date(props.date);
+    const date = new Date(props.date)
+    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const timeObject = new Date(date.getTime() + userTimezoneOffset);
+
     timeObject.setHours(
       new Date(props.dayUseSchedule.start_time).getHours(),
       new Date(props.dayUseSchedule.start_time).getMinutes()
     );
+
     return timeObject;
   };
   const endTime = () => {
-    const timeObject = new Date(props.date);
+    const date = new Date(props.date);
+    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+    const timeObject = new Date(date.getTime() + userTimezoneOffset);
+
     timeObject.setHours(
       new Date(props.dayUseSchedule.end_time).getHours(),
       new Date(props.dayUseSchedule.end_time).getMinutes()
     );
+
     return timeObject;
   };
 
@@ -39,7 +48,8 @@ export function DayUseOrderItems(props) {
       <div className="body border-white border">
         <div className="border-bottom border-white p-4 flex center between">
           <p className="m-0 f-60">
-            {props.dayUse.name} - {props.dayUseScheduleName}
+            {props.dayUse.name} - {props.dayUseSchedule.name}
+             - {moment(startTime()).strftime("%d/%m/%Y")}
           </p>
           <p className="m-0 f-20">
             {(props.dayUseSchedule.price_in_cents / 100).toLocaleString(

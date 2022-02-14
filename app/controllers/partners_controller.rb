@@ -14,7 +14,7 @@ class PartnersController < ApplicationController
       redirect_to root_path and return
     end
 
-    @events = @partner.events.where.not(id: current_user&.events&.ids)
+    @events = @partner.events
     @day_uses = @partner.day_uses
     @weekdays = [
       {value: "sunday", label: "Domingo", day_uses: @day_uses.open_for_weekday("sunday"), order: 0, date: next_date_for_weekday("sunday")},

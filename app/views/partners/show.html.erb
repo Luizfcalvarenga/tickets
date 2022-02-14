@@ -12,17 +12,22 @@
   <% end %>
   <h1 class="title text-center"><%= @partner.name %></h1>
 
-  <h2>Eventos disponíveis</h2>
-
-  <% @events.each do |event| %>
-    <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
-
-      <%= link_to event_path(event), class: "col-12 col-md-4" do %>
-        <p class="btn btn-primary m-0">Ver evento</p>
-      <% end %>
-    </div>
-  <% end %>
+  <h2>Eventos</h2>
+  
+  <div class="row">
+    <% @events.each do |event| %>
+      <div class="col-4 mb-3">
+        <%= link_to event_path(event)do %>
+          <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
+            <div class="flex center between w-100">
+              <p class="text-white mb-0"><%= event.name %></p>
+              <p class="text-white mb-0"><%= event.scheduled_start.strftime("%d/%m") %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
   <% if @events.blank? %>
     <p class="text-white">Nenhum evento programado até o momento.</p>
   <% end %>
@@ -32,20 +37,27 @@
   <h2>Day Uses disponíveis</h2>
 
   <% @weekdays.each do |weekday| %>
-    <p><%= weekday[:label] %> - <%= weekday[:date].strftime("%d/%m/%Y") %></p>
+    <div class="mb-5">
+      <p><%= weekday[:label] %> - <%= weekday[:date].strftime("%d/%m/%Y") %></p>
 
-    <% weekday[:day_uses].each do |day_use| %>
-        <div class="bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= day_use.name %></p>
-
-        <%= link_to day_use_path(day_use, weekday[:value]), class: "col-12 col-md-4" do %>
-          <p class="btn btn-primary m-0">Comprar</p>
+      <div class="row">
+        <% weekday[:day_uses].each do |day_use| %>
+          <div class="col-4 mb-3">
+            <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
+              <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.photo.key, height: 300, crop: :fill %>')">
+                <div class="flex center between w-100">
+                  <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
+                </div>
+              </div>
+            <% end %>
+          </div>
         <% end %>
       </div>
-    <% end %>
-    <% if weekday[:day_uses].blank? %>
-      <p class="text-white">Nenhum day use programado para esse dia.</p>
-    <% end %>
+
+      <% if weekday[:day_uses].blank? %>
+        <p class="text-white">Nenhum day use programado para esse dia.</p>
+      <% end %>
+    </div>
   <% end %>  
 
   <h2>Assinaturas disponíveis</h2>

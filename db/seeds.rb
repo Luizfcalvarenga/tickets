@@ -70,7 +70,7 @@ partner.update(main_contact: User.where(access: "partner_admin").first)
 
 User.where(access: "partner_admin").update(partner: Partner.first)
 
-(1..3).each do |assinatura|
+["Mensalista básico", "Mensalista premium", "Mensalista VIP"].each do |assinatura|
   puts "Criando assinatura " + assinatura.to_s + "..."
   Membership.create!(name: assinatura.to_s, price_in_cents: [2000, 5000, 10000].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
 end
@@ -78,62 +78,67 @@ end
 puts "-- OK!"
 
 puts 'Criando eventos...'
-2.times do Event.create!(name: Faker::WorldCup.stadium,
-                        description: Faker::TvShows::Suits.quote,
-                        scheduled_start: Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now),
-                        scheduled_end: Faker::Date.between(from: Date.today, to: rand(15..30).days.from_now),
-                        partner: Partner.first,
-                        state: state,
-                        city: city,
-                        street_name: "Av. Antônio Abrahão Caram",
-                        street_number: "1001",
-                        neighborhood: "São José",
-                        cep: "30310700",
-                        address_complement: "Mais próximo do que longe!",
-                        created_by: User.where(access: "partner_admin").sample,
-                        partner_id: Partner.first.id
+2.times do 
+  scheduled_start = Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now)
+  event = Event.create!(name: Faker::BossaNova.song,
+    description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
+    scheduled_start: scheduled_start,
+    scheduled_end: scheduled_start + rand(5..9).hours,
+    partner: Partner.first,
+    state: state,
+    city: city,
+    street_name: "Av. Antônio Abrahão Caram",
+    street_number: "1001",
+    neighborhood: "São José",
+    cep: "30310700",
+    address_complement: "Mais próximo do que longe!",
+    created_by: User.where(access: "partner_admin").sample,
+    partner_id: Partner.first.id
   )
   
-  event = Event.last
   url = Faker::LoremFlickr.image(size: "640x480", search_terms: ['bike+race'])
   filename = File.basename(URI.parse(url.to_s).path)
   file = URI.open(url.to_s)
   event.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
-end
+  
+  puts 'Criando batches do evento '+ event.name.to_s + '...'
+  ends_at = Faker::Date.between(from: Date.today, to: rand(5..60).days.from_now)
+  %w[Arquibancada Pista Camarote VIP].shuffle.first(rand(2..4)).each do |pass_type|
+    (1..3).each do |i|
+      EventBatch.create!(event: event,
+        name: "Lote #{i}",
+        quantity: [10, 20, 30, 40].sample,
+        pass_type: pass_type,
+        price_in_cents: [2000, 5000, 7500, 10000].sample,
+        ends_at: ends_at + (20*i).days,
+      )
+    end
+  end
 
-(1..2).each do |event|
-  puts 'Criando batches do evento '+ event.to_s + '...'
-  EventBatch.create!(event: Event.find(event),
-                    name: ['Primeiro lote', 'Segundo lote'].sample,
-                    quantity: [10, 20, 30, 40].sample,
-                    pass_type: %w[Arquibancada Pista Camarote VIP].sample,
-                    price_in_cents: [2000, 5000, 7500, 10000].pop,
-                    ends_at: Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now),
-  )
+  event.create_default_event_questions
 end
 
 puts 'Criando day uses...'
 
-2.times do DayUse.create!(name: Faker::Marketing.buzzwords.titleize,
-                          description: Faker::TvShows::Suits.quote,
-                          partner_id: Partner.first.id,
-)
-  day_use_img = DayUse.last
-  url = Faker::LoremFlickr.image(size: "1024x720", search_terms: ['mountain+bike', 'downhill+bike+race', 'speed+bike+race'])
+2.times do
+  day_use = DayUse.create!(name: Faker::WorldCup.stadium,
+    description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(" "),
+    partner_id: Partner.first.id,
+  )
+
+  url = Faker::LoremFlickr.image(size: "1024x720", search_terms: ['mountain+bike'])
   filename = File.basename(URI.parse(url.to_s).path)
   file = URI.open(url.to_s)
-  day_use_img.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
-end
+  day_use.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 
-rand(1..8).times do |dayuse|
-
-  puts 'Criando day use schedule '+ (dayuse + 1).to_s + ' do Day Use ' + DayUse.last.name.to_s + '...'
-  DayUseSchedule.create!( day_use: DayUse.last,
-                          weekday: %w[monday tuesday wednesday thursday friday saturday sunday].sample,
-                          start_time: Time.new.beginning_of_day + rand(0..3).hours,
-                          end_time: Time.new.middle_of_day + rand(0..6).hours,
-                          price_in_cents: [2500, 5000, 7500, 10000].sample,
-)
+  %w[monday tuesday wednesday thursday friday saturday sunday].shuffle.first(rand(4..7)).each do |weekday|
+    DayUseSchedule.create!( day_use: day_use,
+      weekday: weekday,
+      name: Faker::Marketing.buzzwords.titleize,
+      start_time: Time.new.beginning_of_day + rand(0..3).hours,
+      end_time: Time.new.middle_of_day + rand(0..6).hours,
+      price_in_cents: [2500, 5000, 7500, 10000].sample)
+  end
 end
 
 puts "All done!!!"

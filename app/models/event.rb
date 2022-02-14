@@ -21,6 +21,30 @@ class Event < ApplicationRecord
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
+  def create_default_event_questions
+    event_question = EventQuestion.create!(
+      event: self,
+      kind: "open",
+      prompt: "Nome completo",
+      optional: false,
+      order: event_questions.count,
+    )
+    event_batches.each do |event_batch|
+      EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)
+    end
+
+    event_question = EventQuestion.create!(
+      event: self,
+      kind: "open",
+      prompt: "CPF",
+      optional: false,
+      order: event_questions.count,
+    )
+    event_batches.each do |event_batch|
+      EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)
+    end
+  end
+
   def open_batches
     event_batches.available.pluck(:pass_type).uniq.map do |pass_type|
       event_batches.available.where(pass_type: pass_type).order(:order).first      

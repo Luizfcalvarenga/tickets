@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "day_uses", force: :cascade do |t|
     t.string "name"
+    t.string "location"
     t.text "description"
-    t.string "track"
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -256,7 +256,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "identifier"
     t.bigint "event_id"
     t.bigint "event_batch_id"
-    t.bigint "membership_id"
+    t.bigint "user_membership_id"
     t.bigint "day_use_schedule_id"
     t.bigint "partner_id"
     t.bigint "order_item_id"
@@ -269,10 +269,10 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
     t.index ["event_id"], name: "index_passes_on_event_id"
-    t.index ["membership_id"], name: "index_passes_on_membership_id"
     t.index ["order_item_id"], name: "index_passes_on_order_item_id"
     t.index ["partner_id"], name: "index_passes_on_partner_id"
     t.index ["user_id"], name: "index_passes_on_user_id"
+    t.index ["user_membership_id"], name: "index_passes_on_user_membership_id"
   end
 
   create_table "question_answers", force: :cascade do |t|
@@ -364,9 +364,9 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "passes", "day_use_schedules"
   add_foreign_key "passes", "event_batches"
   add_foreign_key "passes", "events"
-  add_foreign_key "passes", "memberships"
   add_foreign_key "passes", "order_items"
   add_foreign_key "passes", "partners"
+  add_foreign_key "passes", "user_memberships"
   add_foreign_key "passes", "users"
   add_foreign_key "question_answers", "event_questions"
   add_foreign_key "question_answers", "order_items"
