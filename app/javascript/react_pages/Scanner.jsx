@@ -34,9 +34,7 @@ export function Scanner(props) {
       setLoading(false);
     };
 
-    const onFailure = (error) => {};
-
-    const qrScanner = new props.scanner(videoElement, onSuccess, onFailure);
+    const qrScanner = new props.scanner(videoElement, onSuccess);
 
     qrScanner.start();
   }, [readResult]);

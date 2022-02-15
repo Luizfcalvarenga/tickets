@@ -14,7 +14,6 @@ import flatpickr from "flatpickr";
 import { Portuguese } from "flatpickr/dist/l10n/pt.js";
 
 import QrScanner from "qr-scanner";
-QrScanner.WORKER_PATH = `${window.location.origin}/qr-scanner-worker.js`;
 
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
