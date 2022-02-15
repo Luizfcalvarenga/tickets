@@ -54,41 +54,33 @@ export function Scanner(props) {
         </div>
       ) : (
         <div id="result-div" className="w-100 h-100">
-          {readResult.result ? (
-            <div className="w-100 h-100 bg-success flex center around">
-              <div className="h-50 w-50 flex column center around">
-                <i class="fas fa-check-circle text-white fs-160"></i>
-                <p
-                  className="btn btn-dark w-100"
-                  onClick={() => {
-                    setReadResult(null);
-                  }}
-                >
-                  Próximo
-                </p>
-              </div>
+          <div
+            className={`w-100 h-100 flex center around ${
+              readResult.result ? "bg-success" : "bg-danger"
+            }`}
+          >
+            <div className="h-50 w-50 flex column center around">
+              <i
+                className={`fas text-white fs-160 ${
+                  readResult.result ? "fa-check-circle" : "fa-times-circle"
+                }`}
+              ></i>
+              <p className="m-0 text-white fs-24 text-center fw-700">
+                {readResult.main_line}
+              </p>
+              <p className="m-0 text-white fs-18 text-center">
+                {readResult.secondary_line}
+              </p>
+              <p
+                className="btn btn-dark w-100"
+                onClick={() => {
+                  setReadResult(null);
+                }}
+              >
+                Próximo
+              </p>
             </div>
-          ) : (
-            <div className="w-100 h-100 bg-danger flex center around">
-              <div className="h-50 w-50 flex column center around">
-                <i class="fas fa-times-circle text-white fs-160"></i>
-                <p className="m-0 text-white fs-24 text-center fw-700">
-                  {readResult.main_line}
-                </p>
-                <p className="m-0 text-white fs-18 text-center">
-                  {readResult.secondary_line}
-                </p>
-                <p
-                  className="btn btn-dark w-100"
-                  onClick={() => {
-                    setReadResult(null);
-                  }}
-                >
-                  Próximo
-                </p>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       )}
       {loading && (
