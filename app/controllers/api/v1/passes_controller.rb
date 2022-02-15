@@ -8,7 +8,8 @@ module Api
       end
 
       def scan
-        @pass = Pass.find_by(identifier: params[:identifier])
+        @partner = Partner.find_by(slug: params[:partner_slug])
+        @pass = @partner.passes.find_by(identifier: params[:identifier])
 
         if @pass.blank? 
           render json: {

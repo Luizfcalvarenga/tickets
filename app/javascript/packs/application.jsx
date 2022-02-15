@@ -61,8 +61,7 @@ const loadReactComponent = () => {
       Scanner: (
         <Scanner
           scanner={QrScanner}
-          sessionIdentifier={container.dataset.sessionIdentifier}
-          eventName={container.dataset.eventName}
+          partnerSlug={container.dataset.partnerSlug}
         />
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,

@@ -4,7 +4,7 @@ class PassesController < ApplicationController
   end
   
   def scanner
-    
+    @partner = current_user.partner
   end
 
   def create

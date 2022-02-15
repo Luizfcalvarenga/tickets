@@ -17,6 +17,7 @@ class Partner < ApplicationRecord
 
   has_one_attached :logo
   
+  has_many :passes
   has_many :events
   has_many :memberships
   has_many :day_uses

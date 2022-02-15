@@ -20,14 +20,13 @@ export function Scanner(props) {
 
       try {
         const response = await axios.get(
-          `/api/v1/passes/${passIdentifier}/scan`
+          `/api/v1/passes/${passIdentifier}/scan?partner_slug=${props.partnerSlug}`
         );
         setReadResult(response.data);
       } catch {
         setReadResult({
           result: false,
           main_line: "Erro de requisição",
-          secondary_line: `Status ${response.status}`,
         });
       }
 
