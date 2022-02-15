@@ -19,7 +19,6 @@
           <%= @pass.qrcode_svg.html_safe %>
         </div>
         <p class="mb-5 mt-2 text-center text-dark"><%= @pass.identifier %></p>
-
         <div>
           <p class="text-center text-dark m-0">Nome: <%= @pass.holder_name %></p>
           <p class="text-center text-dark">CPF: <%= cpf_mask(@pass.holder_cpf) %></p>

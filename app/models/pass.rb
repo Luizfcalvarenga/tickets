@@ -10,6 +10,7 @@ class Pass < ApplicationRecord
   has_one :event, through: :event_batch
 
   has_many :reads
+  has_many :accesses
   has_many :question_answers, through: :order_item
 
   validates :identifier, :name, presence: true
@@ -23,10 +24,18 @@ class Pass < ApplicationRecord
   end
 
   def holder_cpf
-    return user.document_number if user_membership.present?
+    return user.document_number if user_membership.present? || day_use_schedule.present?
 
     return nil if question_answers.blank?
 
     question_answers.joins(:event_question).find_by(event_questions: {prompt: "CPF"}).value
+  end
+
+  def kind
+    return "event" if event_batch.present?
+    return "day_use" if day_use_schedule.present?
+    return "membership" if user_membership.present?
+
+    false
   end
 end

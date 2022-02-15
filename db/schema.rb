@@ -287,12 +287,15 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
 
   create_table "reads", force: :cascade do |t|
     t.bigint "pass_id", null: false
+    t.string "read_by"
     t.boolean "result"
-    t.string "error"
-    t.string "error_details"
+    t.string "main_line"
+    t.string "secondary_line"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "read_by_id"
     t.index ["pass_id"], name: "index_reads_on_pass_id"
+    t.index ["read_by_id"], name: "index_reads_on_read_by_id"
   end
 
   create_table "states", force: :cascade do |t|
@@ -371,6 +374,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "question_answers", "event_questions"
   add_foreign_key "question_answers", "order_items"
   add_foreign_key "reads", "passes"
+  add_foreign_key "reads", "users", column: "read_by_id"
   add_foreign_key "user_memberships", "memberships"
   add_foreign_key "user_memberships", "users"
 end
