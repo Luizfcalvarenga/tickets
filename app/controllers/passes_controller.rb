@@ -2,6 +2,10 @@ class PassesController < ApplicationController
   def show
     @pass = Pass.find(params[:id])
   end
+  
+  def scanner
+    
+  end
 
   def create
     event = Event.find(params[:event_id])
@@ -52,18 +56,6 @@ class PassesController < ApplicationController
     end
 
     redirect_to dashboard_path_for_user(current_user)
-  end
-
-  def read
-    @pass = Pass.find(params[:id])
-
-    result = !@pass.reads.exists?
-
-    @read = Read.create(
-      pass: @pass,
-      result: result
-    )
-    @reads = @pass.reads
   end
 
   private

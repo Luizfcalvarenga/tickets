@@ -12,15 +12,16 @@
 
   <div class="spacer-100"></div>
 
+  <%= link_to pass_scanner_path do %>
+    <p class="btn btn-primary m-0 w-100 p-5">Ler QRcodes</p>
+  <% end %>
+
   <h2>Meus eventos</h2>
 
   <% @events.each do |event| %>
     <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
       <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
-
-      <%= link_to read_event_path(event), class: "col-12 col-md-4" do %>
-        <p class="btn btn-primary m-0">Ler QRcodes</p>
-      <% end %>
+      
       <%= link_to partner_admin_event_path(event), class: "col-12 col-md-4" do %>
         <p class="btn btn-primary m-0">Ver detalhes do evento</p>
       <% end %>

@@ -59,12 +59,12 @@ Rails.application.routes.draw do
   end
   get "day_uses/:id/:date", to: "day_uses#show", as: "day_use"
 
-  get "events/:id/read", to: "events#read", as: "read_event" 
-
+  
   resources :user_memberships
-
+  
   get '/cities_by_state' => 'cities#cities_by_state'
-
+  
+  get "passes/scanner", to: "passes#scanner", as: "pass_scanner" 
   resources :passes
   get "passes/:id/read", to: "passes#read", as: "read_pass"
 

@@ -20,14 +20,14 @@ export function Scanner(props) {
 
       try {
         const response = await axios.get(
-          `/api/v1/passes/${passIdentifier}/scan?session_identifier=${props.sessionIdentifier}`
+          `/api/v1/passes/${passIdentifier}/scan`
         );
         setReadResult(response.data);
       } catch {
         setReadResult({
           result: false,
-          error: "Erro de requisição",
-          error_details: `Status ${response.status}`,
+          main_line: "Erro de requisição",
+          secondary_line: `Status ${response.status}`,
         });
       }
 
@@ -50,9 +50,6 @@ export function Scanner(props) {
             <div>
               <p className="fs-48 fw-700 text-center m-0 title">
                 Controle de entrada
-              </p>
-              <p className="fs-24 fw-700 text-center m-0 text-white">
-                Evento: {props.eventName}
               </p>
             </div>
           </div>
@@ -79,10 +76,10 @@ export function Scanner(props) {
               <div className="h-50 w-50 flex column center around">
                 <i class="fas fa-times-circle text-white fs-160"></i>
                 <p className="m-0 text-white fs-24 text-center fw-700">
-                  {readResult.error}
+                  {readResult.main_line}
                 </p>
                 <p className="m-0 text-white fs-18 text-center">
-                  {readResult.error_details}
+                  {readResult.secondary_line}
                 </p>
                 <p
                   className="btn btn-dark w-100"
