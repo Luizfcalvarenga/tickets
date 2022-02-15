@@ -23,7 +23,7 @@
   <body> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
-    <% if controller_name == "passes" && action_name == "show" %> 
+    <% if controller_name == "passes" && ["show", "scanner"].include?(action_name) %> 
     <% else %> 
       <%= render partial: "shared/navbar" %>
     <% end %>
@@ -32,7 +32,7 @@
 
     <%= yield %>
 
-    <% if controller_name == "passes" && action_name == "show" %> 
+    <% if controller_name == "passes" && ["show", "scanner"].include?(action_name) %> 
     <% else %> 
       <%= render partial: "shared/footer" %>
     <% end %>

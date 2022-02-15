@@ -13,7 +13,7 @@ class CreatePasses < ActiveRecord::Migration[6.1]
       t.references :user, null: false, foreign_key: true
       t.datetime :start_time
       t.datetime :end_time
-      t.decimal :amount_paid
+      t.integer :price_in_cents
 
       t.timestamps
     end

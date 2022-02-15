@@ -32,6 +32,7 @@ class OrderPassesGenerator
         order_item: order_item,
         start_time: order_item.start_time,
         end_time: order_item.end_time,
+        price_in_cents: order_item.price_in_cents,
         qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
           color: "000",
           shape_rendering: "crispEdges",

@@ -34,6 +34,14 @@ class PassScanner
       )
     end
 
+    @question_list = @pass.question_answers.map do |question_answers|
+      question_answers.as_json(include: :event_question)
+    end
+
+    @accesses = @pass.accesses.map do |access|
+      access.as_json(include: :granted_by)
+    end
+
     {
       result: @result,
       pass_name: @pass.name,
@@ -41,8 +49,9 @@ class PassScanner
       main_line: @main_line,
       secondary_line: @secondary_line,
       question_list: @question_list,
-      amount_paid: @pass.amount_paid,
-      access_history: @pass.accesses
+      pass_generated_at: @pass.created_at.strftime("%d/%m/%Y - %H:%M"),
+      price_in_cents: @pass.price_in_cents,
+      access_history: @accesses
     }
   end
 

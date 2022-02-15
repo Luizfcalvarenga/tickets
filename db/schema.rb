@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "user_id", null: false
     t.datetime "start_time"
     t.datetime "end_time"
-    t.decimal "amount_paid"
+    t.integer "price_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
