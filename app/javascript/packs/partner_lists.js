@@ -1,4 +1,3 @@
-
 import Rails from "@rails/ujs";
 import Turbolinks from "turbolinks";
 import * as ActiveStorage from "@rails/activestorage";
@@ -21,81 +20,84 @@ import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
 
-const accessModal = document.querySelector("#access-modal");
+document.addEventListener("DOMContentLoaded", () => {
+  const accessModal = document.querySelector("#access-modal");
 
-const accessModalButtons = document.querySelectorAll(".toggle-access-modal");
+  const accessModalButtons = document.querySelectorAll(".toggle-access-modal");
 
-accessModalButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    $("#access-modal").show();
+  accessModalButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      $("#access-modal").show();
 
-    accessModal.querySelector(
-      ".modal-body"
-    ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`;
-  
-   const reactContainers = document.querySelectorAll("react");
+      accessModal.querySelector(
+        ".modal-body"
+      ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`;
 
-   if (!reactContainers) return;
+      const reactContainers = document.querySelectorAll("react");
 
-   reactContainers.forEach((container) => {
-   
-     const components = {
-       Scanner: (
-         <Scanner
-           scanner={QrScanner}
-           partnerSlug={
-             container.dataset.partnerSlug
-               ? container.dataset.partnerSlug
-               : null
-           }
-           passIdentifier={
-             container.dataset.passIdentifier
-               ? container.dataset.passIdentifier
-               : null
-           }
-         />
-       ),
-       ReactPage: <ReactPage message={container.dataset.message} />,
-       EventQuestions: <EventQuestions />,
-       EventBatches: <EventBatches />,
-       EventOrderItems: (
-         <EventOrderItems
-           event={
-             container.dataset.event
-               ? JSON.parse(container.dataset.event)
-               : null
-           }
-           eventBatches={
-             container.dataset.eventBatches
-               ? JSON.parse(container.dataset.eventBatches)
-               : null
-           }
-         />
-       ),
-       DayUseOrderItems: (
-         <DayUseOrderItems
-           dayUse={
-             container.dataset.dayUse
-               ? JSON.parse(container.dataset.dayUse)
-               : null
-           }
-           dayUseSchedule={
-             container.dataset.dayUseSchedule
-               ? JSON.parse(container.dataset.dayUseSchedule)
-               : null
-           }
-           date={
-             container.dataset.date ? JSON.parse(container.dataset.date) : null
-           }
-         />
-       ),
-     };
+      if (!reactContainers) return;
 
-     ReactDOM.render(components[container.dataset.component], container);
-   });
+      reactContainers.forEach((container) => {
+        const components = {
+          Scanner: (
+            <Scanner
+              scanner={QrScanner}
+              partnerSlug={
+                container.dataset.partnerSlug
+                  ? container.dataset.partnerSlug
+                  : null
+              }
+              passIdentifier={
+                container.dataset.passIdentifier
+                  ? container.dataset.passIdentifier
+                  : null
+              }
+            />
+          ),
+          ReactPage: <ReactPage message={container.dataset.message} />,
+          EventQuestions: <EventQuestions />,
+          EventBatches: <EventBatches />,
+          EventOrderItems: (
+            <EventOrderItems
+              event={
+                container.dataset.event
+                  ? JSON.parse(container.dataset.event)
+                  : null
+              }
+              eventBatches={
+                container.dataset.eventBatches
+                  ? JSON.parse(container.dataset.eventBatches)
+                  : null
+              }
+            />
+          ),
+          DayUseOrderItems: (
+            <DayUseOrderItems
+              dayUse={
+                container.dataset.dayUse
+                  ? JSON.parse(container.dataset.dayUse)
+                  : null
+              }
+              dayUseSchedule={
+                container.dataset.dayUseSchedule
+                  ? JSON.parse(container.dataset.dayUseSchedule)
+                  : null
+              }
+              date={
+                container.dataset.date
+                  ? JSON.parse(container.dataset.date)
+                  : null
+              }
+            />
+          ),
+        };
+
+        ReactDOM.render(components[container.dataset.component], container);
+      });
+    });
   });
+
+  const loadScannerElement = async () => {};
+
+  loadScannerElement();
 });
-
-const loadScannerElement = async () => {};
-
-loadScannerElement();
