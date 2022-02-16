@@ -37,30 +37,57 @@
   <table>
     <thead>
       <tr>
-        <th scope="col">Nome</th>
-        <th scope="col">Email</th>
-        <th scope="col">Acesso</th>
-        <% @event.event_questions.order(:order).each do |event_question| %>
-          <th><%= event_question.prompt %></th>
+        <% @event.event_questions.default_questions.order(:order).each do |event_question| %>
+          <td><%= event_question.prompt %></td>
         <% end %>
+        <th scope="col">Usuário</th>
+        <% @event.event_questions.non_default_questions.order(:order).each do |event_question| %>
+          <td><%= event_question.prompt %></td>
+        <% end %>
+        <th scope="col">Acesso</th>
+        <th scope="col">Ações</th>
       </tr>
     </thead>
     <tbody>
       <% @passes.each do |pass| %>
         <tr>
-          <td data-label="Nome"><%= pass.user.name %></td>
-          <td data-label="Email"><%= pass.user.email %></td>
-          <td>
-            <% access = Access.find_by(pass: pass) %>
-            <% if access.present? %>
-              <p class="text-success m-0"><i class="fa fa-check fs-20 px-3"></i>Acesso liberado em <%= access.created_at.strftime("%d/%m às %H:%M:%S") %> por <%= access.granted_by.email %></p>
-            <% end %>
-          </td>
-          <% pass.question_answers.joins(:event_question).order("event_questions.order").each do |question_answer| %>
+          <% pass.question_answers.default_questions.joins(:event_question).order("event_questions.order").each do |question_answer| %>
+            <td data-label="<%= question_answer.event_question.prompt %>"><%= question_answer.value %></td>
+          <% end %>
+          <td data-label="Usuário"><%= pass.user.email %></td>
+          <% pass.question_answers.non_default_questions.joins(:event_question).order("event_questions.order").each do |question_answer| %>
             <td><%= question_answer.value %></td>
           <% end %>
+          <td data-label="Acesso">
+            <% if pass.accesses.present? %>
+              <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i><%= pass.accesses.first.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
+            <% else %>
+              <p class="m-0">-</p>
+            <% end %>
+          </td>
+          <td data-label="Ações">
+            <% if pass.accesses.blank? %>
+              <p class="m-0 btn btn-primary toggle-access-modal" data-partner-slug="<%= pass.partner.slug %>" data-pass-identifier="<%= pass.identifier %>">Liberar acesso</p>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+</div>
+
+<div id="access-modal" class="modal vh-100" tabindex="-1" role="dialog">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-header bg-darker">
+        <h3 class="modal-title text-color-primary">Liberar acesso</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body vh-80 bg-darker">
+        <p>Modal body text goes here.</p>
+      </div>
+    </div>
+  </div>
 </div>

@@ -48,6 +48,7 @@ window.toastr.options = {
 
 // Internal imports
 import "./events";
+import "./partner_lists";
 import "./partners";
 import "./payment_pooling";
 
@@ -62,6 +63,11 @@ const loadReactComponent = () => {
         <Scanner
           scanner={QrScanner}
           partnerSlug={container.dataset.partnerSlug}
+          passIdentifier={
+            container.dataset.passIdentifier
+              ? JSON.parse(container.dataset.passIdentifier)
+              : null
+          }
         />
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,

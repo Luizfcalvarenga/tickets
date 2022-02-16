@@ -5,6 +5,11 @@ class PassesController < ApplicationController
   
   def scanner
     @partner = current_user.partner
+
+    respond_to do |format|
+      format.html
+      format.text { render layout: false }
+    end
   end
 
   def create

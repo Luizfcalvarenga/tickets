@@ -37,6 +37,9 @@ export function Scanner(props) {
     const qrScanner = new props.scanner(videoElement, onSuccess);
 
     qrScanner.start();
+    console.log(props);
+
+    if (props.passIdentifier) onSuccess(props.passIdentifier);
   }, [readResult]);
 
   return (
@@ -85,14 +88,29 @@ export function Scanner(props) {
                   {readResult.secondary_line}
                 </p>
               </div>
-              <p
-                className="btn btn-dark w-100"
-                onClick={() => {
-                  setReadResult(null);
-                }}
-              >
-                Próximo
-              </p>
+              {props.passIdentifier ? (
+                <div>
+                  <p
+                    className="btn btn-dark w-100"
+                    onClick={() => {
+                      $("#access-modal").hide();
+                    }}
+                  >
+                    Fechar
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <p
+                    className="btn btn-dark w-100"
+                    onClick={() => {
+                      setReadResult(null);
+                    }}
+                  >
+                    Próximo
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div className="bg-dark w-100">

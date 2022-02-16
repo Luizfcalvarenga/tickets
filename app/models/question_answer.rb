@@ -6,6 +6,9 @@ class QuestionAnswer < ApplicationRecord
   validate :must_have_at_least_two_names_on_full_name_question
   validate :must_be_a_valid_cpf_on_cpf_question
 
+  scope :default_questions, -> { joins(:event_question).where(event_questions: { prompt: ["Nome completo", "CPF"] }) }
+  scope :non_default_questions, -> { joins(:event_question).where.not(event_questions: { prompt: ["Nome completo", "CPF"] }) }
+
   def event_question_is_optional
     event_question.optional
   end
