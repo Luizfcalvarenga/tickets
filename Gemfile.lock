@@ -6,6 +6,13 @@ GIT
     faker (2.19.0)
       i18n (>= 1.8.11, < 2)
 
+GIT
+  remote: https://github.com/iugu/iugu-ruby
+  revision: ac2985783591e36863ae78a1d5294aa39f5ef014
+  specs:
+    iugu (1.0.10)
+      rest-client
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -307,6 +314,7 @@ DEPENDENCIES
   dotenv-rails
   faker!
   font-awesome-sass
+  iugu!
   jbuilder (~> 2.7)
   letter_opener
   listen (~> 3.3)

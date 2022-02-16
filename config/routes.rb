@@ -44,9 +44,9 @@ Rails.application.routes.draw do
   end
 
   resources :orders do
-    resources :question_answers, only: [:new, :create]
+    resources :question_answers, only: [:show, :new, :create]
   end
-  get "orders/:id/pay", to: "orders#pay", as: "order_pay"
+  get "orders/:id/status", to: "orders#status", as: "order_status"
 
   namespace :admin do
     resources :partners
@@ -59,7 +59,6 @@ Rails.application.routes.draw do
   end
   get "day_uses/:id/:date", to: "day_uses#show", as: "day_use"
 
-  
   resources :user_memberships
   
   get '/cities_by_state' => 'cities#cities_by_state'

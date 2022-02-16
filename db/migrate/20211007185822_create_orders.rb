@@ -7,9 +7,9 @@ class CreateOrders < ActiveRecord::Migration[6.1]
       t.string :invoice_pdf
       t.string :invoice_status
       t.string :net_value
-      t.string :price_in_cents
+      t.integer :price_in_cents
       t.string :value
-      t.datetime :paid_at
+      t.datetime :invoice_paid_at
       t.string :status
 
       t.timestamps

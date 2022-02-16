@@ -1,0 +1,47 @@
+<div class="payment-confirmed vh-100 success-text hide flex center around">
+  <div class="p-5 flex center column">
+    <i class="fas fa-thumbs-up fs-36 pr-4 mb-4"></i>
+    <h3>Pagamento confirmado!</h3>
+    <p>Seus passes foram gerados com sucesso. Você já pode acessá-los no seu dashboard.</p>
+    <%= link_to dashboard_path_for_user(current_user) do %>
+      <p class="btn btn-primary w-100">Ver meus passes</p>
+    <% end %>
+  </div>
+</div>
+<div class="payment-container page-wrapper" data-order-id="<%= @order.id %>">
+  <div class="my-5">
+    <h1 class="title">Pagamento do pedido</h1>
+
+    <p>Ao realizar o pagamento da fatura abaixo utilizando PIX ou Cartão de Crédito, os passes abaixo serão gerados:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Nome do passe</th>
+          <th scope="col">Valor do passe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.order_items.each_with_index do |order_item, index| %>
+        <tr>
+          <td data-label="Item">#<%= index + 1 %></td>
+          <td data-label="Nome do passe"><%= order_item.full_description %></td>
+          <td data-label="Valor do passe"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% if @order.invoice_url.present? %>
+    <iframe src="<%=@order.invoice_url %>" class="mb-5 invoice" frameborder="0" style="min-height: 1500px; width: 100%"></iframe>
+  <% end %>
+
+  <% if @order_error %>
+    <p class="danger-text">
+      <i class="fas fa-exclamation-triangle mr-3 p-5 fs-30"></i>
+      Ocorreu um erro no nosso provedor faturamento. Tente novamente amanhã.
+    </p>
+  <% end %>
+</div>

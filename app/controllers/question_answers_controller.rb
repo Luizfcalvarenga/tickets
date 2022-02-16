@@ -15,7 +15,7 @@ class QuestionAnswersController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @question_answers = question_answers_params.map do |question_answer_params|
-          QuestionAnswer.create(
+          QuestionAnswer.create!(
             order_item_id: question_answer_params[:order_item_id],
             event_question_id: question_answer_params[:event_question_id],
             value: question_answer_params[:value],
@@ -32,8 +32,7 @@ class QuestionAnswersController < ApplicationController
       render :new and return
     end
 
-    OrderPassesGenerator.new(@order).call
-    redirect_to dashboard_path_for_user(current_user)
+    redirect_to order_path(@order) and return
   end
 
   private

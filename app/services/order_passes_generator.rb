@@ -10,12 +10,6 @@ class OrderPassesGenerator
       # identifier = "#{"%04d" %  order_item.order.user_id}#{"%04d" %  order_item.order.user.passes.count}"
       identifier = SecureRandom.uuid
 
-      name = if order_item.event_batch.present?
-        "#{order_item.event_batch.event.name} - #{order_item.event_batch.pass_type} - #{order_item.event_batch.name}"
-      elsif order_item.day_use_schedule.present?
-        "#{order_item.day_use_schedule.day_use.name} - #{order_item.day_use_schedule.name} - #{order_item.start_time.strftime("%d/%m/%Y")}"
-      end
-
       partner_id = if order_item.event_batch.present?
         order_item.event_batch.event.partner_id
       elsif order_item.day_use_schedule.present?
@@ -24,7 +18,7 @@ class OrderPassesGenerator
 
       pass = Pass.create(
         identifier: identifier,
-        name: name,
+        name: order_item.full_description,
         partner_id: partner_id,
         event_batch_id: order_item.event_batch_id,
         day_use_schedule_id: order_item.day_use_schedule_id,

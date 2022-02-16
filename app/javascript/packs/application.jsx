@@ -49,6 +49,7 @@ window.toastr.options = {
 // Internal imports
 import "./events";
 import "./partners";
+import "./payment_pooling";
 
 const loadReactComponent = () => {
   const reactContainers = document.querySelectorAll("react");

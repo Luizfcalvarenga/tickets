@@ -215,9 +215,9 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "invoice_pdf"
     t.string "invoice_status"
     t.string "net_value"
-    t.string "price_in_cents"
+    t.integer "price_in_cents"
     t.string "value"
-    t.datetime "paid_at"
+    t.datetime "invoice_paid_at"
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
