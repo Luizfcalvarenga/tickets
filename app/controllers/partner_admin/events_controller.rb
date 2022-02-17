@@ -3,10 +3,22 @@ module PartnerAdmin
     def show
       @event = Event.find(params[:id])
       @passes = @event.passes
+        .joins(question_answers: :event_question)
+        .distinct("passes.id")
+        # .where(event_question: { prompt: ["Nome completo"] })
+        # .order("question_answers.value")
+    
+      if params[:query].present?
+        sql_query = "question_answers.value ILIKE :query"
+        @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
+      end      
+
+      # @passes = @passes.group("passes.id").order("MAX(question_answers.value) DESC")
 
       respond_to do |format|
         format.html
         format.csv { send_data @event.passes_csv }
+        format.text { render partial: 'partner_admin/events/user_list', locals: { event: @event, passes: @passes }, formats: [:html] }
       end
     end
 

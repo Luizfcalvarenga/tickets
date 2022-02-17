@@ -4,9 +4,12 @@ export function Scanner(props) {
   const [readResult, setReadResult] = useState();
   const [loading, setLoading] = useState(false);
 
+  const handleAccessModalClose = () => {
+    $("#access-modal").hide();
+  };
+
   useEffect(() => {
     const videoElement = document.querySelector("#reader-video");
-
     if (!videoElement) return;
 
     let internalLoading = false;
@@ -32,6 +35,7 @@ export function Scanner(props) {
 
       internalLoading = true;
       setLoading(false);
+      window.dispatchEvent(window.reloadUserEvent);
     };
 
     const qrScanner = new props.scanner(videoElement, onSuccess);
@@ -92,9 +96,7 @@ export function Scanner(props) {
                 <div>
                   <p
                     className="btn btn-dark w-100"
-                    onClick={() => {
-                      $("#access-modal").hide();
-                    }}
+                    onClick={handleAccessModalClose}
                   >
                     Fechar
                   </p>

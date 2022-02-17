@@ -1,45 +1,33 @@
-import Rails from "@rails/ujs";
-import Turbolinks from "turbolinks";
-import * as ActiveStorage from "@rails/activestorage";
 import React from "react";
 import ReactDOM from "react-dom";
-import "trix";
-import "@rails/actiontext";
-import flatpickr from "flatpickr";
-import { Portuguese } from "flatpickr/dist/l10n/pt.js";
-
 import QrScanner from "qr-scanner";
-
 import { Scanner } from "../react_pages/Scanner";
-import { ReactPage } from "../react_pages/ReactPage";
-import { EventQuestions } from "../react_pages/EventQuestions";
-import { EventBatches } from "../react_pages/EventBatches";
-import { EventOrderItems } from "../react_pages/EventOrderItems";
-import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
-
-import "../stylesheets/application";
-import "flatpickr/dist/flatpickr.min.css";
+import debounce from "lodash.debounce";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const accessModal = document.querySelector("#access-modal");
+  const addEventListenersToDirectAccessButtons = () => {
+    const accessModal = document.querySelector("#access-modal");
 
-  const accessModalButtons = document.querySelectorAll(".toggle-access-modal");
+    if (!accessModal) return;
+    
+    const accessModalButtons = document.querySelectorAll(
+      ".toggle-access-modal"
+    );
 
-  accessModalButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      $("#access-modal").show();
+    accessModalButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        $("#access-modal").show();
 
-      accessModal.querySelector(
-        ".modal-body"
-      ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`;
+        accessModal.querySelector(
+          ".modal-body"
+        ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`;
 
-      const reactContainers = document.querySelectorAll("react");
+        const reactContainers = document.querySelectorAll("react");
 
-      if (!reactContainers) return;
+        if (!reactContainers) return;
 
-      reactContainers.forEach((container) => {
-        const components = {
-          Scanner: (
+        reactContainers.forEach((container) => {
+          ReactDOM.render(
             <Scanner
               scanner={QrScanner}
               partnerSlug={
@@ -52,52 +40,40 @@ document.addEventListener("DOMContentLoaded", () => {
                   ? container.dataset.passIdentifier
                   : null
               }
-            />
-          ),
-          ReactPage: <ReactPage message={container.dataset.message} />,
-          EventQuestions: <EventQuestions />,
-          EventBatches: <EventBatches />,
-          EventOrderItems: (
-            <EventOrderItems
-              event={
-                container.dataset.event
-                  ? JSON.parse(container.dataset.event)
-                  : null
-              }
-              eventBatches={
-                container.dataset.eventBatches
-                  ? JSON.parse(container.dataset.eventBatches)
-                  : null
-              }
-            />
-          ),
-          DayUseOrderItems: (
-            <DayUseOrderItems
-              dayUse={
-                container.dataset.dayUse
-                  ? JSON.parse(container.dataset.dayUse)
-                  : null
-              }
-              dayUseSchedule={
-                container.dataset.dayUseSchedule
-                  ? JSON.parse(container.dataset.dayUseSchedule)
-                  : null
-              }
-              date={
-                container.dataset.date
-                  ? JSON.parse(container.dataset.date)
-                  : null
-              }
-            />
-          ),
-        };
-
-        ReactDOM.render(components[container.dataset.component], container);
+            />,
+            container
+          );
+        });
       });
     });
+  };
+
+  addEventListenersToDirectAccessButtons();
+
+  const debouncedReloadList = debounce(() => {
+    const tableElement = document.querySelector("#user-list");
+
+    if (!tableElement) return;
+    
+    const url = `${window.location.href}?query=${queryInput.value}`;
+
+    fetch(url, { headers: { Accept: "text/plain" } })
+      .then((response) => response.text())
+      .then((data) => {
+        tableElement.parentNode.innerHTML = data;
+        addEventListenersToDirectAccessButtons();
+      });
+  }, 500);
+
+  const queryInput = document.querySelector("#query-input");
+  queryInput.addEventListener("input", () => {
+    debouncedReloadList();
   });
 
-  const loadScannerElement = async () => {};
+  window.addEventListener("reload-user-list", () => {
+    addEventListenersToDirectAccessButtons();
 
-  loadScannerElement();
+    queryInput.value = "";
+    debouncedReloadList();
+  });
 });

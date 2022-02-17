@@ -137,5 +137,8 @@ document.addEventListener("turbolinks:load", () => {
   loadToastr();
   fillInputs();
 
+  // Platform events
+  window.reloadUserEvent = new Event("reload-user-list");
+
   flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese });
 });
