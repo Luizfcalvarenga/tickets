@@ -3,19 +3,38 @@ import ReactDOM from "react-dom";
 import QrScanner from "qr-scanner";
 import { Scanner } from "../react_pages/Scanner";
 import debounce from "lodash.debounce";
+import Swal from "sweetalert2";
 
 document.addEventListener("DOMContentLoaded", () => {
   const addEventListenersToDirectAccessButtons = () => {
     const accessModal = document.querySelector("#access-modal");
 
     if (!accessModal) return;
-    
+
     const accessModalButtons = document.querySelectorAll(
       ".toggle-access-modal"
     );
 
     accessModalButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
+        const swalResult = await Swal.mixin({
+          customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger",
+          },
+          buttonsStyling: false,
+        }).fire({
+          text: `Tem certeza que deseja liberar o acesso de ${btn.dataset.holderName}?`,
+          icon: "warning",
+          showCloseButton: true,
+          showCancelButton: true,
+          focusConfirm: false,
+          confirmButtonText: "Liberar",
+          cancelButtonText: "Cancelar",
+        });
+
+        if (!swalResult.isConfirmed) return;
+
         $("#access-modal").show();
 
         accessModal.querySelector(
@@ -54,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableElement = document.querySelector("#user-list");
 
     if (!tableElement) return;
-    
+
     const url = `${window.location.href}?query=${queryInput.value}`;
 
     fetch(url, { headers: { Accept: "text/plain" } })
@@ -66,6 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 500);
 
   const queryInput = document.querySelector("#query-input");
+  if (!queryInput) return;
+
   queryInput.addEventListener("input", () => {
     debouncedReloadList();
   });

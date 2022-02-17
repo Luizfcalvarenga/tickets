@@ -24,6 +24,7 @@
     "react-html-parser": "^2.0.2",
     "redis": "^4.0.2",
     "redis-server": "^1.2.2",
+    "sweetalert2": "^11.4.0",
     "toastr": "^2.1.4",
     "trix": "^1.2.0",
     "turbolinks": "^5.2.0"

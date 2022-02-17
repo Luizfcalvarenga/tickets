@@ -45,7 +45,7 @@ class PassScanner
     {
       result: @result,
       pass_name: @pass.name,
-      user_credentials: [@pass.holder_name, cpf_mask(@pass.holder_cpf)],
+      user_credentials: [@pass.holder_name, @pass.holder_cpf],
       main_line: @main_line,
       secondary_line: @secondary_line,
       question_list: @question_list,

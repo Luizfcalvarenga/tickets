@@ -28,7 +28,9 @@ class Pass < ApplicationRecord
 
     return nil if question_answers.blank?
 
-    question_answers.joins(:event_question).find_by(event_questions: {prompt: "CPF"}).value
+    cpf = question_answers.joins(:event_question).find_by(event_questions: {prompt: "CPF"}).value
+
+    cpf.insert(3, ".").insert(7, ".").insert(11, "-")
   end
 
   def kind

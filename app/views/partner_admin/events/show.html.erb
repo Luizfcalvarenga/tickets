@@ -31,7 +31,7 @@
   <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
   <div class="flex center between mb-3">
-    <div class="form-group f-80">
+    <div class="form-group f-60">
       <input id="query-input" type="text" class="w-100" placeholder="Procurar passe">
     </div>
     <%= link_to partner_admin_event_path(format: "csv") do %>
@@ -45,11 +45,9 @@
 </div>
 
 <div id="access-modal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog bg-darker modal-ku" role="document">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
     <div class="modal-content bg-darker">
-      <div class="modal-header bg-darker">
-      </div>
-      <div class="modal-body vh-80 bg-darker">
+      <div class="modal-body vh-90 bg-darker scrollable">
       </div>
     </div>
   </div>

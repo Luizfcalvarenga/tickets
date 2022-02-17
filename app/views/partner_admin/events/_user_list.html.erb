@@ -29,9 +29,9 @@
             <p class="m-0">-</p>
           <% end %>
         </td>
-        <td data-label="Ações">
+        <td data-label="Ações" class="pb-4 pb-sm-2">
           <% if pass.accesses.blank? %>
-            <p class="m-0 btn btn-primary toggle-access-modal" data-partner-slug="<%= pass.partner.slug %>" data-pass-identifier="<%= pass.identifier %>">Liberar acesso</p>
+            <p class="m-0 btn btn-primary toggle-access-modal" data-partner-slug="<%= pass.partner.slug %>" data-pass-identifier="<%= pass.identifier %>" data-holder-name="<%= pass.holder_name %>">Liberar acesso</p>
           <% end %>
         </td>
       </tr>
