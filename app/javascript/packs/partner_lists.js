@@ -5,7 +5,7 @@ import { Scanner } from "../react_pages/Scanner";
 import debounce from "lodash.debounce";
 import Swal from "sweetalert2";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbolinks:load", () => {
   const addEventListenersToDirectAccessButtons = () => {
     const accessModal = document.querySelector("#access-modal");
 
