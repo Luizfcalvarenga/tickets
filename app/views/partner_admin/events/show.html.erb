@@ -6,41 +6,60 @@
     </div>
   <% end %>
 
-  <% @event.event_batches.each do |event_batch| %>
-    <div class="bg-primary-color flex center around p-4 br-8 my-4">
-      <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
-      <p class="f-24 m-0 f-1x"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
-      <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
-      <p class="f-24 fw-700 m-0 f-1x">Finaliza em <%= event_batch.ends_at.strftime("%d/%m") %></p>
-      <% if event_batch.in_sales? %>
-        <p class="success-text br-8 p-3 m-0 f-1x text-center">Em vendas</p>
-      <% elsif event_batch.available? %>
-        <p class="info-text br-8 p-3 m-0 f-1x text-center">Em aberto</p>
-      <% else %>
-        <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= event_batch.ended_at_datetime.strftime("%d/%m às %H:%M:%S") %></p>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="batches-tab" data-bs-toggle="tab" data-bs-target="#batches" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="user-list" role="tabpanel" aria-labelledby="home-tab">
+      <h3 class="title">Lista de convidados</h3>
+      <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
+
+      <div class="flex center between mb-3">
+        <div class="form-group f-60">
+          <input id="query-input" type="text" class="w-100" placeholder="Procurar passe">
+        </div>
+        <%= link_to partner_admin_event_path(format: "csv") do %>
+          <p class="btn btn-primary m-0">Baixar CSV</p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= render partial: "partner_admin/events/user_list", locals: { event: @event, passes: @passes } %>
+      </div>
+    </div>
+    
+    <div class="tab-pane fade" id="batches" role="tabpanel" aria-labelledby="profile-tab">
+      <% @event.event_batches.each do |event_batch| %>
+        <div class="bg-primary-color flex center around p-4 br-8 my-4">
+          <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
+          <p class="f-24 m-0 f-1x"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
+          <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
+          <p class="f-24 fw-700 m-0 f-1x">Finaliza em <%= event_batch.ends_at.strftime("%d/%m") %></p>
+          <% if event_batch.in_sales? %>
+            <p class="success-text br-8 p-3 m-0 f-1x text-center">Em vendas</p>
+          <% elsif event_batch.available? %>
+            <p class="info-text br-8 p-3 m-0 f-1x text-center">Em aberto</p>
+          <% else %>
+            <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= event_batch.ended_at_datetime.strftime("%d/%m às %H:%M:%S") %></p>
+          <% end %>
+        </div>
       <% end %>
     </div>
-  <% end %>
 
-  <h3>Comunicados do evento</h3>
-  <%= link_to event_event_communications_path(event_id: @event.id) do %>
-    <p class="btn btn-primary w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
-  <% end %>
-
-  <h3 class="title">Lista de convidados</h3>
-  <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
-
-  <div class="flex center between mb-3">
-    <div class="form-group f-60">
-      <input id="query-input" type="text" class="w-100" placeholder="Procurar passe">
+    <div class="tab-pane fade" id="communications" role="tabpanel" aria-labelledby="contact-tab">
+      <h3>Comunicados do evento</h3>
+      <%= link_to event_event_communications_path(event_id: @event.id) do %>
+        <p class="btn btn-primary w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
+      <% end %>
     </div>
-    <%= link_to partner_admin_event_path(format: "csv") do %>
-      <p class="btn btn-primary m-0">Baixar CSV</p>
-    <% end %>
-  </div>
-
-  <div>
-    <%= render partial: "partner_admin/events/user_list", locals: { event: @event, passes: @passes } %>
   </div>
 </div>
 

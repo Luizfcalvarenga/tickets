@@ -19,19 +19,7 @@
         <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
           <p class="btn btn-primary m-0 w-100">Ver</p>
         <% end %>
-        <% if pass.user_membership.present? %>
-          <% if pass.user_membership.active? %>
-            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Ativo</p>
-          <% else %>
-            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Inativo</p>
-          <% end %>
-        <% else %>
-          <% if pass.accesses.blank? %>
-            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
-          <% else %>
-            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
-          <% end %>
-        <% end %>
+        <p class="<%= pass.status[:class] %> text-white p-3 m-0 col-12 col-md-4 text-center mb-2"><%= pass.status[:label] %></p>
       </div>
     <% end %>  
   </div>

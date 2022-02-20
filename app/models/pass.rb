@@ -9,7 +9,7 @@ class Pass < ApplicationRecord
 
   has_one :event, through: :event_batch
 
-  has_many :reads
+  has_many :reads, dependent: :destroy
   has_many :accesses
   has_many :question_answers, through: :order_item
 
@@ -39,5 +39,34 @@ class Pass < ApplicationRecord
     return "membership" if user_membership.present?
 
     false
+  end
+
+  def status
+    if user_membership.present?
+      return {
+        label: "Ativo",
+        class: "bg-success"
+      } if user_membership.active?
+
+      return {
+        label: "Inativo",
+        class: "bg-danger"
+      }
+    else
+      return {
+        label: "Não utilizado",
+        class: "bg-danger"
+      } if end_time < Time.current
+
+      return {
+        label: "Utilizado",
+        class: "bg-info"
+      } if accesses.present?
+
+      return {
+        label: "Disponível",
+        class: "bg-success"
+      } 
+    end
   end
 end
