@@ -185,12 +185,6 @@ module NovaIugu
         invoice_pdf: @response.attributes["pdf"],
         invoice_status: "pending",
       )
-
-      begin
-        discord_message_content = "Nova fatura gerada!\nUsuário: #{@entity.event.considered_profile.full_name}\n"
-        DiscordMessager.new.call(discord_message_content) if Rails.env.production?
-      rescue
-      end
     end
 
     def validate_params!
