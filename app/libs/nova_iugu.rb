@@ -39,7 +39,7 @@ module NovaIugu
     end
 
     def charge_params
-      @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(payable_with: payable_with)
+      @charge_params ||= @entity.nova_iugu_charge_params_hash
     end
   end
 
