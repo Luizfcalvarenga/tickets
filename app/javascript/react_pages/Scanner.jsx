@@ -38,12 +38,13 @@ export function Scanner(props) {
       window.dispatchEvent(window.reloadUserEvent);
     };
 
-    const qrScanner = new props.scanner(videoElement, onSuccess);
+    if (props.passIdentifier) {
+      onSuccess(props.passIdentifier);
+    } else {
+      const qrScanner = new props.scanner(videoElement, onSuccess);
 
-    qrScanner.start();
-    console.log(props);
-
-    if (props.passIdentifier) onSuccess(props.passIdentifier);
+      qrScanner.start();
+    }
   }, [readResult]);
 
   return (
