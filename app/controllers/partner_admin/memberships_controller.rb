@@ -2,7 +2,24 @@ class PartnerAdmin::MembershipsController < ApplicationController
   before_action 
 
   def index
-    @memberships = Membership.where(partner_id: current_user.partner.id)
+    @partner = current_user.partner
+
+    @memberships = @partner.memberships
+
+    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids})
+      .group("users.id")
+      .order("users.name")
+  
+    if params[:query].present?
+      sql_query = "users.email ILIKE :query OR users.name ILIKE :query OR translate(users.document_number, '.', '') ILIKE :query "
+      @users = @users.where(sql_query, query: "%#{params[:query].gsub(".", "")}%") if params[:query].present?
+    end      
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Partner.memberships_csv }
+      format.text { render partial: 'partner_admin/memberships/user_list', locals: { users: @users, passes: @passes }, formats: [:html] }
+    end
   end
 
   def show

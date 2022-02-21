@@ -29,7 +29,7 @@ class OrdersController < ApplicationController
     end
 
     if @order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled"
-      ::NovaIugu::InvoiceGenerator.new(@order, ["pix", "credit_card"]).call
+      ::NovaIugu::InvoiceGenerator.new(@order).call
     else
       begin
         ::NovaIugu::ChargeCheckAndUpdateStatus.new(@order).call

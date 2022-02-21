@@ -37,7 +37,8 @@ class Order < ApplicationRecord
       },
       ignore_due_email: true,
       ignore_canceled_email: true,  
-      due_date: (Time.current + 10.days),        
+      due_date: (Time.current + 10.days),  
+      payable_wht: ["pix", "credit_card"]
     }
   end
 

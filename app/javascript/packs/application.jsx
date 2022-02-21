@@ -47,8 +47,11 @@ window.toastr.options = {
 };
 
 // Internal imports
+import "./add_card";
 import "./events";
-import "./partner_lists";
+import "./event_user_list";
+import "./day_use_user_list";
+import "./membership_user_list";
 import "./partners";
 import "./payment_pooling";
 

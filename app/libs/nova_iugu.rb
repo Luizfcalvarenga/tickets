@@ -4,11 +4,10 @@ module NovaIugu
   ::Iugu.api_key = ENV["IUGU_API_KEY"]
 
   class InvoiceGenerator
-    attr_reader :entity, :payable_with
+    attr_reader :entity
 
-    def initialize(entity, payable_with)
+    def initialize(entity)
       @entity = entity
-      @payable_with = payable_with
     end
 
     def call
@@ -36,10 +35,127 @@ module NovaIugu
       raise ChargerParamsException.new("Payer not specified at [:payer]") if charge_params[:payer].blank?
       raise ChargerParamsException.new("Property 'name' (string) not specified for object payer at [:payer]. Item trace: #{charge_params[:payer].to_s}") if charge_params[:payer][:name].blank?
       raise ChargerParamsException.new("Property 'name' (string) not specified for object payer at [:payer]. Item trace: #{charge_params[:payer].to_s}") if charge_params[:payer][:name].blank?
+      raise ChargerParamsException.new("Payable With not specified at [:payable_with] or not an option of 'all', 'credit_card', 'bank_slip' or 'pix'") if charge_params[:payable_with].blank? || !['all', 'pix', 'credit_card', 'bank_slip'].include?(charge_params[:payable_with])
     end
 
     def charge_params
       @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(payable_with: payable_with)
+    end
+  end
+
+  class PlanCreator
+    attr_reader :entity, :custom_params
+
+    class PlanParamsException < StandardError
+      def initialize(error_message)
+        @exception_type = "custom"
+        super(error_message)
+      end
+    end
+    
+    def initialize(entity, custom_params = {})
+      @entity = entity
+      @custom_params = custom_params
+    end
+
+    def call
+      raise "Entity already has a Iugu Plan ID" if entity.iugu_plan_id.present?
+
+      validate_params!
+
+      @response = ::Iugu::Plan.create(plan_params)
+
+      entity.update!(
+        iugu_plan_id: @response.attributes["id"],
+      )
+    end
+
+    def validate_params!
+      raise PlanParamsException.new("Plan name (string) not specified at [:name]") if plan_params[:name].blank?
+      raise PlanParamsException.new("Plan unique identifier (int) not specified at [:identifier]") if plan_params[:identifier].blank?
+      raise PlanParamsException.new("Interval (int) not specified at [:interval] or not an integer bigger than 0") if plan_params[:interval].blank? || plan_params[:interval].class != Integer || plan_params[:interval] <= 0
+      raise PlanParamsException.new("Interval type not specified at [:interval_type] or not 'weeks' nor 'months'") if plan_params[:interval_type].blank? || !["weeks", "months"].include?(plan_params[:interval_type])
+      raise PlanParamsException.new("Value cents not specified at [:value_cents] or not an integer bigger than 0") if plan_params[:value_cents].blank? || plan_params[:value_cents].class != Integer || plan_params[:value_cents] <= 0
+      raise PlanParamsException.new("Payable With not specified at [:payable_with] or not an option of 'all', 'credit_card', 'bank_slip' or 'pix'") if plan_params[:payable_with].blank? || !['all', 'pix', 'credit_card', 'bank_slip'].include?(plan_params[:payable_with])
+    end
+
+    def plan_params
+      @plan_params ||= @entity.nova_iugu_plan_params_hash.merge(custom_params)
+    end
+  end
+
+  class CustomerCreator
+    attr_reader :entity, :custom_params
+
+    class CustomerParamsException < StandardError
+      def initialize(error_message)
+        @exception_type = "custom"
+        super(error_message)
+      end
+    end
+    
+    def initialize(entity, custom_params = {})
+      @entity = entity
+      @custom_params = custom_params
+    end
+
+    def call
+      return if entity.iugu_customer_id.present?
+
+      validate_params!
+
+      @response = ::Iugu::Customer.create(customer_params)
+
+      entity.update!(
+        iugu_customer_id: @response.attributes["id"],
+      )
+    end
+
+    def validate_params!
+      raise CustomerParamsException.new("Customer name (string) not specified at [:name]") if customer_params[:name].blank?
+      raise CustomerParamsException.new("Customer email (string) not specified at [:email]") if customer_params[:email].blank?
+    end
+
+    def customer_params
+      @customer_params ||= @entity.nova_iugu_customer_params_hash.merge(custom_params)
+    end
+  end
+
+  class SubscriptionCreator
+    attr_reader :entity, :custom_params
+
+    class SubscriptionParamsException < StandardError
+      def initialize(error_message)
+        @exception_type = "custom"
+        super(error_message)
+      end
+    end
+    
+    def initialize(entity, custom_params = {})
+      @entity = entity
+      @custom_params = custom_params
+    end
+
+    def call
+      raise "Entity already has a Iugu Subscription ID" if entity.iugu_subscription_id.present?
+
+      validate_params!
+
+      @response = ::Iugu::Subscription.create(subscription_params)
+    
+      entity.update!(
+        iugu_subscription_id: @response.attributes["id"],
+        iugu_active: @response.attributes["active"],
+      )
+    end
+
+    def validate_params!
+      raise SubscriptionParamsException.new("Plan identifier (string) not specified at [:plan_identifier]") if subscription_params[:plan_identifier].blank?
+      raise SubscriptionParamsException.new("Customer ID (string) not specified at [:customer_id]") if subscription_params[:customer_id].blank?
+    end
+
+    def subscription_params
+      @subscription_params ||= @entity.nova_iugu_subscription_params_hash.merge(custom_params)
     end
   end
 
@@ -180,7 +296,7 @@ end
 #   if @order.blank? || @order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled"
 #     @order = Order.create(entity: @entity)
 #     begin
-#       ::NovaIugu::InvoiceGenerator.new(@order, ["pix", "credit_card"]).call
+#       ::NovaIugu::InvoiceGenerator.new(@order).call
 #     rescue 
 #       @order_error = true
 #     end

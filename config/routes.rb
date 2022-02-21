@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     end
   end
   
+  resources :payment_methods
+  
   resource :profiles
   
   namespace :partner_admin do

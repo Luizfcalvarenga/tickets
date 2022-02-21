@@ -2,6 +2,28 @@ module PartnerAdmin
   class DayUsesController < ApplicationController
     def show
       @day_use = DayUse.find(params[:id])
+      @day_use_schedules = @day_use.day_use_schedules.sort_by { |dus| next_date_for_weekday(dus.weekday) }
+
+      date = params[:date].present? ? Date.new(*params[:date].split("-").reverse.map(&:to_i)) : Time.current  
+
+      @passes = @day_use.passes.for_date(date)
+        .distinct("passes.id")
+        # .joins(question_answers: :event_question)
+        # .where(event_question: { prompt: ["Nome completo"] })
+        # .order("question_answers.value")
+    
+      # if params[:query].present?
+      #   sql_query = "question_answers.value ILIKE :query"
+      #   @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
+      # end      
+
+      # @passes = @passes.group("passes.id").order("MAX(question_answers.value) DESC")
+
+      respond_to do |format|
+        format.html
+        format.csv { send_data @day_use.passes_csv }
+        format.text { render partial: 'partner_admin/day_uses/user_list', locals: { day_use: @day_use, passes: @passes }, formats: [:html] }
+      end
     end
 
     def new

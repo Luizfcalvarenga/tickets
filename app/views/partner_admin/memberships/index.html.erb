@@ -1,34 +1,34 @@
-<div class="page-wrapper">
-  <div class="p-5">
+<div id="membership-index-page" class="page-wrapper">
+  <div>
     <%= link_to new_partner_admin_membership_path do %>
-      <p class="btn btn-primary w-10">Nova assinatura</p>
+      <p class="btn btn-primary w-100">Nova assinatura</p>
     <% end %>
-  <div class="p-5">
-    <% @memberships.each do |membership| %>
-      <div class="membership bg-dark w-100 p-4 br-8 text-white center mb-2 row">
-        <div class="col-lg-3">
-          <p class="text-white f-20 m-0 mb-2"><%= membership.name %></p>
-        </div>
-        <div class="col-lg-2">
-          <p class="text-white f-20 m-0 mb-2"><%= membership.description %></p>
-        </div>
-        <div class="col-lg-3">
-          <p class="text-white f-20 m-0 mb-2"><%= membership.short_description %></p>
-        </div>
-        <div class="col-lg-2">
-          <p class="text-white f-20 m-0 mb-2"><%= membership.price_in_cents %></p>
-        </div>
-        <div class="col-lg-1">
-          <%= link_to edit_partner_admin_membership_path(membership.id), class: "" do %>
-            <p class="btn btn-primary m-0">Edit</p>
-          <% end %>
-        </div>
-        <div class="col-lg-1">
-          <%= link_to partner_admin_event_path(membership), class: "" do %>
-            <p class="btn btn-primary m-0">Delete</p>
-          <% end %>
-        </div>
+  </div>
+  <div>
+    <h3 class="title">Lista de mensalistas</h3>
+    <p><b> Total de mensalistas: </b> <%= @partner.user_memberships.count("distinct user_memberships.user_id") %></p>
+    <p><b> Total de mensalistas ativos: </b> <%= @partner.user_memberships.active.count("distinct user_memberships.user_id") %></p>
+
+    <div class="flex center between mb-3">
+      <div class="form-group f-60">
+        <input id="query-input" type="text" class="w-100" placeholder="Procurar mensalista">
       </div>
-    <% end %> 
+      <%= link_to partner_admin_memberships_path(format: "csv") do %>
+        <p class="btn btn-primary m-0">Baixar CSV</p>
+      <% end %>
+    </div>
+
+    <div id="user-list-parent-node">
+      <%= render partial: "partner_admin/memberships/user_list", locals: { users: @users, passes: @passes } %>
+    </div>
+  </div>
+</div>
+
+<div id="access-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body vh-90 bg-darker scrollable">
+      </div>
+    </div>
   </div>
 </div>

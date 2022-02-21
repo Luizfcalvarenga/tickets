@@ -1,0 +1,46 @@
+<table id="user-list">
+  <thead>
+    <tr>
+      <th scope="col">Usuário</th>
+      <th scope="col">Nome e CPF</th>
+      <th scope="col">Atividade</th>
+      <th scope="col">Mensalidades ativas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.each do |user| %>
+      <tr>
+        <td data-label="Usuário"><%= user.email %></td>
+        <td data-label="Nome e CPF">
+          <p class="m-0">
+            <%= user.name %>
+          </p>
+          <p class="m-0">
+            <%= cpf_mask(user.document_number) %>
+          </p>
+        </td>
+        <td data-label="Número de acessos">
+          <p class="m-0"><%= Access.joins(:pass).where(passes: {partner_id: @partner.id, user_id: user.id}).count %> acessos</p>
+          <p class="m-0">Desde <%= user.user_memberships.where(user_memberships: {membership_id: @memberships.ids}).minimum(:created_at).strftime("%d/%m/%Y") %></p>
+        </td>
+        <td data-label="Mensalidades ativas">
+          <% user_memberships = user.user_memberships.active.where(user_memberships: {membership_id: @memberships.ids}) %>
+          <% user_memberships.each do |user_membership| %>
+            <div class="flex center between mb-2 page-desktop">
+              <p class="m-0"><%= user_membership.membership.name %></p>
+              <p class="m-0 btn btn-primary toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>">Liberar acesso</p>
+            </div>
+            <div class="mb-2 page-mobile">
+              <p class="m-0"><%= user_membership.membership.name %></p>
+              <p class="m-0 btn btn-primary toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>">Liberar acesso</p>
+            </div>
+          <% end %>
+          <% if user_memberships.blank? %>
+            <p class="m-0 danger-text p-3 br-8">Nenhuma mensalidade ativa</p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+   

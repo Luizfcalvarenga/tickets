@@ -56,7 +56,24 @@
   <div class="spacer-100"></div>
 
   <h2>Assinaturas</h2>
-  <%= link_to partner_admin_memberships_path do %>
-    <p class="btn btn-primary px-5">Assinaturas</p>
+  <% @memberships.each do |membership| %>
+    <div class="membership bg-dark w-100 p-4 br-8 text-white center mb-2 flex center">
+      <div class="f-40">
+        <p class="text-white mb-2 fw-700"><%= membership.name %></p>
+      </div>
+      <div class="f-40">
+        <p class="text-white f-20 m-0"><%= display_price(membership.price_in_cents / 100) %></p>
+        <p class="text-white f-20 m-0"><%= membership.users.count %> mensalistas</p>
+      </div>
+      <div class="f-20">
+        <%= link_to edit_partner_admin_membership_path(membership.id), class: "" do %>
+          <p class="btn btn-primary m-0">Editar</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %> 
+  <%= link_to partner_admin_memberships_path, class: "w-100" do %>
+    <p class="btn btn-primary px-5 w-100 my-3">Listagem de membros</p>
   <% end %>
 </div>
+  

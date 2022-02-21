@@ -139,6 +139,16 @@ puts 'Criando day uses...'
       end_time: Time.new.middle_of_day + rand(0..6).hours,
       price_in_cents: [2500, 5000, 7500, 10000].sample)
   end
+
+  created_day_use_schedules = day_use.day_use_schedules
+  (%w[monday tuesday wednesday thursday friday saturday sunday] - created_day_use_schedules.map(&:weekday)).each do |weekday|
+    DayUseSchedule.create!( day_use: day_use,
+      weekday: weekday,
+      name: Faker::Marketing.buzzwords.titleize,
+      start_time: nil,
+      end_time: nil,
+      price_in_cents: nil)
+  end
 end
 
 puts "All done!!!"

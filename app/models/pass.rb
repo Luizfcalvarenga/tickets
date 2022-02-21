@@ -15,6 +15,8 @@ class Pass < ApplicationRecord
 
   validates :identifier, :name, presence: true
 
+  scope :for_date, -> (date) { where("passes.start_time > ? and passes.start_time < ?", date.at_beginning_of_day, date.at_end_of_day) }
+
   def holder_name
     return user.name if user_membership.present?
 

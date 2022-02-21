@@ -1,4 +1,4 @@
-<div class="page-wrapper">
+<div id="day-use-show-page" class="page-wrapper">
   <h1 class="title"><%= @day_use.name %></h1>
 
   <% if @day_use.photo.attached? %>
@@ -7,20 +7,73 @@
     </div>
   <% end %>
 
-  <h3 class="title">Funcionamento</h3>
+    <ul class="nav nav-tabs mb-5" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de convidados</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Horários de funcionamento</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="schedule-blocks-tab" data-bs-toggle="tab" data-bs-target="#schedule-blocks" type="button" role="tab" aria-controls="contact" aria-selected="false">Bloqueios de calendário</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="user-list" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row mb-4">
+          <% (0..6).to_a.map { |int| Time.current + int.days }.each do |date| %>
+            <div class="date-card flex column center justify-content-between col-1 bg-dark mx-2 py-4 clickable <%= 'selected' if date.today? %>" data-date="<%= date.strftime('%d-%m-%Y') %>">
+              <p class="m-0 fs-36"><%= date.day %></p>
+              <p class="m-0 fs-18"><%= month_number_to_name_abr(date.month) %></p>
+              <p class="m-0 fs-18"><%= weekday_number_to_name_abr(date.wday) %></p>
+            </div>
+          <% end %>
+        </div>
+        
+        <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
-  <% @day_use.day_use_schedules.each do |day_use_schedule| %>
-    <div class="flex center start bg-dark p-4 br-8 mb-2">
-      <p class="m-0 f-20"><%= day_use_schedule.weekday_display %></p>
-      <% if day_use_schedule.open? %>
-        <p class="m-0 success-text br-8 px-4 f-10 text-center">Aberto</p>
-        <div class="f-20"></div>
-        <p class="m-0 f-30"><%= day_use_schedule.start_time.strftime("%H:%M") %> - <%= day_use_schedule.end_time.strftime("%H:%M") %></p>
-        <p class="m-0 f-20"><%= display_price(day_use_schedule.price_in_cents) %></p>
-      <% else %>
-        <p class="m-0 danger-text br-8 px-4 f-10 text-center">Fechado</p>
-      <% end %>
+        <div class="flex center between mb-3">
+          <div class="form-group f-60">
+            <input id="query-input" type="text" class="w-100" placeholder="Procurar passe">
+          </div>
+          <%= link_to partner_admin_day_use_path(format: "csv") do %>
+            <p class="btn btn-primary m-0">Baixar CSV</p>
+          <% end %>
+        </div>
+
+        <div id="user-list-parent-node">
+          <%= render partial: "partner_admin/day_uses/user_list", locals: { day_use: @day_use, passes: @passes } %>
+        </div>
+      </div>
+      
+      <div class="tab-pane fade" id="schedules" role="tabpanel" aria-labelledby="profile-tab">
+        <% @day_use_schedules.each do |day_use_schedule| %>
+          <div class="flex center start bg-dark p-4 br-8 mb-2">
+            <p class="m-0 f-20"><%= day_use_schedule.weekday_display %></p>
+            <% if day_use_schedule.open? %>
+              <p class="m-0 success-text br-8 px-4 f-10 text-center">Aberto</p>
+              <div class="f-20"></div>
+              <p class="m-0 f-30"><%= day_use_schedule.start_time.strftime("%H:%M") %> - <%= day_use_schedule.end_time.strftime("%H:%M") %></p>
+              <p class="m-0 f-20"><%= display_price(day_use_schedule.price_in_cents) %></p>
+            <% else %>
+              <p class="m-0 danger-text br-8 px-4 f-10 text-center">Fechado</p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="tab-pane fade" id="schedule-blocks" role="tabpanel" aria-labelledby="contact-tab">
+
+      </div>
     </div>
-  <% end %>
+  </div>
+</div>
 
+<div id="access-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body vh-90 bg-darker scrollable">
+      </div>
+    </div>
+  </div>
 </div>

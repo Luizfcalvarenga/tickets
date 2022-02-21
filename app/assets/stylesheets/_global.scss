@@ -467,9 +467,26 @@ hr {
 
 .fs-160 { font-size: 160px; }
 
-.nav-link {
-  padding: 12px;
-  .active {
+.nav-tabs {
+  border-bottom: 1px solid $color-primary !important;
+  
+  button {
+    text-transform: uppercase !important;
+    font-size: 18px !important;
+    padding: 12px !important;
+  }
 
+  .active {
+    background: black !important;
+    color: $color-primary !important;
+    border-color: $color-primary !important;
+  }
+}
+
+.date-card {
+
+  &.selected {
+    background: $color-primary !important;
+    color: white !important;
   }
 }

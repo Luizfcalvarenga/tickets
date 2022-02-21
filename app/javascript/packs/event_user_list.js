@@ -6,6 +6,8 @@ import debounce from "lodash.debounce";
 import Swal from "sweetalert2";
 
 document.addEventListener("turbolinks:load", () => {
+  if (!document.querySelector("#event-show-page")) return;
+
   const addEventListenersToDirectAccessButtons = () => {
     const accessModal = document.querySelector("#access-modal");
 
@@ -71,6 +73,7 @@ document.addEventListener("turbolinks:load", () => {
 
   const debouncedReloadList = debounce(() => {
     const tableElement = document.querySelector("#user-list");
+    const tableElementParentNode = document.querySelector("#user-list-parent-node");
 
     if (!tableElement) return;
 
@@ -79,7 +82,7 @@ document.addEventListener("turbolinks:load", () => {
     fetch(url, { headers: { Accept: "text/plain" } })
       .then((response) => response.text())
       .then((data) => {
-        tableElement.parentNode.innerHTML = data;
+        tableElementParentNode.innerHTML = data;
         addEventListenersToDirectAccessButtons();
       });
   }, 500);

@@ -1,4 +1,4 @@
-<div class="page-wrapper">
+<div id="event-show-page" class="page-wrapper">
   <h1 class="title"><%= @event.name %></h1>
 
   <% if @event.photo.attached? %>
@@ -6,15 +6,15 @@
     </div>
   <% end %>
 
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <ul class="nav nav-tabs mb-5" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de convidados</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="batches-tab" data-bs-toggle="tab" data-bs-target="#batches" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+      <button class="nav-link" id="batches-tab" data-bs-toggle="tab" data-bs-target="#batches" type="button" role="tab" aria-controls="profile" aria-selected="false">Lotes e preços</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+      <button class="nav-link" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Comunicados</button>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
@@ -31,7 +31,7 @@
         <% end %>
       </div>
 
-      <div>
+      <div id="user-list-parent-node">
         <%= render partial: "partner_admin/events/user_list", locals: { event: @event, passes: @passes } %>
       </div>
     </div>

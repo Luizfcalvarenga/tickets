@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.text "description"
     t.integer "price_in_cents"
     t.bigint "partner_id", null: false
+    t.string "iugu_plan_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
@@ -309,6 +310,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "user_id", null: false
     t.bigint "membership_id", null: false
     t.datetime "ended_at"
+    t.string "iugu_subscription_id"
+    t.boolean "iugu_active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["membership_id"], name: "index_user_memberships_on_membership_id"
@@ -328,6 +331,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "name"
     t.string "document_type"
     t.string "document_number"
+    t.string "iugu_customer_id"
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.boolean "allow_password_change", default: false

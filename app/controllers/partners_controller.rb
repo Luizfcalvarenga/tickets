@@ -30,7 +30,7 @@ class PartnersController < ApplicationController
     @weekdays[0][:today] = true
     @weekdays[0][:label] += " (Hoje)"
 
-    @memberships = @partner.memberships.where.not(id: current_user&.memberships&.ids)
+    @memberships = @partner.memberships.where.not(id: current_user.user_memberships.active.ids)
 
     if current_user.present?
       @passes = current_user.passes.joins(event: :partner).where(partners: {id: @partner.id})

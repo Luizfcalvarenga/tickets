@@ -1,0 +1,65 @@
+<div class="page-wrapper">
+  <h1 class="title">Métodos de pagamento</h1>
+
+  <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Para assinar mensalidades, é necessário ter um cartão de crédito ativo.</p>
+  <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Nenhum cartão fica salvo em nosso banco de dados, apenas na nossa instituição parceira de pagamentos.</p>
+
+  <h2 class="title">Adicionar cartão</h2>
+  <form id="payment-form" action="<%= payment_methods_path %>" method="post">
+    <p class="d-none" id="environment"><%= Rails.env %></p>
+    <div class="usable-creditcard-form">
+      <div class="wrapper">
+        <div class="input-group nmb_a">
+          <div class="icon ccic-brand"></div>
+            <input autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
+          </div>
+        <div class="input-group nmb_b">
+          <div class="icon ccic-cvv"></div>
+            <input autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+        </div>
+        <div class="input-group nmb_c">
+          <div class="icon ccic-name"></div>
+            <input class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+        </div>
+        <div class="input-group nmb_d">
+          <div class="icon ccic-exp"></div>
+            <input autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
+        </div>
+      </div>
+      <div class="footer">
+        <img src="https://s3-sa-east-1.amazonaws.com/storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/cc-icons.e8f4c6b4db3cc0869fa93ad535acbfe7.png" alt="Visa, Master, Diners. Amex" border="0" />
+        <a class="iugu-btn" href="http://iugu.com" tabindex="-1"><img src="https://s3-sa-east-1.amazonaws.com/storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/payments-by-iugu.1df7caaf6958f1b5774579fa807b5e7f.png" alt="Pagamentos por Iugu" border="0" /></a>
+      </div>
+    </div>
+
+    <div class="token-area d-none">
+      <label for="token">Token do Cartão de Crédito - Enviar para seu Servidor</label>
+      <input type="text" name="token" id="token" value="" readonly="true" size="64" style="text-align:center" />
+    </div>
+      
+    <div class="w-100 flex center around my-4">
+      <button type="submit" class="btn btn-primary px-5">Adicionar cartão</button>
+    </div>   
+  </form>
+
+  <h2 class="title">Cartões cadastrados</h2>
+
+  <% @payment_methods.each do |payment_method| %>
+    <div class="border p-5 br-8 flex center between">
+      <div class="f-70">
+        <p class="m-0"><%= payment_method.description %></p>
+        <p class="m-0"><%= payment_method.data["masked_number"] %></p>
+        <p class="m-0"><%= payment_method.data["month"] %>/<%= payment_method.data["year"] %></p>
+      </div>
+      <div class="f-30">
+        <%= link_to payment_method_path(id: payment_method.id), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
+          <p class="w-100 text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Remover forma de pagamento</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @payment_methods.blank? %>
+    <p class="text-white">Nenhum cartão cadastrado.</p>
+  <% end %>
+</div>

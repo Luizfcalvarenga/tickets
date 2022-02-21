@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   has_one_attached :photo
   has_many :event_batches, dependent: :destroy
   has_many :passes, through: :event_batches
-  has_many :accesses
+
   has_many :event_questions, dependent: :destroy
   has_many :event_communications
   

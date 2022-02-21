@@ -20,5 +20,6 @@ class Partner < ApplicationRecord
   has_many :passes
   has_many :events
   has_many :memberships
+  has_many :user_memberships, through: :memberships
   has_many :day_uses
 end

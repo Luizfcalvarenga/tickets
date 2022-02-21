@@ -17,6 +17,8 @@ class User < ApplicationRecord
   
   belongs_to :partner, optional: true
 
+  after_create :create_customer_at_iugu
+
   enum access: {
     user: "user",
     partner_user: "partner_user",
@@ -33,5 +35,16 @@ class User < ApplicationRecord
           # csv << [user.email, user.access]
       end
     end
+  end
+
+  def create_customer_at_iugu
+    NovaIugu::CustomerCreator.new(self).call if user?
+  end
+
+  def nova_iugu_customer_params_hash
+    {
+      name: name,
+      email: email
+    }
   end
 end

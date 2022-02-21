@@ -1,6 +1,9 @@
 class DayUseSchedule < ApplicationRecord
   belongs_to :day_use
 
+  has_many :passes
+
+
   def weekday_display
     {
       monday: "Segunda-feira",
