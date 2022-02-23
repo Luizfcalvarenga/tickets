@@ -2,6 +2,8 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, except: [:dashboard, :clean]
 
   def home
+    @events = Event.all.sample(4)
+    
     qrcode = RQRCode::QRCode.new("https://www.lunacali.com")
 
     @svg = qrcode.as_svg(
