@@ -73,8 +73,12 @@
     <div class="row">
       <% @events.each do |event| %>
         <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-          <% if event.photo.attached? %>
-            <%= image_tag cl_image_path event.photo.key, height: 220, crop: :fill %>
+          <%= link_to event_path(event), class: "" do %>
+            <% if event.photo.attached? %>
+                <%= image_tag cl_image_path event.photo.key, height: 220, crop: :fill %>
+              <% else %>
+                <%= image_tag 'default.png' %>
+            <% end %>
           <% end %>
           <div class="bg-dark">
             <div class="d-flex justify-content-between p-2">
@@ -101,8 +105,12 @@
             <% else %>
               <div class="carousel-item">
             <% end %>
-            <% if event.photo.attached? %>
-              <%= image_tag cl_image_path event.photo.key, height: 250, width: 400, crop: :fill %>
+            <%= link_to event_path(event), class: "" do %>
+              <% if event.photo.attached? %>
+                  <%= image_tag cl_image_path event.photo.key, height: 290, crop: :fill %>
+                <% else %>
+                  <%= image_tag 'default.png' %>
+              <% end %>
             <% end %>
               <div class="bg-dark">
                 <div class="p-2">
