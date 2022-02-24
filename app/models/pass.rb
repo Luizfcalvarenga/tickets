@@ -2,6 +2,7 @@ class Pass < ApplicationRecord
   belongs_to :user
   belongs_to :order_item, optional: true
   belongs_to :partner
+  belongs_to :directly_generated_by, class_name: "User", foreign_key: "directly_generated_by_id", optional: true
   
   belongs_to :event_batch, optional: true
   belongs_to :day_use_schedule, optional: true

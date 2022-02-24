@@ -15,6 +15,8 @@ module PartnerAdmin
 
       # @passes = @passes.group("passes.id").order("MAX(question_answers.value) DESC")
 
+      @order = Order.new
+
       respond_to do |format|
         format.html
         format.csv { send_data @event.passes_csv }

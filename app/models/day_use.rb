@@ -13,6 +13,10 @@ class DayUse < ApplicationRecord
 
   scope :open_for_weekday, ->(weekday) { joins(:day_use_schedules).where("day_use_schedules.opens_at is not null and day_use_schedules.closes_at is not null and day_use_schedules.weekday = ?", weekday) }
 
+  def schedule_for_today
+    day_use_schedules.find_by(weekday: Time.current.strftime("%A").downcase)
+  end
+
   def create_default_questions
     question = Question.create!(
       day_use: self,

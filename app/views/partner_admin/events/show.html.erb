@@ -16,8 +16,11 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Comunicados</button>
     </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
+    </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
+  <div class="tab-content">
     <div class="tab-pane fade show active" id="user-list" role="tabpanel" aria-labelledby="home-tab">
       <h3 class="title">Lista de convidados</h3>
       <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
@@ -58,6 +61,71 @@
       <h3>Comunicados do evento</h3>
       <%= link_to event_event_communications_path(event_id: @event.id) do %>
         <p class="btn btn-primary w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
+      <%= simple_form_for([:partner_admin, @order]) do |f| %>
+        <select name="order_item[event_batch_id]" id="" class="w-100">
+          <% @event.open_batches.each do |batch| %>
+            <option value="<%= batch.id %>"><%= batch.pass_type %> - <%= batch.name %></option>
+          <% end %>
+        </select>
+
+        <%= simple_fields_for :user do |uf| %>
+          <%= uf.input :email %>
+          <%= uf.input :name %>
+          <%= uf.input :document_number %>
+        <% end %>
+        <div class="my-3"></div>
+        <% @event.questions.each_with_index do |question, index| %>
+          <p class="mb-3">Pergunta <%= index + 1 %>: <%= question.prompt %></p>
+          <div class="my-2">
+            <input
+              type="hidden"
+              name="order[user_answers][][question_id]"
+              value="<%= question.id %>"
+              class="w-100"
+            />
+            <input
+              type="hidden"
+              name="order[user_answers][][optional]"
+              value="<%= question.optional %>"
+              class="w-100"
+            />
+            <% if question.multiple_choice? %>
+              <select
+                name="order[user_answers][][value]"
+                value="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value %>"
+                class="w-100"
+              >
+                <% question.options.each do |option| %>
+                  <option value="<%= option %>" <%= "selected" if @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value == option %>><%= option %></option>
+                <% end %>
+              </select>
+            <% else %>
+              <% if ["Nome completo", "CPF"].include?(question.prompt) %>
+                <input
+                  type="text"
+                  name="order[user_answers][][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
+                  class="w-100"
+                />
+              <% else %>
+                <textarea
+                  class="form-control my-2 f-60"
+                  type="text"
+                  name="order[user_answers][][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
+                  placeholder="Sua resposta..."></textarea>
+              <% end %>
+              <% if @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.errors&.present? %>
+                <p class="text-danger"><%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }.errors.full_messages.first %></p>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= f.submit "Criar parceiro", class: "btn btn-primary mt-5 w-100" %>
       <% end %>
     </div>
   </div>

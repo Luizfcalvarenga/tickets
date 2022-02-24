@@ -21,24 +21,16 @@ class DayUseSchedule < ApplicationRecord
     opens_at.present? && closes_at.present?
   end
 
-  def start_time(start_time)
-    start_time
-  end
-
-  def end_time(end_time)
-    end_time
-  end
-
   def open_slots_for_date(date)
     date = date.to_datetime.asctime.in_time_zone("Brazil/East")
     
-    number_of_slots = ((closes_at - opens_at)/(60 * slot_duration_in_minutes).floor).to_i
+    number_of_slots = ((closes_at - opens_at)/(60 * sanitized_slot_duration_in_minutes).floor).to_i
 
     slots = []
 
     number_of_slots.times do |i|
-      start_time = date.change(hour: opens_at.hour, min: opens_at.min) + (i * slot_duration_in_minutes).minutes
-      end_time = start_time + slot_duration_in_minutes.minutes
+      start_time = date.change(hour: opens_at.hour, min: opens_at.min) + (i * sanitized_slot_duration_in_minutes).minutes
+      end_time = start_time + sanitized_slot_duration_in_minutes.minutes
       slots << {
         start_time: start_time,
         end_time: end_time,
@@ -46,6 +38,12 @@ class DayUseSchedule < ApplicationRecord
       }
     end
 
+    return slots if quantity_per_slot.blank?
+
     slots.reject { |slot| slot[:order_item_count] >= quantity_per_slot }
+  end
+
+  def sanitized_slot_duration_in_minutes
+    slot_duration_in_minutes.presence || (closes_at - opens_at)/60
   end
 end

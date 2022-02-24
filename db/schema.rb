@@ -215,7 +215,9 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "created_by_id"
+    t.bigint "directly_generated_by_id"
     t.index ["created_by_id"], name: "index_orders_on_created_by_id"
+    t.index ["directly_generated_by_id"], name: "index_orders_on_directly_generated_by_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -261,7 +263,9 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.float "fee_percentage", default: 10.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "directly_generated_by_id"
     t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
+    t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
     t.index ["event_id"], name: "index_passes_on_event_id"
     t.index ["order_item_id"], name: "index_passes_on_order_item_id"
@@ -372,6 +376,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "created_by_id"
+  add_foreign_key "orders", "users", column: "directly_generated_by_id"
   add_foreign_key "partners", "cities"
   add_foreign_key "partners", "states"
   add_foreign_key "partners", "users", column: "main_contact_id"
@@ -382,6 +387,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "passes", "partners"
   add_foreign_key "passes", "user_memberships"
   add_foreign_key "passes", "users"
+  add_foreign_key "passes", "users", column: "directly_generated_by_id"
   add_foreign_key "question_answers", "order_items"
   add_foreign_key "question_answers", "questions"
   add_foreign_key "questions", "day_uses"

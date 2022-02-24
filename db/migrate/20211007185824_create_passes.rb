@@ -18,5 +18,7 @@ class CreatePasses < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_reference :passes, :directly_generated_by, foreign_key: { to_table: :users }
   end
 end

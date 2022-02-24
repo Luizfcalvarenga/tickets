@@ -56,11 +56,15 @@ class PassScanner
   end
 
   def scan_event_pass
-    if @pass.accesses.blank?
+    if @pass.accesses.blank? && Time.current > @pass.start_time.beginning_of_day
       @result = true
       @main_line = "Acesso liberado"
       @secondary_line = ""
-    else 
+    elsif Time.current < @pass.start_time.beginning_of_day
+      @result = false
+      @main_line = "Acesso negado"
+      @secondary_line = "Esse acesso só pode ser liberado no dia do evento"
+    else
       @result = false
       @main_line = "Acesso negado"
       @secondary_line = "Esse passe já foi utilizado anteriormente"

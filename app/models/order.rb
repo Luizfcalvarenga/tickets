@@ -1,9 +1,12 @@
 class Order < ApplicationRecord
   belongs_to :user
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
+  belongs_to :directly_generated_by, class_name: "User", foreign_key: "directly_generated_by_id", optional: true
 
   has_many :order_items
   has_many :passes, through: :order_items
+
+  accepts_nested_attributes_for :user
 
   def total_price_in_cents
     order_items.sum(:total_in_cents)

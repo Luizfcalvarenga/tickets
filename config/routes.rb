@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     resources :memberships
     resources :day_uses
     resources :partners
+    resources :orders
     # get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
     # dúvida
   end

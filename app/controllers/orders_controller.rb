@@ -11,10 +11,14 @@ class OrdersController < ApplicationController
 
     ActiveRecord::Base.transaction do
       order_items_params.each do |order_item_params|
-        entity = if order_item_params[:event_batch_id].present?
-          EventBatch.find(order_item_params[:event_batch_id])
+        if order_item_params[:event_batch_id].present?
+          entity = EventBatch.find(order_item_params[:event_batch_id])
+          start_time = entity.event.scheduled_start
+          end_time = entity.event.scheduled_end
         elsif order_item_params[:day_use_schedule_id].present?
-          DayUseSchedule.find(order_item_params[:day_use_schedule_id])
+          entity = DayUseSchedule.find(order_item_params[:day_use_schedule_id])
+          start_time = order_item_params[:start_time].to_datetime
+          end_time = order_item_params[:start_time].to_datetime +  entity.sanitized_slot_duration_in_minutes.minute
         else
           raise
         end
@@ -26,8 +30,8 @@ class OrdersController < ApplicationController
             price_in_cents: entity.price_in_cents,
             fee_percentage: entity.partner.fee_percentage,
             total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
-            start_time: entity.send(:start_time, order_item_params[:start_time]),
-            end_time: entity.send(:end_time, order_item_params[:end_time]),
+            start_time: start_time,
+            end_time: end_time,
           )
         end
       end
