@@ -17,7 +17,7 @@ import QrScanner from "qr-scanner";
 
 import { Scanner } from "../react_pages/Scanner";
 import { ReactPage } from "../react_pages/ReactPage";
-import { EventQuestions } from "../react_pages/EventQuestions";
+import { Questions } from "../react_pages/Questions";
 import { EventBatches } from "../react_pages/EventBatches";
 import { EventOrderItems } from "../react_pages/EventOrderItems";
 import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
@@ -74,7 +74,7 @@ const loadReactComponent = () => {
         />
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,
-      EventQuestions: <EventQuestions />,
+      Questions: <Questions />,
       EventBatches: <EventBatches />,
       EventOrderItems: (
         <EventOrderItems
@@ -84,6 +84,11 @@ const loadReactComponent = () => {
           eventBatches={
             container.dataset.eventBatches
               ? JSON.parse(container.dataset.eventBatches)
+              : null
+          }
+          feePercentage={
+            container.dataset.feePercentage
+              ? JSON.parse(container.dataset.feePercentage)
               : null
           }
         />
@@ -102,6 +107,11 @@ const loadReactComponent = () => {
           }
           date={
             container.dataset.date ? JSON.parse(container.dataset.date) : null
+          }
+          feePercentage={
+            container.dataset.feePercentage
+              ? JSON.parse(container.dataset.feePercentage)
+              : null
           }
         />
       ),

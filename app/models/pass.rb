@@ -22,7 +22,7 @@ class Pass < ApplicationRecord
 
     return nil if question_answers.blank?
 
-    question_answers.joins(:event_question).find_by(event_questions: {prompt: "Nome completo"}).value
+    question_answers.joins(:question).find_by(questions: {prompt: "Nome completo"}).value
   end
 
   def holder_cpf
@@ -30,7 +30,7 @@ class Pass < ApplicationRecord
 
     return nil if question_answers.blank?
 
-    cpf = question_answers.joins(:event_question).find_by(event_questions: {prompt: "CPF"}).value
+    cpf = question_answers.joins(:question).find_by(questions: {prompt: "CPF"}).value
 
     cpf.insert(3, ".").insert(7, ".").insert(11, "-")
   end
@@ -58,7 +58,7 @@ class Pass < ApplicationRecord
       return {
         label: "Não utilizado",
         class: "bg-danger"
-      } if end_time < Time.current
+      } if end_time.at_end_of_day < Time.current
 
       return {
         label: "Utilizado",

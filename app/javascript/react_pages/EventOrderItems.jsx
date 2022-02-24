@@ -8,6 +8,8 @@ export function EventOrderItems(props) {
         passType: eventBatch.pass_type,
         name: eventBatch.name,
         priceInCents: eventBatch.price_in_cents,
+        feeInCents: eventBatch.price_in_cents * parseFloat(props.feePercentage / 100),
+        totalInCents: eventBatch.price_in_cents * (1 + parseFloat(props.feePercentage / 100)),
         quantity: 0,
       };
     })
@@ -30,24 +32,9 @@ export function EventOrderItems(props) {
     return batchesInfosAndQuantities.reduce(
       (partialSum, batchInfosAndQuantities) =>
         partialSum +
-        batchInfosAndQuantities.quantity * batchInfosAndQuantities.priceInCents,
+        batchInfosAndQuantities.quantity * batchInfosAndQuantities.totalInCents,
       0
     );
-  };
-
-  const startTime = () => {
-    const date = new Date(props.event.scheduled_start);
-    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    const timeObject = new Date(date.getTime() + userTimezoneOffset);
-
-    return timeObject;
-  };
-  const endTime = () => {
-    const date = new Date(props.event.scheduled_end);
-    var userTimezoneOffset = date.getTimezoneOffset() * 60000;
-    const timeObject = new Date(date.getTime() + userTimezoneOffset);
-
-    return timeObject;
   };
 
   return (
@@ -71,6 +58,12 @@ export function EventOrderItems(props) {
                   style: "currency",
                   currency: "BRL",
                 })}
+                &nbsp;(+&nbsp;
+                {(batch.feeInCents / 100).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}{" "}
+                taxa)
               </p>
               <div className="flex center around f-10">
                 <i
@@ -93,21 +86,6 @@ export function EventOrderItems(props) {
                 type="hidden"
                 name="order[order_items][][quantity]"
                 value={batch.quantity}
-              />
-              <input
-                type="hidden"
-                name="order[order_items][][start_time]"
-                value={startTime()}
-              />
-              <input
-                type="hidden"
-                name="order[order_items][][end_time]"
-                value={endTime()}
-              />
-              <input
-                type="hidden"
-                name="order[order_items][][price_in_cents]"
-                value={batch.priceInCents}
               />
             </div>
           );

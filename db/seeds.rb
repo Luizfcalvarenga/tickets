@@ -15,7 +15,7 @@ Membership.destroy_all
 DayUse.destroy_all
 DayUseSchedule.destroy_all
 
-puts "Criando usuários, partner_users, partner e memberships..."
+puts "Criando usuários e parceiros..."
 
 User.create!(email: "admin@app.com", password: "123456", access: "admin") 
 
@@ -48,8 +48,8 @@ end
   user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 end
 
-state = State.find_by(name: "Minas Gerais")
-city = City.find_by(name: "Belo Horizonte")
+state = State.first
+city = City.first
 partner = Partner.create!(name: "Parceiro de demonstração",
                           cnpj: "44.716.365/0001-92",
                           contact_phone_1: "3132235655",
@@ -115,7 +115,7 @@ puts 'Criando eventos...'
     end
   end
 
-  event.create_default_event_questions
+  event.create_default_questions
 end
 
 puts 'Criando day uses...'
@@ -131,12 +131,14 @@ puts 'Criando day uses...'
   file = URI.open(url.to_s)
   day_use.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 
+  day_use.create_default_questions
+
   %w[monday tuesday wednesday thursday friday saturday sunday].shuffle.first(rand(4..7)).each do |weekday|
     DayUseSchedule.create!( day_use: day_use,
       weekday: weekday,
       name: Faker::Marketing.buzzwords.titleize,
-      start_time: Time.new.beginning_of_day + rand(0..3).hours,
-      end_time: Time.new.middle_of_day + rand(0..6).hours,
+      opens_at: Time.new.beginning_of_day + rand(0..3).hours,
+      closes_at: Time.new.middle_of_day + rand(0..6).hours,
       price_in_cents: [2500, 5000, 7500, 10000].sample)
   end
 
@@ -145,8 +147,8 @@ puts 'Criando day uses...'
     DayUseSchedule.create!( day_use: day_use,
       weekday: weekday,
       name: Faker::Marketing.buzzwords.titleize,
-      start_time: nil,
-      end_time: nil,
+      opens_at: nil,
+      closes_at: nil,
       price_in_cents: nil)
   end
 end

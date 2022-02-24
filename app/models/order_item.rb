@@ -7,6 +7,24 @@ class OrderItem < ApplicationRecord
 
   has_many :question_answers, dependent: :destroy
 
+  def fee_value_in_cents
+    price_in_cents * fee_percentage / 100
+  end
+
+  def identification_name
+    return nil if question_answers.blank?
+
+    question_answers.joins(:question).find_by(questions: {prompt: "Nome completo"}).value
+  end
+
+  def identification_cpf
+    return nil if question_answers.blank?
+
+    cpf = question_answers.joins(:question).find_by(questions: {prompt: "CPF"}).value
+
+    cpf.insert(3, ".").insert(7, ".").insert(11, "-")
+  end
+
   def full_description
     if event_batch.present?
       return "#{event_batch.event.name} - #{event_batch.pass_type} - #{event_batch.name}"
@@ -14,6 +32,16 @@ class OrderItem < ApplicationRecord
       return "#{day_use_schedule.day_use.name} - #{day_use_schedule.name} - #{start_time.strftime("%d/%m/%Y")}"
     else
       raise RecordInvalid
+    end
+  end
+
+  def questions
+    if event_batch.present?
+      event_batch.questions
+    elsif day_use_schedule.present?
+      day_use_schedule.day_use.questions
+    else
+      raise
     end
   end
 end

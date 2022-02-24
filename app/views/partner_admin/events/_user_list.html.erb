@@ -1,12 +1,12 @@
 <table id="user-list">
   <thead>
     <tr>
-      <% event.event_questions.default_questions.order(:order).each do |event_question| %>
-        <td><%= event_question.prompt %></td>
+      <% event.questions.default_questions.order(:order).each do |question| %>
+        <td><%= question.prompt %></td>
       <% end %>
       <th scope="col">Usuário</th>
-      <% event.event_questions.non_default_questions.order(:order).each do |event_question| %>
-        <td><%= event_question.prompt %></td>
+      <% event.questions.non_default_questions.order(:order).each do |question| %>
+        <td><%= question.prompt %></td>
       <% end %>
       <th scope="col">Acesso</th>
       <th scope="col">Ações</th>
@@ -15,11 +15,11 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
-        <% pass.question_answers.default_questions.joins(:event_question).order("event_questions.order").each do |question_answer| %>
-          <td data-label="<%= question_answer.event_question.prompt %>"><%= question_answer.value %></td>
+        <% pass.question_answers.default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+          <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
         <% end %>
         <td data-label="Usuário"><%= pass.user.email %></td>
-        <% pass.question_answers.non_default_questions.joins(:event_question).order("event_questions.order").each do |question_answer| %>
+        <% pass.question_answers.non_default_questions.joins(:question).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
         <% end %>
         <td data-label="Acesso">

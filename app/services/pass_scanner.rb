@@ -35,7 +35,7 @@ class PassScanner
     end
 
     @question_list = @pass.question_answers.map do |question_answers|
-      question_answers.as_json(include: :event_question)
+      question_answers.as_json(include: :question)
     end
 
     @accesses = @pass.accesses.map do |access|

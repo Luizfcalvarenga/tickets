@@ -1,6 +1,6 @@
 require "test_helper"
 
-class EventQuestionQrcodeAnswerTest < ActiveSupport::TestCase
+class QuestionQrcodeAnswerTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h1 class="title">Respostas para o evento <%= @event.name %></h1>
+  <h1 class="title">Respostas para os passes</h1>
 
   <p class="text-white">O produtor do evento pede para que você responda as seguintes perguntas para comprar seus ingressos:</p>
 
@@ -10,58 +10,57 @@
   <%= simple_form_for([@order, @question_answer]) do |f| %>
     <% @order_items.each_with_index do |order_item, index| %>
       <div class="mb-5 p-4 bg-dark">
-        <p><span class="fw-700">Ingresso #<%= index + 1 %>:</span> <%= order_item.event_batch.pass_type %> - <%= order_item.event_batch.name %> </p>
+        <p><span class="fw-700">Ingresso #<%= index + 1 %>:</span> <%= order_item.full_description %></p>
 
-        <% order_item.event_batch.event_questions.each_with_index do |event_question, index| %>
-          <p class="mb-3">Pergunta <%= index + 1 %>: <%= event_question.prompt %></p>
+        <% order_item.questions.each_with_index do |question, index| %>
+          <p class="mb-3">Pergunta <%= index + 1 %>: <%= question.prompt %></p>
           <div class="my-2">
             <input
               type="hidden"
-              name="event_user_answers[][order_item_id]"
+              name="user_answers[][order_item_id]"
               value="<%= order_item.id %>"
               class="w-100"
             />
             <input
               type="hidden"
-              name="event_user_answers[][event_question_id]"
-              value="<%= event_question.id %>"
+              name="user_answers[][question_id]"
+              value="<%= question.id %>"
               class="w-100"
             />
             <input
               type="hidden"
-              name="event_user_answers[][optional]"
-              value="<%= event_question.optional %>"
+              name="user_answers[][optional]"
+              value="<%= question.optional %>"
               class="w-100"
             />
-            <% if event_question.multiple_choice? %>
+            <% if question.multiple_choice? %>
               <select
-                name="event_user_answers[][value]"
-                value="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value %>"
+                name="user_answers[][value]"
+                value="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value %>"
                 class="w-100"
               >
-                <% event_question.options.each do |option| %>
-                  <option value="<%= option %>" <%= "selected" if @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value == option %>><%= option %></option>
+                <% question.options.each do |option| %>
+                  <option value="<%= option %>" <%= "selected" if @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value == option %>><%= option %></option>
                 <% end %>
               </select>
             <% else %>
-              <% if ["Nome completo", "CPF"].include?(event_question.prompt) %>
+              <% if ["Nome completo", "CPF"].include?(question.prompt) %>
                 <input
                   type="text"
-                  name="event_user_answers[][value]"
-                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
+                  name="user_answers[][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
                   class="w-100"
                 />
               <% else %>
                 <textarea
                   class="form-control my-2 f-60"
                   type="text"
-                  name="event_user_answers[][value]"
-                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.value || "" %>"
+                  name="user_answers[][value]"
+                  data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
                   placeholder="Sua resposta..."></textarea>
               <% end %>
-              
-              <% if @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }&.errors&.present? %>
-                <p class="text-danger"><%= @question_answers&.find { |qa| qa.order_item == order_item && qa.event_question == event_question }.errors.full_messages.first %></p>
+              <% if @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.errors&.present? %>
+                <p class="text-danger"><%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }.errors.full_messages.first %></p>
               <% end %>
             <% end %>
           </div>

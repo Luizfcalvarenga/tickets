@@ -19,6 +19,7 @@
         <tr>
           <th scope="col">Item</th>
           <th scope="col">Nome do passe</th>
+          <th scope="col">Identificação</th>
           <th scope="col">Valor do passe</th>
         </tr>
       </thead>
@@ -27,7 +28,11 @@
         <tr>
           <td data-label="Item">#<%= index + 1 %></td>
           <td data-label="Nome do passe"><%= order_item.full_description %></td>
-          <td data-label="Valor do passe"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %></td>
+          <td data-label="Nome do passe">
+            <p class="m-0"><%= order_item.identification_name %></p>
+            <p class="m-0"><%= order_item.identification_cpf %></p>
+          </td>
+          <td data-label="Valor do passe"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %> (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)</td>
         </tr>
         <% end %>
       </tbody>

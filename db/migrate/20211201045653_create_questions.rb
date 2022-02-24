@@ -1,7 +1,8 @@
-class CreateEventQuestions < ActiveRecord::Migration[6.1]
+class CreateQuestions < ActiveRecord::Migration[6.1]
   def change
-    create_table :event_questions do |t|
-      t.references :event, null: false, foreign_key: true
+    create_table :questions do |t|
+      t.references :event, foreign_key: true
+      t.references :day_use, foreign_key: true
       t.string :prompt
       t.string :kind
       t.integer :order

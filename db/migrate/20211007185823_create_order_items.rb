@@ -7,6 +7,8 @@ class CreateOrderItems < ActiveRecord::Migration[6.1]
       t.datetime :start_time
       t.datetime :end_time
       t.integer :price_in_cents
+      t.float :fee_percentage, default: 10.0
+      t.integer :total_in_cents
 
       t.timestamps
     end

@@ -126,7 +126,7 @@ export function Scanner(props) {
                   return (
                     <p className="m-0 text-white fs-18">
                       <span className="fw-700">
-                        {question.event_question.prompt}
+                        {question.question.prompt}
                       </span>
                       : {question.value}
                     </p>

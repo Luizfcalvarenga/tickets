@@ -8,7 +8,7 @@ class Event < ApplicationRecord
   has_many :event_batches, dependent: :destroy
   has_many :passes, through: :event_batches
 
-  has_many :event_questions, dependent: :destroy
+  has_many :questions, dependent: :destroy
   has_many :event_communications
   
   has_many :accesses
@@ -21,27 +21,27 @@ class Event < ApplicationRecord
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
-  def create_default_event_questions
-    event_question = EventQuestion.create!(
+  def create_default_questions
+    question = Question.create!(
       event: self,
-      kind: "open",
+      kind: "open",   
       prompt: "Nome completo",
       optional: false,
-      order: event_questions.count,
+      order: questions.count,
     )
     event_batches.each do |event_batch|
-      EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)
+      EventBatchQuestion.create(event_batch: event_batch, question: question)
     end
 
-    event_question = EventQuestion.create!(
+    question = Question.create!(
       event: self,
       kind: "open",
       prompt: "CPF",
       optional: false,
-      order: event_questions.count,
+      order: questions.count,
     )
     event_batches.each do |event_batch|
-      EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)
+      EventBatchQuestion.create(event_batch: event_batch, question: question)
     end
   end
 
@@ -52,11 +52,11 @@ class Event < ApplicationRecord
   end
 
   def passes_csv
-    attributes = ["Nome", "Email", "Documento", "Número do Documento", "Acesso", "Tipo do passe", "Lote", "Valor pago"] + event_questions.order("event_questions.order").map(&:prompt)
+    attributes = ["Nome", "Email", "Documento", "Número do Documento", "Acesso", "Tipo do passe", "Lote", "Valor pago"] + questions.order("questions.order").map(&:prompt)
     CSV.generate(headers: true) do |csv|
       csv << attributes
       passes.each do |pass|
-        csv << [pass.user.name, pass.user.email, pass.user.document_type, pass.user.document_number, nil, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:event_question).order("event_questions.order").map(&:value)
+        csv << [pass.user.name, pass.user.email, pass.user.document_type, pass.user.document_number, nil, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:question).order("questions.order").map(&:value)
       end
     end
   end

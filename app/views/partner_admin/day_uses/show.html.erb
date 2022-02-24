@@ -53,7 +53,7 @@
             <% if day_use_schedule.open? %>
               <p class="m-0 success-text br-8 px-4 f-10 text-center">Aberto</p>
               <div class="f-20"></div>
-              <p class="m-0 f-30"><%= day_use_schedule.start_time.strftime("%H:%M") %> - <%= day_use_schedule.end_time.strftime("%H:%M") %></p>
+              <p class="m-0 f-30"><%= day_use_schedule.opens_at.strftime("%H:%M") %> - <%= day_use_schedule.closes_at.strftime("%H:%M") %></p>
               <p class="m-0 f-20"><%= display_price(day_use_schedule.price_in_cents) %></p>
             <% else %>
               <p class="m-0 danger-text br-8 px-4 f-10 text-center">Fechado</p>

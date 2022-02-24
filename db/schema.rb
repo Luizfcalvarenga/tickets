@@ -84,8 +84,10 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   create_table "day_use_schedules", force: :cascade do |t|
     t.string "weekday"
     t.string "name"
-    t.time "start_time"
-    t.time "end_time"
+    t.time "opens_at"
+    t.time "closes_at"
+    t.integer "slot_duration_in_minutes"
+    t.integer "quantity_per_slot"
     t.integer "price_in_cents"
     t.bigint "day_use_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -101,6 +103,15 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["partner_id"], name: "index_day_uses_on_partner_id"
+  end
+
+  create_table "event_batch_questions", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "event_batch_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_batch_id"], name: "index_event_batch_questions_on_event_batch_id"
+    t.index ["question_id"], name: "index_event_batch_questions_on_question_id"
   end
 
   create_table "event_batches", force: :cascade do |t|
@@ -124,27 +135,6 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_event_communications_on_event_id"
-  end
-
-  create_table "event_question_batches", force: :cascade do |t|
-    t.bigint "event_question_id", null: false
-    t.bigint "event_batch_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_batch_id"], name: "index_event_question_batches_on_event_batch_id"
-    t.index ["event_question_id"], name: "index_event_question_batches_on_event_question_id"
-  end
-
-  create_table "event_questions", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.string "prompt"
-    t.string "kind"
-    t.integer "order"
-    t.boolean "optional"
-    t.string "options", default: [], array: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_id"], name: "index_event_questions_on_event_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -202,6 +192,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer "price_in_cents"
+    t.float "fee_percentage", default: 10.0
+    t.integer "total_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["day_use_schedule_id"], name: "index_order_items_on_day_use_schedule_id"
@@ -240,6 +232,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "street_number"
     t.string "neighborhood"
     t.string "address_complement"
+    t.float "fee_percentage", default: 10.0
     t.text "about"
     t.bigint "city_id", null: false
     t.bigint "state_id", null: false
@@ -265,6 +258,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer "price_in_cents"
+    t.float "fee_percentage", default: 10.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
@@ -277,13 +271,27 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   end
 
   create_table "question_answers", force: :cascade do |t|
-    t.bigint "event_question_id", null: false
+    t.bigint "question_id", null: false
     t.bigint "order_item_id", null: false
     t.string "value"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["event_question_id"], name: "index_question_answers_on_event_question_id"
     t.index ["order_item_id"], name: "index_question_answers_on_order_item_id"
+    t.index ["question_id"], name: "index_question_answers_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "day_use_id"
+    t.string "prompt"
+    t.string "kind"
+    t.integer "order"
+    t.boolean "optional"
+    t.string "options", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_id"], name: "index_questions_on_day_use_id"
+    t.index ["event_id"], name: "index_questions_on_event_id"
   end
 
   create_table "reads", force: :cascade do |t|
@@ -349,11 +357,10 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "day_use_schedules", "day_uses"
   add_foreign_key "day_uses", "partners"
+  add_foreign_key "event_batch_questions", "event_batches"
+  add_foreign_key "event_batch_questions", "questions"
   add_foreign_key "event_batches", "events"
   add_foreign_key "event_communications", "events"
-  add_foreign_key "event_question_batches", "event_batches"
-  add_foreign_key "event_question_batches", "event_questions"
-  add_foreign_key "event_questions", "events"
   add_foreign_key "events", "cities"
   add_foreign_key "events", "states"
   add_foreign_key "events", "users", column: "created_by_id"
@@ -375,8 +382,10 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "passes", "partners"
   add_foreign_key "passes", "user_memberships"
   add_foreign_key "passes", "users"
-  add_foreign_key "question_answers", "event_questions"
   add_foreign_key "question_answers", "order_items"
+  add_foreign_key "question_answers", "questions"
+  add_foreign_key "questions", "day_uses"
+  add_foreign_key "questions", "events"
   add_foreign_key "reads", "passes"
   add_foreign_key "reads", "users", column: "read_by_id"
   add_foreign_key "user_memberships", "memberships"

@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h1 class="title">Criar novo evento</h1>
+  <h1 class="title">Criar novo Day Use</h1>
 
   <%= simple_form_for([:partner_admin, @day_use]) do |f| %>
     <%= f.input :name %>
@@ -14,7 +14,7 @@
 
     <h2 class="title">Cronograma</h2>
 
-    <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Para um day-use ser considerado aberto no dia, é necessário preencher um horário de início e um horário de fim. Para deixar o day-use fechado em algum dia da semana, não preencha as informações de horário.</p>
+    <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Para um day-use ser considerado aberto no dia, é necessário preencher um horário de abertura e um horário de fechamento. Para deixar o day-use fechado em algum dia da semana, não preencha as informações de horário.</p>
 
     <% @weekdays.each do |weekday| %>
       <input
@@ -23,35 +23,54 @@
         name="day_use[day_use_schedules][][weekday]"
         value="<%= weekday[:value] %>"
       />
-      <div class="flex center between bg-dark p-4 br-8 mb-2 gap-64">
+      <div class="bg-dark p-4 br-8 mb-2 flex center">
         <p class="m-0 f-20"><%= weekday[:label] %></p>
-        <input
-          class="form-control my-2 f-30"
-          type="text"
-          name="day_use[day_use_schedules][][name]"
-          placeholder="Nome"
-        />
-        <div class="flex center around gap-16">
-          <input
-            class="form-control my-2"
-            type="time"
-            name="day_use[day_use_schedules][][start_time]"
-            placeholder="Horário início"
-          />
-          <p class="m-0">até</p>
-          <input
-            class="form-control my-2"
-            type="time"
-            name="day_use[day_use_schedules][][end_time]"
-            placeholder="Horário fim"
-          />
-        </div>
-        <input
-          class="form-control my-2"
-          type="text"
-          name="day_use[day_use_schedules][][price_in_cents]"
-          placeholder="Preço"
-        />
+        <div class="f-80">
+          <div class="flex center between">
+            <input
+              class="form-control my-2 f-40"
+              type="text"
+              name="day_use[day_use_schedules][][name]"
+              placeholder="Nome"
+            />
+            <div class="flex center around gap-16 f-50">
+              <input
+                class="form-control my-2"
+                type="time"
+                name="day_use[day_use_schedules][][opens_at]"
+                placeholder="Horário início"
+              />
+              <p class="m-0">até</p>
+              <input
+                class="form-control my-2"
+                type="time"
+                name="day_use[day_use_schedules][][closes_at]"
+                placeholder="Horário fim"
+              />
+            </div>
+          </div>
+          <div class="flex center between">
+            <input
+              class="form-control my-2 f-40"
+              type="text"
+              name="day_use[day_use_schedules][][price_in_cents]"
+              placeholder="Preço em centavos" />
+            <div class="f-50 flex center gap-24">
+              <input
+                class="form-control my-2"
+                type="text"
+                name="day_use[day_use_schedules][][slot_duration_in_minutes]"
+                placeholder="Duração do slot"
+              />
+              <input
+                class="form-control my-2"
+                type="text"
+                name="day_use[day_use_schedules][][quantity_per_slot]"
+                placeholder="Limite de ingressos por slot"
+              />
+            </div>
+          </div>
+        </div>      
       </div>
     <% end %>
 

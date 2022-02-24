@@ -6,19 +6,11 @@ class Order < ApplicationRecord
   has_many :passes, through: :order_items
 
   def total_price_in_cents
-    order_items.sum(:price_in_cents)
-  end
-
-  def event_related_to_order_items
-    order_items.where.not(event_batch_id: nil).first.event_batch.event
-  end
-
-  def has_any_event_questions?
-    EventQuestion.joins(event_question_batches: [event_batch: :order_items]).where(order_items: {order_id: id}).present?
+    order_items.sum(:total_in_cents)
   end
 
   def free?
-    false
+    total_price_in_cents.zero?
   end
 
   def nova_iugu_charge_params_hash
@@ -29,7 +21,7 @@ class Order < ApplicationRecord
         {
           description: "Ingresso para: #{order_item.full_description}",
           quantity: 1,
-          price_cents: order_item.price_in_cents,
+          price_cents: order_item.total_in_cents,
         }
       end,
       payer: {

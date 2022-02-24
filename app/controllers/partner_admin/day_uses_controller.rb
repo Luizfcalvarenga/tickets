@@ -8,8 +8,8 @@ module PartnerAdmin
 
       @passes = @day_use.passes.for_date(date)
         .distinct("passes.id")
-        # .joins(question_answers: :event_question)
-        # .where(event_question: { prompt: ["Nome completo"] })
+        # .joins(question_answers: :question)
+        # .where(question: { prompt: ["Nome completo"] })
         # .order("question_answers.value")
     
       # if params[:query].present?
@@ -42,14 +42,17 @@ module PartnerAdmin
     def create            
       ActiveRecord::Base.transaction do  
         day_use = DayUse.create!(day_use_params)
+        day_use.create_default_questions
 
         day_use_schedule_params.each do |day_use_schedule_param|
           DayUseSchedule.create!(
             weekday: day_use_schedule_param[:weekday],
             name: day_use_schedule_param[:name],
-            start_time: day_use_schedule_param[:start_time],
-            end_time: day_use_schedule_param[:end_time],
+            opens_at: day_use_schedule_param[:opens_at],
+            closes_at: day_use_schedule_param[:closes_at],
             price_in_cents: day_use_schedule_param[:price_in_cents],
+            quantity_per_slot: day_use_schedule_param[:quantity_per_slot],
+            slot_duration_in_minutes: day_use_schedule_param[:slot_duration_in_minutes],
             day_use: day_use,
           )
         end
@@ -66,7 +69,7 @@ module PartnerAdmin
     end
 
     def day_use_schedule_params
-      params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :start_time, :end_time, :price_in_cents])[:day_use_schedules]
+      params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes])[:day_use_schedules]
     end
   end
 end

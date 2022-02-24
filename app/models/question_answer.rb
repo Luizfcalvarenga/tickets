@@ -1,26 +1,26 @@
 class QuestionAnswer < ApplicationRecord
-  belongs_to :event_question
+  belongs_to :question
   belongs_to :order_item
 
-  validates :value, presence: true, unless: :event_question_is_optional
+  validates :value, presence: true, unless: :question_is_optional
   validate :must_have_at_least_two_names_on_full_name_question
   validate :must_be_a_valid_cpf_on_cpf_question
 
-  scope :default_questions, -> { joins(:event_question).where(event_questions: { prompt: ["Nome completo", "CPF"] }) }
-  scope :non_default_questions, -> { joins(:event_question).where.not(event_questions: { prompt: ["Nome completo", "CPF"] }) }
+  scope :default_questions, -> { joins(:question).where(questions: { prompt: ["Nome completo", "CPF"] }) }
+  scope :non_default_questions, -> { joins(:question).where.not(questions: { prompt: ["Nome completo", "CPF"] }) }
 
-  def event_question_is_optional
-    event_question.optional
+  def question_is_optional
+    question.optional
   end
 
   def must_have_at_least_two_names_on_full_name_question
-    if event_question.prompt === "Nome completo" and value.split.length < 2
+    if question.prompt === "Nome completo" and value.split.length < 2
       errors.add(:value, "Nome completo deve ter pelo menos dois nomes")
     end
   end
 
   def must_be_a_valid_cpf_on_cpf_question
-    if event_question.prompt === "CPF" && !cpf_valid?(value)
+    if question.prompt === "CPF" && !cpf_valid?(value)
       errors.add(:value, "CPF inválido")
     end
   end

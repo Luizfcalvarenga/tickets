@@ -1,7 +1,8 @@
-class EventQuestion < ApplicationRecord
-  belongs_to :event
+class Question < ApplicationRecord
+  belongs_to :event, optional: true
+  belongs_to :day_use, optional: true
 
-  has_many :event_question_batches
+  has_many :question_batches
 
   enum kind: {
     multiple_choice: "multiple_choice",

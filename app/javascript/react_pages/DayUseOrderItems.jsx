@@ -11,17 +11,17 @@ export function DayUseOrderItems(props) {
   };
 
   const cartTotalInCents = () => {
-    return props.dayUseSchedule.price_in_cents * quantity;
+    return props.dayUseSchedule.price_in_cents * quantity * (1 + props.feePercentage/100);
   };
 
   const startTime = () => {
-    const date = new Date(props.date)
+    const date = new Date(props.date);
     var userTimezoneOffset = date.getTimezoneOffset() * 60000;
     const timeObject = new Date(date.getTime() + userTimezoneOffset);
 
     timeObject.setHours(
-      new Date(props.dayUseSchedule.start_time).getHours(),
-      new Date(props.dayUseSchedule.start_time).getMinutes()
+      new Date(props.dayUseSchedule.opens_at).getHours(),
+      new Date(props.dayUseSchedule.opens_at).getMinutes()
     );
 
     return timeObject;
@@ -32,12 +32,15 @@ export function DayUseOrderItems(props) {
     const timeObject = new Date(date.getTime() + userTimezoneOffset);
 
     timeObject.setHours(
-      new Date(props.dayUseSchedule.end_time).getHours(),
-      new Date(props.dayUseSchedule.end_time).getMinutes()
+      new Date(props.dayUseSchedule.closes_at).getHours(),
+      new Date(props.dayUseSchedule.closes_at).getMinutes()
     );
 
     return timeObject;
   };
+  const feeInCents = () => {
+    return (props.dayUseSchedule.price_in_cents / 100) * (parseFloat(props.feePercentage) / 100) 
+  }
 
   return (
     <div className="event-batches-order">
@@ -48,8 +51,8 @@ export function DayUseOrderItems(props) {
       <div className="body border-white border">
         <div className="border-bottom border-white p-4 flex center between">
           <p className="m-0 f-60">
-            {props.dayUse.name} - {props.dayUseSchedule.name}
-             - {moment(startTime()).strftime("%d/%m/%Y")}
+            {props.dayUse.name} - {props.dayUseSchedule.name}-{" "}
+            {moment(startTime()).strftime("%d/%m/%Y")}
           </p>
           <p className="m-0 f-20">
             {(props.dayUseSchedule.price_in_cents / 100).toLocaleString(
@@ -59,6 +62,12 @@ export function DayUseOrderItems(props) {
                 currency: "BRL",
               }
             )}
+            &nbsp;(+&nbsp;
+            {feeInCents().toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}{" "}
+            taxa)
           </p>
           <div className="flex center around f-10">
             <i
@@ -91,11 +100,6 @@ export function DayUseOrderItems(props) {
             type="hidden"
             name="order[order_items][][end_time]"
             value={endTime()}
-          />
-          <input
-            type="hidden"
-            name="order[order_items][][price_in_cents]"
-            value={props.dayUseSchedule.price_in_cents}
           />
         </div>
       </div>

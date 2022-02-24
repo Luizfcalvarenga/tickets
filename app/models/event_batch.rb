@@ -4,11 +4,21 @@ class EventBatch < ApplicationRecord
   validates :price_in_cents, :quantity, :name, presence: true
 
   has_many :passes
-  has_many :event_question_batches
-  has_many :event_questions, through: :event_question_batches
+  has_many :event_batch_questions
+  has_many :questions, through: :event_batch_questions
   has_many :order_items
 
   scope :available, -> { where("event_batches.ends_at > now() and (select count(distinct order_items.id) from order_items inner join orders on order_items.order_id = orders.id where order_items.event_batch_id = event_batches.id and (orders.status = 'confirmed' or now()::time > (orders.created_at + interval '10 min')::time)) < event_batches.quantity") }
+
+  delegate :partner, to: :event
+
+  def start_time(opt = '')
+    event.scheduled_start
+  end
+
+  def end_time(opt = '')
+    event.scheduled_end
+  end
 
   def in_sales?
     event.open_batches.find { |open_batch| open_batch.id == id }

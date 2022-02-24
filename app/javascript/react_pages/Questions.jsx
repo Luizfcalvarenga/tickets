@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-export function EventQuestions(props) {
+export function Questions(props) {
   const [questions, setQuestions] = useState([]);
 
   const addQuestion = () => {
@@ -50,17 +50,17 @@ export function EventQuestions(props) {
             <div className="flex center between gap-24">
               <input
                 type="hidden"
-                name="event_questions[][order]"
+                name="questions[][order]"
                 value={question.order}
               />
               <input
                 class="form-control my-2 f-60"
                 type="text"
-                name="event_questions[][prompt]"
+                name="questions[][prompt]"
                 placeholder="Texto da pergunta"
               />
               <select
-                name="event_questions[][kind]"
+                name="questions[][kind]"
                 id=""
                 className="f-20"
                 onChange={() =>
@@ -73,7 +73,7 @@ export function EventQuestions(props) {
                 <option value="open">Aberta</option>
               </select>
               <div className="flex align-items-center gap-12 my-3 f-20">
-                <input type="checkbox" name="event_questions[][optional]" />
+                <input type="checkbox" name="questions[][optional]" />
                 <span className="text-white">Pergunta opcional</span>
               </div>
             </div>
@@ -84,7 +84,7 @@ export function EventQuestions(props) {
                     <input
                       class="form-control my-2"
                       type="text"
-                      name="event_questions[][options][]"
+                      name="questions[][options][]"
                       placeholder="Texto da opção"
                     />
                   );

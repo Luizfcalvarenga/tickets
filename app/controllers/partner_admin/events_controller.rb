@@ -3,9 +3,9 @@ module PartnerAdmin
     def show
       @event = Event.find(params[:id])
       @passes = @event.passes
-        .joins(question_answers: :event_question)
+        .joins(question_answers: :question)
         .distinct("passes.id")
-        # .where(event_question: { prompt: ["Nome completo"] })
+        # .where(question: { prompt: ["Nome completo"] })
         # .order("question_answers.value")
     
       if params[:query].present?
@@ -44,19 +44,19 @@ module PartnerAdmin
               order: batch_params[:order])
           end
 
-          event.create_default_event_questions
+          event.create_default_questions
         
-          event_questions_params.each do |event_question_params|
-            event_question = EventQuestion.create!(
+          questions_params.each do |question_params|
+            question = Question.create!(
               event: event,
-              kind: event_question_params[:kind],
-              prompt: event_question_params[:prompt],
-              optional: event_question_params[:optional].present?,
-              options: event_question_params[:options],
-              order: event.event_questions.count,
+              kind: question_params[:kind],
+              prompt: question_params[:prompt],
+              optional: question_params[:optional].present?,
+              options: question_params[:options],
+              order: event.questions.count,
             )
             event.event_batches.each do |event_batch|
-              EventQuestionBatch.create(event_batch: event_batch, event_question: event_question)
+              QuestionBatch.create(event_batch: event_batch, question: question)
             end
           end
           
@@ -79,8 +79,8 @@ module PartnerAdmin
       params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
     end
   
-    def event_questions_params
-      params[:event_questions] || []
+    def questions_params
+      params[:questions] || []
     end
   end
 end
