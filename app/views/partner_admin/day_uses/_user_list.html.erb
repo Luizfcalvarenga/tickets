@@ -1,13 +1,14 @@
 <table id="user-list">
   <thead>
     <tr>
-      <% day_use.day_use_questions.default_questions.order(:order).each do |day_use_question| %>
+      <% day_use.questions.default_questions.order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
-      <% end if false %>
+      <% end %>
       <th scope="col">Usuário</th>
-      <% day_use.day_use_questions.non_default_questions.order(:order).each do |day_use_question| %>
+      <th scope="col">Horário</th>
+      <% day_use.questions.non_default_questions.order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
-      <% end if false %>
+      <% end %>
       <th scope="col">Acesso</th>
       <th scope="col">Ações</th>
     </tr>
@@ -15,11 +16,12 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
-        <% pass.question_answers.default_questions.joins(:day_use_question).order("day_use_questions.order").each do |question_answer| %>
-          <td data-label="<%= question_answer.day_use_question.prompt %>"><%= question_answer.value %></td>
-        <% end if false %>
+        <% pass.question_answers.default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+          <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
+        <% end  %>
         <td data-label="Usuário"><%= pass.user.email %></td>
-        <% pass.question_answers.non_default_questions.joins(:day_use_question).order("day_use_questions.order").each do |question_answer| %>
+        <td data-label="Usuário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
+        <% pass.question_answers.non_default_questions.joins(:question).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
         <% end if false %>
         <td data-label="Acesso">

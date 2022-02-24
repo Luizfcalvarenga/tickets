@@ -2,16 +2,52 @@ import React, { useEffect, useState } from "react";
 import moment from "moment-strftime";
 
 export function DayUseOrderItems(props) {
-  const [quantity, setQuantity] = useState(0);
+  const [slotsInfosAndQuantities, setSlotsInfosAndQuantities] = useState(
+    props.openSlots.map((slot) => {
+      return {
+        id: slot.id,
+        start_time: slot.start_time,
+        end_time: slot.end_time,
+        quantity: 0,
+      };
+    })
+  );
 
-  const updateQuantity = (amount) => {
-    if (quantity === 0 && amount < 0) return;
+  const updateQuantity = (slotIndex, amount) => {
+    const currentSlots = [...slotsInfosAndQuantities];
 
-    setQuantity(quantity + amount);
+    const editedSlotItem = currentSlots[slotIndex];
+
+    if (editedSlotItem.quantity === 0 && amount < 0) return;
+
+    currentSlots[slotIndex].quantity =
+      currentSlots[slotIndex].quantity + amount;
+
+    setSlotsInfosAndQuantities(currentSlots);
   };
 
+  useEffect(() => {
+    const totalQuantity = slotsInfosAndQuantities.reduce(
+      (memo, el) => memo + parseInt(el.quantity, 10), 0
+    );
+    console.log(totalQuantity)
+    console.log(
+      props.dayUseSchedule.price_in_cents *
+      totalQuantity *
+      (1 + props.feePercentage / 100)
+    );
+  })
+
   const cartTotalInCents = () => {
-    return props.dayUseSchedule.price_in_cents * quantity * (1 + props.feePercentage/100);
+    const totalQuantity = slotsInfosAndQuantities.reduce(
+      (memo, el) => memo + parseInt(el.quantity, 10),
+      0
+    );
+    return (
+      props.dayUseSchedule.price_in_cents *
+      totalQuantity *
+      (1 + props.feePercentage / 100)
+    );
   };
 
   const startTime = () => {
@@ -39,69 +75,78 @@ export function DayUseOrderItems(props) {
     return timeObject;
   };
   const feeInCents = () => {
-    return (props.dayUseSchedule.price_in_cents / 100) * (parseFloat(props.feePercentage) / 100) 
-  }
+    return (
+      (props.dayUseSchedule.price_in_cents / 100) *
+      (parseFloat(props.feePercentage) / 100)
+    );
+  };
 
   return (
     <div className="event-batches-order">
       <div className="header bg-primary-color p-4">
-        <p className="mb-0 fw-700">Ingressos</p>
+        <p className="mb-0 fw-700">
+          Ingressos para {moment(startTime()).strftime("%d/%m/%Y")}
+        </p>
       </div>
 
       <div className="body border-white border">
-        <div className="border-bottom border-white p-4 flex center between">
-          <p className="m-0 f-60">
-            {props.dayUse.name} - {props.dayUseSchedule.name}-{" "}
-            {moment(startTime()).strftime("%d/%m/%Y")}
-          </p>
-          <p className="m-0 f-20">
-            {(props.dayUseSchedule.price_in_cents / 100).toLocaleString(
-              "pt-BR",
-              {
-                style: "currency",
-                currency: "BRL",
-              }
-            )}
-            &nbsp;(+&nbsp;
-            {feeInCents().toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}{" "}
-            taxa)
-          </p>
-          <div className="flex center around f-10">
-            <i
-              className="fa fa-minus-circle fs-30 text-white clickable"
-              onClick={() => updateQuantity(-1)}
-            ></i>
-            <p className="m-0 text-white">{quantity}</p>
-            <i
-              className="fa fa-plus-circle fs-30 text-white clickable"
-              onClick={() => updateQuantity(1)}
-            ></i>
-          </div>
+        {slotsInfosAndQuantities.map((slot, index) => {
+          return (
+            <div className="border-bottom border-white p-4 flex center between">
+              <p className="m-0 f-60">
+                {moment(slot.start_time).strftime("%H:%M")} -{" "}
+                {moment(slot.end_time).strftime("%H:%M")}
+              </p>
+              <p className="m-0 f-20">
+                {(props.dayUseSchedule.price_in_cents / 100).toLocaleString(
+                  "pt-BR",
+                  {
+                    style: "currency",
+                    currency: "BRL",
+                  }
+                )}
+                &nbsp;(+&nbsp;
+                {feeInCents().toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}{" "}
+                taxa)
+              </p>
+              <div className="flex center around f-10">
+                <i
+                  className="fa fa-minus-circle fs-30 text-white clickable"
+                  onClick={() => updateQuantity(index, -1)}
+                ></i>
+                <p className="m-0 text-white">{slot.quantity}</p>
+                <i
+                  className="fa fa-plus-circle fs-30 text-white clickable"
+                  onClick={() => updateQuantity(index, 1)}
+                ></i>
+              </div>
 
-          <input
-            type="hidden"
-            name="order[order_items][][quantity]"
-            value={quantity}
-          />
-          <input
-            type="hidden"
-            name="order[order_items][][day_use_schedule_id]"
-            value={props.dayUseSchedule.id}
-          />
-          <input
-            type="hidden"
-            name="order[order_items][][start_time]"
-            value={startTime()}
-          />
-          <input
-            type="hidden"
-            name="order[order_items][][end_time]"
-            value={endTime()}
-          />
-        </div>
+              <input
+                type="hidden"
+                name="order[order_items][][quantity]"
+                value={slot.quantity}
+              />
+              <input
+                type="hidden"
+                name="order[order_items][][day_use_schedule_id]"
+                value={props.dayUseSchedule.id}
+              />
+              <input
+                type="hidden"
+                name="order[order_items][][start_time]"
+                value={slot.start_time}
+              />
+              <input
+                type="hidden"
+                name="order[order_items][][end_time]"
+                value={slot.end_time}
+              />
+            </div>
+          );
+        })}
       </div>
 
       <p className="text-center text-white mt-5">

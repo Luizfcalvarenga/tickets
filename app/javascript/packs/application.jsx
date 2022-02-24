@@ -105,6 +105,11 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.dayUseSchedule)
               : null
           }
+          openSlots={
+            container.dataset.openSlots
+              ? JSON.parse(container.dataset.openSlots)
+              : null
+          }
           date={
             container.dataset.date ? JSON.parse(container.dataset.date) : null
           }

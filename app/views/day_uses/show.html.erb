@@ -14,6 +14,7 @@
       <react data-component="DayUseOrderItems" 
         data-day-use="<%= @day_use.to_json %>" 
         data-day-use-schedule="<%= @day_use_schedule.to_json %>"
+        data-open-slots="<%= @day_use_schedule.open_slots_for_date(@date).to_json %>"
         data-date="<%= @date.to_json %>"
         data-fee-percentage="<%= @day_use.partner.fee_percentage %>"></react>
 
