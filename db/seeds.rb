@@ -60,7 +60,7 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           address_complement: "",
                           city: city,
                           state: state,
-                          about: "Morbi enim nunc faucibus a pellentesque sit amet porttitor. Cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Mi sit ame mauris commodo quis imperdiet massa tincidunt nunc. Arcu odio ut sem nulla pharetra diam sit amet.",
+                          about: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
                           kind: "partner",
                           )
                           

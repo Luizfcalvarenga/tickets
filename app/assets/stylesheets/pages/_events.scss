@@ -3,7 +3,7 @@
 .event-photo {
   background-size: cover;
   background-position: center;
-  height: 500px;
+  height: 700px;
   width: 100%;
 }
 
@@ -76,7 +76,11 @@
     margin-right: 47px !important;
     font-family: "Bebas Neue", cursive !important;
   }
+  .p-fixed-height {
+    height: 265px !important;
+  }
 }
+
 // ----------------------------------------------
 @media (max-width: 768px) {
   p {
@@ -92,7 +96,14 @@
   .first-section-event-show {
     margin-top: 0px !important;
     height: 237px !important;
-    padding: 30px !important;
+    padding: 0px !important;
+    .event-photo {
+      height: 244px !important;
+      padding: 30px !important;
+    }
+    .vbar2 {
+      padding: 0px !important;
+    }
     // img {
     //   height: 100px;
     // }
@@ -102,11 +113,11 @@
   }
 }
 .first-section-event-show {
-  background-image: image-url("event_example_show.png");
-  height: 860px;
-  background-size: cover;
-  margin-top: -150px;
-  padding-top: 326px;
+  // background-image: image-url("event_example_show.png");
+  // height: 860px;
+  // background-size: cover;
+  // margin-top: -150px;
+  // padding-top: 326px;
 }
 
 p {
@@ -116,11 +127,12 @@ p {
   border: 2px solid #00c454;
   font-family: "Poppins", cursive !important;
   font-weight: bold;
-  height: 60px;
-  width: 183px;
+  height: 40px;
+  width: 120px;
   align-items: center;
   display: flex;
   justify-content: space-around;
+  border-radius: 2px;
 }
 
 .btn-special {
@@ -143,4 +155,14 @@ p {
 }
 .vbar {
   border-left: 3px solid #00c454;
+}
+.vbar2 {
+  border-left: 3px solid #00c454;
+  padding: 18px;
+}
+
+.vbar-div {
+  justify-content: space-between !important;
+  padding: 20px;
+  border-radius: 20px;
 }

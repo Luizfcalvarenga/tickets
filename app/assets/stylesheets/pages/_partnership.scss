@@ -9,6 +9,9 @@
   // img {
   //   height: 40px;
   // }
+  .mobile-arrow {
+    height: 50px !important;
+  }
   .first-section-partnership {
     margin-top: 0px !important;
     height: 237px !important;
@@ -35,7 +38,7 @@
     margin-top: 30px !important;
     background-size: cover !important;
     .container {
-      padding-top: 10px !important;
+      padding-top: 25px !important;
     }
   }
   .fourth-section-partnership {
@@ -76,7 +79,7 @@
 
 .third-section-partnership {
   background-image: image-url("partnership_background_2.png");
-  height: 580px;
+  height: 675px;
   width: 100%;
   background-size: 100%;
   background-repeat: no-repeat;
