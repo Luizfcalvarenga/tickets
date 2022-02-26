@@ -12,7 +12,7 @@
       <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de convidados</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Horários de funcionamento</button>
+      <button class="nav-link" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Programação</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="schedule-blocks-tab" data-bs-toggle="tab" data-bs-target="#schedule-blocks" type="button" role="tab" aria-controls="contact" aria-selected="false">Bloqueios de calendário</button>
@@ -57,8 +57,12 @@
           <% if day_use_schedule.open? %>
             <p class="m-0 success-text br-8 px-4 f-10 text-center">Aberto</p>
             <div class="f-20"></div>
-            <p class="m-0 f-30"><%= day_use_schedule.opens_at.strftime("%H:%M") %> - <%= day_use_schedule.closes_at.strftime("%H:%M") %></p>
-            <p class="m-0 f-20"><%= display_price(day_use_schedule.price_in_cents) %></p>
+            <p class="m-0 f-20"><%= day_use_schedule.opens_at.strftime("%H:%M") %> - <%= day_use_schedule.closes_at.strftime("%H:%M") %></p>
+            <div class="f-30">
+              <% day_use_schedule.day_use_schedule_pass_types.each do |day_use_schedule_pass_type| %>
+                <p class="m-0 f-20"><%= day_use_schedule_pass_type.name %> - <%= display_price(day_use_schedule_pass_type.price_in_cents) %></p>
+              <% end %>
+            </div>
           <% else %>
             <p class="m-0 danger-text br-8 px-4 f-10 text-center">Fechado</p>
           <% end %>
@@ -72,10 +76,15 @@
 
     <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
       <%= simple_form_for([:partner_admin, @order]) do |f| %>
-        <input type="hidden" name="order_item[day_use_schedule_id]", value="<%= @day_use.schedule_for_today.id %>">
-        <select name="order_item[start_time]" id="" class="w-100">
+        <select name="order_item[start_time]" class="w-100 my-2">
           <% @day_use.schedule_for_today.open_slots_for_date(Time.current).each do |slot| %>
             <option value="<%= slot[:start_time] %>"><%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %></option>
+          <% end %>
+        </select>
+
+        <select name="order_item[day_use_schedule_pass_type_id]" class="w-100 my-2">
+          <% @day_use.schedule_for_today.day_use_schedule_pass_types.each do |day_use_schedule_pass_type| %>
+            <option value="<%= day_use_schedule_pass_type.id %>"><%= day_use_schedule_pass_type.name %></option>
           <% end %>
         </select>
 

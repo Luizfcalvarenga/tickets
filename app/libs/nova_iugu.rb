@@ -12,13 +12,17 @@ module NovaIugu
 
     def call
       @response = ::Iugu::Invoice.create(charge_params)
-      
-      @entity.update!(
-        invoice_id: @response.attributes["id"],
-        invoice_url: @response.attributes["secure_url"],
-        invoice_pdf: "#{@response.attributes["secure_url"]}.pdf",
-        invoice_status: @response.attributes["status"],
-      )
+
+      if @response.errors.blank?
+        @entity.update!(
+          invoice_id: @response.attributes["id"],
+          invoice_url: @response.attributes["secure_url"],
+          invoice_pdf: "#{@response.attributes["secure_url"]}.pdf",
+          invoice_status: @response.attributes["status"],
+        )
+      else
+        raise
+      end
     end
 
     def validate_params!

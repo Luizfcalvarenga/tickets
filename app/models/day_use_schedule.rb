@@ -2,6 +2,9 @@ class DayUseSchedule < ApplicationRecord
   belongs_to :day_use
 
   has_many :passes
+  has_many :day_use_schedule_pass_types
+
+  has_one_attached :photo
 
   delegate :partner, to: :day_use
 
@@ -34,7 +37,7 @@ class DayUseSchedule < ApplicationRecord
       slots << {
         start_time: start_time,
         end_time: end_time,
-        order_item_count: OrderItem.where(day_use_schedule: self, start_time: start_time).count
+        order_item_count: OrderItem.where(day_use_schedule_pass_type_id: day_use_schedule_pass_types.ids, start_time: start_time).count
       }
     end
 

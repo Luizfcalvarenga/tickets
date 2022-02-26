@@ -6,8 +6,7 @@ module PartnerAdmin
 
       date = params[:date].present? ? Date.new(*params[:date].split("-").reverse.map(&:to_i)) : Time.current  
 
-      @passes = @day_use.passes.for_date(date)
-        .distinct("passes.id")
+      @passes = @day_use.passes.for_date(date).distinct("passes.id")
         # .joins(question_answers: :question)
         # .where(question: { prompt: ["Nome completo"] })
         # .order("question_answers.value")
@@ -30,15 +29,6 @@ module PartnerAdmin
 
     def new
       @day_use = DayUse.new
-      @weekdays = [
-        {value: "monday", label: "Segunda-feira"},
-        {value: "tuesday", label: "Terça-feira"},
-        {value: "wednesday", label: "Quarta-feira"},
-        {value: "thursday", label: "Quinta-feira"},
-        {value: "friday", label: "Sexta-feira"},
-        {value: "saturday", label: "Sábado"},
-        {value: "sunday", label: "Domingo"},
-      ]
     end
   
     def create            
@@ -47,16 +37,23 @@ module PartnerAdmin
         day_use.create_default_questions
 
         day_use_schedule_params.each do |day_use_schedule_param|
-          DayUseSchedule.create!(
+          day_use_schedule = DayUseSchedule.create!(
             weekday: day_use_schedule_param[:weekday],
             name: day_use_schedule_param[:name],
             opens_at: day_use_schedule_param[:opens_at],
             closes_at: day_use_schedule_param[:closes_at],
-            price_in_cents: day_use_schedule_param[:price_in_cents],
             quantity_per_slot: day_use_schedule_param[:quantity_per_slot],
             slot_duration_in_minutes: day_use_schedule_param[:slot_duration_in_minutes],
             day_use: day_use,
           )
+
+          (day_use_schedule_param[:pass_types] || []).each do |pass_type_param|
+            DayUseSchedulePassType.create!(
+              day_use_schedule: day_use_schedule,
+              name: pass_type_param[:name],
+              price_in_cents: pass_type_param[:price_in_cents]
+            )
+          end
         end
       end
 
@@ -71,7 +68,7 @@ module PartnerAdmin
     end
 
     def day_use_schedule_params
-      params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes])[:day_use_schedules]
+      params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes, pass_types: [:id, :name, :price_in_cents]])[:day_use_schedules]
     end
   end
 end

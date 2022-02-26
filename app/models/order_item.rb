@@ -1,7 +1,7 @@
 class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :event_batch, optional: true
-  belongs_to :day_use_schedule, optional: true
+  belongs_to :day_use_schedule_pass_type, optional: true
   
   has_one :pass, dependent: :destroy
 
@@ -28,8 +28,8 @@ class OrderItem < ApplicationRecord
   def full_description
     if event_batch.present?
       return "#{event_batch.event.name} - #{event_batch.pass_type} - #{event_batch.name}"
-    elsif day_use_schedule.present?
-      return "#{day_use_schedule.day_use.name} - #{day_use_schedule.name} - #{start_time.strftime("%d/%m/%Y")} - #{start_time.strftime("%H:%M")} - #{end_time.strftime("%H:%M")}"
+    elsif day_use_schedule_pass_type.present?
+      return "#{day_use_schedule_pass_type.day_use_schedule.day_use.name} - #{day_use_schedule_pass_type.day_use_schedule.name} - #{day_use_schedule_pass_type.name} - #{start_time.strftime("%d/%m/%Y")}"
     else
       raise RecordInvalid
     end
@@ -38,8 +38,8 @@ class OrderItem < ApplicationRecord
   def questions
     if event_batch.present?
       event_batch.questions
-    elsif day_use_schedule.present?
-      day_use_schedule.day_use.questions
+    elsif day_use_schedule_pass_type.present?
+      day_use_schedule_pass_type.day_use_schedule.day_use.questions
     else
       raise
     end

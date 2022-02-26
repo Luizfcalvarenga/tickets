@@ -7,7 +7,7 @@ class CreatePasses < ActiveRecord::Migration[6.1]
       t.references :event, foreign_key: true
       t.references :event_batch, foreign_key: true
       t.references :user_membership, foreign_key: true
-      t.references :day_use_schedule, foreign_key: true
+      t.references :day_use_schedule_pass_type, foreign_key: true
       t.references :partner, foreign_key: true
       t.references :order_item, foreign_key: true
       t.references :user, null: false, foreign_key: true

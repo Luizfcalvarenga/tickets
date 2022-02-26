@@ -5,7 +5,7 @@ class Pass < ApplicationRecord
   belongs_to :directly_generated_by, class_name: "User", foreign_key: "directly_generated_by_id", optional: true
   
   belongs_to :event_batch, optional: true
-  belongs_to :day_use_schedule, optional: true
+  belongs_to :day_use_schedule_pass_type, optional: true
   belongs_to :user_membership, optional: true
 
   has_one :event, through: :event_batch
@@ -27,7 +27,7 @@ class Pass < ApplicationRecord
   end
 
   def holder_cpf
-    return user.document_number if user_membership.present? || day_use_schedule.present?
+    return user.document_number if user_membership.present? || day_use_schedule_pass_type.present?
 
     return nil if question_answers.blank?
 
@@ -38,7 +38,7 @@ class Pass < ApplicationRecord
 
   def kind
     return "event" if event_batch.present?
-    return "day_use" if day_use_schedule.present?
+    return "day_use" if day_use_schedule_pass_type.present?
     return "membership" if user_membership.present?
 
     false

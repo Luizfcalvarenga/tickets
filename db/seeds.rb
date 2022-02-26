@@ -78,7 +78,7 @@ end
 puts "-- OK!"
 
 puts 'Criando eventos...'
-10.times do 
+1.times do 
   scheduled_start = Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now)
   event = Event.create!(name: Faker::BossaNova.song,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
@@ -120,7 +120,7 @@ end
 
 puts 'Criando day uses...'
 
-2.times do
+1.times do
   day_use = DayUse.create!(name: Faker::WorldCup.stadium,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(" "),
     partner_id: Partner.first.id,
@@ -134,22 +134,32 @@ puts 'Criando day uses...'
   day_use.create_default_questions
 
   %w[monday tuesday wednesday thursday friday saturday sunday].shuffle.first(rand(4..7)).each do |weekday|
-    DayUseSchedule.create!( day_use: day_use,
+    day_use_schedule = DayUseSchedule.create!( day_use: day_use,
       weekday: weekday,
       name: Faker::Marketing.buzzwords.titleize,
+      description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
       opens_at: Time.new.beginning_of_day + rand(0..3).hours,
-      closes_at: Time.new.middle_of_day + rand(0..6).hours,
-      price_in_cents: [2500, 5000, 7500, 10000].sample)
+      closes_at: Time.new.middle_of_day + rand(0..6).hours)
+
+    DayUseSchedulePassType.create(
+      name: "Individual",
+      price_in_cents: [2500, 5000, 7500, 10000].sample,
+      day_use_schedule: day_use_schedule)
   end
 
   created_day_use_schedules = day_use.day_use_schedules
   (%w[monday tuesday wednesday thursday friday saturday sunday] - created_day_use_schedules.map(&:weekday)).each do |weekday|
-    DayUseSchedule.create!( day_use: day_use,
+    day_use_schedule = DayUseSchedule.create!( day_use: day_use,
       weekday: weekday,
       name: Faker::Marketing.buzzwords.titleize,
+      description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
       opens_at: nil,
-      closes_at: nil,
-      price_in_cents: nil)
+      closes_at: nil)
+    
+    DayUseSchedulePassType.create(
+      name: "Individual",
+      price_in_cents: [2500, 5000, 7500, 10000].sample,
+      day_use_schedule: day_use_schedule)
   end
 end
 

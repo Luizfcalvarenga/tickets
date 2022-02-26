@@ -16,17 +16,17 @@ module PartnerAdmin
           entity = EventBatch.find(params[:order_item][:event_batch_id])
           start_time = entity.event.scheduled_start
           end_time = entity.event.scheduled_end
-        elsif params[:order_item][:day_use_schedule_id].present?
-          entity = DayUseSchedule.find(params[:order_item][:day_use_schedule_id])
+        elsif params[:order_item][:day_use_schedule_pass_type_id].present?
+          entity = DayUseSchedulePassType.find(params[:order_item][:day_use_schedule_pass_type_id])
           start_time = params[:order_item][:start_time].to_datetime
-          end_time = params[:order_item][:start_time].to_datetime +  entity.sanitized_slot_duration_in_minutes.minutes
+          end_time = params[:order_item][:start_time].to_datetime +  entity.day_use_schedule.sanitized_slot_duration_in_minutes.minutes
         else
           raise
         end
 
         order_item = OrderItem.create(order: @order,
           event_batch_id: params[:order_item][:event_batch_id],
-          day_use_schedule_id: params[:order_item][:day_use_schedule_id],
+          day_use_schedule_pass_type_id: params[:order_item][:day_use_schedule_pass_type_id],
           price_in_cents: entity.price_in_cents,
           fee_percentage: entity.partner.fee_percentage,
           total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),

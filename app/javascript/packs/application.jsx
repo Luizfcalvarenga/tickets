@@ -21,6 +21,7 @@ import { Questions } from "../react_pages/Questions";
 import { EventBatches } from "../react_pages/EventBatches";
 import { EventOrderItems } from "../react_pages/EventOrderItems";
 import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
+import { DayUseSchedules } from "../react_pages/DayUseSchedules";
 
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
@@ -76,6 +77,17 @@ const loadReactComponent = () => {
       ReactPage: <ReactPage message={container.dataset.message} />,
       Questions: <Questions />,
       EventBatches: <EventBatches />,
+
+      DayUseSchedules: (
+        <DayUseSchedules
+          weekdays={
+            container.dataset.weekdays
+              ? JSON.parse(container.dataset.weekdays)
+              : null
+          }
+        />
+      ),
+
       EventOrderItems: (
         <EventOrderItems
           event={
@@ -108,6 +120,11 @@ const loadReactComponent = () => {
           openSlots={
             container.dataset.openSlots
               ? JSON.parse(container.dataset.openSlots)
+              : null
+          }
+          passTypes={
+            container.dataset.passTypes
+              ? JSON.parse(container.dataset.passTypes)
               : null
           }
           date={

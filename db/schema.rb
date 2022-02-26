@@ -81,14 +81,24 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.index ["day_use_id"], name: "index_day_use_blocks_on_day_use_id"
   end
 
+  create_table "day_use_schedule_pass_types", force: :cascade do |t|
+    t.string "name"
+    t.integer "price_in_cents"
+    t.datetime "deleted_at"
+    t.bigint "day_use_schedule_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_schedule_id"], name: "index_day_use_schedule_pass_types_on_day_use_schedule_id"
+  end
+
   create_table "day_use_schedules", force: :cascade do |t|
     t.string "weekday"
     t.string "name"
-    t.time "opens_at"
-    t.time "closes_at"
+    t.text "description"
+    t.datetime "opens_at"
+    t.datetime "closes_at"
     t.integer "slot_duration_in_minutes"
     t.integer "quantity_per_slot"
-    t.integer "price_in_cents"
     t.bigint "day_use_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -188,7 +198,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "event_batch_id"
-    t.bigint "day_use_schedule_id"
+    t.bigint "day_use_schedule_pass_type_id"
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer "price_in_cents"
@@ -196,7 +206,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.integer "total_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["day_use_schedule_id"], name: "index_order_items_on_day_use_schedule_id"
+    t.index ["day_use_schedule_pass_type_id"], name: "index_order_items_on_day_use_schedule_pass_type_id"
     t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
   end
@@ -253,7 +263,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "event_id"
     t.bigint "event_batch_id"
     t.bigint "user_membership_id"
-    t.bigint "day_use_schedule_id"
+    t.bigint "day_use_schedule_pass_type_id"
     t.bigint "partner_id"
     t.bigint "order_item_id"
     t.bigint "user_id", null: false
@@ -264,7 +274,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "directly_generated_by_id"
-    t.index ["day_use_schedule_id"], name: "index_passes_on_day_use_schedule_id"
+    t.index ["day_use_schedule_pass_type_id"], name: "index_passes_on_day_use_schedule_pass_type_id"
     t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
     t.index ["event_id"], name: "index_passes_on_event_id"
@@ -359,6 +369,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "accesses", "users", column: "granted_by_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "day_use_schedule_pass_types", "day_use_schedules"
   add_foreign_key "day_use_schedules", "day_uses"
   add_foreign_key "day_uses", "partners"
   add_foreign_key "event_batch_questions", "event_batches"
@@ -371,7 +382,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "membership_discounts", "day_uses"
   add_foreign_key "membership_discounts", "events"
   add_foreign_key "membership_discounts", "memberships"
-  add_foreign_key "order_items", "day_use_schedules"
+  add_foreign_key "order_items", "day_use_schedule_pass_types"
   add_foreign_key "order_items", "event_batches"
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "users"
@@ -380,7 +391,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "partners", "cities"
   add_foreign_key "partners", "states"
   add_foreign_key "partners", "users", column: "main_contact_id"
-  add_foreign_key "passes", "day_use_schedules"
+  add_foreign_key "passes", "day_use_schedule_pass_types"
   add_foreign_key "passes", "event_batches"
   add_foreign_key "passes", "events"
   add_foreign_key "passes", "order_items"

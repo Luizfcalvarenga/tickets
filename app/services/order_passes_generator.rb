@@ -14,8 +14,8 @@ class OrderPassesGenerator
 
       partner_id = if order_item.event_batch.present?
         order_item.event_batch.event.partner_id
-      elsif order_item.day_use_schedule.present?
-        order_item.day_use_schedule.day_use.partner_id
+      elsif order_item.day_use_schedule_pass_type.present?
+        order_item.day_use_schedule_pass_type.day_use_schedule.day_use.partner_id
       end
 
       pass = Pass.create(
@@ -23,7 +23,7 @@ class OrderPassesGenerator
         name: order_item.full_description,
         partner_id: partner_id,
         event_batch_id: order_item.event_batch_id,
-        day_use_schedule_id: order_item.day_use_schedule_id,
+        day_use_schedule_pass_type_id: order_item.day_use_schedule_pass_type_id,
         user: order_item.order.user,
         order_item: order_item,
         start_time: order_item.start_time,

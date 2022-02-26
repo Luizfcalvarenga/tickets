@@ -14,65 +14,7 @@
 
     <h2 class="title">Cronograma</h2>
 
-    <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Para um day-use ser considerado aberto no dia, é necessário preencher um horário de abertura e um horário de fechamento. Para deixar o day-use fechado em algum dia da semana, não preencha as informações de horário.</p>
-
-    <% @weekdays.each do |weekday| %>
-      <input
-        class="form-control my-2"
-        type="hidden"
-        name="day_use[day_use_schedules][][weekday]"
-        value="<%= weekday[:value] %>"
-      />
-      <div class="bg-dark p-4 br-8 mb-2 flex center">
-        <p class="m-0 f-20"><%= weekday[:label] %></p>
-        <div class="f-80">
-          <div class="flex center between">
-            <input
-              class="form-control my-2 f-40"
-              type="text"
-              name="day_use[day_use_schedules][][name]"
-              placeholder="Nome"
-            />
-            <div class="flex center around gap-16 f-50">
-              <input
-                class="form-control my-2"
-                type="time"
-                name="day_use[day_use_schedules][][opens_at]"
-                placeholder="Horário início"
-              />
-              <p class="m-0">até</p>
-              <input
-                class="form-control my-2"
-                type="time"
-                name="day_use[day_use_schedules][][closes_at]"
-                placeholder="Horário fim"
-              />
-            </div>
-          </div>
-          <div class="flex center between">
-            <input
-              class="form-control my-2 f-40"
-              type="text"
-              name="day_use[day_use_schedules][][price_in_cents]"
-              placeholder="Preço em centavos" />
-            <div class="f-50 flex center gap-24">
-              <input
-                class="form-control my-2"
-                type="text"
-                name="day_use[day_use_schedules][][slot_duration_in_minutes]"
-                placeholder="Duração do slot"
-              />
-              <input
-                class="form-control my-2"
-                type="text"
-                name="day_use[day_use_schedules][][quantity_per_slot]"
-                placeholder="Limite de ingressos por slot"
-              />
-            </div>
-          </div>
-        </div>      
-      </div>
-    <% end %>
+    <react data-component="DayUseSchedules" weekdays="<%= @weekdays.to_json %>"></react>
 
     <%= f.submit "Criar day use", class: "btn btn-primary mt-5 w-100" %>
   <% end %>
