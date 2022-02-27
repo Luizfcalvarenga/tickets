@@ -21,7 +21,6 @@
 
 @media (max-width: 768px) {
   p {
-    font-family: "Poppins", cursive !important;
     font-size: 14px !important;
   }
   h2 {
@@ -57,7 +56,6 @@
   padding-top: 326px;
   h1 {
     font-size: 6rem;
-    font-family: "Bebas Neue", cursive !important;
   }
   .d-flex {
     margin-top: 40px !important;
@@ -74,7 +72,6 @@
     // height: 60px !important;
     // width: 154px !important;
     margin-right: 47px !important;
-    font-family: "Bebas Neue", cursive !important;
   }
   .p-fixed-height {
     height: 265px !important;
@@ -84,7 +81,6 @@
 // ----------------------------------------------
 @media (max-width: 768px) {
   p {
-    font-family: "Poppins", cursive !important;
     font-size: 14px !important;
   }
   h2 {
@@ -120,12 +116,8 @@
   // padding-top: 326px;
 }
 
-p {
-  font-family: "Poppins", cursive !important;
-}
 .share-button {
   border: 2px solid #00c454;
-  font-family: "Poppins", cursive !important;
   font-weight: bold;
   height: 40px;
   width: 120px;
@@ -136,7 +128,6 @@ p {
 }
 
 .btn-special {
-  font-family: "Bebas Neue", cursive !important;
   font-weight: 400;
   font-size: 36px;
   color: rgba(182, 182, 182, 1);
