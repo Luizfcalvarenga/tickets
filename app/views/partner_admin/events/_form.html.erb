@@ -1,0 +1,45 @@
+<div class="page-wrapper">
+  <h1 class="title">Criar novo evento</h1>
+
+  <%= simple_form_for([:partner_admin, @event]) do |f| %>
+    <%= f.input :name %>
+
+    <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
+
+    <div class="spacer-30"></div>
+    <%= f.input :photo, as: :file %>
+
+    <div class="spacer-50"></div>
+
+    <h2 class="title">Local do evento</h2>
+
+    <%= f.input :cep %>
+    <%= f.input :state_id, collection: State.all.order(:name) %>
+    <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
+    <%= f.input :street_name %>
+    <%= f.input :street_number %>
+    <%= f.input :neighborhood %>
+    <%= f.input :address_complement %>
+
+    <div class="spacer-50"></div>
+
+    <h2 class="title">Data do evento</h2>
+
+    <%= f.input :scheduled_start, as: :datetime %>
+    <%= f.input :scheduled_end, as: :datetime %>
+
+    <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
+
+    <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
+
+    <div class="spacer-25"></div>
+    
+    <h2 class="my-5 title">Perguntas para o participante</h2>
+
+    <div class="participant-questions">
+      <react data-component="Questions"></react>
+    </div>
+
+    <%= f.submit "Criar evento", class: "btn btn-primary mt-5 w-100" %>
+  <% end %>
+</div>

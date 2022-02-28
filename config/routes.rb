@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   resource :profiles
   
   namespace :partner_admin do
-    resources :events, only: [:show, :new, :create]
+    resources :events, only: [:show, :new, :create, :edit, :update]
     resources :memberships
     resources :day_uses
     resources :partners

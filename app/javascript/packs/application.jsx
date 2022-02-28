@@ -76,7 +76,15 @@ const loadReactComponent = () => {
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,
       Questions: <Questions />,
-      EventBatches: <EventBatches />,
+      EventBatches: (
+        <EventBatches
+          event={
+            container.dataset.event
+              ? JSON.parse(container.dataset.event)
+              : null
+          }
+        />
+      ),
 
       DayUseSchedules: (
         <DayUseSchedules
@@ -175,5 +183,5 @@ document.addEventListener("turbolinks:load", () => {
   // Platform events
   window.reloadUserEvent = new Event("reload-user-list");
 
-  flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese });
+  flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese, onChange: () => {console.log("kkk")} });
 });

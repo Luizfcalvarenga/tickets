@@ -5,15 +5,11 @@ module PartnerAdmin
       @passes = @event.passes
         .joins(question_answers: :question)
         .distinct("passes.id")
-        # .where(question: { prompt: ["Nome completo"] })
-        # .order("question_answers.value")
     
       if params[:query].present?
         sql_query = "question_answers.value ILIKE :query"
         @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
       end      
-
-      # @passes = @passes.group("passes.id").order("MAX(question_answers.value) DESC")
 
       @order = Order.new
 
@@ -26,7 +22,6 @@ module PartnerAdmin
 
     def new
       @event = Event.new
-      @memberships = current_user.partner.memberships
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
     end
@@ -68,6 +63,16 @@ module PartnerAdmin
           # TODO // add mensagem de erro //
         end
       end
+    end
+
+    def edit
+      @event = Event.find(params[:id])
+      @states = State.all
+      @cities = @event.state.present? ? @event.state.cities : [] 
+    end
+
+    def update
+      
     end
     
     private

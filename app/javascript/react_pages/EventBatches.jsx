@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import DateTimePicker from "react-datetime-picker";
+import "flatpickr/dist/themes/material_green.css";
+import Flatpickr from "react-flatpickr";
 
 export function EventBatches(props) {
-  const [passTypes, setPassTypes] = useState([]);
+  const uniquePassTypes = props.event.event_batches
+    .map((eb) => eb.pass_type)
+    .filter((value, index, self) => self.indexOf(value) === index);
+
+  const [passTypes, setPassTypes] = useState(
+    uniquePassTypes.map((passType) => {
+      return {
+        name: passType,
+        event_batches: props.event.event_batches.filter(
+          (eb) => eb.pass_type === passType
+        ),
+      };
+    })
+  );
 
   const orderToOrdinalArray = [
     "Primeiro",
@@ -25,15 +40,17 @@ export function EventBatches(props) {
       (currentPassType) => currentPassType.name === passType.name
     );
 
-    editedPassType.eventBatches = [
-      ...editedPassType.eventBatches,
+    editedPassType.event_batches = [
+      ...editedPassType.event_batches,
       {
         pass_type: passType.name,
-        name: `${orderToOrdinalArray[editedPassType.eventBatches.length]} lote`,
+        name: `${
+          orderToOrdinalArray[editedPassType.event_batches.length]
+        } lote`,
         quantity: 0,
         price_in_cents: 0,
         ends_at: Date.new,
-        order: editedPassType.eventBatches.length,
+        order: editedPassType.event_batches.length,
       },
     ];
 
@@ -47,19 +64,20 @@ export function EventBatches(props) {
       (currentPassType) => currentPassType.name === passType.name
     );
 
-    editedPassType.eventBatches.splice(eventBatchIndex, 1);
+    editedPassType.event_batches.splice(eventBatchIndex, 1);
 
     setPassTypes(currentPassTypes);
   };
 
-  const updateEventBatchName = (value, passType, eventBatchIndex) => {
+  const updateEventBatch = (value, field, passType, eventBatchIndex) => {
+    console.log(value, field, passType, eventBatchIndex);
     const currentPassTypes = [...passTypes];
 
     const editedPassType = currentPassTypes.find(
       (currentPassType) => currentPassType.name === passType.name
     );
 
-    editedPassType.eventBatches[eventBatchIndex].name = value;
+    editedPassType.event_batches[eventBatchIndex][field] = value;
 
     setPassTypes(currentPassTypes);
   };
@@ -69,7 +87,7 @@ export function EventBatches(props) {
       ...passTypes,
       {
         name: "",
-        eventBatches: [
+        event_batches: [
           {
             pass_type: "",
             name: `${orderToOrdinalArray[0]} lote`,
@@ -97,6 +115,7 @@ export function EventBatches(props) {
         return (
           <div key={index} className="mb-4">
             <div>
+              <label htmlFor="">Nome do tipo de ingresso</label>
               <input
                 class="form-control my-2"
                 type="text"
@@ -106,7 +125,7 @@ export function EventBatches(props) {
               />
             </div>
             <br></br>
-            {passType.eventBatches.map((eventBatch, eventBatchIndex) => {
+            {passType.event_batches.map((eventBatch, eventBatchIndex) => {
               return (
                 <div key={eventBatch.order} className="mb-4">
                   <input
@@ -120,28 +139,44 @@ export function EventBatches(props) {
                     value={passType.name}
                   />
                   <div className="flex center between gap-24">
-                    <input
-                      class="form-control my-2"
-                      type="text"
-                      value={eventBatch.name}
-                      onChange={(e) =>
-                        updateEventBatchName(
-                          e.target.value,
-                          passType,
-                          eventBatchIndex
-                        )
-                      }
-                      name="event[event_batches][][name]"
-                      placeholder="Nome do lote"
-                    />
-                    <input
-                      class="form-control my-2"
-                      type="text"
-                      name="event[event_batches][][price_in_cents]"
-                      placeholder="Preço"
-                    />
+                    <div class="f-1x">
+                      <label htmlFor="">Nome</label>
+                      <input
+                        class="form-control my-2"
+                        type="text"
+                        value={eventBatch.name}
+                        onChange={(e) =>
+                          updateEventBatch(
+                            e.target.value,
+                            "name",
+                            passType,
+                            eventBatchIndex
+                          )
+                        }
+                        name="event[event_batches][][name]"
+                        placeholder="Nome do lote"
+                      />
+                    </div>
+                    <div className="f-1x">
+                      <label htmlFor="">Preço em centavos</label>
+                      <input
+                        class="form-control my-2"
+                        type="text"
+                        value={eventBatch.price_in_cents}
+                        onChange={(e) =>
+                          updateEventBatch(
+                            e.target.value,
+                            "price_in_cents",
+                            passType,
+                            eventBatchIndex
+                          )
+                        }
+                        name="event[event_batches][][price_in_cents]"
+                        placeholder="Preço"
+                      />
+                    </div>
                     <p
-                      className="btn btn-danger w-20 text-center"
+                      className="btn btn-danger w-20 text-center text-white mt-5"
                       onClick={() =>
                         removeEventBatch(passType, eventBatchIndex)
                       }
@@ -151,18 +186,38 @@ export function EventBatches(props) {
                     </p>
                   </div>
                   <div className="flex center between gap-24">
-                    <input
-                      class="form-control my-2"
-                      type="text"
-                      name="event[event_batches][][quantity]"
-                      placeholder="Quantidade máxima de ingressos"
-                    />
-                    <input
-                      class="form-control my-2 datetime"
-                      type="date"
-                      name="event[event_batches][][ends_at]"
-                      placeholder="Data limite do lote"
-                    />
+                    <div className="f-1x">
+                      <label htmlFor="">Quantidade de ingressos</label>
+                      <input
+                        class="form-control my-2"
+                        type="text"
+                        name="event[event_batches][][quantity]"
+                        value={eventBatch.quantity}
+                        onChange={(e) =>
+                          updateEventBatch(
+                            e.target.value,
+                            "quantity",
+                            passType,
+                            eventBatchIndex
+                          )
+                        }
+                        placeholder="Quantidade máxima de ingressos"
+                      />
+                    </div>
+                    <div className="f-1x">
+                      <label htmlFor="">Data limite</label>
+                      <Flatpickr
+                        value={eventBatch.ends_at}
+                        onChange={(date) =>
+                          updateEventBatch(
+                            date,
+                            "ends_at",
+                            passType,
+                            eventBatchIndex
+                          )
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
               );

@@ -25,6 +25,8 @@ class DayUseSchedule < ApplicationRecord
   end
 
   def open_slots_for_date(date)
+    return [] if !open?
+
     date = date.to_datetime.asctime.in_time_zone("Brazil/East")
     
     number_of_slots = ((closes_at - opens_at)/(60 * sanitized_slot_duration_in_minutes).floor).to_i
