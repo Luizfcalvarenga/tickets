@@ -33,15 +33,6 @@
     margin-top: 0px !important;
     height: 237px !important;
     padding: 30px !important;
-    // img {
-    //   height: 100px;
-    // }
-    h1 {
-      font-size: 36px !important;
-    }
-    .btn-success {
-      font-size: 18px !important;
-    }
     .d-flex {
       margin-top: 0px !important;
     }
@@ -54,9 +45,6 @@
   background-size: cover;
   margin-top: -150px;
   padding-top: 326px;
-  h1 {
-    font-size: 6rem;
-  }
   .d-flex {
     margin-top: 40px !important;
   }
@@ -66,13 +54,6 @@
   .invert-image {
     transform: rotate(180deg);
   }
-  .btn-success {
-    font-size: 2rem !important;
-    border: none !important;
-    // height: 60px !important;
-    // width: 154px !important;
-    margin-right: 47px !important;
-  }
   .p-fixed-height {
     height: 265px !important;
   }
@@ -80,15 +61,6 @@
 
 // ----------------------------------------------
 @media (max-width: 768px) {
-  p {
-    font-size: 14px !important;
-  }
-  h2 {
-    font-size: 36px !important;
-  }
-  // img {
-  //   height: 40px;
-  // }
   .first-section-event-show {
     margin-top: 0px !important;
     height: 237px !important;
@@ -100,9 +72,6 @@
     .vbar2 {
       padding: 0px !important;
     }
-    // img {
-    //   height: 100px;
-    // }
     .d-flex {
       margin-top: 0px !important;
     }
@@ -118,7 +87,6 @@
 
 .share-button {
   border: 2px solid #00c454;
-  font-weight: bold;
   height: 40px;
   width: 120px;
   align-items: center;
@@ -128,9 +96,6 @@
 }
 
 .btn-special {
-  font-weight: 400;
-  font-size: 36px;
-  color: rgba(182, 182, 182, 1);
   border: 1px solid gray;
   background-color: black;
   padding: 5px 10px;

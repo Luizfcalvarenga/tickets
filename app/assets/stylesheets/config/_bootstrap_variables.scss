@@ -7,8 +7,10 @@
 $font-family-sans-serif: $body-font;
 $headings-font-family: $headers-font;
 $btn-font-family: $input-btn-font-family;
-$body-bg: $light-gray;
+$body-bg: $dark;
 $font-size-base: 1rem;
+$headings-color: $white;
+$body-color: $gray;
 
 // Colors
 $body-color: $gray;
@@ -22,5 +24,11 @@ $warning: $orange;
 $border-radius: 2px;
 $border-radius-lg: 2px;
 $border-radius-sm: 2px;
+// btn color white
+$btn-success-color: $white;
+$input-btn-font-size: 1.125rem;
 
 // Override other variables below!
+
+$nav-link-color: $white;
+$nav-link-hover-color: $white;

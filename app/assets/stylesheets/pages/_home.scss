@@ -2,37 +2,16 @@
   .first-section-home {
     margin-top: 0px !important;
     height: 237px !important;
-    // flex como o banner do Wagon
     padding: 30px !important;
-    h1 {
-      font-size: 36px !important;
-    }
-    .btn-success {
-      font-size: 18px !important;
-    }
     .d-flex {
       margin-top: 0px !important;
     }
   }
   .second-section-home {
     height: 715px !important;
-    h2 {
-      font-size: 36px !important;
-    }
-    // img {
-    //   height: 40px;
-    // }
     .img-spot {
       height: 160px;
       width: 160px;
-    }
-
-    h3 {
-      font-size: 18px;
-    }
-
-    p {
-      font-size: 12px;
     }
   }
 
@@ -42,42 +21,15 @@
     .container {
       padding-top: 40px !important;
     }
-
-    h2 {
-      font-size: 36px !important;
-    }
-
-    p {
-      font-size: 14px;
-    }
-    .btn-success {
-      font-size: 18px !important;
-    }
   }
 
   .fourth-section-home {
     height: 555px !important;
-    // img {
-    //   height: 40px;
-    // }
-
-    h2 {
-      font-size: 36px !important;
-    }
   }
   .fifth-section-home {
     padding-top: 20px;
     height: 100% !important;
     margin-bottom: 0px !important;
-    h2 {
-      font-size: 36px !important;
-    }
-    p {
-      font-size: 14px !important;
-    }
-    .btn-success {
-      font-size: 18px !important;
-    }
   }
   .carousel-mobile {
     padding: 0.5rem !important;
@@ -90,34 +42,13 @@
   height: 860px;
   margin-top: -150px;
   padding-top: 326px;
-  p {
-    font-size: 1.5rem !important;
-    font-weight: 400 !important;
-    line-height: 36px !important;
-  }
-  h1 {
-    font-size: 6rem;
-  }
 
   .d-flex {
     margin-top: 40px !important;
   }
 }
 
-h2 {
-  font-size: 4.5rem !important;
-}
-
-.btn-success {
-  font-size: 2rem !important;
-  border: none !important;
-  // height: 60px !important;
-  // width: 300px !important;
-  margin-right: 47px !important;
-}
-
 .second-section-home {
-  font-size: 1.5rem;
   height: 700px;
 }
 .img-spot {
@@ -129,50 +60,30 @@ h2 {
   text-align: center;
   padding: 50px;
   margin-bottom: 25px;
-  font-size: 36px;
   word-break: break-word;
   justify-content: space-around;
   p {
     width: 50%;
   }
 }
-// mb-0 para p ou h
 .third-section-home {
   background-image: image-url("background_2.png");
   height: 580px;
   width: 100%;
-  background-size: 100% 100%;
-  background-size: 100%;
   background-size: cover;
   background-position: cover;
   background-repeat: no-repeat;
   .container {
     padding-top: 96px;
   }
-  p {
-    font-weight: 500;
-  }
 }
 
 .fourth-section-home {
   height: 700px;
-  h3 {
-    font-size: 24px;
-  }
-  h4 {
-    font-size: 14px;
-  }
-}
-.img-spot2 {
-  width: 100%;
-  height: 238px;
-  background-color: #5d5d5d;
 }
 
 .fifth-section-home {
   background-image: image-url("background_3.png");
   height: 660px;
-  display: flex;
-  font-weight: 500;
   margin-bottom: -150px;
 }

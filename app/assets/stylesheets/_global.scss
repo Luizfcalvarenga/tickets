@@ -4,19 +4,40 @@ $color-primary: #00893b;
 $color-darker: #101010;
 $white: #fff;
 
-body {
-  background-color: $color-darker !important;
-  color: $white;
+@media (max-width: 768px) {
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 36px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  h4 {
+    font-size: 14px;
+  }
+  p {
+    font-size: 12px !important;
+  }
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-button,
+h1 {
+  font-size: 96px;
+}
+h2 {
+  font-size: 72px;
+}
+h3 {
+  font-size: 36px;
+}
+h4 {
+  font-size: 24px;
+}
+h5 {
+  font-size: 14px;
+}
 p {
-  color: white;
+  font-size: 16px;
 }
 
 em {
