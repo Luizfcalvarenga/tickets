@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get "partnership", to: "pages#partnership", as: "partnership"
   get "clean", to: "pages#clean", as: "clean"
+  get "seed1", to: "pages#seed1", as: "seed1"
+  get "seed10", to: "pages#seed10", as: "seed10"
 
   get "user_dashboard", to: "dashboards#user_dashboard", as: "user_dashboard"
   get "partner_user_dashboard", to: "dashboards#partner_user_dashboard", as: "partner_user_dashboard"
