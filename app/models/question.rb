@@ -4,6 +4,8 @@ class Question < ApplicationRecord
 
   has_many :question_batches
 
+  scope :non_default, -> { where(default: false) }
+
   enum kind: {
     multiple_choice: "multiple_choice",
     open: "open",

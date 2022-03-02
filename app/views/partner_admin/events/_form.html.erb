@@ -5,6 +5,9 @@
     <%= f.input :name %>
 
     <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
+    <% if @event.errors[:description].present? %>
+      <p class="text-danger"><%= @event.errors[:description].first %></p>
+    <% end %>
 
     <div class="spacer-30"></div>
     <%= f.input :photo, as: :file %>
@@ -25,8 +28,8 @@
 
     <h2 class="title">Data do evento</h2>
 
-    <%= f.input :scheduled_start, as: :datetime %>
-    <%= f.input :scheduled_end, as: :datetime %>
+    <%= f.input :scheduled_start, as: :datetime, html5: true %>
+    <%= f.input :scheduled_end, as: :datetime, html5: true %>
 
     <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
 
@@ -37,9 +40,9 @@
     <h2 class="my-5 title">Perguntas para o participante</h2>
 
     <div class="participant-questions">
-      <react data-component="Questions"></react>
+      <react data-component="Questions" data-questions="<%= @event.questions.non_default.to_json %>" ></react>
     </div>
 
-    <%= f.submit "Criar evento", class: "btn btn-primary mt-5 w-100" %>
+    <%= f.submit "#{@event.new_record? ? "Criar" : "Atualizar"} evento", class: "btn btn-primary mt-5 w-100" %>
   <% end %>
 </div>

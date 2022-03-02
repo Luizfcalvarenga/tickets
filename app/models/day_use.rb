@@ -25,6 +25,7 @@ class DayUse < ApplicationRecord
       prompt: "Nome completo",
       optional: false,
       order: questions.count,
+      default: true,
     )
 
     question = Question.create!(
@@ -33,6 +34,7 @@ class DayUse < ApplicationRecord
       prompt: "CPF",
       optional: false,
       order: questions.count,
+      default: true,
     )
   end
 

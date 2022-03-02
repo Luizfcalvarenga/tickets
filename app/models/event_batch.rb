@@ -25,7 +25,7 @@ class EventBatch < ApplicationRecord
   end
 
   def available?
-    ends_at > Time.current && OrderItem.where(event_batch_id: id).count < quantity
+    (ends_at.blank? || ends_at > Time.current) && OrderItem.where(event_batch_id: id).count < quantity
   end
 
   def ended_at_datetime

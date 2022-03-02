@@ -45,16 +45,22 @@
     <div class="tab-pane fade" id="batches" role="tabpanel" aria-labelledby="profile-tab">
       <% @event.event_batches.each do |event_batch| %>
         <div class="bg-primary-color flex center around p-4 br-8 my-4">
-          <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
-          <p class="f-24 m-0 f-1x"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
-          <p class="f-24 fw-700 m-0 f-1x"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
-          <p class="f-24 fw-700 m-0 f-1x">Finaliza em <%= event_batch.ends_at.strftime("%d/%m") %></p>
+          <p class="f-24 fw-700 m-0 f-1x text-white"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
+          <p class="f-24 m-0 f-1x text-white"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
+          <p class="f-24 fw-700 m-0 f-1x text-white"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
+          <p class="f-24 fw-700 m-0 f-1x text-white">
+            <% if event_batch.ends_at.present? %>
+              Finaliza em <%= event_batch.ends_at.strftime("%d/%m") %>
+            <% else %>
+              Sem data limite
+            <% end %>
+          </p>
           <% if event_batch.in_sales? %>
-            <p class="success-text br-8 p-3 m-0 f-1x text-center">Em vendas</p>
+            <p class="success-text br-8 p-3 m-0 f-1x text-center text-white">Em vendas</p>
           <% elsif event_batch.available? %>
-            <p class="info-text br-8 p-3 m-0 f-1x text-center">Em aberto</p>
+            <p class="info-text br-8 p-3 m-0 f-1x text-center text-white">Em aberto</p>
           <% else %>
-            <p class="danger-text br-8 p-3 m-0 f-1x text-center">Encerrado em <%= event_batch.ended_at_datetime.strftime("%d/%m às %H:%M:%S") %></p>
+            <p class="danger-text br-8 p-3 m-0 f-1x text-center text-white">Encerrado em <%= event_batch.ended_at_datetime.strftime("%d/%m às %H:%M:%S") %></p>
           <% end %>
         </div>
       <% end %>

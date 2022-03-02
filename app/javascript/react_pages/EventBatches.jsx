@@ -130,6 +130,11 @@ export function EventBatches(props) {
                 <div key={eventBatch.order} className="mb-4">
                   <input
                     type="hidden"
+                    name="event[event_batches][][id]"
+                    value={eventBatch.id}
+                  />
+                  <input
+                    type="hidden"
                     name="event[event_batches][][order]"
                     value={eventBatch.order}
                   />
@@ -208,6 +213,7 @@ export function EventBatches(props) {
                       <label htmlFor="">Data limite</label>
                       <Flatpickr
                         value={eventBatch.ends_at}
+                        name="event[event_batches][][ends_at]"
                         onChange={(date) =>
                           updateEventBatch(
                             date,

@@ -75,13 +75,19 @@ const loadReactComponent = () => {
         />
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,
-      Questions: <Questions />,
+      Questions: (
+        <Questions
+          questions={
+            container.dataset.questions
+              ? JSON.parse(container.dataset.questions)
+              : null
+          }
+        />
+      ),
       EventBatches: (
         <EventBatches
           event={
-            container.dataset.event
-              ? JSON.parse(container.dataset.event)
-              : null
+            container.dataset.event ? JSON.parse(container.dataset.event) : null
           }
         />
       ),
@@ -183,5 +189,4 @@ document.addEventListener("turbolinks:load", () => {
   // Platform events
   window.reloadUserEvent = new Event("reload-user-list");
 
-  flatpickr(".datetime", { dateFormat: "d-m-Y", locale: Portuguese, onChange: () => {console.log("kkk")} });
 });

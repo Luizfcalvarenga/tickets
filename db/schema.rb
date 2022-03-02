@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "street_number"
     t.string "neighborhood"
     t.string "address_complement"
+    t.datetime "released_at"
     t.datetime "sales_started_at"
     t.datetime "sales_finished_at"
     t.bigint "city_id", null: false
@@ -302,6 +303,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.integer "order"
     t.boolean "optional"
     t.string "options", default: [], array: true
+    t.boolean "default"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["day_use_id"], name: "index_questions_on_day_use_id"

@@ -17,6 +17,8 @@ class Event < ApplicationRecord
 
   has_rich_text :description
 
+  validates :name, :description, :cep, :street_name, :street_number, :neighborhood, :scheduled_start, :scheduled_end, presence: true
+
   scope :upcoming, -> { where("scheduled_end < ?", Time.current) }
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
@@ -28,6 +30,7 @@ class Event < ApplicationRecord
       prompt: "Nome completo",
       optional: false,
       order: questions.count,
+      default: true,
     )
     event_batches.each do |event_batch|
       EventBatchQuestion.create(event_batch: event_batch, question: question)
@@ -39,6 +42,7 @@ class Event < ApplicationRecord
       prompt: "CPF",
       optional: false,
       order: questions.count,
+      default: true,
     )
     event_batches.each do |event_batch|
       EventBatchQuestion.create(event_batch: event_batch, question: question)

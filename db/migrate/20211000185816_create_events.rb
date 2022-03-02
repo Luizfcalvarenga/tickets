@@ -11,6 +11,7 @@ class CreateEvents < ActiveRecord::Migration[6.1]
       t.string :street_number
       t.string :neighborhood
       t.string :address_complement
+      t.datetime :released_at
       t.datetime :sales_started_at
       t.datetime :sales_finished_at
       t.references :city, null: false, foreign_key: true
