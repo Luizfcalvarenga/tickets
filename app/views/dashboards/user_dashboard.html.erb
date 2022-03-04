@@ -17,7 +17,7 @@
           <p class="text-white p-0 mb-0"><%= pass.partner.name %></p>
         </div>
         <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
-          <p class="btn btn-primary m-0 w-100">Ver</p>
+          <p class="btn btn-success m-0 w-100">Ver</p>
         <% end %>
         <p class="<%= pass.status[:class] %> text-white p-3 m-0 col-12 col-md-4 text-center mb-2"><%= pass.status[:label] %></p>
       </div>
@@ -25,6 +25,6 @@
   </div>
 
   <%= link_to partners_path do %>
-    <p class="btn btn-primary w-100">Ver parceiros</p>
+    <p class="btn btn-success w-100">Ver parceiros</p>
   <% end %>
 </div>

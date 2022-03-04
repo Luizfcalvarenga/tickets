@@ -59,7 +59,7 @@ export function EventBatches(props) {
       (currentPassType) => currentPassType.name === passType.name
     );
 
-    editedPassType.eventBatches[eventBatchIndex].name = value
+    editedPassType.eventBatches[eventBatchIndex].name = value;
 
     setPassTypes(currentPassTypes);
   };
@@ -168,7 +168,7 @@ export function EventBatches(props) {
               );
             })}
             <p
-              className="btn btn-primary p-3 w-100 text-center"
+              className="btn btn-success p-3 w-100 text-center"
               onClick={() => addEventBatch(passType)}
             >
               <i className="fa fa-plus"></i>
@@ -179,7 +179,7 @@ export function EventBatches(props) {
         );
       })}
       <p
-        className="btn btn-primary p-3 w-100 text-center"
+        className="btn btn-success p-3 w-100 text-center"
         onClick={addPassType}
       >
         <i className="fa fa-plus"></i>

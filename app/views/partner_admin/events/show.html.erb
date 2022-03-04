@@ -30,7 +30,7 @@
           <input id="query-input" type="text" class="w-100" placeholder="Procurar passe">
         </div>
         <%= link_to partner_admin_event_path(format: "csv") do %>
-          <p class="btn btn-primary m-0">Baixar CSV</p>
+          <p class="btn btn-success m-0">Baixar CSV</p>
         <% end %>
       </div>
 
@@ -60,7 +60,7 @@
     <div class="tab-pane fade" id="communications" role="tabpanel" aria-labelledby="contact-tab">
       <h3>Comunicados do evento</h3>
       <%= link_to event_event_communications_path(event_id: @event.id) do %>
-        <p class="btn btn-primary w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
+        <p class="btn btn-success w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
       <% end %>
     </div>
 
@@ -125,7 +125,7 @@
             <% end %>
           </div>
         <% end %>
-        <%= f.submit "Criar parceiro", class: "btn btn-primary mt-5 w-100" %>
+        <%= f.submit "Criar parceiro", class: "btn btn-success mt-5 w-100" %>
       <% end %>
     </div>
   </div>

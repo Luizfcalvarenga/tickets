@@ -9,10 +9,21 @@ class DashboardsController < ApplicationController
   end
 
   def partner_admin_dashboard
-    @partner = Partner.all
+    @partner = current_user.partner
     @events = current_user.partner.events
-    @memberships = current_user.partner.memberships
-    @day_uses = current_user.partner.day_uses
+    @day_uses = current_user.partner.day_uses    
+    @memberships = @partner.memberships
+    
+
+
+    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids})
+      .group("users.id")
+      .order("users.name")
+  
+    if params[:query].present?
+      sql_query = "users.email ILIKE :query OR users.name ILIKE :query OR translate(users.document_number, '.', '') ILIKE :query "
+      @users = @users.where(sql_query, query: "%#{params[:query].gsub(".", "")}%") if params[:query].present?
+    end      
 
     qrcode = RQRCode::QRCode.new(partner_shortcut_url(id: current_user.partner.slug))
     @svg = qrcode.as_svg(
@@ -22,6 +33,12 @@ class DashboardsController < ApplicationController
       standalone: true,
       use_path: true
     )
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Partner.memberships_csv }
+      format.text { render partial: 'dashboards/user_list', locals: { users: @users, passes: @passes }, formats: [:html] }
+    end
   end
 
   def admin_dashboard

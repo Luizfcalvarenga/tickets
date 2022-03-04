@@ -90,7 +90,7 @@ export function Questions(props) {
                   );
                 })}
                 <p
-                  className="btn btn-primary p-3"
+                  className="btn btn-success p-3"
                   onClick={() => addQuestionOption(question.order)}
                 >
                   <i className="fa fa-plus"></i>
@@ -102,7 +102,7 @@ export function Questions(props) {
         );
       })}
       <p
-        className="btn btn-primary p-3 w-100 text-center"
+        className="btn btn-success p-3 w-100 text-center"
         onClick={addQuestion}
       >
         <i className="fa fa-plus"></i>

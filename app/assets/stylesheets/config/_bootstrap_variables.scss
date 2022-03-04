@@ -6,7 +6,6 @@
 // General style
 $font-family-sans-serif: $body-font;
 $headings-font-family: $headers-font;
-$btn-font-family: $input-btn-font-family;
 $body-bg: $dark;
 $font-size-base: 1rem;
 $headings-color: $white;
@@ -25,10 +24,23 @@ $border-radius: 2px;
 $border-radius-lg: 2px;
 $border-radius-sm: 2px;
 // btn color white
-$btn-success-color: $white;
-$input-btn-font-size: 1.125rem;
+$btn-success-color: $dark;
 
 // Override other variables below!
 
+// Inputs
+$input-bg: $white;
+$input-color: $dark;
+$input-focus-color: $green;
+$input-btn-font-size: 1.125rem;
+$input-font-family: $body-font;
+$input-group-addon-color: $gray;
+
 $nav-link-color: $white;
 $nav-link-hover-color: $white;
+
+$link-color: $green;
+
+$card-cap-color: $green;
+$card-bg: $dark;
+$card-color: $dark;

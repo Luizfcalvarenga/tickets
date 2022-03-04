@@ -1,21 +1,21 @@
 @import "toastr/toastr";
 @import "trix/dist/trix";
-$color-primary: #00893b;
+$color-primary: #00c454;
 $color-darker: #101010;
 $white: #fff;
 
 @media (max-width: 768px) {
   h1 {
-    font-size: 36px;
+    font-size: 36px !important;
   }
   h2 {
-    font-size: 36px;
+    font-size: 36px !important;
   }
   h3 {
-    font-size: 18px;
+    font-size: 18px !important;
   }
   h4 {
-    font-size: 14px;
+    font-size: 14px !important;
   }
   p {
     font-size: 12px !important;
@@ -163,26 +163,26 @@ form {
     width: 100%;
   }
 
-  input {
-    width: 100%;
-  }
+  // input {
+  //   width: 100%;
+  // }
 }
 
 .text-color-primary {
   color: $color-primary !important;
 }
 
-.btn-primary {
-  color: white !important;
-  background-color: $color-primary !important;
-  border-color: $color-primary !important;
-  font-weight: 700 !important;
-  border-radius: 8px !important;
-  &:hover {
-    opacity: 0.9;
-    transition: 300ms;
-  }
-}
+// .btn-primary {
+//   color: white !important;
+//   background-color: $color-primary !important;
+//   border-color: $color-primary !important;
+//   font-weight: 700 !important;
+//   border-radius: 8px !important;
+//   &:hover {
+//     opacity: 0.9;
+//     transition: 300ms;
+//   }
+// }
 .btn-outline {
   color: $color-primary !important;
   background-color: transparent !important;
@@ -367,82 +367,82 @@ trix-editor {
 }
 
 // Table
-table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-}
+// // table {
+// //   border: 1px solid #ccc;
+// //   border-collapse: collapse;
+// //   margin: 0;
+// //   padding: 0;
+// //   width: 100%;
+// //   table-layout: fixed;
+// // }
 
-table tr {
-  background-color: #212529;
-  color: white;
-  border: 1px solid #ddd;
-  padding: 0.35em;
-}
+// // table tr {
+// //   background-color: #212529;
+// //   color: white;
+// //   border: 1px solid #ddd;
+// //   padding: 0.35em;
+// // }
 
-table th,
-table td {
-  padding: 0.625em;
-  text-align: center;
-}
+// // table th,
+// // table td {
+// //   padding: 0.625em;
+// //   text-align: center;
+// // }
 
-table th {
-  font-size: 0.85em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
+// // table th {
+// //   font-size: 0.85em;
+// //   letter-spacing: 0.1em;
+// //   text-transform: uppercase;
+// // }
 
-@media screen and (max-width: 600px) {
-  table {
-    border: 0;
-  }
+// // @media screen and (max-width: 600px) {
+// //   table {
+// //     border: 0;
+// //   }
 
-  table caption {
-    font-size: 1.3em;
-  }
+// //   table caption {
+// //     font-size: 1.3em;
+// //   }
 
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
+// //   table thead {
+// //     border: none;
+// //     clip: rect(0 0 0 0);
+// //     height: 1px;
+// //     margin: -1px;
+// //     overflow: hidden;
+// //     padding: 0;
+// //     position: absolute;
+// //     width: 1px;
+// //   }
 
-  table tr {
-    border-bottom: 3px solid #ddd;
-    display: block;
-    margin-bottom: 0.625em;
-  }
+// //   table tr {
+// //     border-bottom: 3px solid #ddd;
+// //     display: block;
+// //     margin-bottom: 0.625em;
+// //   }
 
-  table td {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: 0.8em;
-    text-align: right;
-  }
+// //   table td {
+// //     border-bottom: 1px solid #ddd;
+// //     display: block;
+// //     font-size: 0.8em;
+// //     text-align: right;
+// //   }
 
-  table td::before {
-    /*
-    * aria-label has no advantage, it won't be read inside a table
-    content: attr(aria-label);
-    */
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+// //   table td::before {
+// //     /*
+// //     * aria-label has no advantage, it won't be read inside a table
+// //     content: attr(aria-label);
+// //     */
+// //     content: attr(data-label);
+// //     float: left;
+// //     font-weight: bold;
+// //     text-transform: uppercase;
+// //   }
 
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
+// //   table td:last-child {
+// //     border-bottom: 0;
+// //   }
+// }
 
 .event-communication-download {
   height: 300px;

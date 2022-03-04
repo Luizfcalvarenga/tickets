@@ -1,12 +1,12 @@
 <div class="page-wrapper">
   <%= link_to dashboard_path_for_user(current_user) do %>
-    <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+    <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
   <% end %>
   
   <h1 class="title">Lista de parceiros cadastrados</h1>
 
   <%= link_to new_event_event_communication_path(event_id: @event.id) do %>
-    <p class="btn btn-primary mb-5 w-100 px-5">Disparar nova comunicação</p>
+    <p class="btn btn-success mb-5 w-100 px-5">Disparar nova comunicação</p>
   <% end %>
 
   <table>
@@ -26,7 +26,7 @@
         </td>
         <td data-label="Ações">
           <%= link_to event_event_communication_path(event_id: @event.id, id: event_communication.id) do %>
-            <p class="btn btn-primary m-0 px-5">Ver comunicado</p>
+            <p class="btn btn-success m-0 px-5">Ver comunicado</p>
           <% end %>
         </td>
       </tr>

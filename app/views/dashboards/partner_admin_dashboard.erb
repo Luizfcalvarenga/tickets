@@ -1,79 +1,209 @@
-<% content_for(:html_title) { 'NuflowPass Dashboard' } %>
-<div class="page-wrapper">
-  <div class="p-1 bg-darker d-flex justify-content-center mx-auto d-block">
-    <div class="bg-white p-4">
-      <%= @svg.html_safe %>
+<div class="container mt-5">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">MEUS EVENTOS</button>
+      <button class="nav-link" id="nav-day-uses-tab" data-bs-toggle="tab" data-bs-target="#nav-day-uses" type="button" role="tab" aria-controls="nav-day-uses" aria-selected="false">AGENDAMENTO</button>
+      <button class="nav-link" id="nav-memberships-tab" data-bs-toggle="tab" data-bs-target="#nav-memberships" type="button" role="tab" aria-controls="nav-memberships" aria-selected="false">ASSINATURAS</button>
+      <button class="nav-link" id="nav-read-qr-codes-tab" data-bs-toggle="tab" data-bs-target="#nav-read-qr-codes" type="button" role="tab" aria-controls="nav-read-qr-codes" aria-selected="false">LER QR CODES</button>
+      <button class="nav-link" id="nav-acc-info-tab" data-bs-toggle="tab" data-bs-target="#nav-acc-info" type="button" role="tab" aria-controls="nav-acc-info" aria-selected="false">INFORMAÇÕES DA CONTA</button>
     </div>
-  </div>
-  <h1>Dashboard</h1>
-  <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
-    <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
-  <% end %>
+  </nav>
 
-  <div class="spacer-100"></div>
-
-  <%= link_to pass_scanner_path do %>
-    <p class="btn btn-primary m-0 w-100 p-5">Ler QRcodes</p>
-  <% end %>
-
-  <h2>Meus eventos</h2>
-
-  <% @events.each do |event| %>
-    <div class="event bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= event.name %></p>
-      
-      <%= link_to partner_admin_event_path(event), class: "col-12 col-md-4" do %>
-        <p class="btn btn-primary m-0">Ver detalhes do evento</p>
-      <% end %>
-    </div>
-  <% end %> 
-
-  <h2 class="title">Criar eventos</h2>
-
-  <%= link_to new_partner_admin_event_path, class: "col-12 w-100" do %>
-    <p class="btn btn-primary m-0 w-100 my-3">Criar evento</p>
-  <% end %>
-
-  <div class="spacer-100"></div>
-
-  <h2>Meus day uses</h2>
-  <% @day_uses.each do |day_use| %>
-    <div class="day_use bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-      <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= day_use.name %></p>
-
-      <%= link_to partner_admin_day_use_path(day_use), class: "col-12 col-md-4" do %>
-        <p class="btn btn-primary m-0">Ver detalhes do Day Use</p>
-      <% end %>
-    </div>
-  <% end %> 
-
-  <h2 class="title">Criar day uses</h2>
-
-  <%= link_to new_partner_admin_day_use_path, class: "col-12 w-100" do %>
-    <p class="btn btn-primary m-0 w-100 my-3">Criar Day Use</p>
-  <% end %>
-
-  <div class="spacer-100"></div>
-
-  <h2>Assinaturas</h2>
-  <% @memberships.each do |membership| %>
-    <div class="membership bg-dark w-100 p-4 br-8 text-white center mb-2 flex center">
-      <div class="f-40">
-        <p class="text-white mb-2 fw-700"><%= membership.name %></p>
-      </div>
-      <div class="f-40">
-        <p class="text-white f-20 m-0"><%= display_price(membership.price_in_cents / 100) %></p>
-        <p class="text-white f-20 m-0"><%= membership.users.count %> mensalistas</p>
-      </div>
-      <div class="f-20">
-        <%= link_to edit_partner_admin_membership_path(membership.id), class: "" do %>
-          <p class="btn btn-primary m-0">Editar</p>
+  <div class="tab-content mt-5" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+      <table class="table table-dark table-borderless text-start">
+        <thead>
+          <tr>
+            <th scope="col">Nome do evento</th>
+            <th scope="col">Data início</th>
+            <th scope="col">Data término</th>
+            <th scope="col">Local</th>
+            <th scope="col">Máx Ingressos</th>
+            <th scope="col">Vendidos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @events.each do |event| %>
+            <tr>
+              <td><%= event.name %></td>
+              <td><%= event.scheduled_start.strftime('%A, %d de %B') %></td>
+              <td><%= event.scheduled_end.strftime('%A, %d de %B') %></td>
+              <td><%= event.city.name %>, <%= event.state.acronym %></td>
+              <td><%= event.event_batches.sum(:quantity) %></td>
+              <!-- TODO // calculo de ingressos vendidos // -->
+              <td><%= event.event_batches.sum(:quantity) %></td>
+              <td><%= link_to "Editar", partner_admin_event_path(event), class: "text-reset" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <%= link_to new_partner_admin_event_path, class: "col-12 w-100" do %>
+          <button class="btn btn-success">Criar evento</button>
         <% end %>
       </div>
     </div>
-  <% end %> 
-  <%= link_to partner_admin_memberships_path, class: "w-100" do %>
-    <p class="btn btn-primary px-5 w-100 my-3">Listagem de membros</p>
-  <% end %>
+
+    <div class="tab-pane fade" id="nav-day-uses" role="tabpanel" aria-labelledby="nav-day-uses">
+      <table class="table table-dark table-borderless text-start">
+        <thead>
+          <tr>
+            <th scope="col">Nome do Agendamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @day_uses.each do |day_use| %>
+            <tr>
+              <td><%= day_use.name %></td>
+              <td><%= link_to "Editar", partner_admin_day_use_path(day_use), class: "text-reset" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div class="text-center">
+        <%= link_to new_partner_admin_day_use_path, class: "col-12" do %>
+          <button class="btn btn-success m-0 my-3">Criar Day Use</button>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-memberships" role="tabpanel" aria-labelledby="nav-memberships">
+      <div class="cards d-flex justify-content-around">
+
+        <% @memberships.sample(3).each do |membership| %>
+        <div class="card mb-3 text-center" style="max-width: 20rem; min-width: 20rem; min-height: 12rem">
+          <div class="card-body bg-success d-flex align-items-center">
+            <div>
+              <h2 class="bold h3 text-dark"> <%= membership.name %></h2>
+              <p class=""><%= membership.user_memberships.count %> mensalistas - R$ <%= display_price(membership.price_in_cents) %>   1,00.</p>
+            </div>
+          </div>
+          <div class="card-footer bg-dark">
+            <%= link_to "Editar", partner_admin_membership_path(membership), class: "text-reset" %>
+          </div>
+        </div>      
+      <% end %>
+      </div>
+      <div class="text-center">
+        <%= link_to new_partner_admin_membership_path do %>
+          <button class="btn btn-success my-3">CRIAR NOVA ASSINATURA</button>
+        <% end %>
+      </div>
+      <p><b> Total de mensalistas: </b> <%= @partner.user_memberships.count("distinct user_memberships.user_id") %></p>
+      <p><b> Total de mensalistas ativos: </b> <%= @partner.user_memberships.active.count("distinct user_memberships.user_id") %></p>
+      <div id="membership-index-page" class="">
+        <div>
+          <h3 class="title">Lista de mensalistas</h3>
+
+          <div class="flex center mb-3">
+            <div class="form-group f-60">
+              <input id="query-input" type="text" class="w-100" placeholder="Procurar mensalista">
+            </div>
+            <%= link_to partner_admin_memberships_path(format: "csv") do %>
+              <p class="btn btn-success m-0">Baixar CSV</p>
+            <% end %>
+          </div>
+
+          <div id="user-list-parent-node">
+            <%= render partial: "dashboards/user_list", locals: { users: @users, passes: @passes } %>
+          </div>
+        </div>
+      </div>
+
+      <div id="access-modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog bg-darker modal-xl" role="document">
+          <div class="modal-content bg-darker">
+            <div class="modal-body vh-90 bg-darker scrollable">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-dark table-borderless text-start">
+        <thead>
+          <tr>
+            <th scope="col">Assinante</th>
+            <th scope="col">Assinatura</th>
+            <th scope="col">Data de Assinatura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.name %></td>
+              <td><%= user.membership.name %></td>
+              <td><%= user.created_at.strftime('%A, %d de %B') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane fade" id="nav-read-qr-codes" role="tabpanel" aria-labelledby="nav-read-qr-codes-tab">
+      <div class="text-center">
+        <%= link_to pass_scanner_path do %>
+          <button class="btn btn-success m-0">Ler QRcodes</button>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-acc-info" role="tabpanel" aria-labelledby="nav-acc-info-tab">
+      <div class="d-flex justify-content-start">
+      
+        <%= simple_form_for([:partner_admin, @partner]) do |f| %>
+          <% if current_user.photo.attached? %>
+            <%= cl_image_tag current_user.photo.key, height: 300, width: 300, crop: :fit , class: "rounded mx-auto d-block mb-5"%>
+          <% end %>
+        <div class="row">
+          <div class="col-6 d-grid mb-3">
+            <%= f.input :name %>
+            <%= f.input :slug, wrapper: :input_group, prepend: "https://nuflowpass.herokuapp.com/", placeholder:"nome-exemplo" %>
+            <%= f.input :cnpj %>
+            <%= f.input :contact_email %>
+            <%= f.input :contact_phone_1 %>
+            <%= f.input :contact_phone_2 %>
+            <%= f.input :about, :input_html => { 'rows' => 5 } %>
+          </div>
+
+          <div class="col-6">
+            <%= f.input :cep %>
+            <%= f.input :state_id, collection: State.all.order(:name) %>
+            <%= f.input :city_id, as: :select, collection: @partner.state.cities, input_html: { id: 'cities_select' }, required: true %>
+            <%= f.input :street_name %>
+            <div class="row">
+              <div class="col-md-4">
+                <%= f.input :street_number %>
+              </div>
+              <div class="col-md-8">
+                <%= f.input :neighborhood %>
+              </div>
+            </div>
+            <%= f.input :address_complement %>
+            <div class="mt-4">
+              <%= f.input :logo, as: :file %>
+            </div>
+          </div>
+        </div>
+        <div class="p-1 d-flex justify-content-center mx-auto d-block ">
+          <div class="bg-white p-4">
+            <%= @svg.html_safe %>
+          </div>
+        </div>
+        <div class="text-center">
+          <%= f.submit "SALVAR ALTERAÇÕES", class: "btn btn-success my-5" %>
+        </div>
+      <% end %>
+      </div>
+
+
+      <!--
+      <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
+        <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
+      <% end %>
+       -->
+    </div>
+  </div>
 </div>
-  
+
+<% content_for(:html_title) { 'NuflowPass Dashboard' } %>

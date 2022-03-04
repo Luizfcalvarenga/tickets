@@ -316,7 +316,7 @@ end
 #   <div class="p-5">
 #     <h3><i class="fas fa-thumbs-up fs-20 pr-4 mb-4"></i>Pagamento confirmado!</h3>
 #     <%= link_to entity_path_for_user(@entity, current_user) do %>
-#       <p class="btn btn-primary w-100">Prosseguir</p>
+#       <p class="btn btn-success w-100">Prosseguir</p>
 #     <% end %>
 #   </div>
 # </div>

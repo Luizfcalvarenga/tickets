@@ -38,7 +38,7 @@ export function DayUseSchedules(props) {
   const removePassType = (weekday, passTypeIndex) => {
     const currentWeekdays = [...weekdays];
 
-    console.log(weekday)
+    console.log(weekday);
 
     const editedWeekday = currentWeekdays.find(
       (currentWeekday) => currentWeekday.name === weekday.name
@@ -59,7 +59,8 @@ export function DayUseSchedules(props) {
       </p>
 
       <p className="m-0 info-text p-4 br-8 mb-3">
-        <i className="fa fa-info-circle mx-3"></i>Para um day-use ter apenas um slot diário, não é necessário preencher o campo "Duração do slot"
+        <i className="fa fa-info-circle mx-3"></i>Para um day-use ter apenas um
+        slot diário, não é necessário preencher o campo "Duração do slot"
       </p>
 
       <ul className="nav nav-tabs mb-5" id="myTab" role="tablist">
@@ -181,7 +182,7 @@ export function DayUseSchedules(props) {
                 })}
 
                 <p
-                  className="btn btn-primary p-3 w-100 text-center mt-5"
+                  className="btn btn-success p-3 w-100 text-center mt-5"
                   onClick={() => addPassType(weekday)}
                 >
                   <i className="fa fa-plus"></i>

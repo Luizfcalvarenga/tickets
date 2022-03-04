@@ -1,6 +1,6 @@
 <div class="page-wrapper">
   <%= link_to dashboard_path_for_user(current_user) do %>
-    <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+    <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
   <% end %>
   
   <h1 class="title">Lista de parceiros</h1>
@@ -20,7 +20,7 @@
         <td data-label="Cidade/Estado"><%= partner.city.name %> - <%= partner.state.acronym %></td>
         <td data-label="Ações">
           <%= link_to partner_path(partner) do %>
-            <p class="btn btn-primary m-0 px-5">Ver página</p>
+            <p class="btn btn-success m-0 px-5">Ver página</p>
           <% end %>
         </td>
       </tr>

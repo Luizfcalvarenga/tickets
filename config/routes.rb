@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     resources :event_communications, only: [:index, :show, :new, :create]
   end
   get "day_uses/:id/:date", to: "day_uses#show", as: "day_use"
+  get "day_uses", to: "day_uses#index"
 
   resources :user_memberships
   

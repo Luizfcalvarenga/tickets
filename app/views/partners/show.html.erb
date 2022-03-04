@@ -1,7 +1,7 @@
 <div class="page-wrapper">
   <% if user_signed_in? %>
       <%= link_to dashboard_path_for_user(current_user) do %>
-      <p class="btn btn-primary mb-5 w-100 px-5">Voltar para o dashboard</p>
+      <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
     <% end %>
   <% end %>
 
@@ -71,7 +71,7 @@
           <div class="f-80">
             <%= simple_form_for(@user_membership) do |f| %>
               <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
-              <%= f.submit "Inscrever", class: "btn btn-primary" %>
+              <%= f.submit "Inscrever", class: "btn btn-success" %>
             <% end %>
           </div>
         <% end %>
@@ -87,7 +87,7 @@
         <div class="pass bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
           <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= pass.event.name %></p>
           <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
-            <p class="btn btn-primary m-0 w-100">Ver</p>
+            <p class="btn btn-success m-0 w-100">Ver</p>
           <% end %>
           <% if pass.reads.exists? %>
             <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>

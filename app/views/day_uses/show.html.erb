@@ -19,7 +19,7 @@
         data-date="<%= @date.to_json %>"
         data-fee-percentage="<%= @day_use.partner.fee_percentage %>"></react>
 
-      <%= f.submit "Comprar ingressos", class: "btn btn-primary mt-5 w-100 p-3" %>
+      <%= f.submit "Comprar ingressos", class: "btn btn-success mt-5 w-100 p-3" %>
     <% end %>
   <% else %>
     <p class="danger-text p-4 br-8">Nenhum ingresso disponível para essa data.</p>
