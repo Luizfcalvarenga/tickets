@@ -95,7 +95,7 @@ export function EventBatches(props) {
     <div className="">
       {passTypes.map((passType, index) => {
         return (
-          <div key={index} className="mb-4 p-4 bg-dark">
+          <div key={index} className="mb-4">
             <div>
               <input
                 class="form-control my-2"
@@ -168,21 +168,18 @@ export function EventBatches(props) {
               );
             })}
             <p
-              className="btn btn-success p-3 w-100 text-center"
+              className="btn btn-success text-center"
               onClick={() => addEventBatch(passType)}
             >
-              <i className="fa fa-plus"></i>
+              <i className="fa fa-plus-square"></i>
               <span className="px-3">Adicionar lote</span>
             </p>
             <hr />
           </div>
         );
       })}
-      <p
-        className="btn btn-success p-3 w-100 text-center"
-        onClick={addPassType}
-      >
-        <i className="fa fa-plus"></i>
+      <p className="btn btn-success text-center" onClick={addPassType}>
+        <i className="fa fa-plus-square"></i>
         <span className="px-3">Criar tipo de ingresso</span>
       </p>
     </div>

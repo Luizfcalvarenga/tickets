@@ -59,19 +59,22 @@ export function Questions(props) {
                 name="questions[][prompt]"
                 placeholder="Texto da pergunta"
               />
-              <select
-                name="questions[][kind]"
-                id=""
-                className="f-20"
-                onChange={() =>
-                  handleQuestionKindChange(e.target.value, question.order)
-                }
-              >
-                <option value="multiple_choice" selected>
-                  Múltipla escolha
-                </option>
-                <option value="open">Aberta</option>
-              </select>
+              <div>
+                <h3>Tipo</h3>
+                <select
+                  name="questions[][kind]"
+                  id=""
+                  className="form-select my-2 f-30"
+                  onChange={() =>
+                    handleQuestionKindChange(e.target.value, question.order)
+                  }
+                >
+                  <option value="multiple_choice" selected>
+                    Múltipla escolha
+                  </option>
+                  <option value="open">Aberta</option>
+                </select>
+              </div>
               <div className="flex align-items-center gap-12 my-3 f-20">
                 <input type="checkbox" name="questions[][optional]" />
                 <span className="text-white">Pergunta opcional</span>
@@ -90,10 +93,10 @@ export function Questions(props) {
                   );
                 })}
                 <p
-                  className="btn btn-success p-3"
+                  className="btn btn-success"
                   onClick={() => addQuestionOption(question.order)}
                 >
-                  <i className="fa fa-plus"></i>
+                  <i className="fa fa-plus-square"></i>
                   <span className="px-3">Adicionar opção de resposta</span>
                 </p>
               </div>
@@ -101,11 +104,8 @@ export function Questions(props) {
           </div>
         );
       })}
-      <p
-        className="btn btn-success p-3 w-100 text-center"
-        onClick={addQuestion}
-      >
-        <i className="fa fa-plus"></i>
+      <p className="btn btn-success text-center" onClick={addQuestion}>
+        <i className="fa fa-plus-square"></i>
         <span className="px-3">Adicionar pergunta</span>
       </p>
     </div>
