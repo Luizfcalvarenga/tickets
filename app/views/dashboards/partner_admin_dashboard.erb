@@ -132,7 +132,7 @@
           <% @users.each do |user| %>
             <tr>
               <td><%= user.name %></td>
-              <td><%= user.membership.name %></td>
+              <td><%= user.membership_for_partner(@partner).name %></td>
               <td><%= user.created_at.strftime('%A, %d de %B') %></td>
             </tr>
           <% end %>

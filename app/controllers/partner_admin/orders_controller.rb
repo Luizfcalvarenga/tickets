@@ -43,12 +43,12 @@ module PartnerAdmin
         end
 
         raise ActiveRecord::RecordInvalid unless @question_answers.all?(&:persisted?)
-      rescue ActiveRecord::RecordInvalid => e
-        flash[:alert] = "Erro ao gerar passe. Preencha todas as informações corretamente"
-        redirect_to request.referrer and return
-      rescue NovaIugu::CustomerCreator::CustomerParamsException => e
-        flash[:alert] = "Erro ao gerar passe. Faltou preencher o nome e/ou documento do usuário."
-        redirect_to request.referrer and return
+      # rescue ActiveRecord::RecordInvalid => e
+      #   flash[:alert] = "Erro ao gerar passe. Preencha todas as informações corretamente"
+      #   redirect_to request.referrer and return
+      # rescue NovaIugu::CustomerCreator::CustomerParamsException => e
+      #   flash[:alert] = "Erro ao gerar passe. Faltou preencher o nome e/ou documento do usuário."
+      #   redirect_to request.referrer and return
       end
 
       @order.perform_after_payment_confirmation_actions

@@ -14,8 +14,6 @@ class DashboardsController < ApplicationController
     @day_uses = current_user.partner.day_uses    
     @memberships = @partner.memberships
     
-
-
     @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids})
       .group("users.id")
       .order("users.name")

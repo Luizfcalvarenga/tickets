@@ -1,11 +1,11 @@
 <table id="user-list">
   <thead>
     <tr>
-      <% event.questions.default_questions.order(:order).each do |question| %>
+      <% event.questions.default.order(:order).each do |question| %>
         <td><%= question.prompt %></td>
       <% end %>
       <th scope="col">Usuário</th>
-      <% event.questions.non_default_questions.order(:order).each do |question| %>
+      <% event.questions.non_default.order(:order).each do |question| %>
         <td><%= question.prompt %></td>
       <% end %>
       <th scope="col">Acesso</th>
@@ -15,11 +15,11 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
-        <% pass.question_answers.default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+        <% pass.question_answers.joins(:question).merge(Question.default).order("questions.order").each do |question_answer| %>
           <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
         <% end %>
         <td data-label="Usuário"><%= pass.user.email %></td>
-        <% pass.question_answers.non_default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+        <% pass.question_answers.joins(:question).merge(Question.non_default).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
         <% end %>
         <td data-label="Acesso">
