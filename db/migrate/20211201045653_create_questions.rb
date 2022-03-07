@@ -8,7 +8,7 @@ class CreateQuestions < ActiveRecord::Migration[6.1]
       t.integer :order
       t.boolean :optional
       t.string :options, array: true, default: []
-      t.boolean :default
+      t.boolean :default, default: false
 
       t.timestamps
     end

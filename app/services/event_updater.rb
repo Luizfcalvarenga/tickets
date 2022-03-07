@@ -8,20 +8,8 @@ class EventUpdater
   def call
     ActiveRecord::Base.transaction do
       if @event.update(event_params)
-        update_batches      
-        # questions_params.each do |question_params|
-        #   question = Question.create!(
-        #     event: @event,
-        #     kind: question_params[:kind],
-        #     prompt: question_params[:prompt],
-        #     optional: question_params[:optional].present?,
-        #     options: question_params[:options],
-        #     order: @event.questions.count,
-        #   )
-        #   @event.event_batches.each do |event_batch|
-        #     QuestionBatch.create(event_batch: event_batch, question: question)
-        #   end
-        # end
+        update_batches 
+        update_questions
         
         return true
       # else
@@ -63,20 +51,68 @@ class EventUpdater
     end
   end
 
+  def update_questions
+    removed_questions.destroy_all
+
+    questions_to_update.each do |question_params|
+      question = Question.find(question_params[:id])
+      
+      update_question = question.update(
+        event: @event,
+        kind: question_params[:kind],
+        prompt: question_params[:prompt],
+        optional: question_params[:optional].present?,
+        options: question_params[:options],
+        order: @event.questions.count,
+      )
+
+      if !update_question 
+        errors << {order: @event.questions.count, error: question.errors.full_messages.join(", ")}
+      end
+    end
+
+    new_questions.each do |question_params|
+      question = Question.create!(
+        event: @event,
+        kind: question_params[:kind],
+        prompt: question_params[:prompt],
+        optional: question_params[:optional].present?,
+        options: question_params[:options],
+        order: question_params[:order],
+      )
+    end
+  end
+
   def removed_event_batches
     event.event_batches.where.not(id: received_event_batches_ids)
   end
 
   def event_batches_to_update
-    create_batch_params.select{ |q| q[:id].present? }
+    create_batch_params.select{ |eb| eb[:id].present? }
   end
 
   def new_event_batches
-    create_batch_params.select{ |q| q[:id].blank? }
+    create_batch_params.select{ |eb| eb[:id].blank? }
   end
 
   def received_event_batches_ids
     create_batch_params.sort_by { |eb| eb.is_a?(EventBatch) ? eb.order : eb[:order] }.map{ |eb| eb[:id]}.compact
+  end
+
+  def removed_questions
+    event.questions.non_default.where.not(id: received_questions_ids)
+  end
+
+  def questions_to_update
+    questions_params.select{ |q| q[:id].present? }
+  end
+
+  def new_questions
+    questions_params.select{ |q| q[:id].blank? }
+  end
+
+  def received_questions_ids
+    questions_params.sort_by { |q| q.is_a?(EventBatch) ? q.order : q[:order] }.map{ |q| q[:id]}.compact
   end
 
   private

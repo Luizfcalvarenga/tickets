@@ -1,12 +1,12 @@
 <table id="user-list">
   <thead>
     <tr>
-      <% day_use.questions.default_questions.order(:order).each do |day_use_question| %>
+      <% day_use.questions.default.order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
       <% end %>
       <th scope="col">Usuário</th>
       <th scope="col">Horário</th>
-      <% day_use.questions.non_default_questions.order(:order).each do |day_use_question| %>
+      <% day_use.questions.non_default.order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
       <% end %>
       <th scope="col">Acesso</th>
@@ -16,14 +16,14 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
-        <% pass.question_answers.default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+        <% pass.question_answers.joins(:question).merge(Question.default).order("questions.order").each do |question_answer| %>
           <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
         <% end  %>
         <td data-label="Usuário"><%= pass.user.email %></td>
         <td data-label="Usuário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
-        <% pass.question_answers.non_default_questions.joins(:question).order("questions.order").each do |question_answer| %>
+        <% pass.question_answers.joins(:question).merge(Question.non_default).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
-        <% end if false %>
+        <% end %>
         <td data-label="Acesso">
           <% if pass.accesses.present? %>
             <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i><%= pass.accesses.first.created_at.strftime("%d/%m/%Y - %H:%M") %></p>

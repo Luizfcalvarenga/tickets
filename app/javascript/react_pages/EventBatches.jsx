@@ -70,7 +70,6 @@ export function EventBatches(props) {
   };
 
   const updateEventBatch = (value, field, passType, eventBatchIndex) => {
-    console.log(value, field, passType, eventBatchIndex);
     const currentPassTypes = [...passTypes];
 
     const editedPassType = currentPassTypes.find(

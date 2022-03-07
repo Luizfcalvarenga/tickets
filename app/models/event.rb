@@ -24,7 +24,7 @@ class Event < ApplicationRecord
   scope :past, -> { where("scheduled_end > ?", Time.current) }
 
   def create_default_questions
-    question = Question.create!(
+    Question.create!(
       event: self,
       kind: "open",   
       prompt: "Nome completo",
@@ -32,11 +32,8 @@ class Event < ApplicationRecord
       order: questions.count,
       default: true,
     )
-    event_batches.each do |event_batch|
-      EventBatchQuestion.create(event_batch: event_batch, question: question)
-    end
 
-    question = Question.create!(
+    Question.create!(
       event: self,
       kind: "open",
       prompt: "CPF",
@@ -44,9 +41,15 @@ class Event < ApplicationRecord
       order: questions.count,
       default: true,
     )
-    event_batches.each do |event_batch|
-      EventBatchQuestion.create(event_batch: event_batch, question: question)
-    end
+
+    Question.create!(
+      event: self,
+      kind: "open",
+      prompt: "CEP",
+      optional: false,
+      order: questions.count,
+      default: true,
+    )
   end
 
   def open_batches

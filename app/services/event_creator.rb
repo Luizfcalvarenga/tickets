@@ -31,9 +31,6 @@ class EventCreator
             options: question_params[:options],
             order: @event.questions.count,
           )
-          @event.event_batches.each do |event_batch|
-            QuestionBatch.create(event_batch: event_batch, question: question)
-          end
         end
         
         return true

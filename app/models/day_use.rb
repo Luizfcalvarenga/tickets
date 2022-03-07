@@ -36,6 +36,15 @@ class DayUse < ApplicationRecord
       order: questions.count,
       default: true,
     )
+
+    Question.create!(
+      day_use: self,
+      kind: "open",
+      prompt: "CEP",
+      optional: false,
+      order: questions.count,
+      default: true,
+    )
   end
 
   def passes_csv

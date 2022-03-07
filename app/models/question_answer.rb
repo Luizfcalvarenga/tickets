@@ -5,9 +5,18 @@ class QuestionAnswer < ApplicationRecord
   validates :value, presence: true, unless: :question_is_optional
   validate :must_have_at_least_two_names_on_full_name_question
   validate :must_be_a_valid_cpf_on_cpf_question
+  validate :must_be_a_valid_cep_on_cep_question
 
-  scope :default_questions, -> { joins(:question).where(questions: { prompt: ["Nome completo", "CPF"] }) }
-  scope :non_default_questions, -> { joins(:question).where.not(questions: { prompt: ["Nome completo", "CPF"] }) }
+  before_save :sanitize_value
+
+  scope :default_questions, -> { joins(:question).where(questions: { default: true }) }
+  scope :default_questions, -> { joins(:question).where.not(questions: { default: true }) }
+
+  def sanitize_value
+    if ["CPF", "CEP"].include?(question.prompt)
+      self.value = value.gsub(/[^0-9A-Za-z]/, '')
+    end
+  end
 
   def question_is_optional
     question.optional
@@ -22,6 +31,12 @@ class QuestionAnswer < ApplicationRecord
   def must_be_a_valid_cpf_on_cpf_question
     if question.prompt === "CPF" && !cpf_valid?(value)
       errors.add(:value, "CPF inválido")
+    end
+  end
+
+  def must_be_a_valid_cep_on_cep_question
+    if question.prompt === "CEP" && !(/^\d{8}$/.match?(value))
+      errors.add(:value, "CEP inválido, deve conter 8 digitos numéricos")
     end
   end
 

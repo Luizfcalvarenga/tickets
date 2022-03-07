@@ -44,12 +44,12 @@
                 <% end %>
               </select>
             <% else %>
-              <% if ["Nome completo", "CPF"].include?(question.prompt) %>
+              <% if ["Nome completo", "CPF", "CEP"].include?(question.prompt) %>
                 <input
                   type="text"
                   name="user_answers[][value]"
                   data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
-                  class="w-100"
+                  class="w-100 form-control"
                 />
               <% else %>
                 <textarea

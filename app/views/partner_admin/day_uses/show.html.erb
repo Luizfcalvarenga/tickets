@@ -20,6 +20,9 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
     </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Controles</button>
+    </li>
   </ul>
   
   <div class="tab-content" id="myTabContent">
@@ -120,12 +123,12 @@
                 <% end %>
               </select>
             <% else %>
-              <% if ["Nome completo", "CPF"].include?(question.prompt) %>
+              <% if ["Nome completo", "CPF", "CEP"].include?(question.prompt) %>
                 <input
                   type="text"
                   name="order[user_answers][][value]"
                   data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
-                  class="w-100"
+                  class="w-100 form-control"
                 />
               <% else %>
                 <textarea
@@ -142,6 +145,12 @@
           </div>
         <% end %>
         <%= f.submit "Criar parceiro", class: "btn btn-success mt-5 w-100" %>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade" id="controls" role="tabpanel" aria-labelledby="controls-tab">
+      <%= link_to edit_partner_admin_day_use_path(day_use_id: @day_use.id) do %>
+        <p class="btn btn-primary w-100">Editar Day Use</p>
       <% end %>
     </div>
   </div>

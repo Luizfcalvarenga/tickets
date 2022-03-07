@@ -1,0 +1,23 @@
+<div class="page-wrapper">
+  <h1 class="title">
+    <%= @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use" %>
+  </h1>
+
+  <%= simple_form_for([:partner_admin, @day_use]) do |f| %>
+    <%= f.input :name %>
+
+    <%= f.rich_text_area :description, placeholder: "Descrição do day use..." %>
+
+    <div class="spacer-30"></div>
+
+    <%= f.input :photo, as: :file %>
+
+    <div class="spacer-50"></div>
+
+    <h2 class="title">Cronograma</h2>
+
+    <react data-component="DayUseSchedules" data-day-use-schedules="<%= @day_use_schedules.to_json(include: :day_use_schedule_pass_types) %>"></react>
+
+    <%= f.submit @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use", class: "btn btn-primary mt-5 w-100" %>
+  <% end %>
+</div>

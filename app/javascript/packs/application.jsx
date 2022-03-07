@@ -94,9 +94,9 @@ const loadReactComponent = () => {
 
       DayUseSchedules: (
         <DayUseSchedules
-          weekdays={
-            container.dataset.weekdays
-              ? JSON.parse(container.dataset.weekdays)
+          dayUseSchedules={
+            container.dataset.dayUseSchedules
+              ? JSON.parse(container.dataset.dayUseSchedules)
               : null
           }
         />
