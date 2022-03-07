@@ -66,6 +66,13 @@ export function EventBatches(props) {
 
     editedPassType.event_batches.splice(eventBatchIndex, 1);
 
+    if (editedPassType.event_batches.length === 0) {
+      currentPassTypes.splice(
+        currentPassTypes.indexOf(editedPassType),
+        1
+      );
+    }
+    
     setPassTypes(currentPassTypes);
   };
 

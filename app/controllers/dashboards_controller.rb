@@ -35,7 +35,7 @@ class DashboardsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data Partner.memberships_csv }
-      format.text { render partial: 'dashboards/user_list', locals: { users: @users, passes: @passes }, formats: [:html] }
+      format.text { render partial: 'memberships/user_list', locals: { users: @users, passes: @passes }, formats: [:html] }
     end
   end
 

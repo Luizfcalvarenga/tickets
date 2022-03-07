@@ -4,34 +4,42 @@
   </h1>
 
   <%= simple_form_for([:partner_admin, @event]) do |f| %>
-    <%= f.input :name %>
-
-    <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
-    <% if @event.errors[:description].present? %>
-      <p class="text-danger"><%= @event.errors[:description].first %></p>
-    <% end %>
-
-    <div class="spacer-30"></div>
-    <%= f.input :photo, as: :file %>
-
-    <div class="spacer-50"></div>
-
-    <h2 class="title">Local do evento</h2>
-
-    <%= f.input :cep %>
-    <%= f.input :state_id, collection: State.all.order(:name) %>
-    <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
-    <%= f.input :street_name %>
-    <%= f.input :street_number %>
-    <%= f.input :neighborhood %>
-    <%= f.input :address_complement %>
-
-    <div class="spacer-50"></div>
-
-    <h2 class="title">Data do evento</h2>
-
-    <%= f.input :scheduled_start, as: :datetime, html5: true %>
-    <%= f.input :scheduled_end, as: :datetime, html5: true %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.input :name %>
+      </div>
+      <div class="col-md-8">
+        <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
+      </div>
+      <div class="col-md-4 mt-3 files">
+        <%= f.input :photo %>
+      </div>
+      <h2 class="text-success h4 my-3">Local do evento</h2>
+      <div class="col-md-6">
+        <%= f.input :cep %>
+        <%= f.input :state_id, collection: State.all.order(:name) %>
+        <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :street_name %>
+        <div class="row">
+          <div class="col-md-4">
+            <%= f.input :street_number %>
+          </div>
+          <div class="col-md-8">
+            <%= f.input :neighborhood %>
+          </div>
+        </div>
+        <%= f.input :address_complement %>
+      </div>
+      <h2 class="text-success h4 my-3">Data do evento</h2>
+      <div class="col-md-12 d-flex justify-content">
+          <%= f.input :scheduled_start, label: "Data de Início", as: :date, html5: true %>
+          <%= f.input :scheduled_start, label: "Horário de Início", as: :time, html5: true %>
+          <%= f.input :scheduled_end, label: "Data de Término", as: :date, html5: true %>
+          <%= f.input :scheduled_end, label: "Horário de Término", as: :time, html5: true %>
+      </div>
+    </div>
 
     <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
 

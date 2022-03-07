@@ -365,8 +365,8 @@ trix-editor {
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #b6b6b6;
-  background-color: #101010;
+  color: #101010 !important;
+  background-color: white;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   -webkit-appearance: none;
@@ -457,6 +457,10 @@ trix-editor {
 // //   }
 // }
 
+table {
+  width: 100%;
+}
+
 .event-communication-download {
   height: 300px;
   width: 300px;
@@ -531,8 +535,6 @@ hr {
     font-size: 1.125rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #b6b6b6;
-    background-color: #101010;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     -webkit-appearance: none;
