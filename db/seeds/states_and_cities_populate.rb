@@ -6,7 +6,7 @@ class StatesAndCitiesPopulate
     def populate!
       return if State.count.positive?
 
-      states.first(5).each do |state|
+      states.each do |state|
         state_obj = State.find_or_create_by!(
           acronym: state['acronym'],
           name:    state['name']
@@ -18,7 +18,7 @@ class StatesAndCitiesPopulate
     end
 
     def populate_cities(state, cities = [])
-      cities.first(10).each do |city|
+      cities.each do |city|
         city_obj = state.cities.find_or_create_by!(
           name: city['name']
         )

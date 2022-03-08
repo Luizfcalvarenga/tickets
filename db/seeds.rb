@@ -78,7 +78,7 @@ end
 puts "-- OK!"
 
 puts 'Criando eventos...'
-1.times do 
+10.times do 
   scheduled_start = Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now)
   event = Event.create!(name: Faker::BossaNova.song,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
@@ -120,7 +120,7 @@ end
 
 puts 'Criando day uses...'
 
-1.times do
+3.times do
   day_use = DayUse.create!(name: Faker::WorldCup.stadium,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(" "),
     partner_id: Partner.first.id,
