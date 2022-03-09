@@ -69,7 +69,7 @@ export function DayUseOrderItems(props) {
   return (
     <div className="event-batches-order">
       <div className="header bg-primary-color p-4">
-        <p className="mb-0 fw-700">
+        <p className="mb-0 fw-700 text-white">
           Ingressos para {moment(startTime()).strftime("%d/%m/%Y")}
         </p>
       </div>
@@ -81,24 +81,34 @@ export function DayUseOrderItems(props) {
               {slot.passTypes.map((passType) => {
                 return (
                   <div className="border-bottom border-white p-4 flex center between">
-                    <p className="m-0 f-10">
-                      {moment(slot.start_time).strftime("%H:%M")} -{" "}
-                      {moment(slot.end_time).strftime("%H:%M")}
-                    </p>
-                    <p className="m-0 f-50">{passType.name}</p>
-                    <p className="m-0 f-20">
-                      {(passType.price_in_cents / 100).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}
-                      &nbsp;(+&nbsp;
-                      {feeInCents(passType).toLocaleString("pt-BR", {
-                        style: "currency",
-                        currency: "BRL",
-                      })}{" "}
-                      taxa)
-                    </p>
-                    <div className="flex center around f-10">
+                    <div className="f-60">
+                      <p className="m-0 f-10">
+                        {moment(slot.start_time).strftime("%H:%M")} -{" "}
+                        {moment(slot.end_time).strftime("%H:%M")} -{" "}
+                        {passType.name}
+                      </p>
+                      <p className="m-0 f-20">
+                        {(passType.price_in_cents / 100).toLocaleString(
+                          "pt-BR",
+                          {
+                            style: "currency",
+                            currency: "BRL",
+                          }
+                        )}
+                        &nbsp;(+&nbsp;
+                        {feeInCents(passType).toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        })}{" "}
+                        taxa)
+                      </p>
+                    </div>
+
+                    <div
+                      className={`flex center around ${
+                        window.mobileMode() ? "f-30" : "f-15"
+                      }`}
+                    >
                       <i
                         className="fa fa-minus-circle fs-30 text-white clickable"
                         onClick={() => updateQuantity(index, passType.name, -1)}

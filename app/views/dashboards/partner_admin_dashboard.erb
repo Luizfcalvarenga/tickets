@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <div class="nav nav-tabs underlined" id="nav-tab" role="tablist">
       <button class="nav-link active" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">MEUS EVENTOS</button>
       <button class="nav-link" id="nav-day-uses-tab" data-bs-toggle="tab" data-bs-target="#nav-day-uses" type="button" role="tab" aria-controls="nav-day-uses" aria-selected="false">AGENDAMENTO</button>
       <button class="nav-link" id="nav-memberships-tab" data-bs-toggle="tab" data-bs-target="#nav-memberships" type="button" role="tab" aria-controls="nav-memberships" aria-selected="false">ASSINATURAS</button>
@@ -26,13 +26,12 @@
           <% @events.each do |event| %>
             <tr>
               <td><%= event.name %></td>
-              <td><%= event.scheduled_start.strftime('%A, %d de %B') %></td>
-              <td><%= event.scheduled_end.strftime('%A, %d de %B') %></td>
+              <td><%= event.scheduled_start.strftime('%d/%m/%Y') %></td>
+              <td><%= event.scheduled_end.strftime('%d/%m/%Y') %></td>
               <td><%= event.city.name %>, <%= event.state.acronym %></td>
               <td><%= event.event_batches.sum(:quantity) %></td>
-              <!-- TODO // calculo de ingressos vendidos // -->
-              <td><%= event.event_batches.sum(:quantity) %></td>
-              <td><%= link_to "Editar", partner_admin_event_path(event), class: "text-reset" %></td>
+              <td><%= event.passes.count %></td>
+              <td><%= link_to "Ver detalhes", partner_admin_event_path(event), class: "text-success" %></td>
             </tr>
           <% end %>
         </tbody>
@@ -55,7 +54,7 @@
           <% @day_uses.each do |day_use| %>
             <tr>
               <td><%= day_use.name %></td>
-              <td><%= link_to "Editar", partner_admin_day_use_path(day_use), class: "text-reset" %></td>
+              <td><%= link_to "Ver detalhes", partner_admin_day_use_path(day_use), class: "text-success" %></td>
             </tr>
           <% end %>
         </tbody>
@@ -101,7 +100,7 @@
               <input id="query-input" type="text" class="w-100" placeholder="Procurar mensalista">
             </div>
             <%= link_to partner_admin_memberships_path(format: "csv") do %>
-              <p class="btn btn-success m-0">Baixar CSV</p>
+              <p class="btn btn-success m-0 mx-3">Baixar CSV</p>
             <% end %>
           </div>
 
@@ -133,13 +132,13 @@
       <div class="d-flex justify-content-start">
       
         <%= simple_form_for([:partner_admin, @partner]) do |f| %>
-          <% if current_user.photo.attached? %>
-            <%= cl_image_tag current_user.photo.key, height: 300, width: 300, crop: :fit , class: "rounded mx-auto d-block mb-5"%>
+          <% if current_user.partner.logo.attached? %>
+            <%= cl_image_tag current_user.partner.logo.key, height: 300, width: 300, crop: :fit , class: "rounded mx-auto d-block mb-5"%>
           <% end %>
         <div class="row">
           <div class="col-6 d-grid mb-3">
             <%= f.input :name %>
-            <%= f.input :slug, wrapper: :input_group, prepend: "https://nuflowpass.herokuapp.com/", placeholder:"nome-exemplo" %>
+            <%= f.input :slug, wrapper: :input_group, prepend: request.host, placeholder:"nome-exemplo" %>
             <%= f.input :cnpj %>
             <%= f.input :contact_email %>
             <%= f.input :contact_phone_1 %>
@@ -180,7 +179,7 @@
 
       <!--
       <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
-        <p class="btn btn-primary my-3 px-4">Editar cadastro</p>
+        <p class="btn btn-success my-3 px-4">Editar cadastro</p>
       <% end %>
        -->
     </div>

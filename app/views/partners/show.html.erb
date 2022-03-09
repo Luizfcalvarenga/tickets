@@ -1,22 +1,15 @@
 <div class="page-wrapper">
-  <% if user_signed_in? %>
-      <%= link_to dashboard_path_for_user(current_user) do %>
-      <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
-    <% end %>
-  <% end %>
-
   <% if @partner.logo.attached? %>
     <div class="my-5 flex center around">
       <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit %>
     </div>
   <% end %>
-  <h1 class="title text-center"><%= @partner.name %></h1>
 
   <h2>Eventos</h2>
   
   <div class="row">
     <% @events.each do |event| %>
-      <div class="col-4 mb-3">
+      <div class="col-12 col-md-4 mb-3">
         <%= link_to event_path(event)do %>
           <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
             <div class="flex center between w-100">
@@ -32,37 +25,53 @@
     <p class="text-white">Nenhum evento programado até o momento.</p>
   <% end %>
 
-  <div class="spacer-100"></div>
+  <div class="spacer-50"></div>
 
   <h2>Day Uses disponíveis</h2>
 
-  <% @weekdays.each do |weekday| %>
-    <div class="mb-5">
-      <p><%= weekday[:label] %> - <%= weekday[:date].strftime("%d/%m/%Y") %></p>
-
-      <div class="row">
-        <% weekday[:day_uses].each do |day_use| %>
-          <div class="col-4 mb-3">
-            <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
-              <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.photo.key, height: 300, crop: :fill %>')">
-                <div class="flex center between w-100">
-                  <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-
-      <% if weekday[:day_uses].blank? %>
-        <p class="text-white">Nenhum day use programado para esse dia.</p>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">  
+      <% @weekdays.each do |weekday| %>
+        <div 
+          class="date-card-partner-show flex column center justify-content-between col-2 col-md-1 bg-dark mx-1 mx-md-2 py-4 clickable mb-2 <%= 'active' if weekday[:date].today? %>" data-date="<%= weekday[:date].strftime('%d-%m-%Y') %>"
+            data-bs-toggle="tab" data-bs-target="#nav-dayuse-<%= weekday[:value] %>" type="button" role="tab" aria-controls="nav-events" aria-selected="true">
+          <p class="m-0 fs-36"><%= weekday[:date].day %></p>
+          <p class="m-0 fs-18"><%= month_number_to_name_abr(weekday[:date].month) %></p>
+          <p class="m-0 fs-18"><%= weekday_number_to_name_abr(weekday[:date].wday) %></p>
+        </div>
       <% end %>
     </div>
-  <% end %>  
+  </nav>
+
+  <div class="tab-content mt-5" id="nav-tabContent">
+    <% @weekdays.each do |weekday| %>
+      <div class="tab-pane fade show <%= 'active' if weekday[:date].today? %>" id="nav-dayuse-<%= weekday[:value] %>" role="tabpanel" aria-labelledby="nav-events-tab">
+        <div class="row">
+          <% weekday[:day_uses].each do |day_use| %>
+            <div class="col-12 col-md-4 mb-3">
+              <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
+                <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.photo.key, height: 300, crop: :fill %>')">
+                  <div class="flex center between w-100">
+                    <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <% if weekday[:day_uses].blank? %>
+          <p class="text-white">Nenhum day use programado para esse dia.</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="spacer-50"></div>
 
   <h2>Assinaturas disponíveis</h2>
 
-  <div class="p-5">
+  <div>
     <% @memberships.each do |membership| %>
       <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
         <p class="text-white f-20 m-0 col-12 col-md-2 m-0"><%= membership.name %></p>
@@ -78,42 +87,5 @@
       </div>
     <% end %>  
   </div>
-
-  <% if user_signed_in? %>
-    <h2>Meus QRCodes para <%= @partner.name %></h2>
-
-    <div class="p-5">
-      <% @passes.each do |pass| %>
-        <div class="pass bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
-          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= pass.event.name %></p>
-          <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
-            <p class="btn btn-success m-0 w-100">Ver</p>
-          <% end %>
-          <% if pass.reads.exists? %>
-            <p class="bg-danger text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Utilizado</p>
-          <% else %>
-            <p class="bg-success text-white p-3 m-0 col-12 col-md-4 text-center mb-2">Disponível</p>
-          <% end %>
-        </div>
-      <% end %>  
-    </div>
-
-    <h2>Minhas assinaturas ativas em <%= @partner.name %></h2>
-
-    <div class="p-5">
-      <% @user_memberships.each do |user_membership| %>
-        <div class="bg-dark w-100 p-4 br-8 text-white row mb-2 flex center start">
-          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2 fw-700"><%= user_membership.membership.partner.name %></p>
-          <p class="text-white f-20 m-0 col-12 col-md-4 p-0 mb-2"><%= user_membership.membership.name %></p>
-          <%= link_to user_membership_path(user_membership), method: :delete, class: "text-white f-20 m-0 col-12 col-md-4 p-0 mb-2" do %>
-            <p class="text-white f-20 m-0 col-12 col-md-4 p-0 danger-text text-center p-2 br-8 m-0 text-white">Cancelar</p>
-          <% end %>
-        </div>
-      <% end %>  
-    </div>
-  <% else %>
-    <h3 class="text-white">Faça login para ver seus ingressos e assinaturas para esse parceiro, ou comprar ingressos e assinaturas.</h3>
-  <% end %>
-
 </div>
 

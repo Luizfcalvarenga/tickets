@@ -1,33 +1,25 @@
-<div class="page-wrapper">
-  <%= link_to dashboard_path_for_user(current_user) do %>
-    <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
-  <% end %>
-  
-  <h1 class="title">Lista de parceiros</h1>
-
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Nome do parceiro</th>
-        <th scope="col">Cidade/Estado</th>
-        <th scope="col">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
+<div class="page-wrapper"> 
+  <div class="container mt-5 d-none d-sm-none d-md-none d-lg-none d-xl-block">
+    <div class="row">
       <% @partners.each do |partner| %>
-      <tr>
-        <td data-label="Nome do parceiro"><%= partner.name %></td>
-        <td data-label="Cidade/Estado"><%= partner.city.name %> - <%= partner.state.acronym %></td>
-        <td data-label="Ações">
-          <%= link_to partner_path(partner) do %>
-            <p class="btn btn-success m-0 px-5">Ver página</p>
-          <% end %>
-        </td>
-      </tr>
+        <%= link_to partner_path(partner), class: "col-sm-12 col-md-6 col-lg-4 p-3 bg-dark p-4 clickable" do %>
+          <div class="flex center around mb-4">
+            <% if partner.logo.attached? %>
+              <%= image_tag cl_image_path partner.logo.key, height: 220, crop: :fill %>
+            <% else %>
+              <%= image_tag 'default.png' %>
+            <% end %>
+          </div>
+          <div class="d-flex justify-content-around p-2">
+            <h3 class="text-center"><em><%= partner.name %></em></h3>
+          </div>
+          <div class="p-2">
+            <p class="text-white mb-5"><%= partner.about.truncate(80) %></p>
+            <p class="text-center"><%= partner.city.name %>, <%= partner.state.acronym %></p>
+          </div>
+        <% end %>
       <% end %>
-    </tbody>
-  </table>
-
-
+    </div>
+  </div>
 </div>
 

@@ -252,8 +252,9 @@ export function DayUseSchedules(props) {
                 </div>
 
                 <label htmlFor="">Tipos de passes</label>
-                {weekday.dayUseSchedule.day_use_schedule_pass_types.filter((pass_type) => !pass_type.deleted_at).map(
-                  (passType, passTypeIndex) => {
+                {weekday.dayUseSchedule.day_use_schedule_pass_types
+                  .filter((pass_type) => !pass_type.deleted_at)
+                  .map((passType, passTypeIndex) => {
                     return (
                       <div className="mb-4" key={passTypeIndex}>
                         <input
@@ -304,16 +305,17 @@ export function DayUseSchedules(props) {
                         </div>
                       </div>
                     );
-                  }
-                )}
+                  })}
 
-                <p
-                  className="btn btn-success p-3 w-100 text-center mt-5"
-                  onClick={() => addPassType(weekday)}
-                >
-                  <i className="fa fa-plus"></i>
-                  <span className="px-3">Adicionar tipo de passe</span>
-                </p>
+                <div className="text-center">
+                  <p
+                    className="btn btn-success p-3 text-center mt-5"
+                    onClick={() => addPassType(weekday)}
+                  >
+                    <i className="fa fa-plus-square"></i>
+                    <span className="px-3">Adicionar tipo de passe</span>
+                  </p>
+                </div>
               </div>
             </div>
           );

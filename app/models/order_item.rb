@@ -37,7 +37,7 @@ class OrderItem < ApplicationRecord
 
   def questions
     if event_batch.present?
-      event_batch.questions
+      event_batch.event.questions
     elsif day_use_schedule_pass_type.present?
       day_use_schedule_pass_type.day_use_schedule.day_use.questions
     else

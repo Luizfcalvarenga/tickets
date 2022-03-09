@@ -22,10 +22,10 @@ $white: #fff;
   }
 }
 h1 {
-  font-size: 96px;
+  font-size: 70px;
 }
 h2 {
-  font-size: 72px;
+  font-size: 56px;
 }
 h3 {
   font-size: 36px;
@@ -40,10 +40,6 @@ p {
   font-size: 16px;
 }
 
-em {
-  color: #00c454;
-  font-style: normal;
-}
 .title {
   letter-spacing: 1px;
   color: $color-primary;
@@ -62,7 +58,7 @@ em {
 }
 
 .page-wrapper {
-  padding: 100px 200px;
+  padding: 60px 200px;
   min-height: calc(100vh - 120px);
   @media screen and (max-width: 768px) {
     padding: 20px;
@@ -505,7 +501,10 @@ hr {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid $color-primary !important;
+  border-bottom: none !important;
+  &.underlined {
+    border-bottom: 1px solid $color-primary !important;
+  }
 
   button {
     text-transform: uppercase !important;
@@ -521,7 +520,9 @@ hr {
 }
 
 .date-card {
-  &.selected {
+  border-bottom: none !important;
+
+  &.selected, &.active {
     background: $color-primary !important;
     color: white !important;
   }
@@ -542,4 +543,12 @@ hr {
     appearance: none;
     border-radius: 2px;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.pass-logo {
+  height: 200px;
+
+  @media screen and (max-width: 768px) {
+    height: 140px;
+  }
 }

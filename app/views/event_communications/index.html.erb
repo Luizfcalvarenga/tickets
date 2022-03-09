@@ -1,8 +1,4 @@
-<div class="page-wrapper">
-  <%= link_to dashboard_path_for_user(current_user) do %>
-    <p class="btn btn-success mb-5 w-100 px-5">Voltar para o dashboard</p>
-  <% end %>
-  
+<div class="page-wrapper">  
   <h1 class="title">Lista de parceiros cadastrados</h1>
 
   <%= link_to new_event_event_communication_path(event_id: @event.id) do %>

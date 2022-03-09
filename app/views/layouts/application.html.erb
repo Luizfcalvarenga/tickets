@@ -30,9 +30,9 @@
 
     <%= yield %>
 
-    <% if controller_name == "pages" || "events" && ["show", "index"].include?(action_name)  %>
-      <%= render partial: "shared/footer" %>
+    <% if controller_name == "passes" && ["show", "scanner"].include?(action_name) %> 
     <% else %> 
+      <%= render partial: "shared/footer" %>
     <% end %>
   </body>
 </html>

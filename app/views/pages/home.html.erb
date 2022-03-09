@@ -1,11 +1,13 @@
 <div class="first-section-home">
-  <%# video_tag "nuflow.mp4", :size => "1920x1080", autoplay: true, muted: :muted, :loop => true, :style=> "z-index: -1" %>
-  <div class="container align-self-start">
-    <h1 class="">ENCONTRE OS MELHORES<br><em>BIKE PARKS</em>.</h1>
-    <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
-    <div class="d-flex align-items-center">
-      <button class="btn btn-success">ACESSAR NUFLOW PASS</button>
-      <p class="page-desktop m-0"><em>Saiba mais</em></p>
+  <div class="flex center around h-100 w-100">
+    <div class="<%= mobile_device? ? "w-90" : "w-70" %>">
+      <div class="spacer-100 page-desktop"></div>
+      <h1 class="text-center">ENCONTRE AS MELHORES<br><span class="text-success">EXPERIÊNCIAS DE CICLISMO</span>.</h1>
+      <p class="text-white text-center px-0 mx-0 px-md-5 mx-md-5">Competições, eventos, agendamentos e assinaturas de pistas e bike parks: todas experiências de ciclismo você encontra aqui! </p>
+      <div class="input-group my-5">
+        <input type="text" class="form-control" placeholder="<%= mobile_device? ? "Busque" : "Eventos, competições, pistas, bike parks, etc..." %>" aria-label="Eventos, competições, pistas, bike parks, etc..." aria-describedby="button-addon2">
+        <button class="btn btn-success btn-sm px-2 px-md-5 text-white" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
+      </div>
     </div>
   </div>
 </div>

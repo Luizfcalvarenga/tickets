@@ -6,7 +6,7 @@
     </div>
   <% end %>
 
-  <ul class="nav nav-tabs mb-5" id="myTab" role="tablist">
+  <ul class="nav nav-tabs underlined mb-5" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de convidados</button>
     </li>
@@ -140,7 +140,7 @@
 
     <div class="tab-pane fade" id="controls" role="tabpanel" aria-labelledby="controls-tab">
       <%= link_to edit_partner_admin_event_path(event_id: @event.id) do %>
-        <p class="btn btn-primary w-100">Editar evento</p>
+        <p class="btn btn-success w-100">Editar evento</p>
       <% end %>
     </div>
   </div>

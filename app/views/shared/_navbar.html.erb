@@ -1,49 +1,84 @@
 <div class="navbar navbar-expand-md navbar-light-lg">
-  <div class="container">
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <%# <span class="navbar-toggler-icon"></span> %>
-    <i class="text-success fas fa-bars"></i>
-  </button>
-  <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
-    <ul class="navbar-nav">
+  <div class="collapse navbar-collapse d-flex justify-content-center page-desktop">
+    <div class="f-40 px-2">
+      <ul class="navbar-nav font-bebas-neue d-flex flex-row align-items-center justify-content-end gap-24">
         <li class="nav-item active">
-          <%= link_to "AGENDAMENTOS", "/", class: "nav-link" %>
+          <%= link_to "BIKE PARKS", partners_path, class: "nav-link" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "EVENTOS", "/events", class: "nav-link" %>
+          <%= link_to "EVENTOS", events_path, class: "nav-link" %>
         </li>
         <li class="nav-item active">
-          <%= link_to "SEJA UM PARCEIRO", "/partnership", class: "nav-link" %>
+          <%= link_to "SEJA UM PARCEIRO", partnership_path, class: "nav-link" %>
         </li>
-        <li class="nav-item active">
-          <%= link_to "SHOP", "https://nuflowshop.com.br/", class: "nav-link" %>
-        </li>
-        <%= link_to root_path, class: "nav-link" do %>
-          <%= image_tag "white_logo.png", class: "navbar-brand" %>
-        <% end %>
-      <% if user_signed_in? %>
-        <li class="nav-item active">
-          <%= link_to "DASHBOARD", dashboard_path_for_user(current_user), class: "nav-link" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "ACCOUNT SETTINGS", edit_profiles_path, class: "nav-link" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "FORMAS DE PAGAMENTO", payment_methods_path, class: "nav-link" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "LOG OUT", destroy_user_session_path, method: :delete, class: "text-success nav-link text-decoration-underline" %>
-        </li>
-      <% else %>
-        <li class="nav-item">
-          <%= link_to "LOGIN", new_user_session_path, class: "text-success nav-link text-decoration-underline" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "CADASTRE-SE", new_user_registration_path, class: "text-success nav-link text-decoration-underline" %>
-        </li>
+      </ul>
+    </div>
+    
+    <div class="f-15 flex center around">
+      <%= link_to root_path, class: "nav-link" do %>
+        <%= image_tag "white_logo.png", class: "navbar-brand" %>
       <% end %>
-    </ul>
+    </div>
+    
+    <div class="f-40 px-2">
+      <ul class="navbar-nav font-bebas-neue d-flex flex-row d-flex justify-content-start gap-24">
+        <li class="nav-item">
+          <%= link_to "COMPRA E VENDA DE BIKES", "https://nuflowshop.com.br/", class: "nav-link", target: :_blank %>
+        </li>
+        <% if user_signed_in? %>
+          <li class="nav-item active">
+            <%= link_to "DASHBOARD", dashboard_path_for_user(current_user), class: "text-success nav-link text-decoration-underline" %>
+          </li>
+          <li class="nav-item active">
+            <%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: "text-success nav-link text-decoration-underline" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "LOGIN", new_user_session_path, class: "text-success nav-link text-decoration-underline" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
+
+  <% if mobile_device? %>
+    <div class="flex center between w-100 px-5">
+      <%= link_to root_path, class: "nav-link" do %>
+        <%= image_tag "white_logo.png", class: "navbar-brand" %>
+      <% end %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="text-success fas fa-bars"></i>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="flex center around">
+        <ul class="navbar-nav font-bebas-neue text-center d-flex flex-column">
+          <li class="nav-item active">
+            <%= link_to "BIKE PARKS", partners_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item active">
+            <%= link_to "EVENTOS", events_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item active">
+            <%= link_to "SEJA UM PARCEIRO", partnership_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "COMPRA E VENDA DE BIKES", "https://nuflowshop.com.br/", class: "nav-link", target: :_blank %>
+          </li>
+          <% if user_signed_in? %>
+            <li class="nav-item active">
+              <%= link_to "DASHBOARD", dashboard_path_for_user(current_user), class: "text-success nav-link text-decoration-underline" %>
+            </li>
+            <li class="nav-item active">
+              <%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: "text-success nav-link text-decoration-underline" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "LOGIN", new_user_session_path, class: "text-success nav-link text-decoration-underline" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
 </div>

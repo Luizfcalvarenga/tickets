@@ -18,6 +18,6 @@
 
     <react data-component="DayUseSchedules" data-day-use-schedules="<%= @day_use_schedules.to_json(include: :day_use_schedule_pass_types) %>"></react>
 
-    <%= f.submit @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use", class: "btn btn-primary mt-5 w-100" %>
+    <%= f.submit @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use", class: "btn btn-success mt-5 w-100" %>
   <% end %>
 </div>

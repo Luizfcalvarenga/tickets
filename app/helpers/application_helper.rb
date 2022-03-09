@@ -3,6 +3,14 @@ require 'faker'
 require 'open-uri'
 
 module ApplicationHelper
+  def mobile_device?
+    if session[:mobile_param]
+      session[:mobile_param] == "1"
+    else
+      request.user_agent =~ /Mobile|webOS/
+    end
+  end
+
   def display_price(price_in_cents)
     number_to_currency(price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")
   end

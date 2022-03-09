@@ -1,28 +1,29 @@
 
 <div class="page-wrapper vh-100 w-100">
-  <div class="h-100 w-100">
+  <div class="w-100 pb-5">
     <div class="flex center around h-100">
       <div class="h-100 pass-wrapper flex column center around position-relative">
         <div>
           <% if @pass.partner.logo.attached? %>
             <div class="my-5 flex center around">
-            <%= cl_image_tag @pass.partner.logo.key, height: 200, width: 220, crop: :fit %>
+              <%= cl_image_tag @pass.partner.logo.key, height: 200, width: 220, crop: :fit, class: "pass-logo" %>
             </div>
           <% end %>
-          <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.partner.name %></h1>
-          <h1 class="text-center mb-2 fw-700 text-dark"><%= @pass.name %></h1>
+          <h1 class="h3 text-center mb-2 fw-700 text-dark"><%= @pass.partner.name %></h1>
+          <h1 class="h2 text-center mb-2 fw-700 text-dark"><%= @pass.name %></h1>
           </div>
           <% if @pass.start_time.present? %>
             <p class="text-dark text-center"><i class="fa fa-clock fs-20 px-3"></i><%= @pass.start_time.strftime("%d/%m/%Y %H:%M") %><%= @pass.end_time.present? && " até #{@pass.end_time.strftime("%d/%m/%Y %H:%M")}" %></p>
           <% end %>
-          <div class="mx-auto text-center">
-            <%= @pass.qrcode_svg.html_safe %>
-          </div>
-          <p class="mb-5 mt-2 text-center text-dark"><%= @pass.identifier %></p>
           <div>
             <p class="text-center text-dark m-0">Nome: <%= @pass.holder_name %></p>
             <p class="text-center text-dark">CPF: <%= @pass.holder_cpf %></p>
         </div>
+
+        <div class="mx-auto text-center mt-3">
+          <%= @pass.qrcode_svg.html_safe %>
+        </div>
+          
         <div class="position-absolute end-0 top-0 text-danger p-3">
           <p class="px-5 py-2 br-8 <%= @pass.status[:class] %>"><%= @pass.status[:label] %></p>
         </div>
