@@ -1,7 +1,7 @@
 <div class="first-section-event">
   <%# video_tag "nuflow.mp4", :size => "1920x1080", autoplay: true, muted: :muted, :loop => true, :style=> "z-index: -1" %>
   <div class="container align-self-start">
-    <h1>COMPETIÇÕES E DESAFIOS DE<br><em>CICLISMO</em>.</h1>
+    <h1>COMPETIÇÕES E DESAFIOS DE<br><span class="text-success">CICLISMO</em>.</h1>
     <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
     <div class="d-flex align-items-center">
       <button class="btn btn-success">CADASTRE-SE AGORA</button>
@@ -12,7 +12,7 @@
 <div class="second-section-event">
   <div class="d-flex justify-content-between mt-5 container mb-3">
     <div class="align-self-center">
-      <h2>COMPETIÇÕES <em>ATIVAS</em></h2>
+      <h2>COMPETIÇÕES <span class="text-success">ATIVAS</em></h2>
     </div>
     <div class="invert-image">
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
@@ -33,7 +33,7 @@
         <div class="col-8">
           <div class="d-flex">
             <div class="flex-grow-1">
-              <h3><em><%= event.name %></em></h3>
+              <h3><span class="text-success"><%= event.name %></em></h3>
             </div>
             <div class="">
               <div class="d-flex justify-content-between">
@@ -55,7 +55,7 @@
               <%= link_to event_path(event), class: "" do %>
                 <button class="btn btn-success btn-lg">COMPRAR</button>
               <% end %>
-              <p><em>Saiba mais</em></p>
+              <p><span class="text-success">Saiba mais</em></p>
           </div>
         </div>
       </div>
@@ -75,8 +75,8 @@
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
-            <h3><em><%= event.name.truncate(13) %></em></h3>
-            <h4><em><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></em></h4>
+            <h3><span class="text-success"><%= event.name.truncate(13) %></em></h3>
+            <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></em></h4>
           </div>
           <div class="p-2">
             <p><%= event.description.to_plain_text.truncate(80) %></p>
