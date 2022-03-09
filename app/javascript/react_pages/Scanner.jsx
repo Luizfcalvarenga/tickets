@@ -30,6 +30,11 @@ export function Scanner(props) {
         setReadResult({
           result: false,
           main_line: "Erro de requisição",
+          secondary_line: "QRCode inválido ou inexistente",
+          question_list: [],
+          user_credentials: [],
+          price_in_cents: 0,
+          access_history: 0
         });
       }
 
