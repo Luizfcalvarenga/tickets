@@ -34,7 +34,7 @@ export function Scanner(props) {
           question_list: [],
           user_credentials: [],
           price_in_cents: 0,
-          access_history: 0
+          access_history: [],
         });
       }
 
