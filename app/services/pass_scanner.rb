@@ -88,7 +88,7 @@ class PassScanner
   end
   
   def scan_membership_pass
-    @pass.user_membership.check_activity!
+    # @pass.user_membership.check_activity!
 
     if @pass.user_membership.active?
       @result = true
