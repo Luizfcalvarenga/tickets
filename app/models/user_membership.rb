@@ -7,11 +7,12 @@ class UserMembership < ApplicationRecord
   after_create :create_plan_at_iugu
 
   def create_plan_at_iugu
-    NovaIugu::SubscriptionCreator.new(self).call
+    self.update(iugu_active: true)
+    # NovaIugu::SubscriptionCreator.new(self).call
   end
 
   def active?
-    check_activity!
+    # check_activity!
     iugu_active
   end
 

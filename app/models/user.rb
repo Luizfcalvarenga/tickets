@@ -38,7 +38,7 @@ class User < ApplicationRecord
   end
 
   def create_customer_at_iugu
-    NovaIugu::CustomerCreator.new(self).call if user?
+    # NovaIugu::CustomerCreator.new(self).call if user?
   end
 
   def nova_iugu_customer_params_hash

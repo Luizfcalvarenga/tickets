@@ -27,12 +27,12 @@
         <% @order.order_items.each_with_index do |order_item, index| %>
         <tr>
           <td data-label="Item">#<%= index + 1 %></td>
-          <td data-label="Nome do passe"><%= order_item.full_description %></td>
-          <td data-label="Nome do passe">
+          <td data-label="Descrição"><%= order_item.full_description %></td>
+          <td data-label="Identificação">
             <p class="m-0"><%= order_item.identification_name %></p>
             <p class="m-0"><%= order_item.identification_cpf %></p>
           </td>
-          <td data-label="Valor do passe"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %> (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)</td>
+          <td data-label="Valor"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %> (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)</td>
         </tr>
         <% end %>
       </tbody>

@@ -108,7 +108,12 @@ module NovaIugu
 
       validate_params!
 
-      @response = ::Iugu::Customer.create(customer_params)
+      begin
+        @response = ::Iugu::Customer.create(customer_params)
+      rescue OpenSSL::SSL::SSLError
+        sleep 3
+        @response = ::Iugu::Customer.create(customer_params)
+      end
 
       entity.update!(
         iugu_customer_id: @response.attributes["id"],
@@ -148,7 +153,10 @@ module NovaIugu
       begin
         @response = ::Iugu::Subscription.create(subscription_params)
       rescue RestClient::BadGateway
-        sleep 2
+        sleep 3
+        @response = ::Iugu::Subscription.create(subscription_params)
+      rescue Net::ReadTimeout
+        sleep 3
         @response = ::Iugu::Subscription.create(subscription_params)
       end
     

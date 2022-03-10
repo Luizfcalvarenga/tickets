@@ -2,9 +2,9 @@ require Rails.root.join('db/seeds/states_and_cities_populate')
 require 'faker'
 require 'uri'
 
-NUMBER_OF_USERS = 50
-NUMBER_OF_EVENTS = 10
-NUMBER_OF_DAY_USES = 3
+NUMBER_OF_USERS = 100
+NUMBER_OF_EVENTS = 6
+NUMBER_OF_DAY_USES = 2
 
 puts "Criando lista de estados e cidades..."
 StatesAndCitiesPopulate.populate!
@@ -102,6 +102,8 @@ p "Parceiro #{partner.name} criado"
         use_path: true,
       ),
     )
+
+    print "."
   end
   
   p "Mensalidade #{membership.name} criada"
@@ -159,7 +161,7 @@ NUMBER_OF_EVENTS.times do |i|
   User.user.sample((min_count..max_count).to_a.sample).each do |user|
     order = Order.create(user: user)
 
-    entity = event.open_batches.to_a.sample
+    entity = event.reload.open_batches.to_a.sample
     start_time = event.scheduled_start
     end_time = event.scheduled_end
     order_item = OrderItem.create(order: order,
@@ -188,6 +190,8 @@ NUMBER_OF_EVENTS.times do |i|
     end
 
     order.perform_after_payment_confirmation_actions
+
+    print "."
   end
 
   p "Evento #{event.name} populado"
@@ -282,6 +286,7 @@ NUMBER_OF_DAY_USES.times do
     end
 
     order.perform_after_payment_confirmation_actions
+    print "."
   end
 
   p "DayUse #{day_use.name} populado"
