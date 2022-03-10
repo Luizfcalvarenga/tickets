@@ -17,7 +17,7 @@ class PartnerAdmin::MembershipsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.csv { send_data Partner.memberships_csv }
+      format.csv { send_data @partner.memberships_csv }
       format.text { render partial: 'partner_admin/memberships/user_list', locals: { users: @users, passes: @passes }, formats: [:html] }
     end
   end

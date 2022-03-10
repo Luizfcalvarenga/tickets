@@ -3,6 +3,8 @@ class Partner < ApplicationRecord
   belongs_to :city
   belongs_to :state
 
+  has_many :memberships
+
   before_create :slugify
 
   def to_param
@@ -22,4 +24,16 @@ class Partner < ApplicationRecord
   has_many :memberships
   has_many :user_memberships, through: :memberships
   has_many :day_uses
+
+  def memberships_csv
+    users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: memberships.ids}).group("users.id").order("users.name")
+
+    attributes = ["Email do usuário", "Nome", "CPF", "Mensalidades ativas"]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      users.each do |user|
+        csv << [user.email, user.name, user.document_number, user.user_memberships.active.where(user_memberships: {membership_id: memberships.ids}).map { |um| um.membership.name }.join(", ")]
+      end
+    end
+  end
 end
