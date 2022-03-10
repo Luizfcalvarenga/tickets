@@ -59,6 +59,8 @@
       <react data-component="Questions" data-questions="<%= @event.questions.non_default.to_json %>" ></react>
     </div>
 
-    <%= f.submit "#{@event.new_record? ? "Criar" : "Atualizar"} evento", class: "btn btn-success mt-5 w-100" %>
+    <div class="text-center">
+      <%= f.submit "#{@event.new_record? ? "Criar" : "Atualizar"} evento", class: "btn btn-success mt-5" %>
+    </div>
   <% end %>
 </div>

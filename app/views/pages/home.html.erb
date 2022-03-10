@@ -83,17 +83,11 @@
             <% end %>
           <% end %>
           <div class="bg-dark">
-<<<<<<< Updated upstream
-            <div class="d-flex justify-content-between p-2">
-              <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
-              <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
-=======
             <div class="d-flex justify-content-between p-1">
-              <h4 class="text-success flex-fill"><%= event.name.truncate(20) %></h4>
+              <h4 class="text-success flex-fill"><%= event.name.truncate(13) %></h4>
               <div>
               <h4 class="text-success h5"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h4>
               </div>
->>>>>>> Stashed changes
             </div>
             <div class="p-2">
               <p><%= event.description.to_plain_text.truncate(80) %></p>
@@ -124,13 +118,8 @@
             <% end %>
               <div class="bg-dark">
                 <div class="p-2">
-<<<<<<< Updated upstream
                   <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
                   <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
-=======
-                  <h3><span class="text-success"><%= event.name.truncate(13) %></h3>
-                  <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></em></h4>
->>>>>>> Stashed changes
                 </div>
                 <div class="p-2">
                   <p><%= event.description.to_plain_text.truncate(80) %></p>
