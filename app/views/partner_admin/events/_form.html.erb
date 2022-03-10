@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h1 class="title">
+  <h1 class="title text-center">
     <%= @event.new_record? ? "Criar novo evento" : "Atualizar evento" %>
   </h1>
 
@@ -14,7 +14,7 @@
       <div class="col-md-4 mt-3 files">
         <%= f.input :photo %>
       </div>
-      <h2 class="text-success h4 my-3">Local do evento</h2>
+      <h2 class="text-success h2 my-3">Local do evento</h2>
       <div class="col-md-6">
         <%= f.input :cep %>
         <%= f.input :state_id, collection: State.all.order(:name) %>
@@ -32,11 +32,17 @@
         </div>
         <%= f.input :address_complement %>
       </div>
-      <h2 class="text-success h4 my-3">Data do evento</h2>
-      <div class="col-md-12 d-flex justify-content">
+      <h2 class="text-success h2 my-3">Data do evento</h2>
+      <div class="col-md-3 col-sm-6">
           <%= f.input :scheduled_start, label: "Data de Início", as: :date, html5: true %>
+      </div>
+      <div class="col-md-3 col-sm-6">
           <%= f.input :scheduled_start, label: "Horário de Início", as: :time, html5: true %>
+      </div>
+      <div class="col-md-3 col-sm-6">
           <%= f.input :scheduled_end, label: "Data de Término", as: :date, html5: true %>
+      </div>
+      <div class="col-md-3 col-sm-6">
           <%= f.input :scheduled_end, label: "Horário de Término", as: :time, html5: true %>
       </div>
     </div>

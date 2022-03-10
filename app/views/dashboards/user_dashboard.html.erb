@@ -1,30 +1,65 @@
 <% content_for(:html_title) { 'NuflowPass Dashboard' } %>
 <div class="page-wrapper">
-  <h1>Dashboard</h1>
 
-  <%= link_to destroy_user_session_path, method: "delete" do %>
-    <p class="btn btn-danger w-100">Logout</p>
-  <% end %>
-
-  <h2>Meus Passes</h2>
-
-  <div class="p-5">
-    <% @passes.each do |pass| %>
-      <div class="pass bg-dark w-100 p-4 br-8 text-white row around flex center mb-2">
-        <div class="f-20 col-12 col-md-4">
-          <p class="text-white p-0 mb-0 fw-700"><%= pass.name %></p>
-          <p class="text-white p-0 mb-0"><%= pass.holder_name %></p>
-          <p class="text-white p-0 mb-0"><%= pass.partner.name %></p>
-        </div>
-        <%= link_to pass_path(pass), class: "col-12 col-md-3 p-0 mb-2" do %>
-          <p class="btn btn-success m-0 w-100">Ver</p>
-        <% end %>
-        <p class="<%= pass.status[:class] %> text-white p-3 m-0 col-12 col-md-4 text-center mb-2"><%= pass.status[:label] %></p>
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">MEUS ACESSOS</button>
+        <button class="nav-link" id="nav-acc-info-tab" data-bs-toggle="tab" data-bs-target="#nav-acc-info" type="button" role="tab" aria-controls="nav-acc-info" aria-selected="false">INFORMAÇÕES DA CONTA</button>
       </div>
-    <% end %>  
-  </div>
+    </nav>
 
-  <%= link_to partners_path do %>
-    <p class="btn btn-success w-100">Ver parceiros</p>
-  <% end %>
-</div>
+    <div class="tab-content mt-5" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+        <table class="table-responsive table-dark table-borderless">
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">Titularidade</th>
+              <th scope="col">Bikepark</th>
+            </tr>
+          </thead>
+          <tbody class="">
+            <% @passes.each do |pass| %>
+              <tr>
+                <td><%= pass.name %></td>
+                <td><%= pass.holder_name %></td>
+                <td><%= pass.partner.name %></td>
+                <td class="<%= pass.status[:class] %>"><%= pass.status[:label] %></td>
+                <td><%= link_to "Ver", pass_path(pass), class: "text-success" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="nav-acc-info" role="tabpanel" aria-labelledby="nav-acc-info-tab">
+        <div class="text-center">
+          
+          <% if current_user.photo.attached? %>
+            <%= cl_image_tag current_user.photo.key, height: 300, width: 300, crop: :fit %>
+          <% end %>
+
+          <%= simple_form_for @profile, :url => profiles_path, :method => :patch do |f| %>
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <%= f.input :name %>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <%= f.input :document_type, label: "Documento" %>
+              </div>
+              <div class="col-sm-12 col-md-6 mt-auto">
+                <%= f.input :photo, as: :file %>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <%= f.input :document_number, label: "Número" %>
+              </div>
+            </div>
+
+            <%= f.submit "Editar", class: "btn btn-success mt-5 text-center" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    </div>
+
+<% content_for(:html_title) { 'NuflowPass Dashboard' } %>

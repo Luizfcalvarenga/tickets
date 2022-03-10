@@ -3,9 +3,9 @@
 
   <p class="text-white f-20 m-0 col-12 col-md-2 mb-2"><%= current_user.name %></p>
   
-  <% if @profile.photo.attached? %>
+  <% if current_user.photo.attached? %>
     <div class="my-5 flex center around">
-      <%= cl_image_tag @profile.photo.key, height: 500, width: 500, crop: :fit %>
+      <%= cl_image_tag current_user.photo.key, height: 500, width: 500, crop: :fit %>
     </div>
   <% end %>
     

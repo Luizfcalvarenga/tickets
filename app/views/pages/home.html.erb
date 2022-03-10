@@ -79,7 +79,7 @@
             <% if event.photo.attached? %>
                 <%= image_tag cl_image_path event.photo.key, height: 220, crop: :fill %>
               <% else %>
-                <%= image_tag 'default.png' %>
+                <%= image_tag 'default.png', style: "height: 220, crop: :fill" %>
             <% end %>
           <% end %>
           <div class="bg-dark">
