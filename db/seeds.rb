@@ -2,6 +2,10 @@ require Rails.root.join('db/seeds/states_and_cities_populate')
 require 'faker'
 require 'uri'
 
+NUMBER_OF_USERS = 50
+NUMBER_OF_EVENTS = 10
+NUMBER_OF_DAY_USES = 3
+
 puts "Criando lista de estados e cidades..."
 StatesAndCitiesPopulate.populate!
 puts "-- OK!"
@@ -19,19 +23,16 @@ puts "Criando usuários e parceiros..."
 
 User.create!(email: "admin@app.com", password: "123456", access: "admin") 
 
-(1..5).each do |user|
-  if user == 1
-    User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
-  else
-    User.create!(email: "user" + user.to_s + "@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
-  end
+User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Name.name)
 
-  user = User.last
-  url = "https://placebeard.it/640x360"
-  filename = File.basename(URI.parse(url).path)
-  file = URI.open(url.to_s)
-  user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+(1..NUMBER_OF_USERS).each do |counter|
+  user = User.create!(email: "user#{counter}@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
 
+  # url = "https://placebeard.it/640x360"
+  # filename = File.basename(URI.parse(url).path)
+  # file = URI.open(url.to_s)
+  # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+  p "Usuário comum #{user.email} criado"
 end
 
 (1..5).each do |partner|
@@ -42,25 +43,27 @@ end
   end
   
   user = User.last
-  url = "https://placebeard.it/640x360"
-  filename = File.basename(URI.parse(url).path)
-  file = URI.open(url.to_s)
-  user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+  # url = "https://placebeard.it/640x360"
+  # filename = File.basename(URI.parse(url).path)
+  # file = URI.open(url.to_s)
+  # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+
+  p "Usuário parceiro #{user.email} criado"
 end
 
 state = State.find_by(acronym: "MG")
-city = City.find_by(name: "Belo Horizonte")
-partner = Partner.create!(name: "Parceiro de demonstração",
+city = City.find_by(name: "Nova Lima")
+partner = Partner.create!(name: "Layback Park",
                           cnpj: "44.716.365/0001-92",
                           contact_phone_1: "3132235655",
-                          cep: "30310700",
-                          street_name: "Av. Antônio Abrahão Caram",
-                          street_number: "1001",
-                          neighborhood: "São José",
+                          cep: "34006057",
+                          street_name: "Rod. Januário Carneiro",
+                          street_number: "20",
+                          neighborhood: "Vale do Sereno",
                           address_complement: "",
                           city: city,
                           state: state,
-                          about: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
+                          about: "Um espaço para todos, feito para celebrar o espírito e a cultura do skate. Os Parks, Casas Dipraia, Basement, Brewpub e Surf House, são os ambientes de experimentação da nossa vibe, a materialização de tudo o que acreditamos e da cultura RTMF. Mais que uma pista de skate, é um espaço inclusivo, feito para criar momentos únicos. É um ambiente aberto, que traz tudo o que amamos e onde promovemos nosso estilo de vida: conectando, inspirando e abraçando todos os tipos de pessoas. Quer beber com os amigos? Temos cerveja. Quer andar de skate (ou aprender)? Temos pista. Quer comer? Temos um centro gastronômico. Tattoo? Passeio em família? Shows? Rolê com os amigos? Arte urbana? Estaremos sempre de portas abertas. ",
                           kind: "partner",
                           )
                           
@@ -68,18 +71,50 @@ partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/laybacklogo
                   filename: 'laybacklogo.png')
 partner.update(main_contact: User.where(access: "partner_admin").first)
 
-User.where(access: "partner_admin").update(partner: Partner.first)
+User.partner_admin.update(partner: Partner.first)
+
+p "Parceiro #{partner.name} criado"
 
 ["Mensalista básico", "Mensalista premium", "Mensalista VIP"].each do |assinatura|
   puts "Criando assinatura " + assinatura.to_s + "..."
-  Membership.create!(name: assinatura.to_s, price_in_cents: [2000, 5000, 10000].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
+  membership = Membership.create!(name: assinatura.to_s, price_in_cents: [2000, 5000, 10000].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
+
+  min_count = (NUMBER_OF_USERS * 0.2).to_i
+  max_count = min_count + 5
+  max_count = NUMBER_OF_USERS if max_count > NUMBER_OF_USERS
+
+  User.user.sample((min_count..max_count).to_a.sample).each do |user|
+    user_membership = UserMembership.create(user: user, membership: membership)
+
+    identifier = SecureRandom.uuid
+
+    pass = Pass.create(
+      identifier: identifier,
+      user_membership: user_membership,
+      name: membership.name,
+      partner_id: membership.partner_id,
+      user: user,
+      qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
+        color: "000",
+        shape_rendering: "crispEdges",
+        module_size: 5,
+        standalone: true,
+        use_path: true,
+      ),
+    )
+  end
+  
+  p "Mensalidade #{membership.name} criada"
 end
 
 puts "-- OK!"
 
 puts 'Criando eventos...'
-10.times do 
-  scheduled_start = Faker::Date.between(from: Date.today, to: rand(5..15).days.from_now)
+NUMBER_OF_EVENTS.times do |i|
+  scheduled_start = Faker::Date.between(from: Date.today, to: rand(0..15).days.from_now)
+
+  scheduled_start = Date.today if i == 0
+
   event = Event.create!(name: Faker::BossaNova.song,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
     scheduled_start: scheduled_start,
@@ -107,7 +142,7 @@ puts 'Criando eventos...'
     (1..3).each do |i|
       EventBatch.create!(event: event,
         name: "Lote #{i}",
-        quantity: [10, 20, 30, 40].sample,
+        quantity: [5, 10, 20, 40].sample,
         pass_type: pass_type,
         price_in_cents: [2000, 5000, 7500, 10000].sample,
         ends_at: ends_at + (20*i).days,
@@ -116,11 +151,51 @@ puts 'Criando eventos...'
   end
 
   event.create_default_questions
+
+  min_count = (NUMBER_OF_USERS * 0.6).to_i
+  max_count = min_count + 5
+  max_count = NUMBER_OF_USERS if max_count > NUMBER_OF_USERS
+
+  User.user.sample((min_count..max_count).to_a.sample).each do |user|
+    order = Order.create(user: user)
+
+    entity = event.open_batches.to_a.sample
+    start_time = event.scheduled_start
+    end_time = event.scheduled_end
+    order_item = OrderItem.create(order: order,
+      event_batch_id: entity.id,
+      price_in_cents: entity.price_in_cents,
+      fee_percentage: entity.partner.fee_percentage,
+      total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
+      start_time: start_time,
+      end_time: end_time,
+    )
+
+    event.questions.each do |question|
+      value = if question.prompt == "Nome completo"
+        Faker::Name.name
+      elsif question.prompt == "CPF"
+        ["03162488001", "48537826057", "96582679040", "33114131050", "10993508081", "36428679019", "17831332014"].sample
+      elsif question.prompt == "CEP"
+        (0..7).to_a.map { |i| rand(9) }.join
+      end
+
+      QuestionAnswer.create(
+        order_item: order_item,
+        question_id: question.id,
+        value: value,
+      )
+    end
+
+    order.perform_after_payment_confirmation_actions
+  end
+
+  p "Evento #{event.name} populado"
 end
 
 puts 'Criando day uses...'
 
-3.times do
+NUMBER_OF_DAY_USES.times do
   day_use = DayUse.create!(name: Faker::WorldCup.stadium,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(" "),
     partner_id: Partner.first.id,
@@ -161,6 +236,55 @@ puts 'Criando day uses...'
       price_in_cents: [2500, 5000, 7500, 10000].sample,
       day_use_schedule: day_use_schedule)
   end
+
+  min_count = (NUMBER_OF_USERS * 0.4).to_i
+  max_count = min_count + 5
+  max_count = NUMBER_OF_USERS if max_count > NUMBER_OF_USERS
+
+  User.user.sample((min_count..max_count).to_a.sample).each do |user|
+    order = Order.create(user: user)
+
+     (0..7).to_a.sample(rand(4)).each do |num|
+      date = Time.current + num.days
+      day_use_schedule = day_use.schedule_for_date(date)
+      open_slot = day_use_schedule.open_slots_for_date(date).sample
+
+      next if open_slot.blank?
+
+      start_time = open_slot[:start_time]
+      entity = day_use_schedule.day_use_schedule_pass_types.to_a.sample
+
+      end_time = start_time + entity.day_use_schedule.sanitized_slot_duration_in_minutes.minute
+      order_item = OrderItem.create(order: order,
+        day_use_schedule_pass_type_id: entity.id,
+        price_in_cents: entity.price_in_cents,
+        fee_percentage: entity.partner.fee_percentage,
+        total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
+        start_time: start_time,
+        end_time: end_time,
+      )
+
+      day_use.questions.each do |question|
+        value = if question.prompt == "Nome completo"
+          Faker::Name.name
+        elsif question.prompt == "CPF"
+          ["03162488001", "48537826057", "96582679040", "33114131050", "10993508081", "36428679019", "17831332014"].sample
+        elsif question.prompt == "CEP"
+          (0..7).to_a.map { |i| rand(9) }.join
+        end
+
+        QuestionAnswer.create(
+          order_item: order_item,
+          question_id: question.id,
+          value: value,
+        )
+      end
+    end
+
+    order.perform_after_payment_confirmation_actions
+  end
+
+  p "DayUse #{day_use.name} populado"
 end
 
 puts "All done!!!"

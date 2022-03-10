@@ -82,12 +82,12 @@ export function DayUseOrderItems(props) {
                 return (
                   <div className="border-bottom border-white p-4 flex center between">
                     <div className="f-60">
-                      <p className="m-0 f-10">
+                      <p className="m-0 f-10 text-white">
                         {moment(slot.start_time).strftime("%H:%M")} -{" "}
                         {moment(slot.end_time).strftime("%H:%M")} -{" "}
                         {passType.name}
                       </p>
-                      <p className="m-0 f-20">
+                      <p className="m-0 f-20 text-white">
                         {(passType.price_in_cents / 100).toLocaleString(
                           "pt-BR",
                           {

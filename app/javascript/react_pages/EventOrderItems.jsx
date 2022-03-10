@@ -51,10 +51,10 @@ export function EventOrderItems(props) {
               className="border-bottom border-white p-4 flex center between"
             >
               <div className="f-60">
-                <p className="m-0 f-60">
+                <p className="m-0 f-60 text-white">
                   {batch.passType} - {batch.name}
                 </p>
-                <p className="m-0 f-20">
+                <p className="m-0 f-20 text-white">
                   {(batch.priceInCents / 100).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
@@ -68,7 +68,11 @@ export function EventOrderItems(props) {
                 </p>
               </div>
 
-              <div className={`flex center around ${window.mobileMode() ? 'f-30' : 'f-15'}`}>
+              <div
+                className={`flex center around ${
+                  window.mobileMode() ? "f-30" : "f-15"
+                }`}
+              >
                 <i
                   className="fa fa-minus-circle fs-30 text-white clickable"
                   onClick={() => updateQuantity(index, -1)}

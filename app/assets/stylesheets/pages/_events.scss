@@ -19,6 +19,17 @@
   }
 }
 
+.first-section-event {
+  background-image: image-url("event_background_1.png");
+  background-size: cover;
+  margin-top: -150px;
+  padding-top: 326px;
+  padding-bottom: 100px;
+  .d-flex {
+    margin-top: 40px !important;
+  }
+}
+
 @media (max-width: 768px) {
   p {
     font-size: 14px !important;
@@ -31,19 +42,10 @@
   // }
   .first-section-event {
     margin-top: 0px !important;
+    padding-top: 120px;
     .d-flex {
       margin-top: 0px !important;
     }
-  }
-}
-
-.first-section-event {
-  background-image: image-url("event_background_1.png");
-  background-size: cover;
-  margin-top: -150px;
-  padding-top: 326px;
-  .d-flex {
-    margin-top: 40px !important;
   }
 }
 

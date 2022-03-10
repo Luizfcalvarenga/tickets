@@ -1,8 +1,8 @@
 <div class="first-section-event">
   <%# video_tag "nuflow.mp4", :size => "1920x1080", autoplay: true, muted: :muted, :loop => true, :style=> "z-index: -1" %>
   <div class="container align-self-start">
-    <h1>COMPETIÇÕES E DESAFIOS DE<br><span class="text-success">CICLISMO</em>.</h1>
-    <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
+    <h1>COMPETIÇÕES E DESAFIOS DE<br><span class="text-success">CICLISMO</span>.</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur<br>adipiscing elit, sed do eiusmod tempor... </p>
     <div class="d-flex align-items-center">
       <button class="btn btn-success">CADASTRE-SE AGORA</button>
     </div>
@@ -12,7 +12,7 @@
 <div class="second-section-event">
   <div class="d-flex justify-content-between mt-5 container mb-3">
     <div class="align-self-center">
-      <h2>COMPETIÇÕES <span class="text-success">ATIVAS</em></h2>
+      <h2>COMPETIÇÕES <span class="text-success">ATIVAS</span></h2>
     </div>
     <div class="invert-image">
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
@@ -20,43 +20,36 @@
   </div>
   <div class="container page-desktop">
     <% @events.each do |event| %>
-      <div class="row mb-5 flex-around bg-dark p-5">
-        <div class="image-container col-4">
-          <%= link_to event_path(event), class: "" do %>
+      <div class="row mb-4 flex-around bg-dark event-card">
+        <div class="col-5 p-0 h-100">
+          <%= link_to event_path(event), class: "h-100 w-100 clickable" do %>
             <% if event.photo.attached? %>
-                <%= image_tag cl_image_path event.photo.key, height: 435, width: 380, crop: :fill%>
+                <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
               <% else %>
                 <%= image_tag 'default.png' %>
             <% end %>
           <% end %>
         </div>
-        <div class="col-8">
-          <div class="d-flex">
-            <div class="flex-grow-1">
-              <h3><span class="text-success"><%= event.name %></em></h3>
-            </div>
-            <div class="">
-              <div class="d-flex justify-content-between">
-                <div>
-                  <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
-                  <h5 class="vbar px-2"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h5>
-                </div>
-                <div>
-                  <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
-                  <h5 class="vbar px-2">Localização - <%= event.city.name %>, <%= event.state.acronym %></h5>
-                </div>
+        <div class="col-7 p-5 h-100 d-flex flex-column">
+          <div class="d-flex justify-content-between f-20">
+            <h3><span class="text-success"><%= event.name %></span></h3>
+            <div class="d-flex justify-content-between">
+              <div>
+                <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
+                <h5 class="vbar px-2"><%= event.scheduled_start.strftime('%d/%m/%Y') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h5>
+              </div>
+              <div>
+                <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
+                <h5 class="vbar px-2">Localização - <%= event.city.name %>, <%= event.state.acronym %></h5>
               </div>
             </div>
           </div>
-          <div class="overflow-auto">
-            <p class="mb-0 p-fixed-height"><%= event.description.to_plain_text.truncate(1032) %></p>
+          <div class="overflow-auto f-70">
+            <p class="mb-0"><%= event.description.to_plain_text.truncate(500) %></p>
           </div>
-            <div class="d-flex align-items-center mt-5">
-              <%= link_to event_path(event), class: "" do %>
-                <button class="btn btn-success btn-lg">COMPRAR</button>
-              <% end %>
-              <p><span class="text-success">Saiba mais</em></p>
-          </div>
+          <%= link_to event_path(event), class: "" do %>
+            <button class="btn btn-success btn-lg px-5">COMPRAR</button>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -67,7 +60,7 @@
       <div class="pt-3">
         <%= link_to event_path(event), class: "" do %>
           <% if event.photo.attached? %>
-              <%= image_tag cl_image_path event.photo.key, height: 290, crop: :fill %>
+              <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
             <% else %>
               <%= image_tag 'default.png' %>
           <% end %>
@@ -75,8 +68,8 @@
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
-            <h3><span class="text-success"><%= event.name.truncate(13) %></em></h3>
-            <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></em></h4>
+            <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
+            <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
           </div>
           <div class="p-2">
             <p><%= event.description.to_plain_text.truncate(80) %></p>

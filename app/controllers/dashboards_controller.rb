@@ -15,9 +15,7 @@ class DashboardsController < ApplicationController
     @day_uses = current_user.partner.day_uses    
     @memberships = @partner.memberships
     
-    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids})
-      .group("users.id")
-      .order("users.name")
+    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids}).group("users.id").order("users.name")
   
     if params[:query].present?
       sql_query = "users.email ILIKE :query OR users.name ILIKE :query OR translate(users.document_number, '.', '') ILIKE :query "

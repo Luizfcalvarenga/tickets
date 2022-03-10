@@ -1,8 +1,8 @@
-<div class="page-wrapper">
+<%= image_tag "laybackbanner.jpg", class: "w-100 partner-banner" %>
+
+<div class="partner-show-wrapper position-relative">
   <% if @partner.logo.attached? %>
-    <div class="my-5 flex center around">
-      <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit %>
-    </div>
+    <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit, class: "partner-show-logo" %>
   <% end %>
 
   <h2>Day Uses disponíveis</h2>
@@ -73,11 +73,10 @@
 
   <div>
     <% @memberships.each do |membership| %>
-      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center mb-2 row">
-        <p class="text-white f-20 m-0 col-12 col-md-2 m-0"><%= membership.name %></p>
-
+      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2">
+        <p class="text-white m-0 m-0 f-30"><%= membership.name %></p>
         <% if user_signed_in? %>
-          <div class="f-80">
+          <div class="">
             <%= simple_form_for(@user_membership) do |f| %>
               <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
               <%= f.submit "Inscrever", class: "btn btn-success" %>

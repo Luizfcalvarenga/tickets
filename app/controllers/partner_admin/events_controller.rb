@@ -16,7 +16,7 @@ module PartnerAdmin
 
       respond_to do |format|
         format.html
-        format.csv { send_data @event.passes_csv }
+        format.csv { send_data @event.passes_csv, filename: "Controle de acessos - #{@event.name}.csv" }
         format.text { render partial: 'partner_admin/events/user_list', locals: { event: @event, passes: @passes }, formats: [:html] }
       end
     end

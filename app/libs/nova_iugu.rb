@@ -145,7 +145,12 @@ module NovaIugu
 
       validate_params!
 
-      @response = ::Iugu::Subscription.create(subscription_params)
+      begin
+        @response = ::Iugu::Subscription.create(subscription_params)
+      rescue RestClient::BadGateway
+        sleep 2
+        @response = ::Iugu::Subscription.create(subscription_params)
+      end
     
       entity.update!(
         iugu_subscription_id: @response.attributes["id"],

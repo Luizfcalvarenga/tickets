@@ -9,6 +9,8 @@
     <%= @day_use.description %>
   </p>
   
+  <div class="spacer-50"></div>
+  
   <% if @day_use_schedule.open? %>
     <%= simple_form_for(@order) do |f| %>
       <react data-component="DayUseOrderItems" 

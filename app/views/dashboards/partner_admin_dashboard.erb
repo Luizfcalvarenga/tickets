@@ -25,12 +25,12 @@
         <tbody>
           <% @events.each do |event| %>
             <tr>
-              <td><%= event.name %></td>
-              <td><%= event.scheduled_start.strftime('%d/%m/%Y') %></td>
-              <td><%= event.scheduled_end.strftime('%d/%m/%Y') %></td>
-              <td><%= event.city.name %>, <%= event.state.acronym %></td>
-              <td><%= event.event_batches.sum(:quantity) %></td>
-              <td><%= event.passes.count %></td>
+              <td data-label="Nome do evento"><%= event.name %></td>
+              <td data-label="Data início"><%= event.scheduled_start.strftime('%d/%m/%Y') %></td>
+              <td data-label="Data término"><%= event.scheduled_end.strftime('%d/%m/%Y') %></td>
+              <td data-label="Local"><%= event.city.name %>, <%= event.state.acronym %></td>
+              <td data-label="Máx ingressos"><%= event.event_batches.sum(:quantity) %></td>
+              <td data-label="Vendidos"><%= event.passes.count %></td>
               <td><%= link_to "Ver detalhes", partner_admin_event_path(event), class: "text-success" %></td>
             </tr>
           <% end %>
@@ -53,7 +53,7 @@
         <tbody>
           <% @day_uses.each do |day_use| %>
             <tr>
-              <td><%= day_use.name %></td>
+              <td data-label="Nome"><%= day_use.name %></td>
               <td><%= link_to "Ver detalhes", partner_admin_day_use_path(day_use), class: "text-success" %></td>
             </tr>
           <% end %>
@@ -105,7 +105,7 @@
           </div>
 
           <div id="user-list-parent-node">
-            <%= render partial: "memberships/user_list", locals: { users: @users, passes: @passes } %>
+            <%= render partial: "memberships/user_list", locals: { users: @users } %>
           </div>
         </div>
       </div>
@@ -177,3 +177,12 @@
 </div>
 
 <% content_for(:html_title) { 'NuflowPass Dashboard' } %>
+
+<div id="access-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body vh-90 bg-darker scrollable">
+      </div>
+    </div>
+  </div>
+</div>

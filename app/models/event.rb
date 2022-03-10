@@ -59,11 +59,11 @@ class Event < ApplicationRecord
   end
 
   def passes_csv
-    attributes = ["Nome", "Email", "Documento", "Número do Documento", "Acesso", "Tipo do passe", "Lote", "Valor pago"] + questions.order("questions.order").map(&:prompt)
+    attributes = ["Email do usuário", "CPF", "Tipo do passe", "Lote", "Valor pago (em centavos)"] + questions.order("questions.order").map(&:prompt)
     CSV.generate(headers: true) do |csv|
       csv << attributes
       passes.each do |pass|
-        csv << [pass.user.name, pass.user.email, pass.user.document_type, pass.user.document_number, nil, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:question).order("questions.order").map(&:value)
+        csv << [pass.user.email, pass.user.document_number, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:question).order("questions.order").map(&:value)
       end
     end
   end
