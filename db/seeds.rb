@@ -48,8 +48,8 @@ end
   user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 end
 
-state = State.first
-city = City.first
+state = State.find_by(acronym: "MG")
+city = City.find_by(name: "Belo Horizonte")
 partner = Partner.create!(name: "Parceiro de demonstração",
                           cnpj: "44.716.365/0001-92",
                           contact_phone_1: "3132235655",
@@ -64,8 +64,8 @@ partner = Partner.create!(name: "Parceiro de demonstração",
                           kind: "partner",
                           )
                           
-partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/redbull_logo.png')),
-                  filename: 'redbull_logo.png')
+partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/laybacklogo.png')),
+                  filename: 'laybacklogo.png')
 partner.update(main_contact: User.where(access: "partner_admin").first)
 
 User.where(access: "partner_admin").update(partner: Partner.first)

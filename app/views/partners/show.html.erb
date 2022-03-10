@@ -5,28 +5,6 @@
     </div>
   <% end %>
 
-  <h2>Eventos</h2>
-  
-  <div class="row">
-    <% @events.each do |event| %>
-      <div class="col-12 col-md-4 mb-3">
-        <%= link_to event_path(event)do %>
-          <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
-            <div class="flex center between w-100">
-              <p class="text-white mb-0"><%= event.name %></p>
-              <p class="text-white mb-0"><%= event.scheduled_start.strftime("%d/%m/%Y") %></p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <% if @events.blank? %>
-    <p class="text-white">Nenhum evento programado até o momento.</p>
-  <% end %>
-
-  <div class="spacer-50"></div>
-
   <h2>Day Uses disponíveis</h2>
 
   <nav>
@@ -66,6 +44,28 @@
       </div>
     <% end %>
   </div>
+
+  <div class="spacer-50"></div>
+
+  <h2>Eventos</h2>
+  
+  <div class="row">
+    <% @events.each do |event| %>
+      <div class="col-12 col-md-4 mb-3">
+        <%= link_to event_path(event)do %>
+          <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
+            <div class="flex center between w-100">
+              <p class="text-white mb-0"><%= event.name %></p>
+              <p class="text-white mb-0"><%= event.scheduled_start.strftime("%d/%m/%Y") %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <% if @events.blank? %>
+    <p class="text-white">Nenhum evento programado até o momento.</p>
+  <% end %>
 
   <div class="spacer-50"></div>
 
