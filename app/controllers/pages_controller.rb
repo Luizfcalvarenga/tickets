@@ -9,16 +9,6 @@ class PagesController < ApplicationController
 
   def home
     @events = Event.all.sample(4)
-    
-    qrcode = RQRCode::QRCode.new("https://www.lunacali.com")
-
-    @svg = qrcode.as_svg(
-      color: "000",
-      shape_rendering: "crispEdges",
-      module_size: 11,
-      standalone: true,
-      use_path: true
-    )
   end
 
   def partnership

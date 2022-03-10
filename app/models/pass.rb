@@ -48,27 +48,27 @@ class Pass < ApplicationRecord
     if user_membership.present?
       return {
         label: "Ativo",
-        class: "bg-success text-white"
+        class: "text-success"
       } if user_membership.active?
 
       return {
         label: "Inativo",
-        class: "bg-danger text-white"
+        class: "text-secondary"
       }
     else
       return {
         label: "Não utilizado",
-        class: "bg-danger text-white"
+        class: "text-danger"
       } if end_time.at_end_of_day < Time.current
 
       return {
         label: "Utilizado",
-        class: "bg-info text-white"
+        class: "text-secondary"
       } if accesses.present?
 
       return {
         label: "Disponível",
-        class: "bg-success text-white"
+        class: "text-success"
       } 
     end
   end

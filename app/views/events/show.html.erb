@@ -49,36 +49,40 @@
       <%= simple_form_for(@order) do |f| %>
         <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.partner.fee_percentage %>"></react>
 
-        <%= f.submit "Comprar ingressos", class: "btn btn-success text-white mt-5 w-100 p-3" %>
+        <div class="text-center">
+          <%= f.submit "Comprar ingressos", class: "btn btn-success text-white mt-5 p-3" %>
+        </div>
       <% end %>
     <% else %>
       <p class="danger-text p-4 br-8">Evento esgotado</p>
     <% end %>
   </div>
 
-  <div class="third-section-event-show container bg-dark p-5">
+  <div class="third-section-event-show container bg-dark p-5 text-center text-md-start">
     <div class="mb-3">
       <h3>SOBRE O ORGANIZADOR</h3>
     </div>
-    <div class="d-flex">
+    <div class="row">
       <div class="col-sm-12 col-md-2">
         <img src="https://randomuser.me/api/portraits/men/11.jpg" class="rounded-circle mb-3" alt="">
       </div>
-      <div class="">
+      <div class="col-sm-12 col-md-10">
         <div>
           <%= link_to partner_path(@event.partner) do %>
             <h3><span class="text-success clickable"><%= @event.partner.name %></span></h3>
           <% end %>
         </div>
         <div>
-          <p class="py-2 page-desktop"><%= @event.partner.about.truncate(400)  %> </p>
-          <p class="py-2 page-mobile"><%= @event.partner.about.truncate(200)  %> </p>
+          <p class="py-2 page-desktop"><%= @event.partner.about.truncate(400) %></p>
+          <p class="py-2 page-mobile"><%= @event.partner.about.truncate(200) %></p>
         </div>
-        <div class="d-flex gap-24 align-items-center justify-content-start">
-          <a class="btn btn-success btn-lg fs-20 px-5" href="">FALE COM O ORGANIZADOR</a>
-          <%= link_to partner_path(@event.partner) do %>
-            <p class="m-0"><span class="btn btn-dark btn-lg px-5">Visitar página do organizador</span></h3>
-          <% end %>
+        <div class="justify-content-center">
+          <div class="text-center text-md-start">
+            <a class="btn btn-success btn-lg" href="">FALE COM O ORGANIZADOR</a>
+            <%= link_to partner_path(@event.partner) do %>
+            <a class="btn btn-dark btn-lg" href="">VISITAR PÁGINA DO ORGANIZADOR</a>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

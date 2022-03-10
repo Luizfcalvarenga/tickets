@@ -9,13 +9,16 @@
     </nav>
 
     <div class="tab-content mt-5" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
-        <table class="table-responsive table-dark table-borderless">
+      <div class="table-responsive tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+        <table class="table align-middle table-dark table-borderless">
           <thead>
             <tr>
               <th scope="col">Nome</th>
               <th scope="col">Titularidade</th>
+              <th scope="col">Início</th>
+              <th scope="col">Fim</th>
               <th scope="col">Bikepark</th>
+              <th scope="col">Situação</th>
             </tr>
           </thead>
           <tbody class="">
@@ -23,9 +26,11 @@
               <tr>
                 <td><%= pass.name %></td>
                 <td><%= pass.holder_name %></td>
+                <td><%= pass.start_time.strftime("%d/%m/%Y - %H:%M") %></td>
+                <td><%= pass.end_time.strftime("%d/%m/%Y - %H:%M") %></td>
                 <td><%= pass.partner.name %></td>
                 <td class="<%= pass.status[:class] %>"><%= pass.status[:label] %></td>
-                <td><%= link_to "Ver", pass_path(pass), class: "text-success" %></td>
+                <td><%= link_to "Ver detalhes", pass_path(pass), class: "text-success" %></td>
               </tr>
             <% end %>
           </tbody>
