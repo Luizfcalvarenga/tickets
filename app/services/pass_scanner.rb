@@ -100,10 +100,4 @@ class PassScanner
       @secondary_line = "O mensalista não está ativo"
     end
   end
-
-  private
-
-  def cpf_mask(cpf)
-    cpf.insert(3, ".").insert(7, ".").insert(11, "-")
-  end
 end

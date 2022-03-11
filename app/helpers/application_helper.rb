@@ -16,6 +16,8 @@ module ApplicationHelper
   end
 
   def cpf_mask(cpf)
+    return "-" if cpf.blank?
+
     cpf.insert(3, ".").insert(7, ".").insert(11, "-")
   end
 
