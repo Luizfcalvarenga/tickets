@@ -74,7 +74,36 @@
     </div>
 
     <div class="tab-pane fade" id="schedule-blocks" role="tabpanel" aria-labelledby="contact-tab">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Tipo de bloqueio</th>
+            <th scope="col">Dias de bloqueio</th>
+            <th scope="col">Horário de início</th>
+            <th scope="col">Horário de fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @day_use_blocks.each do |day_use_block| %>
+            <tr>
+              <td data-label="Tipo de bloqueio"><%= day_use_block.block_type %></td>
+              <td data-label="Dias de bloqueio"><%= day_use_block.block_days %></td>
+              <td data-label="Horário de início"><%= day_use_block.start_time&.strftime("%H:%M") || "00:00" %></td>
+              <td data-label="Horário de fim"><%= day_use_block.end_time&.strftime("%H:%M") || "23:59" %></td>
+              <td data-label="Ações">
+                <%= link_to partner_admin_day_use_day_use_block_path(day_use_id: day_use_block.day_use_id, id: day_use_block.id), method: :delete, data: { confirm: "Tem certeza que deseja remover este bloqueio? Os usuários poderão comprar passes para os horários cobertos por esse bloqueio" } do %>
+                  <p class="btn btn-danger m-0 px-5">Apagar</p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
+
+      <%= link_to new_partner_admin_day_use_day_use_block_path(day_use_id: @day_use.id) do %>
+        <p class="btn btn-success w-100 mt-4">Criar Bloqueio</p>
+      <% end %>
     </div>
 
     <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">

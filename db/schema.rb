@@ -76,8 +76,13 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   create_table "day_use_blocks", force: :cascade do |t|
     t.bigint "day_use_id"
     t.datetime "block_date"
+    t.string "weekday"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_day_use_blocks_on_created_by_id"
     t.index ["day_use_id"], name: "index_day_use_blocks_on_day_use_id"
   end
 
@@ -371,6 +376,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "accesses", "users", column: "granted_by_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "day_use_blocks", "users", column: "created_by_id"
   add_foreign_key "day_use_schedule_pass_types", "day_use_schedules"
   add_foreign_key "day_use_schedules", "day_uses"
   add_foreign_key "day_uses", "partners"

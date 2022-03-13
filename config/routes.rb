@@ -37,7 +37,9 @@ Rails.application.routes.draw do
   namespace :partner_admin do
     resources :events, only: [:show, :new, :create, :edit, :update]
     resources :memberships
-    resources :day_uses
+    resources :day_uses do
+      resources :day_use_blocks, only: [ :new, :create, :destroy ]
+    end
     resources :partners
     resources :orders
     # get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"

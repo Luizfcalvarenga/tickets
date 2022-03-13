@@ -2,9 +2,9 @@ require Rails.root.join('db/seeds/states_and_cities_populate')
 require 'faker'
 require 'uri'
 
-NUMBER_OF_USERS = 100
-NUMBER_OF_EVENTS = 6
-NUMBER_OF_DAY_USES = 2
+NUMBER_OF_USERS = 5
+NUMBER_OF_EVENTS = 1
+NUMBER_OF_DAY_USES = 1
 
 puts "Criando lista de estados e cidades..."
 StatesAndCitiesPopulate.populate!

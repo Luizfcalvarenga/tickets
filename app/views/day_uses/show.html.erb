@@ -11,7 +11,7 @@
   
   <div class="spacer-50"></div>
   
-  <% if @day_use_schedule.open? %>
+  <% if @day_use_schedule.open? && @day_use_schedule.open_slots_for_date(@date).present? %>
     <%= simple_form_for(@order) do |f| %>
       <react data-component="DayUseOrderItems" 
         data-day-use="<%= @day_use.to_json %>" 

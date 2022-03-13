@@ -13,13 +13,15 @@ module PartnerAdmin
         # .order("question_answers.value")
     
       if params[:query].present?
-        sql_query = "question_answers.value ILIKE :query OR users.email ILIKE :query"
+        sql_query = "question_answers.value ILIKE :query OR users.ema   il ILIKE :query"
         @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
       end      
 
       @passes = @passes.group("passes.id")
 
       @order = Order.new
+
+      @day_use_blocks = @day_use.day_use_blocks
 
       respond_to do |format|
         format.html
