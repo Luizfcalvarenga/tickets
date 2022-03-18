@@ -205,4 +205,38 @@ document.addEventListener("turbolinks:load", () => {
   // Platform events
   window.reloadUserEvent = new Event("reload-user-list");
 
+  const password_signin = document.getElementById("password_signin");
+  const password_signup = document.getElementById("password_signup");
+  const password_confirmation = document.getElementById(
+    "password_confirmation"
+  );
+  const togglePasswordSignin = document.getElementById(
+    "toggle-password-signin"
+  );
+  const togglePasswordSignup = document.getElementById(
+    "toggle-password-signup"
+  );
+
+  function toggleClickedSignIn() {
+    if (this.checked) {
+      password_signin.type = "text";
+    } else {
+      password_signin.type = "password";
+    }
+  }
+
+  function toggleClickedSignUp() {
+    if (this.checked) {
+      password_confirmation.type = "text";
+      password_signup.type = "text";
+    } else {
+      password_confirmation.type = "password";
+      password_signup.type = "password";
+    }
+  }
+
+  if (togglePasswordSignin)
+    togglePasswordSignin.addEventListener("click", toggleClickedSignIn);
+  if (togglePasswordSignup)
+    togglePasswordSignup.addEventListener("click", toggleClickedSignUp);
 });

@@ -1,0 +1,46 @@
+<div class="page-wrapper row justify-content-md-center">
+  <div class="col-md-3">
+    <h2 class="text-center text-success">SIGNIN</h2>
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <%= f.input :email, id: "email-signin",
+                    required: false,
+                    autofocus: true, input_html: { autocomplete: "email" } %>
+        <%= f.input :password,
+                    required: false,
+                    input_html: { autocomplete: "current-password", id: "password_signin" } %>
+      <div class="">
+        <label for="toggle-password-signin">Mostrar senha</label>
+        <input type="checkbox" id="toggle-password-signin" />
+      </div>
+      <div class="text-center my-3">
+        <%= f.button :submit, "Entrar", class: "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <h2 class="text-center text-success">SIGNUP</h2>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs">
+        <%= f.input :email,
+                    required: true,
+                    autofocus: true,
+                    input_html: { autocomplete: "email" }%>
+        <%= f.input :password,
+                    required: true,
+                    hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
+                    input_html: { autocomplete: "new-password", id: "password_signup" } %>
+        <%= f.input :password_confirmation,
+                    required: true,
+                    input_html: { autocomplete: "new-password", id: "password_confirmation" } %>
+      </div>
+      <div class="">
+        <label for="toggle-password-signup">Mostrar senha</label>
+        <input type="checkbox" id="toggle-password-signup" />
+      </div>
+      <div class="text-center my-3">
+        <%= f.button :submit, "Sign up", class: "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+</div>
