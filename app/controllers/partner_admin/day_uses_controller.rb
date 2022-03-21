@@ -32,6 +32,7 @@ module PartnerAdmin
 
     def new
       @day_use = DayUse.new
+      @day_use_schedules = @day_use.day_use_schedules
     end
   
     def create

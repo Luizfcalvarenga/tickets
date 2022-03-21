@@ -1,58 +1,73 @@
 import React, { useState } from "react";
 
 export function DayUseSchedules(props) {
+  const buildEmptyDayUseSchedule = (weekdayName) => {
+    return { 
+      name: "",
+      opens_at: "",
+      closes_at: "",
+      description: "",
+      slot_duration_in_minutes: null,
+      quantity_per_slot: null,
+      day_use_schedule_pass_types: [],
+      weekday: weekdayName,
+    }
+  }
+
   const weekdaysPrep = [
-    {
+    { 
       value: "monday",
       label: "Segunda-feira",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "monday"
-      ),
+      ) || buildEmptyDayUseSchedule("monday"),
     },
     {
       value: "tuesday",
       label: "Terça-feira",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "tuesday"
-      ),
+      ) || buildEmptyDayUseSchedule("tuesday"),
     },
     {
       value: "wednesday",
       label: "Quarta-feira",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "wednesday"
-      ),
+      ) || buildEmptyDayUseSchedule("wednesday"),
     },
     {
       value: "thursday",
       label: "Quinta-feira",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "thursday"
-      ),
+      ) || buildEmptyDayUseSchedule("thursday"),
     },
     {
       value: "friday",
       label: "Sexta-feira",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "friday"
-      ),
+      ) || buildEmptyDayUseSchedule("friday"),
     },
     {
       value: "saturday",
       label: "Sábado",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "saturday"
-      ),
+      ) || buildEmptyDayUseSchedule("saturday"),
     },
     {
       value: "sunday",
       label: "Domingo",
       dayUseSchedule: props.dayUseSchedules.find(
         (dus) => dus.weekday === "sunday"
-      ),
+      ) || buildEmptyDayUseSchedule("sunday"),
     },
   ];
   weekdaysPrep.forEach((wp) => {
+    if (!wp.dayUseSchedule) return;
+
     var match = /T(\d{2}:\d{2})/.exec(
       wp.dayUseSchedule.opens_at
     );
