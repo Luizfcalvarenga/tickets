@@ -5,7 +5,7 @@
     <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit, class: "partner-show-logo" %>
   <% end %>
 
-  <h2>Day Uses disponíveis</h2>
+  <h2>Agendamentos disponíveis</h2>
 
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">  
@@ -39,7 +39,7 @@
         </div>
 
         <% if weekday[:day_uses].blank? %>
-          <p class="text-white">Nenhum day use programado para esse dia.</p>
+          <p class="text-white">Nenhum Agendamento programado para esse dia.</p>
         <% end %>
       </div>
     <% end %>

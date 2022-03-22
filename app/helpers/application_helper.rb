@@ -187,7 +187,7 @@ module ApplicationHelper
       event.create_default_questions
     end
 
-    puts 'Criando day uses...'
+    puts 'Criando Agendamentos...'
 
     1.times do
       day_use = DayUse.create!(name: Faker::WorldCup.stadium,
@@ -357,7 +357,7 @@ module ApplicationHelper
       event.create_default_questions
     end
 
-    puts 'Criando day uses...'
+    puts 'Criando Agendamentos...'
 
     2.times do
       day_use = DayUse.create!(name: Faker::WorldCup.stadium,

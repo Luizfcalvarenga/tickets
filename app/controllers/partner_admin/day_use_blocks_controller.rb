@@ -23,7 +23,7 @@ module PartnerAdmin
         flash[:notice] = "Bloqueio criado com sucesso"
         redirect_to partner_admin_day_use_path(@day_use_block.day_use)
       else
-        flash[:alert] = "Erro ao criar bloqueio de Day Use"
+        flash[:alert] = "Erro ao criar bloqueio de Agendamento"
         render :new
       end 
     end
@@ -35,7 +35,7 @@ module PartnerAdmin
         flash[:notice] = "Bloqueio reomvido com sucesso"
         redirect_to partner_admin_day_use_path(@day_use_block.day_use)
       else
-        flash[:alert] = "Erro ao remover bloqueio de Day Use"
+        flash[:alert] = "Erro ao remover bloqueio de Agendamento"
         render :new
       end
     end

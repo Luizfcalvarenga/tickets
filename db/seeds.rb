@@ -197,7 +197,7 @@ NUMBER_OF_EVENTS.times do |i|
   p "Evento #{event.name} populado"
 end
 
-puts 'Criando day uses...'
+puts 'Criando Agendamentos...'
 
 NUMBER_OF_DAY_USES.times do
   day_use = DayUse.create!(name: Faker::WorldCup.stadium,

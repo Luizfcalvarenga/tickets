@@ -41,10 +41,10 @@ module PartnerAdmin
       service = DayUseCreator.new(params, current_user)
       
       if service.call
-        flash[:notice] = "Day use criado com sucesso"
+        flash[:notice] = "Agendamento criado com sucesso"
         redirect_to dashboard_path_for_user(current_user)
       else
-        flash[:alert] = "Erro ao criar Day Use"
+        flash[:alert] = "Erro ao criar Agendamento"
         render :new
       end 
     end
@@ -60,10 +60,10 @@ module PartnerAdmin
       service = DayUseUpdater.new(@day_use, params)
       
       if service.call
-        flash[:notice] = "Day use atualizado com sucesso"
+        flash[:notice] = "Agendamento atualizado com sucesso"
         redirect_to dashboard_path_for_user(current_user)
       else
-        flash[:alert] = "Erro ao atualizar Day Use"
+        flash[:alert] = "Erro ao atualizar Agendamento"
         render :new
       end 
 

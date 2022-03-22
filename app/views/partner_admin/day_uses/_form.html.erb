@@ -1,12 +1,12 @@
 <div class="page-wrapper">
   <h1 class="title">
-    <%= @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use" %>
+    <%= @day_use.new_record? ? "Criar novo Agendamento" : "Atualizar Agendamento" %>
   </h1>
 
   <%= simple_form_for([:partner_admin, @day_use]) do |f| %>
     <%= f.input :name %>
 
-    <%= f.rich_text_area :description, placeholder: "Descrição do day use..." %>
+    <%= f.rich_text_area :description, placeholder: "Descrição do Agendamento..." %>
 
     <div class="spacer-30"></div>
 
@@ -18,6 +18,6 @@
 
     <react data-component="DayUseSchedules" data-day-use-schedules="<%= @day_use_schedules.to_json(include: :day_use_schedule_pass_types) %>"></react>
 
-    <%= f.submit @day_use.new_record? ? "Criar novo Day Use" : "Atualizar Day Use", class: "btn btn-success mt-5 w-100" %>
+    <%= f.submit @day_use.new_record? ? "Criar novo Agendamento" : "Atualizar Agendamento", class: "btn btn-success mt-5 w-100" %>
   <% end %>
 </div>
