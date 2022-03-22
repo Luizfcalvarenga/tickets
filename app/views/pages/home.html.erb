@@ -1,63 +1,60 @@
 <div class="first-section-home">
   <div class="flex center around h-100 w-100">
-    <div class="<%= mobile_device? ? "w-90" : "w-70" %>">
+    <div class="<%= mobile_device? ? "w-90" : "w-80" %>">
       <div class="spacer-100 page-desktop"></div>
       <h1 class="text-center">ENCONTRE AS MELHORES<br><span class="text-success">EXPERIÊNCIAS DE CICLISMO</span>.</h1>
-      <p class="text-white text-center px-0 mx-0 px-md-5 mx-md-5">Competições, eventos, agendamentos e assinaturas de pistas e bike parks: todas experiências de ciclismo você encontra aqui! </p>
-      <div class="input-group my-5">
+      <p class="text-white text-center">Competições, eventos, agendamentos e assinaturas de pistas e bike parks: todas experiências de ciclismo você encontra aqui!</p>
+      <div class="input-group my-4 text-center">
         <input type="text" class="form-control" placeholder="<%= mobile_device? ? "Busque" : "Eventos, competições, pistas, bike parks, etc..." %>" aria-label="Eventos, competições, pistas, bike parks, etc..." aria-describedby="button-addon2">
-        <button class="btn btn-success btn-sm px-2 px-md-5 text-white" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
+        <button class="btn btn-success px-2 px-md-3 text-white text-center" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-dark border border-success text-success">SEJA UM PARCEIRO</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="second-section-home">
+<div class="second-section-home container">
   <div class="d-flex justify-content-between mt-5 container mb-3 mobile-arrow">
-    <div>
+    <div class="align-self-center">
+      <h3>O QUE VOCÊ <span class="text-success">PROCURA?</span></h3>
+    </div>
+    <div class="invert-image">
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
     </div>
-    <div class="align-self-center">
-      <h2>CATEGORIAS <span class="text-success">BIKE PARK</span></h2>
-    </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="img-spot">
-          <h3><span class="text-success">INSCRIÇÕES E COMPETIÇÕES</span></h3>
+  <div class="row">
+    <div class="col-md-6 col-12 mb-3 mb-md-0">
+      <div class="card img-fluid bg-dark p-3">
+        <div class="row">
+          <div class="col-5 img-fluid">
+            <%= image_tag 'race.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+          </div>
+          <div class="col-7 position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+              <h4 class="card-title text-success text-center">PISTAS E BIKE PARKS</h4>
+              <p class="card-text text-center">Encontre pistas e bike parks e garanta seu acesso, agendamento e/ou mensalidade.</p>
+            </div>
+          </div>
         </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
-      </div>
-      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="img-spot">
-          <h3><span class="text-success">AULAS E AGENDAMENTOS</span></h3>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
-      </div>
-      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="img-spot">
-          <h3><span class="text-success">PISTAS E BIKE PARKS</span></h3>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
-      </div>
-      <div class="col-6 col-sm-6 col-md-6 col-lg-3 p-3">
-        <div class="img-spot">
-          <h3><span class="text-success">ASSINATURAS</span></h3>
-        </div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor... </p>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="third-section-home">
-  <div class="container">
-    <h2>SEJA NOSSO <span class="text-success">PARCEIRO</span></h2>
-    <p class="page-desktop">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hendrerit mattis quam placerat felis vitae nisl, sed. Vitae purus morbi maecenas odio amet amet, aliquet hac bibendum. Id sapien dis pharetra tellus. Scelerisque id laoreet gravida feugiat in sollicitudin elit, a. Nulla dictum quis habitasse id arcu velit duis. A nunc tortor, tellus mauris ut nec semper.
-    Aliquam, nibh erat fringilla neque, a vitae placerat. Est amet, nulla mi in quam massa enim mauris. Volutpat a purus facilisi euismod aliquet quam amet tempor viverra. Cursus ante arcu est, lectus. Purus ac vivamus dignissim cursus. Quisque sed vel pellentesque eget turpis pharetra, varius integer tincidunt. Aliquam sed et pellentesque auctor tempor libero. Urna luctus fames scelerisque turpis euismod pretium vel in ullamcorper. Est senectus neque elementum congue luctus elit. Mollis nibh arcu tortor sit lorem.</p>
-    <p class="page-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rhoncus netus cursus auctor nulla lorem dui nunc sollicitudin sagittis. Arcu diam duis condimentum suspendisse tincidunt viverra adipiscing vel.</p>
-    <button class="btn btn-success">ENTENDA COMO FUNCIONA</button>
+    <div class="col-md-6 col-12 mb-3 mb-md-0">
+      <div class="card img-fluid bg-dark p-3">
+        <div class="row">
+          <div class="col-5 img-fluid">
+            <%= image_tag 'flag.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+          </div>
+          <div class="col-7 position-relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+              <h4 class="card-title text-success text-center">COMPETIÇÕES E EVENTOS</h4>
+              <p class="card-text text-center">Se inscreva em competições, pedaladas, desafios e outros eventos de ciclismo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -67,7 +64,7 @@
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
     </div>
     <div class="align-self-center">
-      <h2>ÚLTIMAS <span class="text-success">COMPETIÇÕES</span></h2>
+      <h3>PRÓXIMOS <span class="text-success">EVENTOS</span></h3>
     </div>
   </div>
 
@@ -99,37 +96,38 @@
     </div>
   </div>
 
-  <div class="d-lg-none carousel-mobile">
+  <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+    <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+  </div>
+
+  <div class="carousel-mobile page-mobile">
     <div id="carouselExampleCaptions" class="carousel slide .d-none .d-sm-block .d-md-none" data-bs-ride="carousel"  data-bs-interval="false">
-      
-        <div class="carousel-inner">
-          <% @events.each do |event| %>
-            <% if @events.first.id == event.id %>
-              <div class="carousel-item active">
-            <% else %>
-              <div class="carousel-item">
+      <div class="carousel-inner">
+        <% @events.each do |event| %>
+          <% if @events.first.id == event.id %>
+            <div class="carousel-item active">
+          <% else %>
+            <div class="carousel-item">
+          <% end %>
+          <%= link_to event_path(event), class: "" do %>
+            <% if event.photo.attached? %>
+                <%= image_tag cl_image_path event.photo.key, height: 290, crop: :fill %>
+              <% else %>
+                <%= image_tag 'default.png' %>
             <% end %>
-            <%= link_to event_path(event), class: "" do %>
-              <% if event.photo.attached? %>
-                  <%= image_tag cl_image_path event.photo.key, height: 290, crop: :fill %>
-                <% else %>
-                  <%= image_tag 'default.png' %>
-              <% end %>
-            <% end %>
-              <div class="bg-dark">
-                <div class="p-2">
-                  <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
-                  <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
-                </div>
-                <div class="p-2">
-                  <p><%= event.description.to_plain_text.truncate(80) %></p>
-                  <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-                </div>
+          <% end %>
+            <div class="bg-dark">
+              <div class="p-2">
+                <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
+                <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
+              </div>
+              <div class="p-2">
+                <p><%= event.description.to_plain_text.truncate(80) %></p>
+                <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
               </div>
             </div>
-          <% end %>
-        </div>
-
+          </div>
+        <% end %>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -143,10 +141,17 @@
     </div>
   </div>
 
-<div class="fifth-section-home">
+<div class="fifth-section-home mt-5 mt-md-0">
   <div class="container">
-    <h2>CONHEÇA O <span class="text-success">NUFLOW PASS</span></h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Rhoncus netus cursus auctor nulla lorem dui nunc sollicitudin sagittis. Arcu diam duis condimentum suspendisse tincidunt viverra adipiscing vel. At condimentum neque non, at semper lacus. Urna et vel amet arcu feugiat eu, sodales. Nec, amet elementum convallis elit. Morbi integer integer quis imperdiet tellus fermentum lectus. Placerat malesuada nisl, egestas nisl cursus eros sit faucibus at.</p>
-    <button class="btn btn-success">ENTENDA COMO FUNCIONA</button>
+    <h2>GERENCIE <span class="text-success">EVENTOS / BIKEPARKS</span></h2>
+    <p class="mb-0">Faça a gestão completa do seus eventos e espaços:</p>
+    <ul>
+      <li>Crie competições, cicloviagens, pedaladas, treinos, desafios ou qualquer outro tipo de evento. </li>
+      <li>Cadastre seu espaço e ofereça acessos, agendamentos e planos de mensalidade. </li>
+    </ul>
+    <button class="btn btn-success me-2">SEJA UM PARCEIRO</button>
+    <button class="btn btn-dark border border-success text-success">ENTENDA COMO FUNCIONA</button>
   </div>
+  <div class="spacer-100 page-desktop"></div>
+  <div class="spacer-50 page-mobile"></div>
 </div>
