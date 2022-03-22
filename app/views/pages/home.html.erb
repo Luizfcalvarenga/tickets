@@ -24,37 +24,59 @@
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6 col-12 mb-3 mb-md-0">
-      <div class="card img-fluid bg-dark p-3">
-        <div class="row">
-          <div class="col-5 img-fluid">
-            <%= image_tag 'race.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <%= link_to partners_path do %>
+      <div class="col h-100">
+        <div class="card bg-dark h-100 d-flex justify-content-center">
+          <div class="row">
+            <div class="col-5 align-self-center">
+                <%= image_tag 'race.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+            </div>
+            <div class="col-7 card-body text-center d-flex align-items-center">
+              <div>
+                <h4 class="text-success">PISTAS E BIKE PARKS</h4>
+                <p class="text-white">Encontre pistas e bike parks e garanta seu acesso, agendamento e/ou mensalidade.</p>
+              </div>
+            </div>
           </div>
-          <div class="col-7 position-relative">
-            <div class="position-absolute top-50 start-50 translate-middle">
-              <h4 class="card-title text-success text-center">PISTAS E BIKE PARKS</h4>
-              <p class="card-text text-center">Encontre pistas e bike parks e garanta seu acesso, agendamento e/ou mensalidade.</p>
+        </div>
+      </div>
+    <% end %>
+    <%= link_to partners_path do %>
+      <div class="col h-100">
+        <div class="card bg-dark h-100 d-flex justify-content-center">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <%= image_tag 'calendar.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+            </div>
+            <div class="col-7 card-body text-center d-flex align-items-center">
+              <div>
+                <h4 class="text-success">Cicloviagens</h4>
+                <p class="text-white">Descubra percursos e destinos incríveis para explorar de bike.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <%= link_to events_path do %>
+      <div class="col h-100">
+        <div class="card bg-dark h-100 d-flex justify-content-center">
+          <div class="row">
+            <div class="col-5 align-self-center">
+              <%= image_tag 'flag.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
+            </div>
+            <div class="col-7 card-body text-center d-flex align-items-center">
+              <div>
+                <h4 class="text-success">COMPETIÇÕES E EVENTOS</h4>
+                <p class="text-white">Se inscreva em competições, pedaladas, desafios e outros eventos de ciclismo.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-12 mb-3 mb-md-0">
-      <div class="card img-fluid bg-dark p-3">
-        <div class="row">
-          <div class="col-5 img-fluid">
-            <%= image_tag 'flag.png', class:"img-fluid", style: "height: 220, crop: :fill" %>
-          </div>
-          <div class="col-7 position-relative">
-            <div class="position-absolute top-50 start-50 translate-middle">
-              <h4 class="card-title text-success text-center">COMPETIÇÕES E EVENTOS</h4>
-              <p class="card-text text-center">Se inscreva em competições, pedaladas, desafios e outros eventos de ciclismo.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <% end %>
   </div>
 </div>
 
