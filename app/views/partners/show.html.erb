@@ -28,11 +28,19 @@
           <% weekday[:day_uses].each do |day_use| %>
             <div class="col-12 col-md-4 mb-3">
               <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
-                <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.photo.key, height: 300, crop: :fill %>')">
-                  <div class="flex center between w-100">
-                    <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
+                <% if day_use.photo.key.present? %>
+                  <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.photo.key, height: 300, crop: :fill %>')">
+                    <div class="flex center between w-100">
+                      <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.partner.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
+                    </div>
                   </div>
-                </div>
+                <% else %>
+                  <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use.partner.logo.key, height: 300, crop: :fill %>')">
+                    <div class="flex center between w-100">
+                      <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use.day_use_schedules.find_by(weekday: weekday[:value]).name %></p>
+                    </div>
+                  </div>
+                <% end %>
               <% end %>
             </div>
           <% end %>
