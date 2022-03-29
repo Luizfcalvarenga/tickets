@@ -1,0 +1,46 @@
+<div class="page-wrapper">
+  <h1 class="title">Aprovação de administrador</h1>
+
+  <div class="bg-dark p-4 br-8 mb-5">
+    <p class="text-white m-2"><span class="fw-700 pe-3">Tipo:</span>
+      <% case @entity.class.name %>
+      <% when "Event" %>
+        Evento
+      <% when "DayUse" %>
+        DayUse
+      <% when "Membership" %>
+        Mensalidade
+      <% else %>
+        -
+      <% end %>
+    </p>
+    <p class="text-white m-2"><span class="fw-700 pe-3">Parceiro:</span><%= @entity.partner.name %></p>
+    <p class="text-white m-2"><span class="fw-700 pe-3">Nome:</span><%= @entity.name %></p>
+
+    <% case @entity.class.name %>
+    <% when "Event" %>
+      <%= link_to edit_partner_admin_event_path(@entity) do %>
+        <p class="btn btn-success m-0 px-5">Editar evento</p>
+      <% end %>
+    <% when "DayUse" %>
+      <%= link_to edit_partner_admin_day_use_path(@entity) do %>
+        <p class="btn btn-success m-0 px-5">Editar Day Use</p>
+      <% end %>
+    <% when "Membership" %>
+      <%= link_to edit_partner_admin_membership_path(@entity) do %>
+        <p class="btn btn-success m-0 px-5">Editar Mensalidade</p>
+      <% end %>
+    <% else %>
+      -
+    <% end %>
+  </div>
+
+  <%= simple_form_for(:approve, url: "/admin/approve/#{@entity.class.table_name}/#{@entity.id}", method: :patch) do |f| %>
+    <%= f.input :fee_percentage, label: "Taxa do ingresso (em %)", input_html: { class: "mb-4", value: @entity.partner.fee_percentage } %>
+    <%= f.input :absorb_fee, as: :boolean, label: "Repassar taxa?" %>
+
+    <p class="gs-190">Repassar a taxa: não imbutir a taxa como um adicional no preço do ingresso, e sim abater no cálculo da quantia que é repassada para o organizador.</p>
+
+    <%= f.submit "Aprovar", class: "btn btn-success mt-5 w-100" %>
+  <% end %>
+</div>

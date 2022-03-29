@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_09_035353) do
+ActiveRecord::Schema.define(version: 2022_03_28_035232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,11 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.bigint "partner_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "fee_percentage"
+    t.boolean "absorb_fee"
+    t.datetime "approved_at"
+    t.bigint "approved_by_id"
+    t.index ["approved_by_id"], name: "index_day_uses_on_approved_by_id"
     t.index ["partner_id"], name: "index_day_uses_on_partner_id"
   end
 
@@ -171,6 +176,11 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "created_by_id"
+    t.float "fee_percentage"
+    t.boolean "absorb_fee"
+    t.datetime "approved_at"
+    t.bigint "approved_by_id"
+    t.index ["approved_by_id"], name: "index_events_on_approved_by_id"
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
     t.index ["partner_id"], name: "index_events_on_partner_id"
@@ -198,6 +208,11 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.string "iugu_plan_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "fee_percentage"
+    t.boolean "absorb_fee"
+    t.datetime "approved_at"
+    t.bigint "approved_by_id"
+    t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end
 
@@ -212,6 +227,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.integer "total_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "absorb_fee"
     t.index ["day_use_schedule_pass_type_id"], name: "index_order_items_on_day_use_schedule_pass_type_id"
     t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
@@ -280,6 +296,7 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "directly_generated_by_id"
+    t.boolean "absorb_fee"
     t.index ["day_use_schedule_pass_type_id"], name: "index_passes_on_day_use_schedule_pass_type_id"
     t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
@@ -380,16 +397,19 @@ ActiveRecord::Schema.define(version: 2022_02_09_035353) do
   add_foreign_key "day_use_schedule_pass_types", "day_use_schedules"
   add_foreign_key "day_use_schedules", "day_uses"
   add_foreign_key "day_uses", "partners"
+  add_foreign_key "day_uses", "users", column: "approved_by_id"
   add_foreign_key "event_batch_questions", "event_batches"
   add_foreign_key "event_batch_questions", "questions"
   add_foreign_key "event_batches", "events"
   add_foreign_key "event_communications", "events"
   add_foreign_key "events", "cities"
   add_foreign_key "events", "states"
+  add_foreign_key "events", "users", column: "approved_by_id"
   add_foreign_key "events", "users", column: "created_by_id"
   add_foreign_key "membership_discounts", "day_uses"
   add_foreign_key "membership_discounts", "events"
   add_foreign_key "membership_discounts", "memberships"
+  add_foreign_key "memberships", "users", column: "approved_by_id"
   add_foreign_key "order_items", "day_use_schedule_pass_types"
   add_foreign_key "order_items", "event_batches"
   add_foreign_key "order_items", "orders"

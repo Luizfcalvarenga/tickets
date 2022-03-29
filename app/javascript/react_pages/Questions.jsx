@@ -41,6 +41,18 @@ export function Questions(props) {
     setQuestions(currentQuestions);
   };
 
+  const handleQuestionOptionChange = (value, questionOrder, questionOptionOrder) => {
+    const currentQuestions = [...questions];
+
+    const editedQuestion = currentQuestions.find(
+      (question) => question.order === questionOrder
+    );
+
+    editedQuestion.options[questionOptionOrder] = value;
+
+    setQuestions(currentQuestions);
+  };
+
   const removeQuestion = (questionIndex) => {
     const currentQuestions = [...questions];
 
@@ -57,7 +69,7 @@ export function Questions(props) {
         ser criadas aqui.
       </p>
 
-      {questions.map((question, index) => {
+      {questions.map((question, questionIndex) => {
         return (
           <div key={question.order} className="mb-4">
             <div className="p-4 bg-dark my-4">
@@ -65,7 +77,7 @@ export function Questions(props) {
                 <h3>Pergunta {question.order + 1}</h3>
                 <p
                   className="btn btn-danger w-20 text-center text-white"
-                  onClick={() => removeQuestion(index)}
+                  onClick={() => removeQuestion(questionIndex)}
                 >
                   <i className="fa fa-trash"></i>
                   <span className="px-3">Remover</span>
@@ -117,17 +129,26 @@ export function Questions(props) {
               </div>
               {question.kind === "multiple_choice" && (
                 <div>
-                  {question.options.map((questionOption) => {
-                    return (
-                      <input
-                        class="form-control my-2"
-                        type="text"
-                        name="questions[][options][]"
-                        value={questionOption}
-                        placeholder="Texto da opção"
-                      />
-                    );
-                  })}
+                  {question.options.map(
+                    (questionOption, questionOptionIndex) => {
+                      return (
+                        <input
+                          class="form-control my-2"
+                          type="text"
+                          name="questions[][options][]"
+                          value={questionOption}
+                          onChange={(e) =>
+                            handleQuestionOptionChange(
+                              e.target.value,
+                              questionIndex,
+                              questionOptionIndex
+                            )
+                          }
+                          placeholder="Texto da opção"
+                        />
+                      );
+                    }
+                  )}
                   <p
                     className="btn btn-success p-3"
                     onClick={() => addQuestionOption(question.order)}

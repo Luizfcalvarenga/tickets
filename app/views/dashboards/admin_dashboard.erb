@@ -1,12 +1,69 @@
 <% content_for(:html_title) { 'NuflowPass Dashboard' } %>
-<div class="page-wrapper">
-  <h1 class="title">Dashboard do administrador</h1>
-  <%= link_to destroy_user_session_path, method: "delete" do %>
-    <p class="btn btn-danger w-100">Logout</p>
-  <% end %>
-
+<div class="page-wrapper"> 
   <h2 class="title">Parceiros</h2>
   <%= link_to admin_partners_path do %>
     <p class="btn btn-success w-100">Ver parceiros</p>
   <% end %>
+
+  <h2 class="title">Entidades para aprovar</h2>
+    <table>
+    <thead>
+      <tr>
+        <th scope="col">Tipo</th>
+        <th scope="col">Parceiro</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @entities_to_approve.each do |entity| %>
+        <tr>
+          <td data-label="Nome do parceiro">
+            <p class="text-white fw-700 m-0 f-20">
+              <% case entity.class.name %>
+              <% when "Event" %>
+                Evento
+              <% when "DayUse" %>
+                DayUse
+              <% when "Membership" %>
+                Mensalidade
+              <% else %>
+                -
+              <% end %>
+            </p>
+          </td>
+          <td data-label="Cidade/Estado">
+            <p class="text-white fw-700 m-0 f-20">
+              <%= entity.partner.name %>
+            </p>
+          </td>
+          <td data-label="Cidade/Estado">
+            <p class="text-white fw-700 m-0 f-30"><%= entity.name %></p>
+          </td>
+          <td data-label="Ações">
+            <% case entity.class.name %>
+            <% when "Event" %>
+              <%= link_to edit_partner_admin_event_path(entity) do %>
+                <p class="btn btn-success m-0 px-5">Editar</p>
+              <% end %>
+            <% when "DayUse" %>
+              <%= link_to edit_partner_admin_day_use_path(entity) do %>
+                <p class="btn btn-success m-0 px-5">Editar</p>
+              <% end %>
+            <% when "Membership" %>
+              <%= link_to edit_partner_admin_membership_path(entity) do %>
+                <p class="btn btn-success m-0 px-5">Editar</p>
+              <% end %>
+            <% else %>
+              -
+            <% end %>
+
+            <%= link_to admin_approve_form_path(entity_class: entity.class.table_name, entity_id: entity.id) do %>
+              <p class="btn btn-success m-0 px-5">Aprovar</p>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

@@ -3,7 +3,7 @@ class PartnersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    @partners = Partner.all
+    @partners = Partner.bike_park.order(:created_at)
   end
   
   def show
@@ -28,8 +28,6 @@ class PartnersController < ApplicationController
 
     current_weekday_value = Time.current.wday
     @weekdays = @weekdays.select { |wd| wd[:order] >= current_weekday_value } + @weekdays.select { |wd| wd[:order] < current_weekday_value }
-    @weekdays[0][:today] = true
-    @weekdays[0][:label] += " (Hoje)"
 
     @memberships = @partner.memberships.where.not(id: current_user&.user_memberships&.active&.ids)
 

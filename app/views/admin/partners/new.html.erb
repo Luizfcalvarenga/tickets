@@ -1,30 +1,5 @@
 <div class="page-wrapper partner-form">
   <h1 class="title">Criar novo parceiro</h1>
 
-  <%= simple_form_for([:admin, @partner]) do |f| %>
-    <%= f.input :name %>
-    <%= f.input :cnpj %>
-    <%= f.input :contact_phone_1 %>
-    <%= f.input :contact_phone_2 %>
-    <%= f.input :contact_email %>
-    <%= f.input :about %>
-    
-    <%= f.input :cep %>
-    <%= f.input :state_id, collection: State.all.order(:name) %>
-    <%= f.input :city_id, as: :select, collection: @cities, input_html: { id: 'cities_select' }, required: true %>
-    <%= f.input :street_name %>
-    <%= f.input :street_number %>
-    <%= f.input :neighborhood %>
-    <%= f.input :address_complement %>
-
-    <div class="spacer-50"></div>
-
-    <%= f.input :logo, as: :file %>
-
-    <div class="spacer-50"></div>
-
-    <%= f.input :main_contact_email %>
-
-    <%= f.submit "Criar parceiro", class: "btn btn-success mt-5 w-100" %>
-  <% end %>
+  <%= render 'admin/partners/form' %>
 </div>

@@ -95,12 +95,17 @@ export function DayUseOrderItems(props) {
                             currency: "BRL",
                           }
                         )}
-                        &nbsp;(+&nbsp;
-                        {feeInCents(passType).toLocaleString("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        })}{" "}
-                        taxa)
+                        {props.feePercentage > 0 && (
+                          <>
+                            {" "}
+                            &nbsp;(+&nbsp;
+                            {feeInCents(passType).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}{" "}
+                            taxa)
+                          </>
+                        )}
                       </p>
                     </div>
 

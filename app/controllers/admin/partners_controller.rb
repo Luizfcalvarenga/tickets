@@ -1,7 +1,7 @@
 module Admin
   class PartnersController < ApplicationController
     def index
-      @partners = Partner.all
+      @partners = Partner.all.order(:created_at)
     end
     
     def show
@@ -16,7 +16,7 @@ module Admin
       @partner = Partner.new(partner_params)
 
       if params[:partner][:main_contact_email].blank?
-        flash[:alert] = "Insira um email válido para o contato principal"
+        flash[:alert] = "Email do contato principal inválido ou já existe"
         render :new and return
       end
       if User.exists?(email: params[:partner][:main_contact_email])
@@ -65,7 +65,7 @@ module Admin
     private
 
     def partner_params
-      params.require(:partner).permit(:name, :cnpj, :contact_phone_1, :contact_phone_2, :contact_email, :cep, :state_id, :city_id, :street_name, :street_number, :neighborhood, :address_complement, :logo, :slug, :about)
+      params.require(:partner).permit(:kind, :name, :cnpj, :contact_phone_1, :contact_phone_2, :contact_email, :cep, :state_id, :city_id, :street_name, :street_number, :neighborhood, :address_complement, :logo, :banner, :slug, :about)
     end
   end
 

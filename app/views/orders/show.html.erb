@@ -32,7 +32,13 @@
             <p class="m-0"><%= order_item.identification_name %></p>
             <p class="m-0"><%= order_item.identification_cpf %></p>
           </td>
-          <td data-label="Valor"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %> (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)</td>
+          <td data-label="Valor"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %>
+            <% if order_item.fee_value_in_cents > 0 %>
+              <span>
+                (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)
+              </span>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>

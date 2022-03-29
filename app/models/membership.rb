@@ -1,5 +1,6 @@
 class Membership < ApplicationRecord
   belongs_to :partner
+  belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_many :user_memberships
   has_many :users, through: :user_memberships
@@ -10,6 +11,8 @@ class Membership < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :partner_id }
 
   after_create :create_plan_at_iugu
+
+  scope :not_approved, -> { where(approved_at: nil) }
 
   def identifier
     "nuflowpass-#{partner.id}-#{id}"

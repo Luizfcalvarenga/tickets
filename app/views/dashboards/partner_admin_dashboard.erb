@@ -126,53 +126,47 @@
           <% if current_user.partner.logo.attached? %>
             <%= cl_image_tag current_user.partner.logo.key, height: 300, width: 300, crop: :fit , class: "rounded mx-auto d-block mb-5"%>
           <% end %>
-        <div class="row">
-          <div class="col-6 d-grid mb-3">
-            <%= f.input :name %>
-            <%= f.input :slug, wrapper: :input_group, prepend: request.host, placeholder:"nome-exemplo" %>
-            <%= f.input :cnpj %>
-            <%= f.input :contact_email %>
-            <%= f.input :contact_phone_1 %>
-            <%= f.input :contact_phone_2 %>
-            <%= f.input :about, :input_html => { 'rows' => 5 } %>
-          </div>
+          <div class="row">
+            <div class="col-6 d-grid mb-3">
+              <%= f.input :name %>
+              <%= f.input :slug, wrapper: :input_group, prepend: "#{request.host}/", placeholder:"nome-exemplo" %>
+              <%= f.input :cnpj %>
+              <%= f.input :contact_email %>
+              <%= f.input :contact_phone_1 %>
+              <%= f.input :contact_phone_2 %>
+            </div>
 
-          <div class="col-6">
-            <%= f.input :cep %>
-            <%= f.input :state_id, collection: State.all.order(:name) %>
-            <%= f.input :city_id, as: :select, collection: @partner.state.cities, input_html: { id: 'cities_select' }, required: true %>
-            <%= f.input :street_name %>
-            <div class="row">
-              <div class="col-md-4">
-                <%= f.input :street_number %>
+            <div class="col-6">
+              <%= f.input :cep, input_html: { class: "input-cep" } %>
+              <%= f.input :state_id, collection: State.all.order(:name), input_html: { class: 'select-state' }  %>
+              <%= f.input :city_id, as: :select, collection: @partner.state.cities, input_html: { class: 'select-city' }, required: true %>
+              <%= f.input :street_name, input_html: { class: "input-street-name" } %>
+              <div class="row">
+                <div class="col-md-4">
+                  <%= f.input :street_number %>
+                </div>
+                <div class="col-md-8">
+                  <%= f.input :neighborhood, input_html: { class: "input-neighborhood" } %>
+                </div>
               </div>
-              <div class="col-md-8">
-                <%= f.input :neighborhood %>
-              </div>
-            </div>
-            <%= f.input :address_complement %>
-            <div class="mt-4">
-              <%= f.input :logo, as: :file %>
+              <%= f.input :address_complement %>
             </div>
           </div>
-        </div>
-        <div class="p-1 d-flex justify-content-center mx-auto d-block ">
-          <div class="bg-white p-4">
-            <%= @svg.html_safe %>
+          <%= f.input :about, as: :text, input_html: { data: { fill_inner_html:@partner.about } } %>
+          <div class="flex my-4">
+            <%= f.input :logo, as: :file %>
+            <%= f.input :banner, as: :file %>
           </div>
-        </div>
-        <div class="text-center">
-          <%= f.submit "SALVAR ALTERAÇÕES", class: "btn btn-success my-5" %>
-        </div>
-      <% end %>
+          <div class="p-1 d-flex justify-content-center mx-auto d-block ">
+            <div class="bg-white p-4">
+              <%= @svg.html_safe %>
+            </div>
+          </div>
+          <div class="text-center">
+            <%= f.submit "SALVAR ALTERAÇÕES", class: "btn btn-success my-5" %>
+          </div>
+        <% end %>
       </div>
-
-
-      <!--
-      <%= link_to edit_partner_admin_partner_path(current_user.partner.slug), class: "col-12 w-100" do %>
-        <p class="btn btn-success my-3 px-4">Editar cadastro</p>
-      <% end %>
-       -->
     </div>
   </div>
 </div>

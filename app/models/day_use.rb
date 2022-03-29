@@ -1,5 +1,6 @@
 class DayUse < ApplicationRecord
   belongs_to :partner
+  belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_rich_text :description
 
@@ -13,7 +14,8 @@ class DayUse < ApplicationRecord
   has_many :day_use_blocks, dependent: :destroy
 
   scope :open_for_weekday, ->(weekday) { joins(:day_use_schedules).where("day_use_schedules.opens_at is not null and day_use_schedules.closes_at is not null and day_use_schedules.weekday = ?", weekday) }
-
+  scope :not_approved, -> { where(approved_at: nil) }
+  
   def schedule_for_date(date)
     day_use_schedules.find_by(weekday: date.strftime("%A").downcase)
   end

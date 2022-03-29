@@ -39,6 +39,6 @@ class DashboardsController < ApplicationController
   end
 
   def admin_dashboard
-
+    @entities_to_approve = Event.not_approved + DayUse.not_approved + Membership.not_approved
   end
 end

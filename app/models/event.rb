@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   belongs_to :created_by, class_name: "User"
   belongs_to :city
   belongs_to :state
+  belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_one_attached :photo
   has_many :event_batches, dependent: :destroy
@@ -22,6 +23,7 @@ class Event < ApplicationRecord
   scope :upcoming, -> { where("scheduled_end < ?", Time.current) }
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
+  scope :not_approved, -> { where(approved_at: nil) }
 
   def create_default_questions
     Question.create!(

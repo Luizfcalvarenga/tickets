@@ -65,7 +65,7 @@ window.toastr.options = {
 
 // Internal imports
 import "./add_card";
-import "./events";
+import "./address_cep";
 import "./event_user_list";
 import "./day_use_user_list";
 import "./membership_user_list";

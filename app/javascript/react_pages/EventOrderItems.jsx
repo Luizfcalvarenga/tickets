@@ -59,12 +59,17 @@ export function EventOrderItems(props) {
                     style: "currency",
                     currency: "BRL",
                   })}
-                  &nbsp;(+&nbsp;
-                  {(batch.feeInCents / 100).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}{" "}
-                  taxa)
+                  {props.feePercentage > 0 && 
+                    <>
+                      {" "}
+                      &nbsp;(+&nbsp;
+                      {(batch.feeInCents / 100).toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}{" "}
+                      taxa)
+                    </>
+                  }
                 </p>
               </div>
 

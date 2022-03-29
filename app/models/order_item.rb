@@ -8,7 +8,7 @@ class OrderItem < ApplicationRecord
   has_many :question_answers, dependent: :destroy
 
   def fee_value_in_cents
-    price_in_cents * fee_percentage / 100
+    absorb_fee ? 0 : price_in_cents * fee_percentage / 100
   end
 
   def identification_name

@@ -19,7 +19,7 @@
         data-open-slots="<%= @day_use_schedule.open_slots_for_date(@date).to_json %>"
         data-pass-types="<%= @day_use_schedule.day_use_schedule_pass_types.to_json %>"
         data-date="<%= @date.to_json %>"
-        data-fee-percentage="<%= @day_use.partner.fee_percentage %>"></react>
+        data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
 
       <div class="text-center">
         <%= f.submit "Comprar ingressos", class: "btn btn-success mt-5 p-3" %>

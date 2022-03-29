@@ -31,7 +31,7 @@
           <% end %>
         </div>
         <div class="col-7 p-5 h-100 d-flex flex-column">
-          <div class="d-flex justify-content-between f-20">
+          <div class="d-flex justify-content-between f-30">
             <h3><span class="text-success"><%= event.name %></span></h3>
             <div class="d-flex justify-content-between">
               <div>
@@ -44,8 +44,8 @@
               </div>
             </div>
           </div>
-          <div class="overflow-auto f-70">
-            <p class="mb-0"><%= event.description.to_plain_text.truncate(500) %></p>
+          <div class="overflow-auto f-60">
+            <p class="mb-0"><%= event.description.to_plain_text.truncate(400) %></p>
           </div>
           <%= link_to event_path(event), class: "" do %>
             <button class="btn btn-success btn-lg px-5">COMPRAR</button>

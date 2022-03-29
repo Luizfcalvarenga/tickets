@@ -21,6 +21,11 @@ class OrdersController < ApplicationController
   end
   
   def create
+    if order_items_params.map { |oi| oi["quantity"].to_i }.sum.zero?
+      flash[:alert] = "Você não selecionou nenhum ingresso"
+      redirect_to request.referrer and return
+    end
+
     @order = Order.create(user: current_user)
 
     ActiveRecord::Base.transaction do
@@ -42,8 +47,9 @@ class OrdersController < ApplicationController
             event_batch_id: order_item_params[:event_batch_id],
             day_use_schedule_pass_type_id: order_item_params[:day_use_schedule_pass_type_id],
             price_in_cents: entity.price_in_cents,
-            fee_percentage: entity.partner.fee_percentage,
-            total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
+            fee_percentage: entity.fee_percentage,
+            absorb_fee: entity.absorb_fee,
+            total_in_cents: entity.total_in_cents,
             start_time: start_time,
             end_time: end_time,
           )

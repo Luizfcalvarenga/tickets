@@ -1,5 +1,8 @@
-<%= image_tag "laybackbanner.jpg", class: "w-100 partner-banner" %>
-
+<% if @partner.banner.attached? %>
+  <%= cl_image_tag @partner.banner.key, crop: :fill, class: "partner-banner" %>
+<% else %>
+  <%= image_tag "background_1.jpg", crop: :fill, class: "partner-banner" %>
+<% end %>
 <div class="partner-show-wrapper position-relative">
   <% if @partner.logo.attached? %>
     <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit, class: "partner-show-logo" %>

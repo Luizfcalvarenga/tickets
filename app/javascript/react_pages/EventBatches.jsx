@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import DateTimePicker from "react-datetime-picker";
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
+const moment = require("moment-strftime");
 
 export function EventBatches(props) {
   const uniquePassTypes = props.event.event_batches
@@ -49,7 +48,7 @@ export function EventBatches(props) {
         } lote`,
         quantity: 0,
         price_in_cents: 0,
-        ends_at: Date.new,
+        ends_at: moment(Date.new).strftime("%Y-%m-%d"),
         order: editedPassType.event_batches.length,
       },
     ];
@@ -217,18 +216,21 @@ export function EventBatches(props) {
                     </div>
                     <div className="f-1x">
                       <label htmlFor="">Data limite</label>
-                      <Flatpickr
-                        value={eventBatch.ends_at}
+                      <input
+                        class="form-control mx-1 date required"
+                        type="date"
                         name="event[event_batches][][ends_at]"
-                        onChange={(date) =>
+                        value={moment(eventBatch.ends_at).strftime("%Y-%m-%d")}
+                        onChange={(e) =>
                           updateEventBatch(
-                            date,
+                            e.target.value,
                             "ends_at",
                             passType,
                             eventBatchIndex
                           )
                         }
-                      />
+                        id="event_scheduled_start"
+                      ></input>
                     </div>
                   </div>
                 </div>

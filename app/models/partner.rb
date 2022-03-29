@@ -7,6 +7,11 @@ class Partner < ApplicationRecord
 
   before_create :slugify
 
+  enum kind: {
+    bike_park: "bike_park",
+    organizer: "organizer",
+  }
+
   def to_param
     slug
   end
@@ -18,12 +23,15 @@ class Partner < ApplicationRecord
   attr_accessor :main_contact_email
 
   has_one_attached :logo
+  has_one_attached :banner
   
   has_many :passes
   has_many :events
   has_many :memberships
   has_many :user_memberships, through: :memberships
   has_many :day_uses
+
+  validates :slug, uniqueness: true
 
   def memberships_csv
     users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: memberships.ids}).group("users.id").order("users.name")

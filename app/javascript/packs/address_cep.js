@@ -32,11 +32,11 @@ const ufMap = {
 
 document.addEventListener("turbolinks:load", () => {
   function getLocation(setCity = "") {
-    const id = document.querySelector("#event_state_id").value;
+    const id = document.querySelector(".select-state").value;
     fetch(`/cities_by_state?state_id=${id}`)
       .then((response) => response.json())
       .then((data) => {
-        let citiesSelect = document.getElementById("cities_select");
+        let citiesSelect = document.querySelector(".select-city");
         citiesSelect.innerHTML = "";
         data.forEach((city) => {
           let option = document.createElement("option");
@@ -45,14 +45,14 @@ document.addEventListener("turbolinks:load", () => {
           citiesSelect.add(option);
 
           if (setCity && setCity === city.name) {
-            document.querySelector("#cities_select").value = city.id;
+            document.querySelector(".select-city").value = city.id;
           }
         });
       });
   }
-  let eventState = document.querySelector("#event_state_id");
-  if (eventState !== null) {
-    eventState.addEventListener("change", () => {
+  let selectState = document.querySelector(".select-state");
+  if (selectState !== null) {
+    selectState.addEventListener("change", () => {
       getLocation();
     });
   }
@@ -60,16 +60,16 @@ document.addEventListener("turbolinks:load", () => {
   const fillStateAndCity = (stateUf, cityName) => {
     const stateName = ufMap[stateUf];
 
-    const value = [...eventState.querySelectorAll("option")].find((opt) => {
+    const value = [...selectState.querySelectorAll("option")].find((opt) => {
       return opt.innerHTML === stateName
     })
 
-    eventState.value = value.value
+    selectState.value = value.value
     getLocation(cityName)
   }
 
   // Mask
-  let zipcode = document.getElementById("event_cep");
+  let zipcode = document.querySelector(".input-cep");
   if (zipcode) {
     let im = new Inputmask("99999-999");
     im.mask(zipcode);
@@ -81,17 +81,17 @@ document.addEventListener("turbolinks:load", () => {
 
         const response = await axios.get(url);
         if (response.status === 200 && !response.data.erro) {
-          document.getElementById("event_street_name").value =
+          document.querySelector(".input-street-name").value =
             response.data.logradouro;
-          document.getElementById("event_neighborhood").value =
+          document.querySelector(".input-neighborhood").value =
             response.data.bairro;
           fillStateAndCity(response.data.uf, response.data.localidade);
         }
       } else {
-        document.getElementById("event_street_name").value = "";
-        document.getElementById("event_neighborhood").value = "";
-        document.getElementById("event_state_id").value = "";
-        document.getElementById("cities_select").value = "";
+        document.querySelector(".input-street-name").value = "";
+        document.querySelector(".input-neighborhood").value = "";
+        document.querySelector(".input-state-id").value = "";
+        document.querySelector(".select-city").value = "";
       }
     });
   }
