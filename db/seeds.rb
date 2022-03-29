@@ -21,7 +21,7 @@ DayUseSchedule.destroy_all
 
 puts "Criando usuários e parceiros..."
 
-User.create!(email: "admin@app.com", password: "123456", access: "admin") 
+admin_user = User.create!(email: "admin@app.com", password: "123456", access: "admin") 
 
 User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Name.name)
 
@@ -64,7 +64,7 @@ partner = Partner.create!(name: "Layback Park",
                           city: city,
                           state: state,
                           about: "Um espaço para todos, feito para celebrar o espírito e a cultura do skate. Os Parks, Casas Dipraia, Basement, Brewpub e Surf House, são os ambientes de experimentação da nossa vibe, a materialização de tudo o que acreditamos e da cultura RTMF. Mais que uma pista de skate, é um espaço inclusivo, feito para criar momentos únicos. É um ambiente aberto, que traz tudo o que amamos e onde promovemos nosso estilo de vida: conectando, inspirando e abraçando todos os tipos de pessoas. Quer beber com os amigos? Temos cerveja. Quer andar de skate (ou aprender)? Temos pista. Quer comer? Temos um centro gastronômico. Tattoo? Passeio em família? Shows? Rolê com os amigos? Arte urbana? Estaremos sempre de portas abertas. ",
-                          kind: "partner",
+                          kind: "bike_park",
                           )
                           
 partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/laybacklogo.png')),
@@ -77,7 +77,14 @@ p "Parceiro #{partner.name} criado"
 
 ["Mensalista básico", "Mensalista premium", "Mensalista VIP"].each do |assinatura|
   puts "Criando assinatura " + assinatura.to_s + "..."
-  membership = Membership.create!(name: assinatura.to_s, price_in_cents: [2000, 5000, 10000].pop, partner: partner, description: "Esta é a assinatura de nível " + assinatura.to_s) 
+  membership = Membership.create!(name: assinatura.to_s,
+    price_in_cents: [2000, 5000, 10000].pop,
+    partner: partner,
+    fee_percentage: 0.0,
+    absorb_fee: false,
+    approved_at: Time.current,
+    approved_by: admin_user,
+    description: "Esta é a assinatura de nível " + assinatura.to_s) 
 
   min_count = (NUMBER_OF_USERS * 0.2).to_i
   max_count = min_count + 5
@@ -130,7 +137,11 @@ NUMBER_OF_EVENTS.times do |i|
     cep: "30310700",
     address_complement: "Mais próximo do que longe!",
     created_by: User.where(access: "partner_admin").sample,
-    partner_id: Partner.first.id
+    partner_id: Partner.first.id,
+    fee_percentage: 10.0,
+    absorb_fee: false,
+    approved_at: Time.current,
+    approved_by: admin_user,
   )
   
   url = Faker::LoremFlickr.image(size: "640x480", search_terms: ['bike+race'])
@@ -203,6 +214,10 @@ NUMBER_OF_DAY_USES.times do
   day_use = DayUse.create!(name: Faker::WorldCup.stadium,
     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(" "),
     partner_id: Partner.first.id,
+    fee_percentage: 10.0,
+    absorb_fee: false,
+    approved_at: Time.current,
+    approved_by: admin_user,
   )
 
   url = Faker::LoremFlickr.image(size: "1024x720", search_terms: ['mountain+bike'])
