@@ -12,6 +12,9 @@
                       input_html: { autocomplete: "current-password", id: "password_signin" } %>
           <label for="toggle-password-signin" class="mt-3">Mostrar senha</label> 
           <input type="checkbox" id="toggle-password-signin" />
+        <div class="py-2">
+          <%= render "devise/shared/links" %>
+        </div>
         </div>
         <div class="text-center my-3 h-20">
           <%= f.button :submit, "Fazer login", class: "btn btn-success" %>
