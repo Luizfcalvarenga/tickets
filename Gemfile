@@ -43,6 +43,9 @@ gem 'rack-cors', require: 'rack/cors'
 
 gem 'cloudinary', '~> 1.16.0'
 
+gem 'postmark-rails'
+gem 'letter_opener'
+
 gem 'autoprefixer-rails', '10.2.5'
 gem 'font-awesome-sass'
 gem 'simple_form'
