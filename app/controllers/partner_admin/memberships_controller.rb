@@ -69,6 +69,6 @@ class PartnerAdmin::MembershipsController < ApplicationController
 
   def membership_params
     params.require(:membership).permit(:id, :name, :short_description, :description, :terms_of_use, :price_in_cents, :recurrence_interval_in_months)
-      .merge(@membership.new_record? ? { partner_id: current_user.partner_id } : {})
+      .merge(@membership.blank? ? { partner_id: current_user.partner_id } : {})
   end
 end
