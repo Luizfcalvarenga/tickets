@@ -31,6 +31,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'devise'
 gem 'pundit'
 gem "rqrcode", "~> 2.0"
+gem 'prawn-svg'
+gem 'prawn-table'
+gem 'prawn-rails'
 
 gem 'sidekiq'
 gem 'sidekiq-failures', '~> 1.0'

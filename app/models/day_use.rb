@@ -3,7 +3,8 @@ class DayUse < ApplicationRecord
   belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_rich_text :description
-
+  has_rich_text :terms_of_use
+  
   has_one_attached :photo
 
   has_many :questions
@@ -61,5 +62,9 @@ class DayUse < ApplicationRecord
         csv << [pass.user.email, pass.user.document_number, pass.day_use_schedule_pass_type.name, pass.start_time.strftime("%d/%m/%Y"), pass.start_time.strftime("%H:%M"), pass.day_use_schedule_pass_type.price_in_cents] + pass.question_answers.joins(:question).order("questions.order").map(&:value)
       end
     end
+  end
+
+  def full_address
+    "#{partner.street_name} - #{partner.street_number} - #{partner.address_complement}, #{partner.neighborhood}, #{partner.city.name} - #{partner.city.state.acronym}"
   end
 end

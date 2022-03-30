@@ -1,0 +1,74 @@
+<div class="page-wrapper">
+  <div class="flex center around">
+    <h1 class="title w-60">Resumo financeiro</h1>
+
+    <%= simple_form_for(:orders, url: partner_admin_orders_url, method: :get) do |f| %>
+      <div class="flex justify-content-end align-items-center w-100">
+        <div class="f-10"><%= select_month(@reference_date, {field_name: "month"}, {class: "w-90"}) %></div>
+        <div class="f-10"><%= select_year(@reference_date, {start_year: 2020, end_year: Time.current.year, field_name: "year"}, {class: "w-90"}) %></div>
+        <%= f.submit "Trocar", class: "btn btn-success f-10" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row my-3">
+    <div class="col-12 col-md-3 p-2">
+      <div class="br-8 bg-dark flex center around flex-column p-4">
+        <p class="fw-bold text-white">Mês de referência</p>
+        <p class="fw-bold text-white fs-30 m-0"><%= @reference_date.strftime("%m/%Y") %></p>
+      </div>
+    </div>
+    <div class="col-12 col-md-3 p-2 br-8">
+      <div class="br-8 bg-dark flex center around flex-column p-4">
+        <p class="fw-bold text-white">Passes vendidos</p>
+        <p class="fw-bold text-white fs-30 m-0"><%= @passes.count %></p>
+      </div>
+    </div>
+    <div class="col-12 col-md-3 p-2 br-8">
+      <div class="br-8 bg-dark flex center around flex-column p-4">
+        <p class="fw-bold text-white">Total de vendas</p>
+        <p class="fw-bold text-white fs-30 m-0"><%= display_price(@total_sales) %></p>
+      </div>
+    </div>
+    <div class="col-12 col-md-3 p-2 br-8">
+      <div class="br-8 bg-dark flex center around flex-column p-4">
+        <p class="fw-bold text-white">Total a receber</p>
+        <p class="fw-bold text-white fs-30 m-0"><%= display_price(@amount_to_receive) %></p>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Usuário</th>
+        <th scope="col">Identificação do passe</th>
+        <th scope="col">Identificação do comprador</th>
+        <th scope="col">Gerado em</th>
+        <th scope="col">Preço</th>
+        <th scope="col">Taxa</th>
+        <th scope="col">Absorver taxa?</th>
+        <th scope="col">A receber</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @passes.each do |pass| %>
+      <tr>
+        <td data-label="Nome do parceiro"><%= pass.user.email %></td>
+        <td data-label="Nome do parceiro"><%= pass.name %></td>
+        <td data-label="Nome do parceiro"><%= pass.holder_name %><br><%= pass.holder_cpf %></td>
+        <td data-label="Nome do parceiro"><%= pass.created_at.strftime("%d/%m/%Y") %></td>
+        <td data-label="Nome do parceiro"><%= display_price(pass.price_in_cents) %></td>
+        <td data-label="Nome do parceiro"><%= pass.fee_percentage %>%</td>
+        <td data-label="Nome do parceiro"><%= pass.absorb_fee ? "Sim" : "Não" %></td>
+        <td data-label="Nome do parceiro"><%= display_price(pass.amount_to_transfer_to_partner) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @passes.blank? %>
+    <p class="text-white p-4">Nenhum passe vendido neste mês.</p>
+  <% end %>
+</div>
+

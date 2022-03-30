@@ -65,7 +65,7 @@ module PartnerAdmin
     private
 
     def event_params
-      params.require(:event).permit(:name, :description, :photo, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
+      params.require(:event).permit(:name, :description, :photo, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
         .merge(created_by: current_user, partner: current_user.partner)
     end
   

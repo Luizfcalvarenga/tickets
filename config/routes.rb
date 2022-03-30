@@ -2,12 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#home'
 
-  # mount ActionCable.server => '/cable'
-
   get "partnership", to: "pages#partnership", as: "partnership"
-  get "clean", to: "pages#clean", as: "clean"
-  get "seed1", to: "pages#seed1", as: "seed1"
-  get "seed10", to: "pages#seed10", as: "seed10"
 
   get "user_dashboard", to: "dashboards#user_dashboard", as: "user_dashboard"
   get "partner_user_dashboard", to: "dashboards#partner_user_dashboard", as: "partner_user_dashboard"
@@ -42,8 +37,6 @@ Rails.application.routes.draw do
     end
     resources :partners
     resources :orders
-    # get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
-    # dúvida
   end
 
   resources :partners do
@@ -77,6 +70,7 @@ Rails.application.routes.draw do
   get "passes/scanner", to: "passes#scanner", as: "pass_scanner" 
   resources :passes
   get "passes/:id/read", to: "passes#read", as: "read_pass"
+  get 'passes/:identifier/download', to: 'passes#download', as: "pass_download"
 
   get "/:id", to: "partners#show", as: "partner_shortcut"
 end

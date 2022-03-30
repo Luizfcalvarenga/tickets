@@ -39,7 +39,7 @@ class DayUseCreator
   private
 
   def day_use_params
-    params.require(:day_use).permit(:name, :description, :photo).merge(partner: current_user.partner)
+    params.require(:day_use).permit(:name, :description, :photo, :terms_of_use).merge(partner: current_user.partner)
   end
 
   def day_use_schedule_params

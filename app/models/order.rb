@@ -8,6 +8,17 @@ class Order < ApplicationRecord
 
   accepts_nested_attributes_for :user
 
+  def related_entity
+    sample_order_item = order_items.first
+    if sample_order_item.day_use_schedule_pass_type.present?
+      sample_order_item.day_use_schedule_pass_type.day_use
+    elsif sample_order_item.event_batch.present?
+      sample_order_item.event_batch.event
+    else 
+      raise
+    end
+  end
+
   def total_price_in_cents
     order_items.sum(:total_in_cents)
   end

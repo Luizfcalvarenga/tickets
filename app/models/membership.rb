@@ -7,6 +7,7 @@ class Membership < ApplicationRecord
 
   has_rich_text :description
   has_rich_text :short_description
+  has_rich_text :terms_of_use
 
   validates :name, presence: true, uniqueness: { scope: :partner_id }
 
@@ -32,5 +33,9 @@ class Membership < ApplicationRecord
 
   def create_plan_at_iugu
     NovaIugu::PlanCreator.new(self).call
+  end
+
+  def full_address
+    "#{partner.street_name} - #{partner.street_number} - #{partner.address_complement}, #{partner.neighborhood}, #{partner.city.name} - #{partner.city.state.acronym}"
   end
 end

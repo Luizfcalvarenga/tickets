@@ -1,5 +1,15 @@
 module PartnerAdmin
   class OrdersController < ApplicationController
+    def index
+      @reference_date = params[:date].present? && params[:date][:year].present? && params[:date][:month].present? ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.current
+      min_date = @reference_date.at_beginning_of_month
+      max_date = @reference_date.at_end_of_month
+
+      @passes = current_user.partner.passes.from_event_or_day_use.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
+      @total_sales = @passes.sum(:price_in_cents)
+      @amount_to_receive = @passes.map(&:amount_to_transfer_to_partner).sum
+    end
+
     def create
       @user = User.find_by(email: user_params[:email])
 

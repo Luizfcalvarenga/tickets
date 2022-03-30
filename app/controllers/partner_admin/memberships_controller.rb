@@ -33,7 +33,7 @@ class PartnerAdmin::MembershipsController < ApplicationController
   def create
     @membership = Membership.new(membership_params)
     if @membership.save
-      redirect_to partner_admin_membership_path(@membership)
+      redirect_to dashboard_path_for_user(current_user)
     else
       render :new
     end
@@ -47,7 +47,7 @@ class PartnerAdmin::MembershipsController < ApplicationController
     @membership = Membership.find(params[:id])
     @membership.update(membership_params)
     if @membership.save
-      redirect_to partner_admin_membership_path(@membership)
+      redirect_to dashboard_path_for_user(current_user)
     else
       render :edit
     end
@@ -72,7 +72,7 @@ class PartnerAdmin::MembershipsController < ApplicationController
   private
 
   def membership_params
-    params.require(:membership).permit(:id, :name, :short_description, :description, :price_in_cents, :partner_id)
+    params.require(:membership).permit(:id, :name, :short_description, :description, :terms_of_use, :price_in_cents, :partner_id)
           .merge(partner: current_user.partner)
   end
 end

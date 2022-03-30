@@ -2,17 +2,22 @@
   <h1 class="title">Criar nova assinatura</h1>
 
   <%= simple_form_for([:partner_admin, @membership]) do |f| %>
-
     <%= f.input :name %>
 
     <%= f.rich_text_area :description, placeholder: "Descrição da assinatura..." %>
+    
     <div class="spacer-30"></div>
+
     <%= f.rich_text_area :short_description, placeholder: "Curta descrição da assinatura..." %>
+
     <div class="spacer-30"></div>
+    
+    <%= f.rich_text_area :terms_of_use, placeholder: "Termos de uso da assinatura..." %>
+
+    <div class="spacer-30"></div>
+
     <%= f.input :price_in_cents, placeholder: "Preço da assinatura..." %>
 
-
     <%= f.submit "Editar", class: "btn btn-success mt-5 w-100" %>
-    <% end %>
-    </div>
+  <% end %>
 </div>

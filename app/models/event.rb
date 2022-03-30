@@ -17,6 +17,7 @@ class Event < ApplicationRecord
   has_many :memberships, through: :membership_discounts
 
   has_rich_text :description
+  has_rich_text :terms_of_use
 
   validates :name, :description, :cep, :street_name, :street_number, :neighborhood, :scheduled_start, :scheduled_end, presence: true
 
@@ -68,5 +69,9 @@ class Event < ApplicationRecord
         csv << [pass.user.email, pass.user.document_number, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + pass.question_answers.joins(:question).order("questions.order").map(&:value)
       end
     end
+  end
+
+  def full_address
+    "#{street_name} - #{street_number} - #{address_complement}, #{neighborhood}, #{city.name} - #{city.state.acronym}"
   end
 end

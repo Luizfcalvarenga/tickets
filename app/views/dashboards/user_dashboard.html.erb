@@ -31,6 +31,7 @@
                 <td data-label="Bikepark"><%= pass.partner.name %></td>
                 <td data-label="Status" class="<%= pass.status[:class] %>"><%= pass.status[:label] %></td>
                 <td><%= link_to "Ver", pass_path(pass), class: "text-success" %></td>
+                <td><%= link_to "Baixar", pass_download_path(identifier: pass.identifier, download: true), target: :_blank, class: "text-success" %></td>
               </tr>
             <% end %>
           </tbody>

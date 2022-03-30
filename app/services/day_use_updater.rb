@@ -70,7 +70,7 @@ class DayUseUpdater
   private
 
   def day_use_params
-    params.require(:day_use).permit(:name, :description, :photo)
+    params.require(:day_use).permit(:name, :description, :photo, :terms_of_use)
   end
 
   def day_use_schedule_params

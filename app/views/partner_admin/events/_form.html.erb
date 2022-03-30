@@ -1,66 +1,74 @@
 <div class="page-wrapper">
-  <h1 class="title text-center">
-    <%= @event.new_record? ? "Criar novo evento" : "Atualizar evento" %>
-  </h1>
+  <div class="p-5 bg-dark br-8">
+    <h1 class="title text-center">
+      <%= @event.new_record? ? "Criar novo evento" : "Atualizar evento" %>
+    </h1>
 
-  <%= simple_form_for([:partner_admin, @event]) do |f| %>
-    <div class="row">
-      <div class="col-md-12">
-        <%= f.input :name %>
-      </div>
-      <div class="col-md-8">
-        <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
-      </div>
-      <div class="col-md-4 mt-3 files">
-        <%= f.input :photo %>
-      </div>
-      <h2 class="text-success h2 my-3">Local do evento</h2>
-      <div class="col-md-6">
-        <%= f.input :cep, input_html: { class: "input-cep" }  %>
-        <%= f.input :state_id, collection: State.all.order(:name), input_html: { class: 'select-state' }  %>
-        <%= f.input :city_id, as: :select, collection: @cities, input_html: { class: 'select-city' }, required: true %>
-      </div>
-      <div class="col-md-6">
-        <%= f.input :street_name, input_html: { class: "input-street-name" } %>
+    <%= simple_form_for([:partner_admin, @event]) do |f| %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.input :name %>
+        </div>
+        <div class="col-md-8">
+          <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
+        </div>
+        <div class="col-md-4 mt-3 files">
+          <%= f.input :photo %>
+        </div>
         <div class="row">
-          <div class="col-md-4">
-            <%= f.input :street_number %>
-          </div>
-          <div class="col-md-8">
-            <%= f.input :neighborhood, input_html: { class: "input-neighborhood" } %>
+          <div class="col-12">
+          <%= f.rich_text_area :terms_of_use, placeholder: "Termos de uso para esse evento..." %>
           </div>
         </div>
-        <%= f.input :address_complement %>
-      </div>
-      <h2 class="text-success h2 my-3">Data do evento</h2>
-      <div class="col-md-3 col-sm-6">
-          <%= f.input :scheduled_start, label: "Data de Início", as: :date, html5: true %>
-      </div>
-      <div class="col-md-3 col-sm-6">
-          <%= f.input :scheduled_start, label: "Horário de Início", as: :time, html5: true %>
-      </div>
-      <div class="col-md-3 col-sm-6">
-          <%= f.input :scheduled_end, label: "Data de Término", as: :date, html5: true %>
-      </div>
-      <div class="col-md-3 col-sm-6">
-          <%= f.input :scheduled_end, label: "Horário de Término", as: :time, html5: true %>
-      </div>
-    </div>
 
-    <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
+        <h2 class="text-success h2 my-3">Local do evento</h2>
+        <div class="col-md-6">
+          <%= f.input :cep, input_html: { class: "input-cep" }  %>
+          <%= f.input :state_id, collection: State.all.order(:name), input_html: { class: 'select-state' }  %>
+          <%= f.input :city_id, as: :select, collection: @cities, input_html: { class: 'select-city' }, required: true %>
+        </div>
+        <div class="col-md-6">
+          <%= f.input :street_name, input_html: { class: "input-street-name" } %>
+          <div class="row">
+            <div class="col-md-4">
+              <%= f.input :street_number %>
+            </div>
+            <div class="col-md-8">
+              <%= f.input :neighborhood, input_html: { class: "input-neighborhood" } %>
+            </div>
+          </div>
+          <%= f.input :address_complement %>
+        </div>
+        <h2 class="text-success h2 my-3">Data do evento</h2>
+        <div class="col-md-3 col-sm-6">
+            <%= f.input :scheduled_start, label: "Data de Início", as: :date, html5: true %>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <%= f.input :scheduled_start, label: "Horário de Início", as: :time, html5: true %>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <%= f.input :scheduled_end, label: "Data de Término", as: :date, html5: true %>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <%= f.input :scheduled_end, label: "Horário de Término", as: :time, html5: true %>
+        </div>
+      </div>
 
-    <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
+      <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
 
-    <div class="spacer-25"></div>
-    
-    <h2 class="my-5 title">Perguntas para o participante</h2>
+      <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
 
-    <div class="participant-questions">
-      <react data-component="Questions" data-questions="<%= @event.questions.non_default.to_json %>" ></react>
-    </div>
+      <div class="spacer-25"></div>
+      
+      <h2 class="my-5 title">Perguntas para o participante</h2>
 
-    <div class="text-center">
-      <%= f.submit "#{@event.new_record? ? "Criar" : "Atualizar"} evento", class: "btn btn-success mt-5" %>
-    </div>
-  <% end %>
+      <div class="participant-questions">
+        <react data-component="Questions" data-questions="<%= @event.questions.non_default.to_json %>" ></react>
+      </div>
+
+      <div class="text-center">
+        <%= f.submit "#{@event.new_record? ? "Criar" : "Atualizar"} evento", class: "btn btn-success mt-5" %>
+      </div>
+    <% end %>
+  </div>
 </div>
