@@ -26,6 +26,12 @@ class OrdersController < ApplicationController
       redirect_to request.referrer and return
     end
 
+    if !current_user.has_completed_profile?
+      flash[:notice] = "Por favor, preecha as informações abaixo para prosseguir:"
+
+      redirect_to dashboard_path_for_user(current_user, current_tab: "nav-acc-info", return_url: request.referrer) and return
+    end
+
     @order = Order.create(user: current_user)
 
     ActiveRecord::Base.transaction do

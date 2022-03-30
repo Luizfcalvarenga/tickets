@@ -68,11 +68,13 @@
       </div>
     <% end %>
 
-    <p class="text-white">Ao clicar no botão abaixo, você concorda com os seguintes termos de uso deste passe: </p>
-    <div class="p-4 bg-dark br-8">
-      <p class="text-color-primary fw-700 mb-2">Termos de uso para <%= @order.related_entity.name %></p>
-      <p class="m-0"><%= @order.related_entity.terms_of_use %></p>
-    </div>
+    <% if @order.related_entity.terms_of_use.present? && @order.related_entity.terms_of_use.body.to_plain_text.length > 10 %>
+      <p class="text-white">Ao clicar no botão abaixo, você concorda com os seguintes termos de uso deste passe: </p>
+      <div class="p-4 bg-dark br-8">
+        <p class="text-color-primary fw-700 mb-2">Termos de uso para <%= @order.related_entity.name %></p>
+        <p class="m-0"><%= @order.related_entity.terms_of_use %></p>
+      </div>
+    <% end %>
     
     <div class="text-center">
       <%= f.submit "Enviar respostas", class: "btn btn-success mt-5" %>

@@ -63,9 +63,11 @@ Rails.application.routes.draw do
     resources :passes, only: [:create]
     resources :event_communications, only: [:index, :show, :new, :create]
   end
+
   get "day_uses/:id/:date", to: "day_uses#show", as: "day_use"
   get "day_uses", to: "day_uses#index"
 
+  resources :memberships, only: [:show]
   resources :user_memberships
   
   get '/cities_by_state' => 'cities#cities_by_state'

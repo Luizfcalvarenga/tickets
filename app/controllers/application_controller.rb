@@ -19,16 +19,16 @@ class ApplicationController < ActionController::Base
       (controller_name == "registrations" && action_name == "create"))
   end
 
-  def dashboard_path_for_user(user)
+  def dashboard_path_for_user(user, **args)
     case user.access
     when 'user'
-      user_dashboard_path
+      user_dashboard_path(**args)
     when 'partner_user'
-      partner_user_dashboard_path
+      partner_user_dashboard_path(**args)
     when 'partner_admin'
-      partner_admin_dashboard_path
+      partner_admin_dashboard_path(**args)
     when 'admin'
-      admin_dashboard_path
+      admin_dashboard_path(**args)
     else 
       raise
     end
@@ -47,5 +47,9 @@ class ApplicationController < ActionController::Base
     return Date.today if Time.current.strftime("%A").downcase.to_sym == weekday_name.downcase.to_sym
 
     Date.today.next_occurring(weekday_name.downcase.to_sym)
+  end
+
+  def redirect_to_return_url_if_one_is_provided
+    redirect_to params[:return_url] if params[:return_url].present?
   end
 end

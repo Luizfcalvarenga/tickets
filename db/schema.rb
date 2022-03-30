@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_30_152905) do
+ActiveRecord::Schema.define(version: 2022_03_30_204027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,6 +218,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_152905) do
     t.bigint "approved_by_id"
     t.text "terms_of_use"
     t.boolean "deactivated_at"
+    t.integer "recurrence_interval_in_months", default: 1
     t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end
@@ -303,6 +304,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_152905) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "directly_generated_by_id"
     t.boolean "absorb_fee"
+    t.datetime "deactivated_at"
     t.index ["day_use_schedule_pass_type_id"], name: "index_passes_on_day_use_schedule_pass_type_id"
     t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
@@ -366,6 +368,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_152905) do
     t.boolean "iugu_active", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deactivated_at"
     t.index ["membership_id"], name: "index_user_memberships_on_membership_id"
     t.index ["user_id"], name: "index_user_memberships_on_user_id"
   end

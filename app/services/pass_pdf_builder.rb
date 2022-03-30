@@ -77,6 +77,6 @@ class PassPdfBuilder
   end
 
   def upload_name
-    "Passe #{pass.name} - #{pass.holder_name}.pdf"
+    "Passe #{pass.name.gsub("/", "-")} - #{pass.holder_name}.pdf"
   end
 end

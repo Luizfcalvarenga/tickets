@@ -2,13 +2,14 @@
 <div class="page-wrapper">
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <button class="nav-link active" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">MEUS ACESSOS</button>
-      <button class="nav-link" id="nav-acc-info-tab" data-bs-toggle="tab" data-bs-target="#nav-acc-info" type="button" role="tab" aria-controls="nav-acc-info" aria-selected="false">INFORMAÇÕES DA CONTA</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'nav-events' %>" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">MEUS ACESSOS</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'nav-acc-info' %>" id="nav-acc-info-tab" data-bs-toggle="tab" data-bs-target="#nav-acc-info" type="button" role="tab" aria-controls="nav-acc-info" aria-selected="false">INFORMAÇÕES DA CONTA</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'nav-payment-methods' %>" id="nav-payment-methods-tab" data-bs-toggle="tab" data-bs-target="#nav-payment-methods" type="button" role="tab" aria-controls="nav-payment-methods" aria-selected="false">MÉTODOS DE PAGAMENTO</button>
     </div>
   </nav>
 
   <div class="tab-content mt-5" id="nav-tabContent">
-    <div class="table-responsive tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+    <div class="table-responsive tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'nav-events' %>" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
       <table class="table align-middle table-dark table-borderless">
         <thead>
           <tr>
@@ -29,15 +30,21 @@
               <td data-label="Fim"><%= pass.kind != "membership" ? pass.end_time.strftime("%d/%m/%Y - %H:%M") : "-" %></td>
               <td data-label="Bikepark"><%= pass.partner.name %></td>
               <td data-label="Status" class="<%= pass.status[:class] %>"><%= pass.status[:label] %></td>
-              <td><%= link_to "Ver", pass_path(pass), class: "text-success" %></td>
-              <td><%= link_to "Baixar", pass_download_path(identifier: pass.identifier, download: true), target: :_blank, class: "text-success" %></td>
+              <td>
+                <%= link_to "Ver", pass_path(pass), class: "text-success pe-3" %>
+                <%= link_to "Baixar", pass_download_path(identifier: pass.identifier, download: true), target: :_blank, class: "text-success pe-3" %>
+                <% if pass.related_entity.class == Membership %>
+                  <%= link_to "Cancelar", user_membership_path(pass.user_membership), data: { confirm: "Tem certeza que deseja finalizar a inscrição? Para reinscrever, você terá que pagar novamente" }, method: :delete, class: "text-danger" %>
+                <% end %>
+              </td>
+      
             </tr>
           <% end %>
         </tbody>
       </table>
     </div>
 
-    <div class="tab-pane fade" id="nav-acc-info" role="tabpanel" aria-labelledby="nav-acc-info-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'nav-acc-info' %>" id="nav-acc-info" role="tabpanel" aria-labelledby="nav-acc-info-tab">
       <div class="text-center">
         
         <% if current_user.photo.attached? %>
@@ -45,24 +52,35 @@
         <% end %>
 
         <%= simple_form_for @profile, :url => profiles_path, :method => :patch do |f| %>
+          <% if params[:return_url].present? %>
+            <input type="hidden" name="return_url" value="<%= params[:return_url] %>">
+          <% end %>
+
           <div class="row">
             <div class="col-sm-12 col-md-6">
               <%= f.input :name %>
             </div>
             <div class="col-sm-12 col-md-6">
-              <%= f.input :document_type, label: "Documento" %>
+              <%= f.input :document_number, label: "Número de CPF", input_html: { class: "mask-cpf" } %>
             </div>
+          </div>
+
+          <div class="row my-5">
             <div class="col-sm-12 col-md-6 mt-auto">
               <%= f.input :photo, as: :file %>
-            </div>
-            <div class="col-sm-12 col-md-6">
-              <%= f.input :document_number, label: "Número" %>
             </div>
           </div>
 
           <%= f.submit "Editar", class: "btn btn-success mt-5 text-center" %>
         <% end %>
       </div>
+      
+    </div>
+
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'nav-payment-methods' %>" id="nav-payment-methods" role="tabpanel" aria-labelledby="nav-payment-methods-tab">
+      <%= link_to payment_methods_path do %>
+        <p class="m-0 btn btn-success">Ver meus métodos de pagamento</p>
+      <% end %>
     </div>
   </div>
 </div>

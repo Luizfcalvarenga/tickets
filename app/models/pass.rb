@@ -22,6 +22,7 @@ class Pass < ApplicationRecord
   scope :fee_absorbed, -> { where(absorb_fee: true) }
   scope :fee_not_absorbed, -> { where(absorb_fee: false) }
   scope :from_event_or_day_use, -> { where("event_batch_id is not null OR day_use_schedule_pass_type_id is not null") }
+  scope :active, -> { where(deactivated_at: nil) }
 
   def amount_to_transfer_to_partner
     absorb_fee ? (price_in_cents * (1 - fee_percentage/100)) : price_in_cents

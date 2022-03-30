@@ -1,6 +1,6 @@
 class DashboardsController < ApplicationController
   def user_dashboard
-    @passes = current_user.passes.order(:start_time)
+    @passes = current_user.passes.order(:start_time).active
     @user_memberships = current_user.user_memberships
     @profile = current_user
   end

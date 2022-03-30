@@ -2,24 +2,27 @@ class UserMembership < ApplicationRecord
   belongs_to :user
   belongs_to :membership
 
+  has_many :passes
+
   scope :active, -> { where("iugu_active is true") }
 
   after_create :create_plan_at_iugu
 
   def create_plan_at_iugu
     self.update(iugu_active: true)
-    # NovaIugu::SubscriptionCreator.new(self).call
+    NovaIugu::SubscriptionCreator.new(self).call
   end
 
   def active?
     # check_activity!
-    iugu_active
+    deactivated_at.blank? && iugu_active
   end
 
   def nova_iugu_subscription_params_hash
     {
       plan_identifier: membership.identifier,
       customer_id: user.iugu_customer_id,
+      only_on_charge_success: true,
     }
   end
 

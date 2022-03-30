@@ -71,6 +71,7 @@ import "./day_use_user_list";
 import "./membership_user_list";
 import "./partners";
 import "./payment_pooling";
+import "./masks";
 
 const loadReactComponent = () => {
   const reactContainers = document.querySelectorAll("react");

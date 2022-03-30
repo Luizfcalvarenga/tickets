@@ -78,14 +78,13 @@
   <div>
     <% @memberships.each do |membership| %>
       <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2">
-        <p class="text-white m-0 m-0 f-30"><%= membership.name %></p>
-        <% if user_signed_in? %>
-          <div class="">
-            <%= simple_form_for(@user_membership) do |f| %>
-              <%= f.input :membership_id, as: :hidden, input_html: { value: membership.id } %>
-              <%= f.submit "Inscrever", class: "btn btn-success" %>
-            <% end %>
-          </div>
+        <div class="f-30">
+          <p class="text-white fw-700"><%= membership.name %></p>
+          <p class="text-white m-0"><%= membership.short_description %></p>
+        </div>
+
+        <%= link_to membership_path(membership)do %>
+          <p class="btn btn-success m-0">Inscrever</p>
         <% end %>
       </div>
     <% end %>  

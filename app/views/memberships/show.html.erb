@@ -1,0 +1,32 @@
+<div class="page-wrapper">
+  <h1 class="title"><%= @membership.name %></h1>
+
+  <p class="fs-18 text-white">
+    <%= @membership.description %>
+  </p>
+
+  <p class="m-0 bg-primary text-white p-4 br-8 mb-3">
+    <i class="fa fa-info-circle mx-3"></i>Para se inscrever, é necessário ter um cartão ativo cadastrado em sua conta. Se você não tiver, será redirecionado para adicionar um. Não se preocupe, não guardamos os dados do cartão na nossa plataforma, o pagamento é processado direto pelo fornecedor financeiro.
+  </p>
+  
+  <div class="spacer-50"></div>
+
+  <% if @membership.terms_of_use.present? && @membership.terms_of_use.body.to_plain_text.length > 10 %>
+    <p class="text-white">Ao clicar para inscrever, você concorda com os seguintes termos de uso desta assinatura: </p>
+    <div class="p-4 bg-dark br-8 mb-3">
+      <p class="text-color-primary fw-700 mb-2">Termos de uso para <%= @membership.name %></p>
+      <p class="m-0"><%= @membership.terms_of_use %></p>
+    </div>
+  <% end %>
+
+  <div class="spacer-50"></div>
+
+  <p class="m-0 bg-dark text-white p-4 br-8 mb-3">
+    <i class="fa fa-info-circle mx-3"></i>Valor cobrado nessa assinatura: <%= display_price(@membership.price_in_cents) %> a cada <%= @membership.recurrence_interval_in_months %> meses.
+  </p>
+  
+  <%= simple_form_for(@user_membership) do |f| %>
+    <%= f.input :membership_id, as: :hidden, input_html: { value: @membership.id } %>
+    <%= f.submit "Inscrever", class: "btn btn-success w-100" %>
+  <% end %>
+</div>

@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 document.addEventListener("turbolinks:load", () => {
   if (!document.querySelector("#payment-form")) return;
 
-  Iugu.setAccountID("7326B6B6BDA1262CD3110D783FA09B7E");
+  Iugu.setAccountID("5A750746A17D48AF9CB0CA019AF8F272");
   Iugu.setTestMode(true);
   // if (document.querySelector("#environment").innerHTML === "development") Iugu.setTestMode(true);
 

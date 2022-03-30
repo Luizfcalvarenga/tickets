@@ -24,7 +24,7 @@ class Membership < ApplicationRecord
     {
       name: name,
       identifier: identifier,
-      interval: 1,
+      interval: recurrence_interval_in_months,
       interval_type: "months",
       value_cents: price_in_cents,
       payable_with: "credit_card",
