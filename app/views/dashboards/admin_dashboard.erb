@@ -52,15 +52,15 @@
           </td>
           <td data-label="Ações">
             <%= link_to edit_entity_path(entity) do %>
-              <p class="btn btn-success m-0 px-5">Editar</p>
+              <p class="btn btn-success m-0 px-5 w-30">Editar</p>
             <% end %>
 
             <%= link_to admin_approve_form_path(entity_class: entity.class.table_name, entity_id: entity.id) do %>
-              <p class="btn btn-success m-0 px-5">Aprovar</p>
+              <p class="btn btn-success m-0 px-5 w-30">Aprovar</p>
             <% end %>
 
-            <%= link_to partner_admin_entity_toggle_activity_path(entity), method: :patch do %>
-              <p class="btn btn-danger m-0 px-5">Desativar</p>
+            <%= link_to partner_admin_entity_toggle_activity_path(entity), method: :patch, data: { confirm: "Deseja realmente alterar essa entidade?" } do %>
+              <p class="btn m-0 px-5 w-33 <%= entity.deactivated_at.present? ? "btn-info" : "btn-danger" %>"><%= entity.deactivated_at.present? ? "Ativar" : "Desativar" %></p>
             <% end %>
           </td>
         </tr>

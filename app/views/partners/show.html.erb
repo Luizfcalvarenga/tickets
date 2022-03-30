@@ -97,5 +97,9 @@
       </div>
     <% end %>  
   </div>
+
+  <% if @memberships.blank? %>
+    <p class="text-white">Nenhuma assinatura programada até o momento.</p>
+  <% end %>
 </div>
 

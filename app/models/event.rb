@@ -25,6 +25,7 @@ class Event < ApplicationRecord
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
   scope :not_approved, -> { where(approved_at: nil) }
+  scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
 
   def create_default_questions
     Question.create!(

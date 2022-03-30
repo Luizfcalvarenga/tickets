@@ -14,8 +14,8 @@ class PartnersController < ApplicationController
       redirect_to root_path and return
     end
 
-    @events = @partner.events
-    @day_uses = @partner.day_uses
+    @events = @partner.events.active
+    @day_uses = @partner.day_uses.active
     @weekdays = [
       {value: "sunday", label: "Domingo", day_uses: @day_uses.open_for_weekday("sunday").uniq, order: 0, date: next_date_for_weekday("sunday")},
       {value: "monday", label: "Segunda-feira", day_uses: @day_uses.open_for_weekday("monday").uniq, order: 1, date: next_date_for_weekday("monday")},
@@ -29,7 +29,7 @@ class PartnersController < ApplicationController
     current_weekday_value = Time.current.wday
     @weekdays = @weekdays.select { |wd| wd[:order] >= current_weekday_value } + @weekdays.select { |wd| wd[:order] < current_weekday_value }
 
-    @memberships = @partner.memberships.where.not(id: current_user&.user_memberships&.active&.ids)
+    @memberships = @partner.memberships.active
 
     if current_user.present?
       @passes = current_user.passes.joins(event: :partner).where(partners: {id: @partner.id})
