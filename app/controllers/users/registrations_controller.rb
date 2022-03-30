@@ -57,10 +57,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    if resource.events.present?
-      new_event_order_path(event_id: resource.events.last.id) + "?first_access=true"
+    # redirect_to update_user_info_subscriptions_path 
+    if resource.present?
+      subscriptions_path
     else
-      super(resource) + "?first_access=true"
+      super(resource)
     end
   end
 
