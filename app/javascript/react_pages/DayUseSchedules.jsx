@@ -313,7 +313,7 @@ export function DayUseSchedules(props) {
                               handlePassTypeUpdate(
                                 "price_in_cents",
                                 e.target.value,
-                                weekday.value,
+                                weekday,
                                 passTypeIndex
                               )
                             }
