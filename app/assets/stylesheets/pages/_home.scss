@@ -17,9 +17,8 @@
     padding: 0.5rem !important;
   }
 }
-
 .first-section-home {
-  background-image: image-url("background_1.jpg");
+  background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.1)), image-url("background_1.jpg");
   background-size: cover;
   padding: 0 320px;
   height: 800px;

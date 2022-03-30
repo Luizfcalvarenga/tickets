@@ -21,6 +21,8 @@ class DayUseUpdater
           slot_duration_in_minutes: day_use_schedule_param[:slot_duration_in_minutes],
         )
 
+        day_use_schedule.update(photo: day_use_schedule_param[:photo]) if day_use_schedule_param[:photo].present?
+
         removed_pass_types(day_use_schedule).update_all(deleted_at: Time.current)
 
         pass_types_to_update(day_use_schedule).each do |pass_type_param| 
@@ -74,6 +76,6 @@ class DayUseUpdater
   end
 
   def day_use_schedule_params
-    params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :description, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes, pass_types: [:id, :name, :price_in_cents]])[:day_use_schedules]
+    params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :description, :photo, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes, pass_types: [:id, :name, :price_in_cents]])[:day_use_schedules]
   end
 end

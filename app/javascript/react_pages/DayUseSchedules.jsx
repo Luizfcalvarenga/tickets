@@ -211,6 +211,16 @@ export function DayUseSchedules(props) {
                       handleWeekdayChange("description", e.target.value, index)
                     }
                   />
+                  <div class="form-group file optional day_use_photo form-group-valid">
+                    <label class="file optional" for="day_use_photo">
+                      Photo
+                    </label>
+                    <input
+                      class="form-control-file is-valid file optional"
+                      type="file"
+                      name="day_use[day_use_schedules][][photo]"
+                    ></input>
+                  </div>
                   <div className="flex center between">
                     <div className="f-48">
                       <label htmlFor="">Horário de funcionamento</label>
