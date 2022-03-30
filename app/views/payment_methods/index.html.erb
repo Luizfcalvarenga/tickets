@@ -11,19 +11,18 @@
         <input type="hidden" name="return_url" value="<%= params[:return_url] %>">
       <% end %>
 
-      
       <div class="row">
         <div class="col-12 col-md-6">
-          <input class="form-control mb-2 mask-credit-card-number" autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
+          <input class="form-control mb-2 mask-credit-card-number credit_card_number" autocomplete="off" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
         </div>
         <div class="col-12 col-md-6">
-          <input class="form-control mb-2 mask-credit-card-cvv" autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+          <input class="form-control mb-2 mask-credit-card-cvv credit_card_cvv" autocomplete="off" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
         </div>
         <div class="col-12 col-md-6">
-          <input class="form-control mb-2" class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+          <input class="form-control mb-2 credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
         </div>
         <div class="col-12 col-md-6">
-          <input class="form-control mb-2 mask-credit-card-expiration" autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
+          <input class="form-control mb-2 mask-credit-card-expiration credit_card_expiration" autocomplete="off" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
         </div>
       </div>
       <div class="footer">

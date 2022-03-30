@@ -5,7 +5,7 @@ document.addEventListener("turbolinks:load", () => {
     new Inputmask("999.999.999-99").mask(input);
   })
   document.querySelectorAll(".mask-credit-card-number").forEach((input) => {
-    new Inputmask("9999 9999 9999 9999").mask(input);
+    new Inputmask("9999999999999999").mask(input);
   });
   document.querySelectorAll(".mask-credit-card-cvv").forEach((input) => {
     new Inputmask("999").mask(input);
