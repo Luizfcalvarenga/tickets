@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_29_220646) do
+ActiveRecord::Schema.define(version: 2022_03_30_152905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2022_03_29_220646) do
     t.datetime "approved_at"
     t.bigint "approved_by_id"
     t.text "terms_of_use"
+    t.boolean "deactivated_at"
     t.index ["approved_by_id"], name: "index_day_uses_on_approved_by_id"
     t.index ["partner_id"], name: "index_day_uses_on_partner_id"
   end
@@ -182,6 +183,7 @@ ActiveRecord::Schema.define(version: 2022_03_29_220646) do
     t.datetime "approved_at"
     t.bigint "approved_by_id"
     t.text "terms_of_use"
+    t.boolean "deactivated_at"
     t.index ["approved_by_id"], name: "index_events_on_approved_by_id"
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
@@ -215,6 +217,7 @@ ActiveRecord::Schema.define(version: 2022_03_29_220646) do
     t.datetime "approved_at"
     t.bigint "approved_by_id"
     t.text "terms_of_use"
+    t.boolean "deactivated_at"
     t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end

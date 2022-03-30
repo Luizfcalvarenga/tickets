@@ -30,11 +30,14 @@ Rails.application.routes.draw do
   resource :profiles
   
   namespace :partner_admin do
-    resources :events, only: [:show, :new, :create, :edit, :update]
+    resources :events
+    patch "events/:id/toggle_activity", to: "events#toggle_activity", as: "event_toggle_activity"
     resources :memberships
+    patch "memberships/:id/toggle_activity", to: "memberships#toggle_activity", as: "membership_toggle_activity"
     resources :day_uses do
       resources :day_use_blocks, only: [ :new, :create, :destroy ]
     end
+    patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders
   end

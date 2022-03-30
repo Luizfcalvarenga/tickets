@@ -65,4 +65,30 @@ module ApplicationHelper
       "6" => "Sab",
     }[weekday_number.to_s]
   end
+
+  def edit_entity_path(entity)
+    case entity.class.name 
+    when "Event" 
+      edit_partner_admin_event_path(entity)
+    when "DayUse" 
+      edit_partner_admin_day_use_path(entity)
+    when "Membership" 
+      edit_partner_admin_membership_path(entity)
+    else 
+      raise
+    end 
+  end
+
+  def partner_admin_entity_toggle_activity_path(entity)
+    case entity.class.name 
+    when "Event" 
+      partner_admin_event_toggle_activity_path(entity)
+    when "DayUse" 
+      partner_admin_day_use_toggle_activity_path(entity)
+    when "Membership" 
+      partner_admin_membership_toggle_activity_path(entity)
+    else 
+      raise
+    end 
+  end
 end

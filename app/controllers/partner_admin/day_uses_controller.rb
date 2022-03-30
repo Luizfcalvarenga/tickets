@@ -64,7 +64,17 @@ module PartnerAdmin
         flash[:alert] = "Erro ao atualizar Agendamento"
         render :new
       end 
+    end
 
+    def toggle_activity
+      @day_use = DayUse.find(params[:id])
+
+      if @day_use.update(deactivated_at: @day_use.deactivated_at.present? ? nil : Time.current)
+        flash[:notice] = "Agendamento #{@day_use.deactivated_at.present? ? "desativado" : "ativado"}"
+        redirect_to dashboard_path_for_user(current_user)
+      else
+        flash[:alert] = "Erro ao alterar agendamento"
+      end  
     end
     
     private

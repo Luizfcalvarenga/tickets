@@ -39,6 +39,6 @@ class DashboardsController < ApplicationController
   end
 
   def admin_dashboard
-    @entities_to_approve = Event.not_approved + DayUse.not_approved + Membership.not_approved
+    @entities_to_approve = Event.all.order(:created_at) + DayUse.all.order(:created_at) + Membership.all.order(:created_at)
   end
 end

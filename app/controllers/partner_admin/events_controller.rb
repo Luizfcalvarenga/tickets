@@ -61,6 +61,17 @@ module PartnerAdmin
         render :edit
       end  
     end
+
+    def toggle_activity
+      @event = Event.find(params[:id])
+
+      if @event.update(deactivated_at: @event.deactivated_at.present? ? nil : Time.current)
+        flash[:notice] = "Evento #{@event.deactivated_at.present? ? "desativado" : "ativado"}"
+        redirect_to dashboard_path_for_user(current_user)
+      else
+        flash[:alert] = "Erro ao alterar evento"
+      end  
+    end
     
     private
 

@@ -53,20 +53,15 @@ class PartnerAdmin::MembershipsController < ApplicationController
     end
   end
 
-  def destroy
+  def toggle_activity
     @membership = Membership.find(params[:id])
-    begin
-      if @membership.destroy
-        redirect_to partner_admin_dashboard_path
-      else
-        flash[:alert] = "Could not delete membership"
-        redirect_to  partner_admin_dashboard_path
-      end
-    rescue StandardError => e
-      flash[:alert] = "Cê ta louco, não pode apagar essa membership"
-      # flash[:alert] = e
-      redirect_to  partner_admin_dashboard_path
-    end
+
+    if @membership.update(deactivated_at: @membership.deactivated_at.present? ? nil : Time.current)
+      flash[:notice] = "Assinatura #{@membership.deactivated_at.present? ? "desativada" : "ativada"}"
+      redirect_to dashboard_path_for_user(current_user)
+    else
+      flash[:alert] = "Erro ao alterar assinatura"
+    end  
   end
 
   private
