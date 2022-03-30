@@ -4,8 +4,8 @@ document.addEventListener("turbolinks:load", () => {
   if (!document.querySelector("#payment-form")) return;
 
   Iugu.setAccountID("5A750746A17D48AF9CB0CA019AF8F272");
-  Iugu.setTestMode(true);
-  // if (document.querySelector("#environment").innerHTML === "development") Iugu.setTestMode(true);
+  // Iugu.setTestMode(true);
+  if (document.querySelector("#environment").innerHTML === "development") Iugu.setTestMode(true);
 
   jQuery(function ($) {
     $("#payment-form").submit(function (evt) {
