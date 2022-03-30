@@ -93,6 +93,6 @@ module ApplicationHelper
   end
 
   def day_use_schedule_photo(day_use_schedule)
-    photo = day_use_schedule.photo&.key.present? ? day_use_schedule.photo.key : (day_use.photo&.key.present? ? day_use.photo.key : day_use_schedule.partner.logo.key)
+    day_use_schedule.photo&.key.present? ? day_use_schedule.photo.key : (day_use_schedule.day_use.photo&.key.present? ? day_use_schedule.day_use.photo.key : day_use_schedule.partner.logo.key)
   end
 end
