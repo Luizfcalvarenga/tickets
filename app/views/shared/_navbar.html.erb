@@ -43,7 +43,7 @@
 
   <% if mobile_device? %>
     <div class="flex center between w-100 px-5">
-      <%= link_to root_path, class: "nav-link" do %>
+      <%= link_to current_user.present? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
         <%= image_tag "white_logo.png", class: "navbar-brand" %>
       <% end %>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
