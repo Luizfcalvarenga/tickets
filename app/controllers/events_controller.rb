@@ -11,6 +11,10 @@ class EventsController < ApplicationController
     @current_batches = @event.open_batches
     
     @order = Order.new
+
+    if !current_user
+      session[:fall_back_url] = request.url
+    end
   end
 
   def read

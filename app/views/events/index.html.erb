@@ -12,7 +12,7 @@
 <div class="second-section-event">
   <div class="d-flex justify-content-between mt-5 container mb-3">
     <div class="align-self-center">
-      <h2>COMPETIÇÕES <span class="text-success">ATIVAS</span></h2>
+      <h2>PRÓXIMAS <span class="text-success">COMPETIÇÕES</span></h2>
     </div>
     <div class="invert-image">
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
@@ -53,6 +53,14 @@
         </div>
       </div>
     <% end %>
+
+    <% if @events.present? %>
+      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+      </div>
+    <% else %>
+      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
+    <% end %>
   </div>
 
   <div class="container page-mobile">
@@ -76,6 +84,14 @@
             <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
           </div>
         </div>
+      <% end %>
+
+      <% if @events.present? %>
+        <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+          <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+        </div>
+      <% else %>
+        <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
       <% end %>
     </div>
   </div>

@@ -36,11 +36,17 @@ class ApplicationController < ActionController::Base
   helper_method :dashboard_path_for_user
 
   def after_sign_in_path_for(resource)
-    dashboard_path_for_user(resource)
+    url = session[:fall_back_url]
+    session[:fall_back_url] = nil
+  
+    url.presence || dashboard_path_for_user(resource)
   end
 
   def after_sign_up_path_for(resource)
-    dashboard_path_for_user(resource)
+    url = session[:fall_back_url]
+    session[:fall_back_url] = nil
+  
+    url.presence || dashboard_path_for_user(resource)
   end
 
   def next_date_for_weekday(weekday_name)

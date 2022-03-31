@@ -5,7 +5,7 @@ module PartnerAdmin
       min_date = @reference_date.at_beginning_of_month
       max_date = @reference_date.at_end_of_month
 
-      @passes = current_user.partner.passes.from_event_or_day_use.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
+      @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
       @total_sales = @passes.sum(:price_in_cents)
       @amount_to_receive = @passes.map(&:amount_to_transfer_to_partner).sum
     end
@@ -15,12 +15,12 @@ module PartnerAdmin
 
       begin
         if @user.blank?
-          @user = User.create!(user_params.merge(password: SecureRandom.uuid))
+          @user = User.create!(user_params.merge(password: "123456"))
         else
           @user.update!(user_params)
         end
 
-        @order = Order.create(user: @user, directly_generated_by: current_user)
+        @order = Order.create(user: @user, directly_generated_by: current_user, free: true)
 
         if params[:order_item][:event_batch_id].present?
           entity = EventBatch.find(params[:order_item][:event_batch_id])

@@ -32,6 +32,7 @@ class OrderPassesGenerator
         fee_percentage: order_item.fee_percentage,
         absorb_fee: order_item.absorb_fee,
         directly_generated_by: order_item.order.directly_generated_by,
+        free: order_item.order.free,
         qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
           color: "000",
           shape_rendering: "crispEdges",

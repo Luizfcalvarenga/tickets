@@ -6,7 +6,7 @@
 
   <h2 class="title">Adicionar cartão</h2>
   <div class="flex center around">
-    <form id="payment-form" class="<%= mobile_device? ? 'w-90' : 'w-50' %>" action="<%= payment_methods_path %>" method="post">
+    <form id="payment-form" class="w-90" action="<%= payment_methods_path %>" method="post">
       <% if params[:return_url].present? %>
         <input type="hidden" name="return_url" value="<%= params[:return_url] %>">
       <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_30_204027) do
+ActiveRecord::Schema.define(version: 2022_03_31_160737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,6 +255,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_204027) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "created_by_id"
     t.bigint "directly_generated_by_id"
+    t.boolean "free", default: false
     t.index ["created_by_id"], name: "index_orders_on_created_by_id"
     t.index ["directly_generated_by_id"], name: "index_orders_on_directly_generated_by_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
@@ -305,6 +306,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_204027) do
     t.bigint "directly_generated_by_id"
     t.boolean "absorb_fee"
     t.datetime "deactivated_at"
+    t.boolean "free", default: false
     t.index ["day_use_schedule_pass_type_id"], name: "index_passes_on_day_use_schedule_pass_type_id"
     t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"

@@ -37,9 +37,9 @@
 
   <%= simple_form_for(:approve, url: "/admin/approve/#{@entity.class.table_name}/#{@entity.id}", method: :patch) do |f| %>
     <%= f.input :fee_percentage, label: "Taxa do ingresso (em %)", input_html: { class: "mb-4", value: @entity.partner.fee_percentage } %>
-    <%= f.input :absorb_fee, as: :boolean, label: "Repassar taxa?" %>
+    <%= f.input :absorb_fee, as: :boolean, label: "O organizador vai absorver a taxa?", input_html: { checked: @entity.absorb_fee } %>
 
-    <p class="gs-190">Repassar a taxa: não imbutir a taxa como um adicional no preço do ingresso, e sim abater no cálculo da quantia que é repassada para o organizador.</p>
+    <p class="gs-190">Absorver a taxa: não imbutir a taxa como um adicional no preço do ingresso, e sim abater no cálculo da quantia que é repassada para o organizador.</p>
 
     <%= f.submit "Aprovar", class: "btn btn-success mt-5 w-100" %>
   <% end %>

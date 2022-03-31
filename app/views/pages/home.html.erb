@@ -116,10 +116,14 @@
         </div>
       <% end %>
     </div>
-  </div>
 
-  <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
-    <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+    <% if @events.present? %>
+      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+      </div>
+    <% else %>
+      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
+    <% end %>
   </div>
 
   <div class="carousel-mobile page-mobile">

@@ -10,5 +10,9 @@ class DayUsesController < ApplicationController
     @date = params[:date].to_datetime
     @day_use_schedule = @day_use.day_use_schedules.find_by(weekday: @date.strftime("%A").downcase)
     @order = Order.new
+
+    if !current_user
+      session[:fall_back_url] = request.url
+    end
   end
 end

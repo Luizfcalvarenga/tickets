@@ -69,12 +69,12 @@
     </div>
 
     <div class="tab-pane fade" id="nav-memberships" role="tabpanel" aria-labelledby="nav-memberships">
-      <div class="cards d-flex justify-content-around">
+      <div class="cards row">
         <% @memberships.each do |membership| %>
-        <div class="card mb-3 text-center" style="max-width: 20rem; min-width: 20rem; min-height: 12rem">
+        <div class="card col-12 col-md-3 mb-3 text-center">
           <div class="card-body bg-success d-flex align-items-center">
-            <div>
-              <h2 class="bold h3 text-dark"> <%= membership.name %></h2>
+            <div class="w-100">
+              <h2 class="bold h3 text-dark text-center"> <%= membership.name %></h2>
               <p class=""><%= membership.user_memberships.count %> mensalistas - R$ <%= display_price(membership.price_in_cents) %>.</p>
             </div>
           </div>

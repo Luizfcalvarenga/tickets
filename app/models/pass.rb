@@ -21,6 +21,7 @@ class Pass < ApplicationRecord
   scope :for_date, -> (date) { where("passes.start_time >= ? and passes.start_time < ?", date.at_beginning_of_day, date.at_end_of_day) }
   scope :fee_absorbed, -> { where(absorb_fee: true) }
   scope :fee_not_absorbed, -> { where(absorb_fee: false) }
+  scope :not_free, -> { where(free: false) }
   scope :from_event_or_day_use, -> { where("event_batch_id is not null OR day_use_schedule_pass_type_id is not null") }
   scope :active, -> { where(deactivated_at: nil) }
 
