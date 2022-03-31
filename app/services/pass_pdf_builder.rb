@@ -63,7 +63,7 @@ class PassPdfBuilder
     
     document.svg @pass.qrcode_svg, width: 100, height: 100, position: :right
 
-    document.move_up 60
+    document.move_up 100
 
     document.image URI.open("https://res.cloudinary.com/nuflow/image/upload/v1648740319/logo_preta_q88syu.png"), width: 100, height: 100, position: :center
 
