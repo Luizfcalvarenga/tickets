@@ -40,17 +40,11 @@
           <%= f.input :address_complement %>
         </div>
         <h2 class="text-success h2 my-3">Data do evento</h2>
-        <div class="col-md-3 col-sm-6">
-            <%= f.input :scheduled_start, label: "Data de Início", as: :date, html5: true %>
+        <div class="col-md-6 col-sm-6">
+          <%= f.input :scheduled_start, label: "Data de Início", as: :datetime, html5: true %>
         </div>
-        <div class="col-md-3 col-sm-6">
-            <%= f.input :scheduled_start, label: "Horário de Início", as: :time, html5: true %>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <%= f.input :scheduled_end, label: "Data de Término", as: :date, html5: true %>
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <%= f.input :scheduled_end, label: "Horário de Término", as: :time, html5: true %>
+        <div class="col-md-6 col-sm-6">
+            <%= f.input :scheduled_end, label: "Horário de Término", as: :datetime, html5: true %>
         </div>
       </div>
 
