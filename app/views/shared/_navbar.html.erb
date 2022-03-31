@@ -15,7 +15,7 @@
     </div>
     
     <div class="f-15 flex center around">
-      <%= link_to current_user.present? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
+      <%= link_to current_user.present? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
         <%= image_tag "white_logo.png", class: "navbar-brand" %>
       <% end %>
     </div>
