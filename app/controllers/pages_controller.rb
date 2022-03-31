@@ -8,7 +8,7 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, except: [:dashboard, :clean]
 
   def home
-    @events = Event.active.first(4).where("scheduled_start > ?", Time.current + 1.day).order(:scheduled_start)
+    @events = Event.active.where("scheduled_start > ?", Time.current + 1.day).order(:scheduled_start).first(4)
   end
 
   def partnership
