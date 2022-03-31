@@ -51,7 +51,6 @@ class Order < ApplicationRecord
   def perform_after_payment_confirmation_actions
     OrderPassesGenerator.new(self).call
     self.update(status: "paid")
-    DiscordMessager.call("Nova compra realizada: R$ #{ActionController::Base.helpers.number_to_currency(total_price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
   end
 
   def check_payment_actions_performed

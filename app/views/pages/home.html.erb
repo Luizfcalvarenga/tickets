@@ -9,7 +9,9 @@
         <button class="btn btn-success px-2 px-md-3 text-white text-center" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
       </div>
       <div class="text-center">
-        <button class="btn btn-dark border border-success text-success">SEJA UM PARCEIRO</button>
+        <%= link_to partnership_path do %>
+          <button class="btn btn-dark border border-success text-success">SEJA UM PARCEIRO</button>
+        <% end %>
       </div>
     </div>
   </div>
@@ -24,8 +26,8 @@
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
     </div>
   </div>
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    <%= link_to partners_path do %>
+  <div class="row row-cols-1">
+    <%= link_to partners_path, class: "col-6" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -42,7 +44,7 @@
         </div>
       </div>
     <% end %>
-    <%= link_to partners_path do %>
+    <%= link_to partners_path, class: "col-6" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -58,8 +60,8 @@
           </div>
         </div>
       </div>
-    <% end %>
-    <%= link_to events_path do %>
+    <% end if false %>
+    <%= link_to partners_path, class: "col-6" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -175,8 +177,12 @@
       <li>Crie competições, cicloviagens, pedaladas, treinos, desafios ou qualquer outro tipo de evento. </li>
       <li>Cadastre seu espaço e ofereça acessos, agendamentos e planos de mensalidade. </li>
     </ul>
-    <button class="btn btn-success me-2">SEJA UM PARCEIRO</button>
-    <button class="btn btn-dark border border-success text-success">ENTENDA COMO FUNCIONA</button>
+    <%= link_to partnership_path do %>
+      <button class="btn btn-success me-2">SEJA UM PARCEIRO</button>
+    <% end %>
+    <%= link_to partnership_path do %>
+      <button class="btn btn-dark border border-success text-success">ENTENDA COMO FUNCIONA</button>
+    <% end %>
   </div>
   <div class="spacer-100 page-desktop"></div>
   <div class="spacer-50 page-mobile"></div>

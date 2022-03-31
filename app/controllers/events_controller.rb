@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    @events = Event.all
+    @events = Event.active
   end
   
   def show

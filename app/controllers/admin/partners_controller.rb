@@ -57,6 +57,17 @@ module Admin
         render :edit
       end
     end
+
+    def toggle_active
+      @partner = Partner.find_by(slug: params[:slug])
+
+      if @partner.update(active: !@partner.active)
+        flash[:notice] = "Parceiro #{@partner.active ? "ativado" : "desativado"}"
+        redirect_to admin_partners_path
+      else
+        flash[:alert] = "Erro ao alterar parceiro"
+      end  
+    end
     
     def destroy
 

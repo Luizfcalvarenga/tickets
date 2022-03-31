@@ -4,7 +4,7 @@
     <h1>GERENCIE<br><span class="text-success">SEUS EVENTOS E EXPERIÊNCIAS.</span></h1>
     <p class="page-desktop text-white">Faça a gestão completa dos seus bike parks,<br>  eventos e cicloviagens com autonomia e<br> praticidade.</p>
     <div class="d-flex align-items-center">
-      <button class="btn btn-success px-5">SEJA UM PARCEIRO</button>
+      <button class="btn btn-success px-5" data-bs-toggle="modal" data-bs-target="#partner-modal">SEJA UM PARCEIRO</button>
     </div>
   </div>
 </div>
@@ -143,6 +143,25 @@
     </div>
     <div class="text-center">
       <%= link_to "VER TODOS OS EVENTOS", events_path, class:"btn btn-success my-5" %>
+    </div>
+  </div>
+</div>
+
+<div id="partner-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body bg-darker p-5">
+        <h1 class="text-success">Seja um parceiro Nuflow</h1>
+        <p class="text-white">Com a NuflowPass você:</p>
+        <ul>
+          <li class="text-white">Vende ingressos para eventos com lógica de lotes, preços e prazos automáticas.</li>
+          <li class="text-white">Vende ingressos para seus clientes usarem suas instalações diariamente.</li>
+          <li class="text-white">Vende mensalidades para criar receita recorrente para seu negócio.</li>
+          <li class="text-white">Faça o controle de acesso dos seus clientes de forma prática.</li>
+        </ul>
+
+        <p class="text-white">Para se tornar um parceiro, entre em contato com: <span class="text-success">contato@nuflowshop.com.br</span></p>
+      </div>
     </div>
   </div>
 </div>

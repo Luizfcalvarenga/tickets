@@ -7,6 +7,8 @@ class Partner < ApplicationRecord
 
   before_create :slugify
 
+  scope :active, -> { where(active: true) }
+
   enum kind: {
     bike_park: "bike_park",
     organizer: "organizer",

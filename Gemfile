@@ -51,6 +51,7 @@ gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'rexml'
 gem 'iugu', git: "https://github.com/iugu/iugu-ruby"
+gem 'httparty'
 
 # mover para apenas development depois de testar em produção
 gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'

@@ -6,8 +6,6 @@ class UserMembership < ApplicationRecord
 
   scope :active, -> { where("iugu_active is true") }
 
-  after_create :create_plan_at_iugu
-
   def create_plan_at_iugu
     self.update(iugu_active: true)
     NovaIugu::SubscriptionCreator.new(self).call

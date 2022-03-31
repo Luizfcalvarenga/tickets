@@ -14,30 +14,43 @@ class UserMembershipsController < ApplicationController
 
       redirect_to payment_methods_path(return_url: request.referrer) and return
     end
-    
-    if user_membership.save && user_membership.iugu_subscription_id.present? 
-      identifier = SecureRandom.uuid
 
-      pass = Pass.create(
-        identifier: identifier,
-        user_membership: user_membership,
-        name: membership.name,
-        partner_id: membership.partner_id,
-        user: current_user,
-        qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
-          color: "000",
-          shape_rendering: "crispEdges",
-          module_size: 5,
-          standalone: true,
-          use_path: true,
-        ),
-      )
+    if current_user.has_membership?(membership)
+      flash[:notice] = "Você já está inscrito nessa assinatura"
+      redirect_to dashboard_path_for_user(current_user) and return
+    end
 
-      DiscordMessager.call("Nova assinatura iniciada: R$ #{number_to_currency(user_membership.membership.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")} cobrados a cada #{user_membership.membership.recurrence_interval_in_months} meses")
+    if user_membership.save
+      if user_membership.create_plan_at_iugu
+        identifier = SecureRandom.uuid
 
-      flash[:notice] = "Assinatura iniciada com sucesso"
+        pass = Pass.create(
+          identifier: identifier,
+          user_membership: user_membership,
+          name: membership.name,
+          partner_id: membership.partner_id,
+          user: current_user,
+          qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
+            color: "000",
+            shape_rendering: "crispEdges",
+            module_size: 5,
+            standalone: true,
+            use_path: true,
+          ),
+        )
 
-      redirect_to dashboard_path_for_user(current_user)
+        DiscordMessager.call("Nova assinatura iniciada - #{membership.name}. Valor: R$ #{ActionController::Base.helpers.number_to_currency(user_membership.membership.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")} cobrados a cada #{user_membership.membership.recurrence_interval_in_months} meses")
+
+        flash[:notice] = "Assinatura iniciada com sucesso"
+
+        redirect_to dashboard_path_for_user(current_user)
+      else
+        user_membership.destroy
+
+        flash[:alert] = "Erro ao iniciar assinatura. Verifique seu cartão cadastrado."
+
+        redirect_to membership_path(user_membership.membership)
+      end
     else
       flash[:alert] = "Erro ao iniciar assinatura. Verifique seu cartão cadastrado."
 

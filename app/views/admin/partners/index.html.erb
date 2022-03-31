@@ -11,7 +11,8 @@
         <th scope="col">Nome do parceiro</th>
         <th scope="col">Cidade/Estado</th>
         <th scope="col">Contato principal</th>
-        <th scope="col">Ações</th>
+        <th scope="col">Status</th>
+        <th scope="col" class="w-30">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -20,12 +21,26 @@
         <td data-label="Nome do parceiro"><%= partner.name %></td>
         <td data-label="Cidade/Estado"><%= partner.city.name %> - <%= partner.state.acronym %></td>
         <td data-label="Contato principal"><%= partner.main_contact.email %></td>
+        <td data-label="Status">
+          <% if partner.active %>
+            <p class="bg-success br-8 py-2 px-3 m-0">Ativo</p>
+          <% else %>
+            <p class="bg-danger br-8 py-2 px-3 m-0">Desativado</p>
+          <% end %>
+        </td>
         <td data-label="Ações">
           <%= link_to partner_path(partner) do %>
             <p class="btn btn-success m-0 px-5">Ver</p>
           <% end %>
           <%= link_to edit_admin_partner_path(partner) do %>
-            <p class="btn btn-success m-0 px-5">Edit</p>
+            <p class="btn btn-success m-0 px-5">Editar</p>
+          <% end %>
+          <%= link_to admin_partner_toggle_active_path(partner), method: :patch do %>
+            <% if partner.active %>
+              <p class="btn btn-danger m-0 px-5">Desativar</p>
+            <% else %>
+              <p class="btn btn-success m-0 px-5">Ativar</p>
+            <% end %>
           <% end %>
         </td>
       </tr>

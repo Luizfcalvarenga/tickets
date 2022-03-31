@@ -159,11 +159,16 @@ module NovaIugu
         sleep 3
         @response = ::Iugu::Subscription.create(subscription_params)
       end
-    
-      entity.update!(
-        iugu_subscription_id: @response.attributes["id"],
-        iugu_active: @response.attributes["active"],
-      )
+
+      if !@response.errors.present?
+        entity.update!(
+          iugu_subscription_id: @response.attributes["id"],
+          iugu_active: @response.attributes["active"],
+        )
+        return true
+      else
+        return false
+      end
     end
 
     def validate_params!

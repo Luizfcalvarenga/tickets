@@ -83,8 +83,12 @@
           <p class="text-white m-0"><%= membership.short_description %></p>
         </div>
 
-        <%= link_to membership_path(membership)do %>
-          <p class="btn btn-success m-0">Inscrever</p>
+        <% if current_user && current_user.has_membership?(membership) %>
+          <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i>Você já está inscrito nessa assinatura</p>
+        <% else %>
+          <%= link_to membership_path(membership) do %>
+            <p class="btn btn-success m-0">Inscrever</p>
+          <% end %>
         <% end %>
       </div>
     <% end %>  

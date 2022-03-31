@@ -66,6 +66,10 @@ class User < ApplicationRecord
     Iugu::PaymentMethod.fetch({customer_id: iugu_customer_id}).results.present?
   end
 
+  def has_membership?(membership)
+    UserMembership.exists?(user: self, membership: membership, iugu_active: true)
+  end
+
   def cpf_valid?(cpf)
     return false if cpf.nil?
   

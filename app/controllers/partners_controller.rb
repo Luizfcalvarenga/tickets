@@ -3,7 +3,7 @@ class PartnersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    @partners = Partner.bike_park.order(:created_at)
+    @partners = Partner.bike_park.active.order(:created_at)
   end
   
   def show
