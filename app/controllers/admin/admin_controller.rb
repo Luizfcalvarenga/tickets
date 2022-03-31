@@ -21,7 +21,7 @@ module Admin
       else
         @entity.update(
           fee_percentage: params[:approve][:fee_percentage].to_s,
-          absorb_fee: params[:approve][:absorb_fee].to_i == 1,
+          absorb_fee: params[:approve][:absorb_fee].to_i == 0,
           approved_at: Time.current,
           approved_by: current_user
         )
