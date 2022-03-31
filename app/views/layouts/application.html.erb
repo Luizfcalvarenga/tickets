@@ -18,7 +18,8 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
   </head>
 
-  <body> 
+  <body>
+    <p class="d-none" id="environment"><%= Rails.env %></p> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     <% if controller_name == "passes" && ["show", "scanner"].include?(action_name) %> 
