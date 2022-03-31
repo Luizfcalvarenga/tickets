@@ -6,16 +6,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
-    @google_specific_tag = "AW-10817869054/nhXVCNuJzKcDEP6prqYo"
-
-    session[:inviter_identifier] = params[:inviter_identifier] if params[:inviter_identifier].present?
-    @event = Event.find_by(identifier: session[:previous_event_identifier]) if session[:previous_event_identifier].present?
     super
   end
 
   # POST /resource
   def create
-    @event = Event.find_by(identifier: session[:previous_event_identifier]) if session[:previous_event_identifier].present?
     super
   end
 
@@ -57,9 +52,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    # redirect_to update_user_info_subscriptions_path 
     if resource.present?
-      subscriptions_path
+      dashboard_path_for_user(resource)
     else
       super(resource)
     end
