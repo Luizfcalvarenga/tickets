@@ -65,7 +65,7 @@ class PassPdfBuilder
 
     document.move_up 60
 
-    document.image URI.open("https://res.cloudinary.com/nuflow/image/upload/v1648614156/logo_verde_2_hmk3jr.png"), width: 50, height: 50, position: :center
+    document.image URI.open("https://res.cloudinary.com/nuflow/image/upload/v1648740319/logo_preta_q88syu.png"), width: 100, height: 100, position: :center
 
     @document.render_file upload_directory
 
