@@ -23,7 +23,7 @@ class Order < ApplicationRecord
     order_items.sum(:total_in_cents)
   end
 
-  def free?
+  def total_price_is_zero?
     total_price_in_cents.zero?
   end
 
@@ -51,6 +51,7 @@ class Order < ApplicationRecord
   def perform_after_payment_confirmation_actions
     OrderPassesGenerator.new(self).call
     self.update(status: "paid")
+    DiscordMessager.call("Nova compra realizada: R$ #{number_to_currency(total_price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
   end
 
   def check_payment_actions_performed

@@ -15,7 +15,7 @@ class UserMembershipsController < ApplicationController
       redirect_to payment_methods_path(return_url: request.referrer) and return
     end
     
-    if user_membership.save 
+    if user_membership.save && user_membership.iugu_subscription_id.present? 
       identifier = SecureRandom.uuid
 
       pass = Pass.create(
@@ -33,11 +33,15 @@ class UserMembershipsController < ApplicationController
         ),
       )
 
+      DiscordMessager.call("Nova assinatura iniciada: R$ #{number_to_currency(user_membership.membership.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")} cobrados a cada #{user_membership.membership.recurrence_interval_in_months} meses")
+
       flash[:notice] = "Assinatura iniciada com sucesso"
 
       redirect_to dashboard_path_for_user(current_user)
     else
-      raise
+      flash[:alert] = "Erro ao iniciar assinatura. Verifique seu cartão cadastrado."
+
+      redirect_to membership_path(user_membership.membership)
     end
   end
 

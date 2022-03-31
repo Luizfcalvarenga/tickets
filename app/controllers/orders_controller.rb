@@ -63,8 +63,7 @@ class OrdersController < ApplicationController
       end
     end
 
-    if @order.free?
-      @order.nova_iugu_after_payment_confirmation
+    if @order.total_price_is_zero?
       redirect_to new_order_question_answer_path(order_id: @order.id) and return
     end
 

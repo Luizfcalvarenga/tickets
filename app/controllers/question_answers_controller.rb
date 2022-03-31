@@ -22,6 +22,12 @@ class QuestionAnswersController < ApplicationController
         end
 
         raise ActiveRecord::RecordInvalid unless @question_answers.all?(&:persisted?)
+
+        if @order.total_price_is_zero?
+          @order.perform_after_payment_confirmation_actions
+          flash[:notice] = "Passes retirados com sucesso"
+          redirect_to dashboard_path_for_user(current_user) and return
+        end
       end
     rescue ActiveRecord::RecordInvalid => e
       @errors = true
