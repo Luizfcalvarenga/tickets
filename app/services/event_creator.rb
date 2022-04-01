@@ -38,8 +38,8 @@ class EventCreator
         raise
       end
     end
-  rescue
-    return false
+  # rescue
+    # return false
   end
 
   private
@@ -50,7 +50,7 @@ class EventCreator
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
+    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches] || []
   end
 
   def questions_params

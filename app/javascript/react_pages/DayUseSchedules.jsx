@@ -138,14 +138,14 @@ export function DayUseSchedules(props) {
   return (
     <div className="">
       <p className="m-0 info-text p-4 br-8 mb-3">
-        <i className="fa fa-info-circle mx-3"></i>Para um day-use ser
+        <i className="fa fa-info-circle mx-3"></i>Para um agendamento ser
         considerado aberto no dia, é necessário preencher um horário de abertura
-        e um horário de fechamento. Para deixar o day-use fechado em algum dia
+        e um horário de fechamento. Para deixar o agendamento fechado em algum dia
         da semana, não preencha as informações de horário.
       </p>
 
       <p className="m-0 info-text p-4 br-8 mb-3">
-        <i className="fa fa-info-circle mx-3"></i>Para um day-use ter apenas um
+        <i className="fa fa-info-circle mx-3"></i>Para um agendamento ter apenas um
         slot diário, não é necessário preencher o campo "Duração do slot"
       </p>
 

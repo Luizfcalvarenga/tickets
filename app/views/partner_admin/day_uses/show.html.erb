@@ -9,7 +9,7 @@
 
   <ul class="nav nav-tabs underlined mb-5" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de convidados</button>
+      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de inscritos</button>
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Programação</button>
@@ -20,9 +20,11 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
     </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Controles</button>
-    </li>
+    <% if false %>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Editar</button>
+      </li>
+    <% end %>
   </ul>
   
   <div class="tab-content" id="myTabContent">
@@ -37,7 +39,7 @@
         <% end %>
       </div>
       
-      <p><b> Total de convidados: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
+      <p><b> Total de inscritos: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
       <div class="flex center between mb-3">
         <div class="form-group f-60">

@@ -18,7 +18,7 @@
       <h3>DIFERENCIAIS <span class="text-success">NUFLOW</span></h3>
     </div>
   </div>
-  <div class="container pt-3">
+  <div class="container pt-3 py-5 mb-5">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col">
         <div class="card bg-dark h-100">
@@ -52,13 +52,10 @@
       </div>
     </div>
   </div>
-  <div class="text-center">
-    <%= link_to "VER TODOS OS EVENTOS", events_path, class:"btn btn-success my-5" %>
-  </div>
 </div>
 
 <div class="third-section-partnership">
-  <div class="container">
+  <div class="container py-5">
     <h2>CADASTRE SEU <span class="text-success">BIKE PARK</span></h2>
     <p>Obtenha todos os recursos necessários para sua pista, bike park ou outro espaço em uma única plataforma:</p>
     <div class="container pt-3">
@@ -93,13 +90,13 @@
         </div>
       </div>
       <div class="text-center">
-        <%= link_to "CADASTRE SEU BIKE PARK", events_path, class:"btn btn-success my-5" %>
+        <button class="btn btn-success px-5 mt-5" data-bs-toggle="modal" data-bs-target="#partner-modal">CADASTRE SEU BIKEPARK</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="fourth-section-partnership">
+<div class="fourth-section-partnership py-5">
   <div class="d-flex justify-content-between mt-5 container mb-3">
     <div class="mobile-arrow">
       <%= image_tag 'arrows.png', class:"mobile-arrow" %>
@@ -115,7 +112,7 @@
           <div class="card-body text-center d-flex align-items-center">
             <div>
               <h3 class="text-success">INGRESSOS</h3>
-              <p class="text-white">Você com o controle dos seus eventos e espaços do início ao fim. Crie, venda, acompanhe e gerencie.</p>
+              <p class="text-white">Defina tipos de ingresso, lotes e promoções.</p>
             </div>
           </div>
         </div>
@@ -125,7 +122,7 @@
           <div class="card-body text-center d-flex align-items-center">
             <div>
               <h3 class="text-success">RECURSOS PARA COMPETIÇÕES</h3>
-              <p class="text-white">Você garante a entrada do seu cliente de forma prática com leitura de QR Code e tem acesso à lista de participantes com atualizações em tempo real.</p>
+              <p class="text-white">Divulgue anexos na página do evento, como a ordem de largada ou os resultados.</p>
             </div>
           </div>
         </div>
@@ -135,14 +132,11 @@
           <div class="card-body text-center d-flex align-items-center">
             <div>
               <h3 class="text-success">COMUNICADOS</h3>
-              <p class="text-white">Das vendas, participantes, acessos e campos personalizados: você coleta e analisa todas informações que quiser.</p>
+              <p class="text-white">Envie atualizações e comunicados sobre seus eventos para os seus participantes.</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="text-center">
-      <%= link_to "VER TODOS OS EVENTOS", events_path, class:"btn btn-success my-5" %>
     </div>
   </div>
 </div>
