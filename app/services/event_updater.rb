@@ -118,7 +118,7 @@ class EventUpdater
   private
 
   def event_params
-    params.require(:event).permit(:name, :description, :photo, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
+    params.require(:event).permit(:name, :description, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_photos: [], supporters_photos: [])
   end
 
   def create_batch_params

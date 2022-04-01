@@ -72,11 +72,27 @@ module PartnerAdmin
         flash[:alert] = "Erro ao alterar evento"
       end  
     end
+
+    def delete_attachments
+      @event = Event.find(params[:id])
+
+      key = params[:key]
+      if key == "presentation"
+        @event.presentation.purge if @event.presentation.attached?
+      elsif key == "sponsors_photos"
+        @event.sponsors_photos.each(&:purge) if @event.sponsors_photos.attached?
+      elsif key == "supporters_photos"
+        @event.supporters_photos.each(&:purge) if @event.supporters_photos.attached?
+      end
+
+      flash[:notice] = "Arquivos apagados"
+      redirect_to dashboard_path_for_user(current_user)
+    end
     
     private
 
     def event_params
-      params.require(:event).permit(:name, :description, :photo, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement)
+      params.require(:event).permit(:name, :description, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_images: [], supporters_images: [])
         .merge(created_by: current_user, partner: current_user.partner)
     end
   
@@ -85,6 +101,7 @@ module PartnerAdmin
     end
   
     def questions_params
+
       params[:questions] || []
     end
   end

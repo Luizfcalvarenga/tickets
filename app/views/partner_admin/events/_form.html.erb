@@ -21,6 +21,35 @@
           </div>
         </div>
 
+        <h2 class="text-success h2 my-3">Documentos</h2>
+        <div class="my-3">
+          <%= f.input :presentation %>
+          <% if @event.presentation.attached? %>
+            <%= link_to "Arquivo atual", @event.presentation.url, target: :_blank, class: "w-20" %>
+            <%= link_to "Deletar arquivos atuais", partner_admin_event_delete_attachments_path(@event, key: :presentation), class: "w-20 text-danger px-3", method: :patch %>
+          <% end %>
+        </div>
+        <div class="my-3">
+          <%= f.input :sponsors_photos, as: :file, input_html: { multiple: true } %>
+          <% @event.sponsors_photos.each do |sponsor_photo| %>
+            <%= cl_image_tag sponsor_photo.key, height: 300, width: 400, crop: :fill %>
+          <% end if !@event.new_record? %>
+          <br>
+          <% if @event.sponsors_photos.attached? %>
+            <%= link_to "Deletar arquivos atuais", partner_admin_event_delete_attachments_path(@event, key: :sponsors_photos), class: "w-20 text-danger px-3", method: :patch %>
+          <% end %>
+        </div>
+        <div class="my-3">
+          <%= f.input :supporters_photos, as: :file, input_html: { multiple: true } %>
+          <% @event.supporters_photos.each do |supporter_photo| %>
+            <%= cl_image_tag supporter_photo.key, height: 300, width: 400, crop: :fill %>
+          <% end if !@event.new_record? %>
+          <br>
+          <% if @event.supporters_photos.attached? %>
+            <%= link_to "Deletar arquivos atuais", partner_admin_event_delete_attachments_path(@event, key: :supporters_photos), class: "w-20 text-danger px-3", method: :patch %>
+          <% end %>
+        </div>
+
         <h2 class="text-success h2 my-3">Local do evento</h2>
         <div class="col-md-6">
           <%= f.input :cep, input_html: { class: "input-cep" }  %>

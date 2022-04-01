@@ -69,6 +69,9 @@ en:
         state_id: Estado
         city_id: Cidade
         photo: Foto
+        sponsors_photos: Logos dos patrocinadores
+        supporters_photos: Logos dos apoiadores
+        presentation: Arquivo de apresentação
       day_use:
         name: Nome
         description: Descrição

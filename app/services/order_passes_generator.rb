@@ -42,6 +42,9 @@ class OrderPassesGenerator
         ),
       )
 
+      PassPdfBuilder.new(pass).call
+      UserMailer.pass_generated(pass.user, pass).deliver_now
+
       DiscordMessager.call("Novo passe comprado: #{order_item.full_description}. Valor: #{ActionController::Base.helpers.number_to_currency(order_item.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
     end
   end

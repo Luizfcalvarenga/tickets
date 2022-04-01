@@ -6,6 +6,10 @@ class Event < ApplicationRecord
   belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_one_attached :photo
+  has_one_attached :presentation
+  has_many_attached :sponsors_photos
+  has_many_attached :supporters_photos
+
   has_many :event_batches, dependent: :destroy
   has_many :passes, through: :event_batches
 
@@ -60,7 +64,7 @@ class Event < ApplicationRecord
     )
   end
 
-  def open_batches
+  def open_batches   
     event_batches.available.pluck(:pass_type).uniq.map do |pass_type|
       event_batches.available.where(pass_type: pass_type).order(:order).first      
     end
