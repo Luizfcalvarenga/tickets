@@ -18,7 +18,7 @@
       <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
     </div>
   </div>
-  <div class="container page-desktop">
+  <div class="container page-desktop mb-5">
     <% @events.each do |event| %>
       <div class="row mb-4 flex-around bg-dark event-card">
         <div class="col-5 p-0 h-100">
@@ -54,16 +54,12 @@
       </div>
     <% end %>
 
-    <% if @events.present? %>
-      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
-        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
-      </div>
-    <% else %>
+    <% if @events.blank? %>
       <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
     <% end %>
   </div>
 
-  <div class="container page-mobile">
+  <div class="container page-mobile mb-5">
     <% @events.each do |event| %>
       <div class="pt-3">
         <%= link_to event_path(event), class: "" do %>
@@ -86,11 +82,7 @@
         </div>
       <% end %>
 
-      <% if @events.present? %>
-        <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
-          <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
-        </div>
-      <% else %>
+      <% if @events.blank? %>
         <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
       <% end %>
     </div>
