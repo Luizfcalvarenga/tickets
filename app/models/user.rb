@@ -19,8 +19,6 @@ class User < ApplicationRecord
 
   validate :cpf_must_be_valid
 
-  after_create :create_customer_at_iugu
-
   enum access: {
     user: "user",
     partner_user: "partner_user",

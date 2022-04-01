@@ -11,9 +11,14 @@ module Users
     # POST /resource/password
     def create
       user = User.find_by(email: email_params[:email])
-      Users::PasswordReseter.new(user).call
-      flash[:notice] = "Instruções para resetar senha enviadas para seu e-mail"
-      redirect_to(new_user_password_path)
+      if user.present?
+        Users::PasswordReseter.new(user).call
+        flash[:notice] = "Instruções para resetar senha enviadas para seu e-mail"
+        redirect_to(new_user_password_path) and return
+      else
+        flash[:alert] = "Usuário não encontrado. Verifique se digitou o e-mail corretamente"
+        redirect_to(new_user_password_path) and return
+      end
     end
 
     # GET /resource/password/edit?reset_password_token=abcdef

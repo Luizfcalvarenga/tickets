@@ -20,6 +20,8 @@ class UserMembershipsController < ApplicationController
       redirect_to dashboard_path_for_user(current_user) and return
     end
 
+    current_user.create_customer_at_iugu if current_user.iugu_customer_id
+
     if user_membership.save
       if user_membership.create_plan_at_iugu
         identifier = SecureRandom.uuid

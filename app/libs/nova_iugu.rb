@@ -121,8 +121,8 @@ module NovaIugu
     end
 
     def validate_params!
-      # raise CustomerParamsException.new("Customer name (string) not specified at [:name]") if customer_params[:name].blank?
-      # raise CustomerParamsException.new("Customer email (string) not specified at [:email]") if customer_params[:email].blank?
+      raise CustomerParamsException.new("Customer name (string) not specified at [:name]") if customer_params[:name].blank?
+      raise CustomerParamsException.new("Customer email (string) not specified at [:email]") if customer_params[:email].blank?
     end
 
     def customer_params
