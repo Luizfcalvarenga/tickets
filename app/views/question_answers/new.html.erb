@@ -39,6 +39,7 @@
                 value="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value %>"
                 class="w-100"
               >
+                <option value=""></option>
                 <% question.options.each do |option| %>
                   <option value="<%= option %>" <%= "selected" if @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value == option %>><%= option %></option>
                 <% end %>
