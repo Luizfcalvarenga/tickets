@@ -4,7 +4,7 @@
   <p class="text-white">O produtor do evento pede para que você responda as seguintes perguntas para comprar seus ingressos:</p>
 
   <% if @errors %>
-    <p class="p-3 bg-danger br-8">Alguma resposta não foi preenchida corretamente. Favor rever os erros abaixo:</p>
+    <p class="p-3 bg-danger br-8 text-white">Alguma resposta não foi preenchida corretamente. Favor rever os erros abaixo:</p>
   <% end %>
 
   <%= simple_form_for([@order, @question_answer]) do |f| %>
