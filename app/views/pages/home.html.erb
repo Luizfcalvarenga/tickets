@@ -30,23 +30,25 @@
   <div class="container mt-5">
     <div class="row">
       <% @events.each do |event| %>
-        <%= link_to event_path(event), class: "" do %>
-          <div class="col-sm-12 col-md-4 p-3">
+        <%= link_to event_path(event), class: "col-sm-12 col-md-4" do %>
+          <div class="p-3 event-card-home">
             <% if event.photo.attached? %>
-                <%= cl_image_tag event.photo.key, height: 220, crop: :fill, class: "w-100" %>
+                <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-60" %>
               <% else %>
-                <%= image_tag 'default.png', style: "height: 220, crop: :fill" %>
+                <%= image_tag 'default.png', crop: :fill, class: "h-60" %>
             <% end %>
-            <div class="bg-dark p-3">
-              <div class="d-flex justify-content-between">
-                <h4 class="text-success flex-fill"><%= event.name %></h4>
-                <div>
-                <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
-                </div>
-              </div>
+            <div class="bg-dark p-3 h-40 flex center around">
               <div>
-                <p class="text-white"><%= event.description.to_plain_text.truncate(80) %></p>
-                <p class="text-white">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+                <div class="d-flex justify-content-between">
+                  <h4 class="text-success flex-fill"><%= event.name %></h4>
+                  <div>
+                  <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-white"><%= event.description.to_plain_text.truncate(80) %></p>
+                  <p class="text-white">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+                </div>
               </div>
             </div>
           </div>
