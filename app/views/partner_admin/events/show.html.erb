@@ -48,7 +48,7 @@
       <% @event.event_batches.each do |event_batch| %>
         <div class="bg-primary-color flex center around p-4 br-8 my-4">
           <p class="f-24 fw-700 m-0 f-1x text-white"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
-          <p class="f-24 m-0 f-1x text-white"><%= number_to_currency(event_batch.price_in_cents, unit: "R$", separator: ",", delimiter: ".") %></p>
+          <p class="f-24 m-0 f-1x text-white"><%= display_price(event_batch.price_in_cents) %></p>
           <p class="f-24 fw-700 m-0 f-1x text-white"><%= event_batch.passes.count %>/<%= event_batch.quantity %></p>
           <p class="f-24 fw-700 m-0 f-1x text-white">
             <% if event_batch.ends_at.present? %>
