@@ -132,6 +132,7 @@ GEM
       sassc (>= 1.11)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    honeybadger (4.9.0)
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
@@ -344,6 +345,7 @@ DEPENDENCIES
   dotenv-rails
   faker!
   font-awesome-sass
+  honeybadger (~> 4.0)
   httparty
   iugu!
   jbuilder (~> 2.7)
