@@ -26,9 +26,9 @@ module NovaIugu
     end
 
     def validate_params!
-      raise ChargerParamsException.new("User email (string) not specified at [:email]") if charge_params[:email].blank?
-      raise ChargerParamsException.new("Months (int) not specified at [:months]") if charge_params[:months].blank?
-      raise ChargerParamsException.new("Items (array) not specified at [:items]") if charge_params[:items].blank?
+      # raise ChargerParamsException.new("User email (string) not specified at [:email]") if charge_params[:email].blank?
+      # raise ChargerParamsException.new("Months (int) not specified at [:months]") if charge_params[:months].blank?
+      # raise ChargerParamsException.new("Items (array) not specified at [:items]") if charge_params[:items].blank?
 
       charge_params[:items].each_with_index do |item, index|
         raise ChargerParamsException.new("Property 'description' (string) not specified for item with index #{index} at [:items]. Item trace: #{item.to_s}") if item[:description].blank?
@@ -121,8 +121,8 @@ module NovaIugu
     end
 
     def validate_params!
-      raise CustomerParamsException.new("Customer name (string) not specified at [:name]") if customer_params[:name].blank?
-      raise CustomerParamsException.new("Customer email (string) not specified at [:email]") if customer_params[:email].blank?
+      # raise CustomerParamsException.new("Customer name (string) not specified at [:name]") if customer_params[:name].blank?
+      # raise CustomerParamsException.new("Customer email (string) not specified at [:email]") if customer_params[:email].blank?
     end
 
     def customer_params
