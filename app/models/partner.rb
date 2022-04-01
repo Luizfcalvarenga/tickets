@@ -39,7 +39,7 @@ class Partner < ApplicationRecord
     users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: memberships.ids}).group("users.id").order("users.name")
 
     attributes = ["Email do usuário", "Nome", "CPF", "Mensalidades ativas"]
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, encoding: Encoding::UTF_8) do |csv|
       csv << attributes
       users.each do |user|
         csv << [user.email, user.name, user.document_number, user.user_memberships.active.where(user_memberships: {membership_id: memberships.ids}).map { |um| um.membership.name }.join(", ")]

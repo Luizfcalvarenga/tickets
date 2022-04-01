@@ -10,9 +10,12 @@ class QuestionAnswersController < ApplicationController
 
   def create
     @order = Order.find(params[:order_id])
+    @order_items = @order.order_items
     
     begin
       ActiveRecord::Base.transaction do
+        @order_items.each { |order_item| order_item.question_answers.each(&:destroy) }
+
         @question_answers = question_answers_params.map do |question_answer_params|
           QuestionAnswer.create(
             order_item_id: question_answer_params[:order_item_id],

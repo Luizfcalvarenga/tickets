@@ -19,7 +19,7 @@ class User < ApplicationRecord
 
   validate :cpf_must_be_valid
 
-  # after_create :create_customer_at_iugu
+  after_create :create_customer_at_iugu
 
   enum access: {
     user: "user",
@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
   def self.to_csv
     attributes = %w[email access]
-    CSV.generate(headers: true) do |csv|
+    CSV.generate(headers: true, encoding: Encoding::UTF_8) do |csv|
       csv << attributes
       all.each do |user|
           csv << user.attributes.values_at(*attributes)

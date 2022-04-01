@@ -11,6 +11,7 @@ class EventsController < ApplicationController
     @current_batches = @event.open_batches
     
     @order = Order.new
+    @partner = @event.partner
 
     if !current_user
       session[:fall_back_url] = request.url

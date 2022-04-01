@@ -17,7 +17,7 @@
             <th scope="col">Titularidade</th>
             <th scope="col">Data de início</th>
             <th scope="col">Data de término</th>
-            <th scope="col">Bikepark</th>
+            <th scope="col">Organizador</th>
             <th scope="col">Situação</th>
           </tr>
         </thead>
@@ -28,7 +28,7 @@
               <td data-label="Titularidade"><%= pass.holder_name %></td>
               <td data-label="Início"><%= pass.kind != "membership" ? pass.start_time.strftime("%d/%m/%Y - %H:%M") : "-" %></td>
               <td data-label="Fim"><%= pass.kind != "membership" ? pass.end_time.strftime("%d/%m/%Y - %H:%M") : "-" %></td>
-              <td data-label="Bikepark"><%= pass.partner.name %></td>
+              <td data-label="Organizador"><%= pass.partner.name %></td>
               <td data-label="Status" class="<%= pass.status[:class] %>"><%= pass.status[:label] %></td>
               <td>
                 <%= link_to "Ver", pass_path(pass), class: "text-success pe-3" %>

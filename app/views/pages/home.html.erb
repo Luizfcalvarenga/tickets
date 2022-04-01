@@ -17,6 +17,53 @@
   </div>
 </div>
 
+<div class="fourth-section-home">
+  <div class="d-flex justify-content-between mt-5 container mb-3">
+    <div>
+      <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
+    </div>
+    <div class="align-self-center">
+      <h3>PRÓXIMOS <span class="text-success">EVENTOS</span></h3>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <% @events.each do |event| %>
+        <div class="col-sm-12 col-md-4 p-3">
+          <%= link_to event_path(event), class: "" do %>
+            <% if event.photo.attached? %>
+                <%= cl_image_tag event.photo.key, height: 220, crop: :fill, class: "w-100" %>
+              <% else %>
+                <%= image_tag 'default.png', style: "height: 220, crop: :fill" %>
+            <% end %>
+          <% end %>
+          <div class="bg-dark p-3">
+            <div class="d-flex justify-content-between">
+              <h4 class="text-success flex-fill"><%= event.name %></h4>
+              <div>
+              <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
+              </div>
+            </div>
+            <div>
+              <p><%= event.description.to_plain_text.truncate(80) %></p>
+              <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if @events.present? %>
+      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+      </div>
+    <% else %>
+      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
+    <% end %>
+  </div>
+</div>
+
 <div class="second-section-home container">
   <div class="d-flex justify-content-between mt-5 container mb-3 mobile-arrow">
     <div class="align-self-center">
@@ -27,7 +74,7 @@
     </div>
   </div>
   <div class="row row-cols-1">
-    <%= link_to partners_path, class: "col-6" do %>
+    <%= link_to partners_path, class: "col-12 col-md-6 mb-2" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -44,7 +91,7 @@
         </div>
       </div>
     <% end %>
-    <%= link_to partners_path, class: "col-6" do %>
+    <%= link_to partners_path, class: "col-12 col-md-6" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -61,7 +108,7 @@
         </div>
       </div>
     <% end if false %>
-    <%= link_to partners_path, class: "col-6" do %>
+    <%= link_to partners_path, class: "col-12 col-md-6" do %>
       <div class="col h-100">
         <div class="card bg-dark h-100 d-flex justify-content-center">
           <div class="row">
@@ -82,92 +129,6 @@
   </div>
 </div>
 
-<div class="fourth-section-home">
-  <div class="d-flex justify-content-between mt-5 container mb-3">
-    <div>
-      <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
-    </div>
-    <div class="align-self-center">
-      <h3>PRÓXIMOS <span class="text-success">EVENTOS</span></h3>
-    </div>
-  </div>
-
-  <div class="container mt-5 d-none d-sm-none d-md-none d-lg-none d-xl-block">
-    <div class="row">
-      <% @events.each do |event| %>
-        <div class="col-sm-12 col-md-6 col-lg-3 p-3">
-          <%= link_to event_path(event), class: "" do %>
-            <% if event.photo.attached? %>
-                <%= image_tag cl_image_path event.photo.key, height: 220, crop: :fill %>
-              <% else %>
-                <%= image_tag 'default.png', style: "height: 220, crop: :fill" %>
-            <% end %>
-          <% end %>
-          <div class="bg-dark">
-            <div class="d-flex justify-content-between p-1">
-              <h4 class="text-success flex-fill"><%= event.name.truncate(13) %></h4>
-              <div>
-              <h4 class="text-success h5"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h4>
-              </div>
-            </div>
-            <div class="p-2">
-              <p><%= event.description.to_plain_text.truncate(80) %></p>
-              <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-
-    <% if @events.present? %>
-      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
-        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
-      </div>
-    <% else %>
-      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
-    <% end %>
-  </div>
-
-  <div class="carousel-mobile page-mobile">
-    <div id="carouselExampleCaptions" class="carousel slide .d-none .d-sm-block .d-md-none" data-bs-ride="carousel"  data-bs-interval="false">
-      <div class="carousel-inner">
-        <% @events.each do |event| %>
-          <% if @events.first.id == event.id %>
-            <div class="carousel-item active">
-          <% else %>
-            <div class="carousel-item">
-          <% end %>
-          <%= link_to event_path(event), class: "" do %>
-            <% if event.photo.attached? %>
-                <%= image_tag cl_image_path event.photo.key, height: 290, crop: :fill %>
-              <% else %>
-                <%= image_tag 'default.png' %>
-            <% end %>
-          <% end %>
-            <div class="bg-dark">
-              <div class="p-2">
-                <h3><span class="text-success"><%= event.name.truncate(13) %></span></h3>
-                <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
-              </div>
-              <div class="p-2">
-                <p><%= event.description.to_plain_text.truncate(80) %></p>
-                <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
-  </div>
 
 <div class="fifth-section-home mt-5 mt-md-0">
   <div class="container">

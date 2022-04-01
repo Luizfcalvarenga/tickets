@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
@@ -7,6 +8,7 @@ export function EventOrderItems(props) {
         id: eventBatch.id,
         passType: eventBatch.pass_type,
         name: eventBatch.name,
+        ends_at: eventBatch.ends_at,
         priceInCents: eventBatch.price_in_cents,
         feeInCents: eventBatch.price_in_cents * parseFloat(props.feePercentage / 100),
         totalInCents: eventBatch.price_in_cents * (1 + parseFloat(props.feePercentage / 100)),
@@ -59,7 +61,7 @@ export function EventOrderItems(props) {
                     style: "currency",
                     currency: "BRL",
                   })}
-                  {props.feePercentage > 0 && 
+                  {props.feePercentage > 0 && (
                     <>
                       {" "}
                       &nbsp;(+&nbsp;
@@ -69,8 +71,9 @@ export function EventOrderItems(props) {
                       })}{" "}
                       taxa)
                     </>
-                  }
+                  )}
                 </p>
+                <p className="m-0">Vendas até {moment(batch.ends_at).strftime("%d/%m/%Y")}</p>
               </div>
 
               <div

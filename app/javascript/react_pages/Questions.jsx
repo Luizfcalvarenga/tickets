@@ -29,6 +29,18 @@ export function Questions(props) {
     setQuestions(currentQuestions);
   };
 
+  const removeQuestionOption = (questionIndex, questionOrderIndex) => {
+    const currentQuestions = [...questions];
+
+    const editedQuestion = currentQuestions.find(
+      (question) => question.order === questionIndex
+    );
+
+    editedQuestion.options.splice(questionOrderIndex, 1);
+
+    setQuestions(currentQuestions);
+  };
+
   const handleQuestionChange = (field, value, questionOrder) => {
     const currentQuestions = [...questions];
 
@@ -41,7 +53,11 @@ export function Questions(props) {
     setQuestions(currentQuestions);
   };
 
-  const handleQuestionOptionChange = (value, questionOrder, questionOptionOrder) => {
+  const handleQuestionOptionChange = (
+    value,
+    questionOrder,
+    questionOptionOrder
+  ) => {
     const currentQuestions = [...questions];
 
     const editedQuestion = currentQuestions.find(
@@ -132,20 +148,31 @@ export function Questions(props) {
                   {question.options.map(
                     (questionOption, questionOptionIndex) => {
                       return (
-                        <input
-                          class="form-control my-2"
-                          type="text"
-                          name="questions[][options][]"
-                          value={questionOption}
-                          onChange={(e) =>
-                            handleQuestionOptionChange(
-                              e.target.value,
-                              questionIndex,
-                              questionOptionIndex
-                            )
-                          }
-                          placeholder="Texto da opção"
-                        />
+                        <div className="flex center">
+                          <input
+                            class="form-control my-2 f-90"
+                            type="text"
+                            name="questions[][options][]"
+                            value={questionOption}
+                            onChange={(e) =>
+                              handleQuestionOptionChange(
+                                e.target.value,
+                                questionIndex,
+                                questionOptionIndex
+                              )
+                            }
+                            placeholder="Texto da opção"
+                          />
+                          <i
+                            className="fa fa-trash f-10 text-center clickable"
+                            onClick={() =>
+                              removeQuestionOption(
+                                questionIndex,
+                                questionOptionIndex
+                              )
+                            }
+                          ></i>
+                        </div>
                       );
                     }
                   )}

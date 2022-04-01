@@ -8,48 +8,50 @@
     <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit, class: "partner-show-logo" %>
   <% end %>
 
-  <h2>Agendamentos disponíveis</h2>
+  <% if @partner.bike_park? %>
+    <h2>Agendamentos disponíveis</h2>
 
-  <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">  
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">  
+        <% @weekdays.each do |weekday| %>
+          <div 
+            class="date-card-partner-show flex column center justify-content-between col-2 col-md-1 bg-dark mx-1 mx-md-2 py-4 clickable mb-2 <%= 'active' if weekday[:date].today? %>" data-date="<%= weekday[:date].strftime('%d-%m-%Y') %>"
+              data-bs-toggle="tab" data-bs-target="#nav-dayuse-<%= weekday[:value] %>" type="button" role="tab" aria-controls="nav-events" aria-selected="true">
+            <p class="m-0 fs-36"><%= weekday[:date].day %></p>
+            <p class="m-0 fs-18"><%= month_number_to_name_abr(weekday[:date].month) %></p>
+            <p class="m-0 fs-18"><%= weekday_number_to_name_abr(weekday[:date].wday) %></p>
+          </div>
+        <% end %>
+      </div>
+    </nav>
+
+    <div class="tab-content mt-5" id="nav-tabContent">
       <% @weekdays.each do |weekday| %>
-        <div 
-          class="date-card-partner-show flex column center justify-content-between col-2 col-md-1 bg-dark mx-1 mx-md-2 py-4 clickable mb-2 <%= 'active' if weekday[:date].today? %>" data-date="<%= weekday[:date].strftime('%d-%m-%Y') %>"
-            data-bs-toggle="tab" data-bs-target="#nav-dayuse-<%= weekday[:value] %>" type="button" role="tab" aria-controls="nav-events" aria-selected="true">
-          <p class="m-0 fs-36"><%= weekday[:date].day %></p>
-          <p class="m-0 fs-18"><%= month_number_to_name_abr(weekday[:date].month) %></p>
-          <p class="m-0 fs-18"><%= weekday_number_to_name_abr(weekday[:date].wday) %></p>
+        <div class="tab-pane fade show <%= 'active' if weekday[:date].today? %>" id="nav-dayuse-<%= weekday[:value] %>" role="tabpanel" aria-labelledby="nav-events-tab">
+          <div class="row">
+            <% weekday[:day_uses].each do |day_use| %>
+              <div class="col-12 col-md-4 mb-3">
+                <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
+                  <% day_use_schedule = day_use.day_use_schedules.find_by(weekday: weekday[:value]) %>
+                  <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use_schedule_photo(day_use_schedule), height: 300, crop: :fill %>')">
+                    <div class="flex center between w-100">
+                      <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use_schedule.name %></p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <% if weekday[:day_uses].blank? %>
+            <p class="text-white">Nenhum Agendamento programado para esse dia.</p>
+          <% end %>
         </div>
       <% end %>
     </div>
-  </nav>
 
-  <div class="tab-content mt-5" id="nav-tabContent">
-    <% @weekdays.each do |weekday| %>
-      <div class="tab-pane fade show <%= 'active' if weekday[:date].today? %>" id="nav-dayuse-<%= weekday[:value] %>" role="tabpanel" aria-labelledby="nav-events-tab">
-        <div class="row">
-          <% weekday[:day_uses].each do |day_use| %>
-            <div class="col-12 col-md-4 mb-3">
-              <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
-                <% day_use_schedule = day_use.day_use_schedules.find_by(weekday: weekday[:value]) %>
-                <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use_schedule_photo(day_use_schedule), height: 300, crop: :fill %>')">
-                  <div class="flex center between w-100">
-                    <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use_schedule.name %></p>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-
-        <% if weekday[:day_uses].blank? %>
-          <p class="text-white">Nenhum Agendamento programado para esse dia.</p>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="spacer-50"></div>
+    <div class="spacer-50"></div>
+  <% end %>
 
   <h2>Eventos</h2>
   
@@ -73,29 +75,31 @@
 
   <div class="spacer-50"></div>
 
-  <h2>Assinaturas disponíveis</h2>
+  <% if @partner.bike_park? %>
+    <h2>Assinaturas disponíveis</h2>
 
-  <div>
-    <% @memberships.each do |membership| %>
-      <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2">
-        <div class="f-30">
-          <p class="text-white fw-700"><%= membership.name %></p>
-          <p class="text-white m-0"><%= membership.short_description %></p>
-        </div>
+    <div>
+      <% @memberships.each do |membership| %>
+        <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2">
+          <div class="f-30">
+            <p class="text-white fw-700"><%= membership.name %></p>
+            <p class="text-white m-0"><%= membership.short_description %></p>
+          </div>
 
-        <% if current_user && current_user.has_membership?(membership) %>
-          <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i>Você já está inscrito nessa assinatura</p>
-        <% else %>
-          <%= link_to membership_path(membership) do %>
-            <p class="btn btn-success m-0">Inscrever</p>
+          <% if current_user && current_user.has_membership?(membership) %>
+            <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i>Você já está inscrito nessa assinatura</p>
+          <% else %>
+            <%= link_to membership_path(membership) do %>
+              <p class="btn btn-success m-0">Inscrever</p>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-    <% end %>  
-  </div>
+        </div>
+      <% end %>  
+    </div>
 
-  <% if @memberships.blank? %>
-    <p class="text-white">Nenhuma assinatura programada até o momento.</p>
+    <% if @memberships.blank? %>
+      <p class="text-white">Nenhuma assinatura programada até o momento.</p>
+    <% end %>
   <% end %>
 </div>
 
