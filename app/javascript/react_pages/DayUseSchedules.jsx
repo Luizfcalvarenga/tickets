@@ -213,7 +213,7 @@ export function DayUseSchedules(props) {
                   />
                   <div class="form-group file optional day_use_photo form-group-valid">
                     <label class="file optional" for="day_use_photo">
-                      Photo
+                      Foto específica do dia
                     </label>
                     <input
                       class="form-control-file is-valid file optional"

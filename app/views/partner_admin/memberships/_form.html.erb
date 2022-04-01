@@ -4,14 +4,17 @@
   <%= simple_form_for([:partner_admin, @membership]) do |f| %>
     <%= f.input :name %>
 
+    <p class="text-success fs-20 mb-0 mt-3" for="day_use_name">Descrição da assinatura</p>
     <%= f.rich_text_area :description, placeholder: "Descrição da assinatura..." %>
     
     <div class="spacer-30"></div>
 
+    <p class="text-success fs-20 mb-0 mt-3" for="day_use_name">Curta descrição da assinatura</p>
     <%= f.rich_text_area :short_description, placeholder: "Curta descrição da assinatura..." %>
 
     <div class="spacer-30"></div>
-    
+
+    <p class="text-success fs-20 mb-0 mt-3" for="day_use_name">Termos de uso</p>
     <%= f.rich_text_area :terms_of_use, placeholder: "Termos de uso da assinatura..." %>
 
     <div class="spacer-30"></div>

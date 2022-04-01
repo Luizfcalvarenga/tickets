@@ -3,6 +3,14 @@
     Novo bloqueio de calendário para <%= @day_use.name %>
   </h1>
 
+  <p class="m-0 bg-primary text-white p-4 br-8 mb-3">
+    <i class="fa fa-info-circle mx-3"></i>Para bloquear um dia específico, defina a "Data de Bloqueio" e não defina o "Dia de Semana". Para bloquear um dia de semana recorrentemente, defina "Dia de Semana" e não defina "Data de Bloqueio".
+  </p>
+
+  <p class="m-0 bg-primary text-white p-4 br-8 mb-3">
+    <i class="fa fa-info-circle mx-3"></i>Para bloquear o dia inteiro, não defina "Horário de início do bloqueio" e nem "Horário de final do bloqueio"
+  </p>
+
   <%= simple_form_for([:partner_admin, @day_use, @day_use_block]) do |f| %>
     <%= f.input :block_date, as: :date, html5: true %>
     <%= f.input :weekday, as: :select, collection: @weekday_collection %>

@@ -1,6 +1,13 @@
-<div class="page-wrapper">
-  <div class="row">
-    <div class="col-12 col-md-6 mb-4">
+<div class="page-wrapper" id="myGroup">
+
+  <div class="page-mobile flex flex-column">
+    <h1 class="text-success">Acesso NuflowPass</h1>
+    <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sign-in" aria-expanded="false" aria-controls="multiCollapseExample2">Fazer Login</button>
+    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#sign-up" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Criar conta</button>
+  </div>
+
+  <div class="row pt-3">
+    <div id="sign-in" class="col-12 col-md-6 mb-4 <%= 'collapse multi-collapse' if mobile_device? %>">
       <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-80" : "vh-50 mt-5" %>">
         <h2 class="text-center text-success f-20">Fazer Login</h2>
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -28,7 +35,7 @@
         <% end %>
       </div>
     </div>
-    <div class="col-12 col-md-6">
+    <div id="sign-up" class="col-12 col-md-6 <%= 'collapse multi-collapse' if mobile_device? %>">
       <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-80" : "vh-50 mt-5" %>">
         <h2 class="text-center text-success f-20">Criar conta</h2>
         <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -61,3 +68,10 @@
     </div>
   </div>
 </div>
+
+<script>
+var $myGroup = $('#myGroup');
+$myGroup.on('show.bs.collapse','.collapse', function() {
+    $myGroup.find('.collapse.in').collapse('hide');
+});
+</script>

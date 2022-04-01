@@ -78,7 +78,7 @@
               <p class=""><%= membership.user_memberships.count %> mensalistas - R$ <%= display_price(membership.price_in_cents) %>.</p>
             </div>
           </div>
-          <div class="card-footer bg-dark">
+          <div class="card-footer bg-dark d-none">
             <%= link_to "Editar", edit_partner_admin_membership_path(membership), class: "text-reset" %>
           </div>
         </div>      
