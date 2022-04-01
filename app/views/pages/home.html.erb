@@ -30,27 +30,27 @@
   <div class="container mt-5">
     <div class="row">
       <% @events.each do |event| %>
-        <div class="col-sm-12 col-md-4 p-3">
-          <%= link_to event_path(event), class: "" do %>
+        <%= link_to event_path(event), class: "" do %>
+          <div class="col-sm-12 col-md-4 p-3">
             <% if event.photo.attached? %>
                 <%= cl_image_tag event.photo.key, height: 220, crop: :fill, class: "w-100" %>
               <% else %>
                 <%= image_tag 'default.png', style: "height: 220, crop: :fill" %>
             <% end %>
-          <% end %>
-          <div class="bg-dark p-3">
-            <div class="d-flex justify-content-between">
-              <h4 class="text-success flex-fill"><%= event.name %></h4>
+            <div class="bg-dark p-3">
+              <div class="d-flex justify-content-between">
+                <h4 class="text-success flex-fill"><%= event.name %></h4>
+                <div>
+                <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
+                </div>
+              </div>
               <div>
-              <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
+                <p class="text-white"><%= event.description.to_plain_text.truncate(80) %></p>
+                <p class="text-white">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
               </div>
             </div>
-            <div>
-              <p><%= event.description.to_plain_text.truncate(80) %></p>
-              <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
 
