@@ -19,6 +19,8 @@ class User < ApplicationRecord
 
   validate :cpf_must_be_valid
 
+  after_create :notify_discord
+
   enum access: {
     user: "user",
     partner_user: "partner_user",
@@ -66,6 +68,10 @@ class User < ApplicationRecord
 
   def has_membership?(membership)
     UserMembership.exists?(user: self, membership: membership, iugu_active: true)
+  end
+
+  def notify_discord
+    DiscordMessager.call("Novo usuário criado: #{email}")
   end
 
   def cpf_valid?(cpf)
