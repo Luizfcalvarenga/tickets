@@ -8,6 +8,12 @@ class EventsController < ApplicationController
   
   def show
     @event = Event.find(params[:id])
+
+    if !@event.active?
+      flash[:alert] = "Evento não encontrado"
+      redirect_to request.referrer
+    end
+
     @current_batches = @event.open_batches
     
     @order = Order.new

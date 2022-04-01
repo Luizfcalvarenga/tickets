@@ -27,6 +27,10 @@ class Event < ApplicationRecord
   scope :not_approved, -> { where(approved_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
 
+  def active?
+    approved_at.present? && deactivated_at.blank?
+  end
+
   def create_default_questions
     Question.create!(
       event: self,
