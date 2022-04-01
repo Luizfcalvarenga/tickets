@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   }
   root to: 'pages#home'
 
+  get "error_test", to: "pages#error_test"
+
   get "partnership", to: "pages#partnership", as: "partnership"
 
   get "user_dashboard", to: "dashboards#user_dashboard", as: "user_dashboard"

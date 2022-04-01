@@ -13,4 +13,8 @@ class PagesController < ApplicationController
 
   def partnership
   end
+
+  def error_test
+    raise "This is a test error for Honeybadger"
+  end
 end
