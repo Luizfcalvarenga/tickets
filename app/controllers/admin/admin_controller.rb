@@ -20,7 +20,7 @@ module Admin
         redirect_to request.referrer
       else
         @entity.update(
-          fee_percentage: params[:approve][:fee_percentage].to_s,
+          fee_percentage: params[:approve][:fee_percentage].to_f,
           absorb_fee: params[:approve][:absorb_fee].to_i == 1,
           approved_at: Time.current,
           approved_by: current_user
