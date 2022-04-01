@@ -9,9 +9,9 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
 
-    if !@event.active?
+    if !@event.active? && !current_user.admin?
       flash[:alert] = "Evento não encontrado"
-      redirect_to request.referrer
+      redirect_to root_path
     end
 
     @current_batches = @event.open_batches
