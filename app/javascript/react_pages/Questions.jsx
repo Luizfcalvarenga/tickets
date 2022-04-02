@@ -55,16 +55,14 @@ export function Questions(props) {
 
   const handleQuestionOptionChange = (
     value,
-    questionOrder,
-    questionOptionOrder
+    questionIndex,
+    questionOptionIndex
   ) => {
     const currentQuestions = [...questions];
 
-    const editedQuestion = currentQuestions.find(
-      (question) => question.order === questionOrder
-    );
-
-    editedQuestion.options[questionOptionOrder] = value;
+    const editedQuestion = currentQuestions[questionIndex]
+  
+    editedQuestion.options[questionOptionIndex] = value;
 
     setQuestions(currentQuestions);
   };
