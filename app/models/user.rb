@@ -35,7 +35,6 @@ class User < ApplicationRecord
     end
   end
 
-
   def cpf_must_be_valid
     if !cpf_valid?(document_number)
       errors.add(:document_number, "inválido")

@@ -53,6 +53,16 @@ export function Questions(props) {
     setQuestions(currentQuestions);
   };
 
+  const handleQuestionOptionalToggle = (questionIndex) => {
+    const currentQuestions = [...questions];
+
+    const editedQuestion = currentQuestions[questionIndex]
+
+    editedQuestion.optional = !editedQuestion.optional
+
+    setQuestions(currentQuestions);
+  };
+
   const handleQuestionOptionChange = (
     value,
     questionIndex,
@@ -85,7 +95,7 @@ export function Questions(props) {
 
       {questions.map((question, questionIndex) => {
         return (
-          <div key={question.order} className="mb-4">
+          <div key={question.id || question.order} className="mb-4">
             <div className="p-4 bg-dark my-4">
               <div className="flex center gap-24">
                 <h3>Pergunta {question.order + 1}</h3>
@@ -137,7 +147,17 @@ export function Questions(props) {
                   <option value="open">Aberta</option>
                 </select>
                 <div className="flex align-items-center gap-12 my-3 f-20">
-                  <input type="checkbox" name="questions[][optional]" />
+                  <input
+                    type="checkbox"
+                    name="questions[][optional]"
+                    checked={question.optional}
+                    value={question.optional}
+                    onChange={() =>
+                      handleQuestionOptionalToggle(
+                        questionIndex
+                      )
+                    }
+                  />
                   <span className="text-white">Pergunta opcional</span>
                 </div>
               </div>
