@@ -18,7 +18,7 @@ class User < ApplicationRecord
   belongs_to :partner, optional: true
 
   validate :cpf_must_be_valid
-  validates :name, presence: true
+  validate :name_must_have_at_least_two_words
 
   after_create :notify_discord
 
@@ -29,9 +29,16 @@ class User < ApplicationRecord
     admin: "admin",
   }
 
+  def name_must_have_at_least_two_words
+    if name.split.length < 2
+      errors.add(:name, "deve ter pelo menos duas palavras")
+    end
+  end
+
+
   def cpf_must_be_valid
     if !cpf_valid?(document_number)
-      errors.add(:document_number, "CPF inválido")
+      errors.add(:document_number, "inválido")
     end
   end
 
