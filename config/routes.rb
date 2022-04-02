@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   get "orders/:id/status", to: "orders#status", as: "order_status"
 
   namespace :admin do
+    resources :orders
     resources :partners
     get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
     patch 'partners/:slug/toggle_active', to: 'partners#toggle_active', as: "partner_toggle_active"

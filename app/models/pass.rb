@@ -25,8 +25,12 @@ class Pass < ApplicationRecord
   scope :from_event_or_day_use, -> { where("event_batch_id is not null OR day_use_schedule_pass_type_id is not null") }
   scope :active, -> { where(deactivated_at: nil) }
 
+  def tax_amount
+    price_in_cents * (fee_percentage/100)
+  end
+
   def amount_to_transfer_to_partner
-    absorb_fee ? (price_in_cents * (1 - fee_percentage/100)) : price_in_cents
+    absorb_fee ? price_in_cents - tax_amount : price_in_cents
   end
 
   def holder_name

@@ -1,8 +1,11 @@
 <% content_for(:html_title) { 'NuflowPass Dashboard' } %>
 <div class="page-wrapper"> 
-  <h2 class="title">Parceiros</h2>
   <%= link_to admin_partners_path do %>
     <p class="btn btn-success w-100">Ver parceiros</p>
+  <% end %>
+
+  <%= link_to admin_orders_path do %>
+    <p class="btn btn-success w-100">Resumo financeiro</p>
   <% end %>
 
   <h2 class="title">Entidades</h2>
