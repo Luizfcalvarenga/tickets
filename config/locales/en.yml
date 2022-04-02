@@ -35,6 +35,8 @@ en:
       profile: Cadastro
     attributes:
       user:
+        name: Nome completo
+        document_number: CPF
       partner:
         name: Nome
         slug: Endereço da sua página

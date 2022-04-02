@@ -2,12 +2,23 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_action :authenticate_user!, unless: :auth_request?
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+
 
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   skip_before_action :verify_authenticity_token
 
   private
+
+  def configure_permitted_parameters
+    # For additional fields in app/views/devise/registrations/new.html.erb
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :document_number])
+
+    # For additional in app/views/devise/registrations/edit.html.erb
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :document_number])
+  end
 
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^auth$)/

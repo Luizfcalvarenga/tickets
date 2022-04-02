@@ -18,6 +18,7 @@ class User < ApplicationRecord
   belongs_to :partner, optional: true
 
   validate :cpf_must_be_valid
+  validates :name, presence: true
 
   after_create :notify_discord
 
@@ -29,7 +30,7 @@ class User < ApplicationRecord
   }
 
   def cpf_must_be_valid
-    if document_number.present? && !cpf_valid?(document_number)
+    if !cpf_valid?(document_number)
       errors.add(:document_number, "CPF inválido")
     end
   end
