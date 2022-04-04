@@ -31,11 +31,11 @@
     <div class="row">
       <% @events.each do |event| %>
         <%= link_to event_path(event), class: "col-sm-12 col-md-4" do %>
-          <div class="p-3 event-card-home">
+          <div class="event-card-home mb-4">
             <% if event.photo.attached? %>
-                <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-60" %>
+                <%= cl_image_tag event.photo.key, crop: :pad, class: "w-100 h-50" %>
               <% else %>
-                <%= image_tag 'default.png', crop: :fill, class: "h-60" %>
+                <%= image_tag 'default.png', crop: :pad, class: "h-60" %>
             <% end %>
             <div class="bg-dark p-3 h-40 flex center around">
               <div>
