@@ -39,13 +39,9 @@ document.addEventListener("turbolinks:load", () => {
 
         $("#access-modal").show();
 
-        console.log(
-          `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`
-        );
-
         accessModal.querySelector(
           ".modal-body"
-        ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier}></react>`;
+        ).innerHTML = `<react data-component="Scanner" data-partner-slug=${btn.dataset.partnerSlug} data-pass-identifier=${btn.dataset.passIdentifier} data-scanner-user-id=${btn.dataset.scannerUserId}></react>`;
 
         const reactContainers = document.querySelectorAll("react");
 

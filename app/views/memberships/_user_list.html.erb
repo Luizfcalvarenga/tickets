@@ -28,11 +28,11 @@
           <% user_memberships.each do |user_membership| %>
             <div class="flex center between mb-2 page-desktop">
               <p class="m-0"><%= user_membership.membership.name %></p>
-              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>">Liberar acesso</p>
+              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
             </div>
             <div class="mb-2 page-mobile">
               <p class="m-0"><%= user_membership.membership.name %></p>
-              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>">Liberar acesso</p>
+              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
             </div>
           <% end %>
           <% if user_memberships.blank? %>
