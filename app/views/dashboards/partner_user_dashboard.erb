@@ -1,0 +1,115 @@
+<div class="page-wrapper mt-5">
+  <nav>
+    <div class="nav nav-tabs underlined" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-events-tab" data-bs-toggle="tab" data-bs-target="#nav-events" type="button" role="tab" aria-controls="nav-events" aria-selected="true">EVENTOS</button>
+      <button class="nav-link" id="nav-day-uses-tab" data-bs-toggle="tab" data-bs-target="#nav-day-uses" type="button" role="tab" aria-controls="nav-day-uses" aria-selected="false">AGENDAMENTOS</button>
+      <button class="nav-link" id="nav-memberships-tab" data-bs-toggle="tab" data-bs-target="#nav-memberships" type="button" role="tab" aria-controls="nav-memberships" aria-selected="false">ASSINATURAS</button>
+      <button class="nav-link" id="nav-read-qr-codes-tab" data-bs-toggle="tab" data-bs-target="#nav-read-qr-codes" type="button" role="tab" aria-controls="nav-read-qr-codes" aria-selected="false">LER QR CODES</button>
+    </div>
+  </nav>
+
+  <div class="tab-content mt-5" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
+      <table class="table table-dark table-borderless text-start">
+        <thead>
+          <tr>
+            <th scope="col">Nome do evento</th>
+            <th scope="col">Data início</th>
+            <th scope="col">Data término</th>
+            <th scope="col">Local</th>
+            <th scope="col">Máx Ingressos</th>
+            <th scope="col">Vendidos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @events.each do |event| %>
+            <tr>
+              <td data-label="Nome do evento"><%= event.name %></td>
+              <td data-label="Data início"><%= event.scheduled_start.strftime('%d/%m/%Y') %></td>
+              <td data-label="Data término"><%= event.scheduled_end.strftime('%d/%m/%Y') %></td>
+              <td data-label="Local"><%= event.city.name %>, <%= event.state.acronym %></td>
+              <td data-label="Máx ingressos"><%= event.event_batches.sum(:quantity) %></td>
+              <td data-label="Vendidos"><%= event.passes.count %></td>
+              <td><%= link_to "Ver detalhes", partner_admin_event_path(event), class: "text-success" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>  
+    </div>
+
+    <div class="tab-pane fade" id="nav-day-uses" role="tabpanel" aria-labelledby="nav-day-uses">
+      <table class="table table-dark table-borderless text-start">
+        <thead>
+          <tr>
+            <th scope="col">Nome do Agendamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @day_uses.each do |day_use| %>
+            <tr>
+              <td data-label="Nome"><%= day_use.name %></td>
+              <td><%= link_to "Ver detalhes", partner_admin_day_use_path(day_use), class: "text-success" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane fade" id="nav-memberships" role="tabpanel" aria-labelledby="nav-memberships">
+      <div class="cards row">
+        <% @memberships.each do |membership| %>
+        <div class="card col-12 col-md-3 mb-3 text-center">
+          <div class="card-body bg-success d-flex align-items-center">
+            <div class="w-100">
+              <h2 class="bold h3 text-dark text-center"> <%= membership.name %></h2>
+              <p class=""><%= membership.user_memberships.count %> mensalistas - R$ <%= display_price(membership.price_in_cents) %>.</p>
+            </div>
+          </div>
+          <div class="card-footer bg-dark d-none">
+            <%= link_to "Editar", edit_partner_admin_membership_path(membership), class: "text-reset" %>
+          </div>
+        </div>      
+      <% end %>
+      </div>
+      <p><b> Total de mensalistas: </b> <%= @partner.user_memberships.count("distinct user_memberships.user_id") %></p>
+      <p><b> Total de mensalistas ativos: </b> <%= @partner.user_memberships.active.count("distinct user_memberships.user_id") %></p>
+      <div id="membership-index-page" class="">
+        <div>
+          <h3 class="title">Lista de mensalistas</h3>
+
+          <div class="flex center mb-3">
+            <div class="form-group f-60">
+              <input id="query-input" type="text" class="w-100" placeholder="Procurar mensalista">
+            </div>
+            <%= link_to partner_admin_memberships_path(format: "csv") do %>
+              <p class="btn btn-success m-0 mx-3">Baixar CSV</p>
+            <% end %>
+          </div>
+
+          <div id="user-list-parent-node">
+            <%= render partial: "memberships/user_list", locals: { users: @users } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-read-qr-codes" role="tabpanel" aria-labelledby="nav-read-qr-codes-tab">
+      <div class="text-center">
+        <%= link_to pass_scanner_path do %>
+          <button class="btn btn-success m-0">Ler QRcodes</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for(:html_title) { 'NuflowPass Dashboard' } %>
+
+<div id="access-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog bg-darker modal-xl" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body vh-90 bg-darker scrollable">
+      </div>
+    </div>
+  </div>
+</div>

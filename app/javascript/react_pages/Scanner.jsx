@@ -23,7 +23,7 @@ export function Scanner(props) {
 
       try {
         const response = await axios.get(
-          `/api/v1/passes/${passIdentifier}/scan?partner_slug=${props.partnerSlug}`
+          `/api/v1/passes/${passIdentifier}/scan?partner_slug=${props.partnerSlug}&scanner_user_id=${props.scannerUserId}`
         );
         setReadResult(response.data);
       } catch {

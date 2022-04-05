@@ -65,6 +65,11 @@ document.addEventListener("turbolinks:load", () => {
                   ? container.dataset.passIdentifier
                   : null
               }
+              scannerUserId={
+                container.dataset.scannerUserId
+                  ? container.dataset.scannerUserId
+                  : null
+              }
             />,
             container
           );

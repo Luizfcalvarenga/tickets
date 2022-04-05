@@ -89,6 +89,11 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.passIdentifier)
               : null
           }
+          scannerUserId={
+            container.dataset.scannerUserId
+              ? container.dataset.scannerUserId
+              : null
+          }
         />
       ),
       ReactPage: <ReactPage message={container.dataset.message} />,

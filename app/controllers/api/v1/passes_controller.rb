@@ -10,6 +10,7 @@ module Api
       def scan
         @partner = Partner.find_by(slug: params[:partner_slug])
         @pass = @partner.passes.find_by(identifier: params[:identifier])
+        scanner_user = User.find(params[:scanner_user_id])
 
         if @pass.blank? 
           render json: {
@@ -19,7 +20,7 @@ module Api
           } and return
         end
 
-        @pass_scanner_service = PassScanner.new(@pass)
+        @pass_scanner_service = PassScanner.new(@pass, scanner_user)
         render json: @pass_scanner_service.call
       end
     end

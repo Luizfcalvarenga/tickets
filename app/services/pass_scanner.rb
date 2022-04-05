@@ -1,8 +1,9 @@
 class PassScanner
-  attr_reader :pass
+  attr_reader :pass, :scanner_user
 
-  def initialize(pass)
+  def initialize(pass, scanner_user)
     @pass = pass
+    @scanner_user = scanner_user
   end
   
   def call
@@ -19,7 +20,7 @@ class PassScanner
 
     read = Read.create(
       pass: @pass,
-      read_by_id: User.partner_admin.last.id,
+      read_by_id: scanner_user,
       result: @result,
       main_line: @main_line,
       secondary_line: @secondary_line
@@ -28,7 +29,7 @@ class PassScanner
     if @result
       Access.create(
         user: @pass.user,
-        granted_by_id: User.partner_admin.last.id,
+        granted_by_id: scanner_user,
         read: read,
         pass: @pass
       )
@@ -88,8 +89,6 @@ class PassScanner
   end
   
   def scan_membership_pass
-    # @pass.user_membership.check_activity!
-
     if @pass.user_membership.active?
       @result = true
       @main_line = "Acesso liberado"

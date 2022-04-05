@@ -2,7 +2,7 @@ module PartnerAdmin
   class DayUsesController < ApplicationController
     def show
       @day_use = DayUse.find(params[:id])
-      @day_use_schedules = @day_use.day_use_schedules.sort_by { |dus| next_date_for_weekday(dus.weekday) }
+      @day_use_schedules = @day_use.day_use_schedules
 
       date = params[:date].present? ? Date.new(*params[:date].split("-").reverse.map(&:to_i)) : Time.current  
 
