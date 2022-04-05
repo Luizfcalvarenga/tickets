@@ -25,7 +25,6 @@ module Users
     def edit
       user = User.with_reset_password_token(params[:reset_password_token])
       if user.blank?
-        raise
         flash[:error] = t(".link_expired")
         redirect_to(new_user_password_path)
         return
