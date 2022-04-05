@@ -34,7 +34,7 @@ module ApplicationHelper
   def cpf_mask(cpf)
     return "-" if cpf.blank?
 
-    cpf.insert(3, ".").insert(7, ".").insert(11, "-")
+    cpf.gsub(/[^0-9]/, '').insert(3, ".").insert(7, ".").insert(11, "-")
   end
 
   def month_number_to_name_abr(month_number)

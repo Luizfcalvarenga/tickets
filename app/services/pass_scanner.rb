@@ -18,18 +18,18 @@ class PassScanner
       raise
     end
 
-    read = Read.create(
+    read = Read.create!(
       pass: @pass,
-      read_by_id: scanner_user,
+      read_by_id: scanner_user.id,
       result: @result,
       main_line: @main_line,
       secondary_line: @secondary_line
     )
 
     if @result
-      Access.create(
+      Access.create!(
         user: @pass.user,
-        granted_by_id: scanner_user,
+        granted_by_id: scanner_user.id,
         read: read,
         pass: @pass
       )
