@@ -23,6 +23,8 @@
 
     <%= f.input :recurrence_interval_in_months, placeholder: "Intervalo de recorrência em meses...", input_html: { min: 1 } %>
 
+    <%= f.input :minimum_subscription_months, placeholder: "Mínimo de meses obrigatórios na inscrição", input_html: { min: 0 } %>
+
     <%= f.submit "Salvar", class: "btn btn-success mt-5 w-100" %>
   <% end %>
 </div>

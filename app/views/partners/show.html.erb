@@ -33,7 +33,7 @@
               <div class="col-12 col-md-4 mb-3">
                 <%= link_to day_use_path(day_use,  weekday[:date].strftime("%d-%m-%Y")) do %>
                   <% day_use_schedule = day_use.day_use_schedules.find_by(weekday: weekday[:value]) %>
-                  <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use_schedule_photo(day_use_schedule), height: 300, crop: :fill %>')">
+                  <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use_schedule.display_photo, height: 300, crop: :fill %>')">
                     <div class="flex center between w-100">
                       <p class="text-white m-0 col-12 col-md-4"><span class="fw-700"><%= day_use.name %></span> - <%= day_use_schedule.name %></p>
                     </div>
@@ -80,7 +80,7 @@
 
     <div>
       <% @memberships.each do |membership| %>
-        <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2">
+        <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2 flex-column flex-md-row">
           <div class="f-30">
             <p class="text-white fw-700"><%= membership.name %></p>
             <p class="text-white m-0"><%= membership.short_description %></p>
@@ -93,6 +93,13 @@
               <p class="btn btn-success m-0">Inscrever</p>
             <% end %>
           <% end %>
+          
+          <div class="f-40 text">
+            <p class="text-success m-0"><%= display_price(membership.price_in_cents) %>/<%= membership.recurrence_interval_in_months %> <%= membership.recurrence_interval_in_months > 1 ? "meses" : "mês" %></p>
+            <% if !membership.minimum_subscription_months.zero? %>
+              <p class="text-white m-0">*Tempo mínimo de assinatura: <%= membership.minimum_subscription_months %> <%= membership.minimum_subscription_months > 1 ? "meses" : "mês" %></p>
+            <% end %>
+          </div>
         </div>
       <% end %>  
     </div>

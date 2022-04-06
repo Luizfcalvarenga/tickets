@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_31_220848) do
+ActiveRecord::Schema.define(version: 2022_04_06_162117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 2022_03_31_220848) do
     t.text "terms_of_use"
     t.boolean "deactivated_at"
     t.integer "recurrence_interval_in_months", default: 1
+    t.integer "minimum_subscription_months", default: 0
     t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end
@@ -394,6 +395,7 @@ ActiveRecord::Schema.define(version: 2022_03_31_220848) do
     t.string "uid", default: "", null: false
     t.boolean "allow_password_change", default: false
     t.json "tokens"
+    t.string "cep"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["partner_id"], name: "index_users_on_partner_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -68,4 +68,9 @@ class DayUseSchedule < ApplicationRecord
   def sanitized_slot_duration_in_minutes
     slot_duration_in_minutes.presence || (closes_at - opens_at)/60
   end
+
+  def display_photo
+    # photo&.key.present? ? photo.key : (day_use.photo&.key.present? ? day_use.photo.key : partner.logo.key)
+    day_use.display_photo
+  end
 end

@@ -2,17 +2,19 @@
   <div class="flex center around h-100 w-100">
     <div class="<%= mobile_device? ? "w-90" : "w-80" %>">
       <div class="spacer-100 page-desktop"></div>
-      <h1 class="text-center">ENCONTRE AS MELHORES<br><span class="text-success">EXPERIÊNCIAS DE CICLISMO</span>.</h1>
+      <h1 class="text-center">AS MELHORES<br><span class="text-success">EXPERIÊNCIAS DE CICLISMO</span>.</h1>
       <p class="text-white text-center">Competições, eventos, agendamentos e assinaturas de pistas e bike parks: todas experiências de ciclismo você encontra aqui!</p>
-      <div class="input-group my-4 text-center">
-        <input type="text" class="form-control" placeholder="<%= mobile_device? ? "Busque" : "Eventos, competições, pistas, bike parks, etc..." %>" aria-label="Eventos, competições, pistas, bike parks, etc..." aria-describedby="button-addon2">
-        <button class="btn btn-success px-2 px-md-3 text-white text-center" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
-      </div>
-      <div class="text-center">
-        <%= link_to partnership_path do %>
-          <button class="btn btn-dark border border-success text-success">SEJA UM PARCEIRO</button>
-        <% end %>
-      </div>
+      <% if false %>
+        <div class="input-group my-4 text-center">
+          <input type="text" class="form-control" placeholder="<%= mobile_device? ? "Busque" : "Eventos, competições, pistas, bike parks, etc..." %>" aria-label="Eventos, competições, pistas, bike parks, etc..." aria-describedby="button-addon2">
+          <button class="btn btn-success px-2 px-md-3 text-white text-center" type="button" id="button-addon2">ENCONTRAR EXPERIÊNCIAS</button>
+        </div>
+        <div class="text-center">
+          <%= link_to partnership_path do %>
+            <button class="btn btn-dark border border-success text-success">SEJA UM PARCEIRO</button>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
@@ -37,17 +39,17 @@
               <% else %>
                 <%= image_tag 'default.png', crop: :pad, class: "h-60" %>
             <% end %>
-            <div class="bg-dark p-3 h-40 flex center around">
+            <div class="bg-dark p-3 h-40 flex center around position-relative">
               <div>
                 <div class="d-flex justify-content-between">
-                  <h4 class="text-success flex-fill"><%= event.name %></h4>
-                  <div>
-                  <h4 class="text-success h5"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </h4>
-                  </div>
+                  <p class="text-success flex-fill fs-24 font-bebas-neue"><%= event.name %></p>
+                <div>
+                </div>
                 </div>
                 <div>
-                  <p class="text-white"><%= event.description.to_plain_text.truncate(80) %></p>
-                  <p class="text-white">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+                  <p class="text-white fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
+                  <p class="text-white fs-16">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+                  <p class="text-success h5 m-3 p-2 bg-darker br-8 position-absolute bottom-0 end-0"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </p>
                 </div>
               </div>
             </div>
@@ -131,6 +133,7 @@
   </div>
 </div>
 
+<div class="spacer-50"></div>
 
 <div class="fifth-section-home mt-5 mt-md-0">
   <div class="container">
@@ -142,9 +145,6 @@
     </ul>
     <%= link_to partnership_path do %>
       <button class="btn btn-success me-2">SEJA UM PARCEIRO</button>
-    <% end %>
-    <%= link_to partnership_path do %>
-      <button class="btn btn-dark border border-success text-success">ENTENDA COMO FUNCIONA</button>
     <% end %>
   </div>
   <div class="spacer-100 page-desktop"></div>

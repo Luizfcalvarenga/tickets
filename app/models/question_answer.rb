@@ -7,7 +7,7 @@ class QuestionAnswer < ApplicationRecord
   validate :must_be_a_valid_cpf_on_cpf_question
   validate :must_be_a_valid_cep_on_cep_question
 
-  before_save :sanitize_value
+  before_validation :sanitize_value
 
   scope :default_questions, -> { joins(:question).where(questions: { default: true }) }
   scope :default_questions, -> { joins(:question).where.not(questions: { default: true }) }
@@ -35,7 +35,9 @@ class QuestionAnswer < ApplicationRecord
   end
 
   def must_be_a_valid_cep_on_cep_question
-    if question.prompt === "CEP" && !(/^\d{8}$/.match?(value))
+    return true unless question.prompt === "CEP"
+
+    if !(/^\d{8}$/.match?(value))
       errors.add(:value, "CEP inválido, deve conter 8 digitos numéricos")
     end
   end

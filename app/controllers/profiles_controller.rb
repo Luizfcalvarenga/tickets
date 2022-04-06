@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
 
       redirect_to dashboard_path_for_user(current_user)
     else
-      flash[:alert] = "Ocorreu algum erro ao atualizar seus dados. Insira o nome completo e um CPF válido"
+      flash[:alert] = "Ocorreu algum erro ao atualizar seus dados. Insira o nome completo, CPF e CEP válidos"
       redirect_to dashboard_path_for_user(current_user, current_tab: "nav-acc-info", return_url: request.referrer) and return
     end
   end
@@ -21,6 +21,6 @@ class ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.require(:user).permit(:name, :photo, :document_number)
+    params.require(:user).permit(:name, :photo, :document_number, :cep)
   end
 end

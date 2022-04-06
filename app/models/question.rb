@@ -20,4 +20,21 @@ class Question < ApplicationRecord
     multiple_choice: "multiple_choice",
     open: "open",
   }
+
+  def create_answer_for_order_item_based_on_user_account(order_item)
+    if prompt == "Nome completo"
+      value = order_item.order.user.name
+    elsif prompt == "CPF"
+      value = order_item.order.user.document_number
+    elsif prompt == "CEP"
+      value = order_item.order.user.cep
+    else
+    end
+
+    QuestionAnswer.create!(
+      order_item: order_item,
+      question: self,
+      value: value,
+    )
+  end
 end

@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
         end
 
         order_item_params[:quantity].to_i.times do 
-          OrderItem.create(order: @order,
+          order_item = OrderItem.create(order: @order,
             event_batch_id: order_item_params[:event_batch_id],
             day_use_schedule_pass_type_id: order_item_params[:day_use_schedule_pass_type_id],
             price_in_cents: entity.price_in_cents,
@@ -61,11 +61,7 @@ class OrdersController < ApplicationController
       end
     end
 
-    if @order.total_price_is_zero?
-      redirect_to new_order_question_answer_path(order_id: @order.id) and return
-    end
-
-    if @order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled"
+    if (@order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled") && !@order.total_price_is_zero?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else
       begin
@@ -79,6 +75,16 @@ class OrdersController < ApplicationController
       end
     end
 
+    if @order.related_entity.class == DayUse
+      @order.order_items.each do |order_item|
+        @order.related_entity.questions.default.each do |question|
+          question.create_answer_for_order_item_based_on_user_account(order_item)
+        end
+      end
+
+      redirect_to order_path(@order) and return
+    end
+
     redirect_to new_order_question_answer_path(order_id: @order.id) and return
   end
 
@@ -87,7 +93,13 @@ class OrdersController < ApplicationController
 
     ::NovaIugu::ChargeCheckAndUpdateStatus.new(@order).call
 
-    render json: @order.status
+    button_url = user_dashboard_path
+
+    if @order.status == "paid" && @order.passes.count == 1
+      button_url = pass_url(@order.passes.first)
+    end
+
+    render json: { status: @order.status, button_url: button_url }
   end
 
   private

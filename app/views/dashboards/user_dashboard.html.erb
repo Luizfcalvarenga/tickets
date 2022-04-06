@@ -56,14 +56,9 @@
             <input type="hidden" name="return_url" value="<%= params[:return_url] %>">
           <% end %>
 
-          <div class="row">
-            <div class="col-sm-12 col-md-6">
-              <%= f.input :name %>
-            </div>
-            <div class="col-sm-12 col-md-6">
-              <%= f.input :document_number, label: "Número de CPF", input_html: { class: "mask-cpf" } %>
-            </div>
-          </div>
+          <%= f.input :name %>
+          <%= f.input :document_number, label: "Número de CPF", input_html: { class: "mask-cpf" } %>
+          <%= f.input :cep, label: "CEP", input_html: { class: "mask-cep" } %>
 
           <%= f.submit "Confirmar dados", class: "btn btn-success mt-5 text-center" %>
         <% end %>

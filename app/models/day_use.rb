@@ -68,4 +68,8 @@ class DayUse < ApplicationRecord
   def full_address
     "#{partner.street_name} - #{partner.street_number} - #{partner.address_complement}, #{partner.neighborhood}, #{partner.city.name} - #{partner.city.state.acronym}"
   end
+
+  def display_photo
+    photo&.key.present? ? photo.key : partner.logo.key
+  end
 end

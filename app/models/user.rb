@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
   validate :cpf_must_be_valid
   validate :name_must_have_at_least_two_words
+  validate :cep_must_be_valid
 
   after_create :notify_discord
 
@@ -38,6 +39,12 @@ class User < ApplicationRecord
   def cpf_must_be_valid
     if !cpf_valid?(document_number)
       errors.add(:document_number, "inválido")
+    end
+  end
+
+  def cep_must_be_valid
+    if cep.gsub(/[^0-9]/, '').length != 8
+      errors.add(:name, "deve ter 8 digitos numéricos")
     end
   end
 
@@ -64,7 +71,7 @@ class User < ApplicationRecord
   end
 
   def has_completed_profile?
-    name.present? && document_number.present?
+    name.present? && document_number.present? && cep.present?
   end
 
   def has_payment_method?

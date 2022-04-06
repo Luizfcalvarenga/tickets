@@ -90,6 +90,7 @@ en:
         name: Nome
         price_in_cents: Preço em centavos por cobrança
         recurrence_interval_in_months: Intervalo entre cobranças em meses
+        minimum_subscription_months: Tempo mínimo obrigatório de inscrição
     errors:
       messages:
         blank: não pode ficar em branco

@@ -32,7 +32,7 @@
         </div>
         <div class="col-7 p-5 h-100 d-flex flex-column">
           <div class="d-flex justify-content-between f-30">
-            <h3><span class="text-success"><%= event.name %></span></h3>
+            <p><span class="text-success fs-24"><%= event.name %></span></p>
             <div class="d-flex justify-content-between">
               <div>
                 <i aria-hidden="true" class="fas fa-calendar"></i>
@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="overflow-auto f-60">
-            <p class="mb-0"><%= event.description.to_plain_text.truncate(400) %></p>
+            <p class="mb-0 fs-16"><%= event.description.to_plain_text.truncate(400) %></p>
           </div>
           <%= link_to event_path(event), class: "" do %>
             <button class="btn btn-success btn-lg px-5">COMPRAR</button>
@@ -72,11 +72,11 @@
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
-            <h3><span class="text-success"><%= event.name %></span></h3>
+            <h3><span class="text-success fs-30"><%= event.name %></span></h3>
             <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
           </div>
           <div class="p-2">
-            <p><%= event.description.to_plain_text.truncate(80) %></p>
+            <p class="fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
             <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
           </div>
         </div>
