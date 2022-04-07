@@ -10,7 +10,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 
     if !@event.active?
-      flash[:alert] = "Evento não encontrado"
+      flash[:alert] = "Evento não encontrado ou está com as vendas suspensas"
       redirect_to root_path
     end
 
