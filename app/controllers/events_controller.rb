@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
 
-    if !@event.active? && !current_user.admin?
+    if !@event.active?
       flash[:alert] = "Evento não encontrado"
       redirect_to root_path
     end
