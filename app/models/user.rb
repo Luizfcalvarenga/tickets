@@ -31,19 +31,19 @@ class User < ApplicationRecord
   }
 
   def name_must_have_at_least_two_words
-    if name.split.length < 2
+    if name.present? && name.split.length < 2
       errors.add(:name, "deve ter pelo menos duas palavras")
     end
   end
 
   def cpf_must_be_valid
-    if !cpf_valid?(document_number)
+    if document_number.present? && !cpf_valid?(document_number)
       errors.add(:document_number, "inválido")
     end
   end
 
   def cep_must_be_valid
-    if cep.gsub(/[^0-9]/, '').length != 8
+    if cep.present? && cep.gsub(/[^0-9]/, '').length != 8
       errors.add(:name, "deve ter 8 digitos numéricos")
     end
   end
