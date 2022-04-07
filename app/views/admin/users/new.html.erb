@@ -1,0 +1,16 @@
+<div class="page-wrapper partner-form">
+  <h1 class="title">Criar novo usuário</h1>
+
+  <%= simple_form_for([:admin, @user]) do |f| %>
+    <%= f.input :email %>
+    <%= f.input :name %>
+    <%= f.input :document_number %>
+    <%= f.input :cep %>
+    <%= f.association :partner %>
+    <%= f.input :access, collection: ["partner_user", "partner_admin"] %>
+    
+    <div class="text-center">
+      <%= f.submit "CRIAR USUÁRIO", class: "btn btn-success my-5" %>
+    </div>
+  <% end %>
+</div>

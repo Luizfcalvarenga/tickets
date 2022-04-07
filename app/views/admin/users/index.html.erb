@@ -1,0 +1,45 @@
+<div class="page-wrapper">
+  <div class="flex center between">
+    <h1 class="title">Últimos usuários</h1>
+    <%= link_to new_admin_user_path do %>
+      <p class="btn btn-success mb-5 w-100 px-5">Criar novo usuário</p>
+    <% end %>
+  </div>
+
+  <div class="row my-3">
+    <div class="col-12 p-2 br-8">
+      <div class="br-8 bg-dark flex center around flex-column p-4">
+        <p class="fw-bold text-white">Total de usuários</p>
+        <p class="fw-bold text-white fs-30 m-0"><%= @users.count %></p>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="w-25">Email</th>
+        <th scope="col" class="w-25">Nome completo</th>
+        <th scope="col">CPF</th>
+        <th scope="col">CEP</th>
+        <th scope="col">Criado em</th>
+        <th scope="col">Parceiro</th>
+        <th scope="col">Acesso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+      <tr>
+        <td data-label="Email"><%= user.email %></td>
+        <td data-label="Nome completo"><%= user.name %></td>
+        <td data-label="CPF"><%= user.document_number %></td>
+        <td data-label="CEP"><%= user.cep %></td>
+        <td data-label="Criado em"><%= user.created_at.strftime("%d/%m/%Y - %H:%M") %></td>
+        <td data-label="Parceiro"><%= user.partner&.name || "-" %></td>
+        <td data-label="Acesso"><%= user.access %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

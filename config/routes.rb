@@ -59,6 +59,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :orders
     resources :partners
+    resources :users, only: [:index, :new, :create]
+    
     get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
     patch 'partners/:slug/toggle_active', to: 'partners#toggle_active', as: "partner_toggle_active"
 
