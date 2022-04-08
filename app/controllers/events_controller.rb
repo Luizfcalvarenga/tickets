@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    @events = Event.active
+    @events = Event.active.where("scheduled_end > ?", Time.current).order(:scheduled_start)
   end
   
   def show
