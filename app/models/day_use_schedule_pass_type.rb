@@ -18,4 +18,7 @@ class DayUseSchedulePassType < ApplicationRecord
   def partner
     day_use_schedule.day_use.partner
   end
+
+  scope :active, -> { where(deleted_at: nil) }
+  scope :inactive, -> { where.not(deleted_at: nil) }
 end
