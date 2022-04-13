@@ -1,7 +1,8 @@
 // Specific CSS for your home-page
 
 .event-photo {
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   height: 520px;
   width: 780px;

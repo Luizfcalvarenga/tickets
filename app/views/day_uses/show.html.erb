@@ -1,30 +1,32 @@
 <div class="page-wrapper">
-  <h1 class="title"><%= @day_use.name %></h1>
-  <% if @day_use.photo.attached? %>
-    <div class="event-photo my-4" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @day_use.photo.key, height: 300, crop: :fill %>')">
-    </div>
-  <% end %>
+  <div class="text-center">
+    <h1 class="title"><%= @day_use.name %></h1>
+    <% if @day_use.photo.attached? %>
+      <div class="event-photo my-4 w-100" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path @day_use.photo.key, height: 300, crop: :fill %>')">
+      </div>
+    <% end %>
 
-  <p class="fs-18 text-white">
-    <%= @day_use.description %>
-  </p>
-  
-  <div class="spacer-50"></div>
+    <p class="fs-18 text-white">
+      <%= @day_use.description %>
+    </p>
+    
+    <div class="spacer-50"></div>
 
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <%= cl_image_tag @day_use_schedule.display_photo, height: 350, crop: :fill %>
+    <div class="row">
+      <div class="col-12 col-md-12">
+        <%= cl_image_tag @day_use_schedule.display_photo, height: 350, crop: :fill, class:"mw-100" %>
+      </div>
+      <div class="col-12 col-md-12 pt-4 pt-md-0">
+        <h2 class="title"><%= @day_use_schedule.name %></h1>
+        <p class="fs-18 text-white">
+          <%= @day_use_schedule.description %>
+        </p>
+      </div>
     </div>
-    <div class="col-12 col-md-6">
-      <h2 class="title"><%= @day_use_schedule.name %></h1>
-      <p class="fs-18 text-white">
-        <%= @day_use_schedule.description %>
-      </p>
-    </div>
+
+    <div class="spacer-50"></div>
+    
   </div>
-
-  <div class="spacer-50"></div>
-  
   <% if @day_use_schedule.open? && @day_use_schedule.open_slots_for_date(@date).present? %>
     <%= simple_form_for(@order) do |f| %>
       <react data-component="DayUseOrderItems" 
