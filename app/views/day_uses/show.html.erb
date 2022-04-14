@@ -14,7 +14,9 @@
 
     <div class="row">
       <div class="col-12 col-md-12">
-        <%= cl_image_tag @day_use_schedule.display_photo, height: 350, crop: :fill, class:"mw-100" %>
+        <%  if @day_use_schedule.photo.attached? %>
+          <%= cl_image_tag @day_use_schedule.photo.key, height: 350, crop: :fill, class:"mw-100" %>
+        <% end %>
       </div>
       <div class="col-12 col-md-12 pt-4 pt-md-0">
         <h2 class="title"><%= @day_use_schedule.name %></h1>

@@ -107,6 +107,10 @@
     <% if @memberships.blank? %>
       <p class="text-white">Nenhuma assinatura programada até o momento.</p>
     <% end %>
+
+    <h2 class="text-success text-center mt-5">Sobre o local</h2>
+    <p><%= @partner.about %></p>
+    
   <% end %>
 </div>
 
