@@ -10,6 +10,7 @@
         <td><%= day_use_question.prompt %></td>
       <% end %>
       <th scope="col">Acesso</th>
+      <th scope="col">Passe</th>
       <th scope="col">Ações</th>
     </tr>
   </thead>
@@ -20,7 +21,8 @@
           <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
         <% end  %>
         <td data-label="Usuário"><%= pass.user.email %></td>
-        <td data-label="Usuário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
+        <td data-label="Horário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
+        <td data-label="Passe"><%= pass.day_use_schedule_pass_type.name %></td>
         <% pass.question_answers.joins(:question).merge(Question.non_default).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
         <% end %>
