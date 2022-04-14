@@ -19,55 +19,6 @@
   </div>
 </div>
 
-<div class="fourth-section-home">
-  <div class="d-flex justify-content-between mt-5 container mb-3">
-    <div>
-      <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
-    </div>
-    <div class="align-self-center">
-      <h3>PRÓXIMOS <span class="text-success">EVENTOS</span></h3>
-    </div>
-  </div>
-
-  <div class="container mt-5">
-    <div class="row">
-      <% @events.each do |event| %>
-        <%= link_to event_path(event), class: "col-sm-12 col-md-4" do %>
-          <div class="event-card-home mb-4">
-            <% if event.photo.attached? %>
-                <%= cl_image_tag event.photo.key, crop: :pad, class: "w-100 h-50" %>
-              <% else %>
-                <%= image_tag 'default.png', crop: :pad, class: "h-60" %>
-            <% end %>
-            <div class="bg-dark p-3 h-40 flex center around position-relative">
-              <div>
-                <div class="d-flex justify-content-between">
-                  <p class="text-success flex-fill fs-24 font-bebas-neue"><%= event.name %></p>
-                <div>
-                </div>
-                </div>
-                <div>
-                  <p class="text-white fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
-                  <p class="text-white fs-16">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-                  <p class="text-success h5 m-3 p-2 bg-darker br-8 position-absolute bottom-0 end-0"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-
-    <% if @events.present? %>
-      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
-        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
-      </div>
-    <% else %>
-      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
-    <% end %>
-  </div>
-</div>
-
 <div class="second-section-home container">
   <div class="d-flex justify-content-between mt-5 container mb-3 mobile-arrow">
     <div class="align-self-center">
@@ -130,6 +81,57 @@
       </div>
     </div>
   <% end %>
+  </div>
+</div>
+
+<div class="spacer-50"></div>
+
+<div class="fourth-section-home">
+  <div class="d-flex justify-content-between mt-5 container mb-3">
+    <div>
+      <%= image_tag 'arrows.png', class:"mobile-arrow"  %>
+    </div>
+    <div class="align-self-center">
+      <h3>PRÓXIMOS <span class="text-success">EVENTOS</span></h3>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <% @events.each do |event| %>
+        <%= link_to event_path(event), class: "col-sm-12 col-md-4" do %>
+          <div class="event-card-home mb-4">
+            <% if event.photo.attached? %>
+                <%= cl_image_tag event.photo.key, crop: :pad, class: "w-100 h-50" %>
+              <% else %>
+                <%= image_tag 'default.png', crop: :pad, class: "h-60" %>
+            <% end %>
+            <div class="bg-dark p-3 h-40 flex center around position-relative">
+              <div>
+                <div class="d-flex justify-content-between">
+                  <p class="text-success flex-fill fs-24 font-bebas-neue"><%= event.name %></p>
+                <div>
+                </div>
+                </div>
+                <div>
+                  <p class="text-white fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
+                  <p class="text-white fs-16">Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+                  <p class="text-success h5 m-3 p-2 bg-darker br-8 position-absolute bottom-0 end-0"><%= event.scheduled_start.strftime('%d/%m/%Y - %H:%M') %> </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if @events.present? %>
+      <div class="text-center mt-0 mt-md-5 mb-4 mb-mb-0">
+        <%= link_to "VER TODOS OS EVENTOS", events_path, class: "btn btn-success" %>
+      </div>
+    <% else %>
+      <p class="m-0 text-white mb-5">Nenhum evento programado até o momento.</p>
+    <% end %>
   </div>
 </div>
 

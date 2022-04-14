@@ -3,6 +3,9 @@
     <div class="f-40 px-2">
       <ul class="navbar-nav font-bebas-neue d-flex flex-row align-items-center justify-content-end gap-24">
         <li class="nav-item active">
+          <%= link_to "HOME", root_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item active">
           <%= link_to "BIKE PARKS", partners_path, class: "nav-link" %>
         </li>
         <li class="nav-item active">
@@ -15,7 +18,7 @@
     </div>
     
     <div class="f-15 flex center around">
-      <%= link_to current_user.present? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
+      <%= link_to current_user.present? && !current_user.user? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
         <%= image_tag "white_logo.png", class: "navbar-brand" %>
       <% end %>
     </div>
@@ -43,7 +46,7 @@
 
   <% if mobile_device? %>
     <div class="flex center between w-100 px-5">
-      <%= link_to current_user.present? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
+      <%= link_to current_user.present? && !current_user.user? ? dashboard_path_for_user(current_user) : root_path, class: "nav-link" do %>
         <%= image_tag "white_logo.png", class: "navbar-brand" %>
       <% end %>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +56,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div class="flex center around">
         <ul class="navbar-nav font-bebas-neue text-center d-flex flex-column">
+          <li class="nav-item active">
+            <%= link_to "HOME", root_path, class: "nav-link" %>
+          </li>
           <li class="nav-item active">
             <%= link_to "BIKE PARKS", partners_path, class: "nav-link" %>
           </li>
