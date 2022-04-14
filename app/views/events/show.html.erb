@@ -1,10 +1,14 @@
-<div class="page-wrapper">
-  <div class="first-section-event-show flex center around">
-    <% if @event.photo.attached? %>
-      <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= cl_image_path @event.photo.key, crop: :fit %>')">
+<% if @event.photo.attached? %>
+  <% if mobile_device? %>
+    <%= cl_image_tag @event.photo.key, crop: :fill, class:"mw-100" %>   
+  <% else %>
+    <div class="flex center around mt-5">
+        <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= cl_image_path @event.photo.key, crop: :fit %>')">
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
+<% end %>
+<div class="page-wrapper">
 
   <div class="second-section-event-show">
     <div class="d-flex align-items-center justify-content-start mt-5">

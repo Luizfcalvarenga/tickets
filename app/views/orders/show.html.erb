@@ -45,6 +45,10 @@
     </table>
   </div>
 
+  <p class="m-0 bg-primary text-white p-4 br-8 mb-3">
+    <i class="fa fa-info-circle my-3 pe-2"></i>Para pagar com PIX, clique em "Pix Copia e Cola", pague no aplicativo do seu banco, e retorne aqui para acessar seus passes.
+  </p>
+
   <% if @order.invoice_url.present? %>
     <iframe src="<%=@order.invoice_url %>" class="mb-5 invoice" frameborder="0" style="min-height: 1500px; width: 100%"></iframe>
   <% end %>
