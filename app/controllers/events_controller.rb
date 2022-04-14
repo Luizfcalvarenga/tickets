@@ -4,6 +4,7 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.active.where("scheduled_end > ?", Time.current).order(:scheduled_start)
+    @past_events = Event.active.where("scheduled_end < ?", Time.current).order(:scheduled_start)
   end
   
   def show
