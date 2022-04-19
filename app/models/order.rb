@@ -40,6 +40,11 @@ class Order < ApplicationRecord
       end,
       payer: {
         name: user.name,
+        cpf_cnpj: user.document_number,
+        address: {
+          zip_code: user.cep,
+          number: "-",
+        }
       },
       ignore_due_email: true,
       ignore_canceled_email: true,  
