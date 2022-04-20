@@ -17,12 +17,10 @@ export function Questions(props) {
     ]);
   };
 
-  const addQuestionOption = (questionOrder) => {
+  const addQuestionOption = (questionIndex) => {
     const currentQuestions = [...questions];
 
-    const editedQuestion = currentQuestions.find(
-      (question) => question.order === questionOrder
-    );
+    const editedQuestion = currentQuestions[questionIndex]
 
     editedQuestion.options = [...editedQuestion.options, ""];
 
@@ -152,11 +150,7 @@ export function Questions(props) {
                     name="questions[][optional]"
                     checked={question.optional}
                     value={question.optional}
-                    onChange={() =>
-                      handleQuestionOptionalToggle(
-                        questionIndex
-                      )
-                    }
+                    onChange={() => handleQuestionOptionalToggle(questionIndex)}
                   />
                   <span className="text-white">Pergunta opcional</span>
                 </div>
@@ -196,7 +190,7 @@ export function Questions(props) {
                   )}
                   <p
                     className="btn btn-success p-3"
-                    onClick={() => addQuestionOption(question.order)}
+                    onClick={() => addQuestionOption(questionIndex)}
                   >
                     <i className="fa fa-plus"></i>
                     <span className="px-3">Adicionar opção de resposta</span>
