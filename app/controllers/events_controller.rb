@@ -16,7 +16,6 @@ class EventsController < ApplicationController
     end
 
     @current_batches = @event.open_batches
-    
     @order = Order.new
     @partner = @event.partner
 

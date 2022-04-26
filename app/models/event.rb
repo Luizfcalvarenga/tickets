@@ -64,9 +64,17 @@ class Event < ApplicationRecord
     )
   end
 
-  def open_batches   
-    event_batches.available.pluck(:pass_type).uniq.map do |pass_type|
-      event_batches.available.where(pass_type: pass_type).order(:order).first      
+  def open_batches
+    # TODO: Refatorar para uma solução SQL melhor
+    
+    available_batches = event_batches.select(&:available?)
+    available_pass_types = available_batches.pluck(:pass_type).uniq
+    
+    available_pass_types.map do |pass_type|
+      available_batches
+        .select { |available_batch| available_batch.pass_type == pass_type}
+        .sort_by(&:order)
+        .first      
     end
   end
 
