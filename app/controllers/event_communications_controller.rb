@@ -8,6 +8,7 @@ class EventCommunicationsController < ApplicationController
   end
 
   def show
+    @event = Event.find(params[:event_id])
     @event_communication = EventCommunication.find(params[:id])
   end
 

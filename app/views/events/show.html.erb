@@ -48,6 +48,12 @@
     </div>
   </div>
 
+  <% if @event.event_communications.present? %>
+    <div class="my-3 flex center around">
+      <%= link_to "Ver comunicados do evento", event_event_communications_path(event_id: @event.id), class: "btn btn-success" %>
+    </div>
+  <% end %>
+
   <div class="my-3 flex center around">
     <%= link_to "Baixar apresentação do evento", @event.presentation.url, target: :_blank, class: "btn btn-success" if @event.presentation.attached? %>
   </div>

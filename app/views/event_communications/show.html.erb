@@ -1,7 +1,8 @@
 <div class="page-wrapper">
   <h1 class="title">Comunicado de evento</h1>
-  <%= link_to event_path(id: @event_communication.event.id) do %>
-    <h2 class="title"><%= @event_communication.event.name %></h2>
+  <h2 class="title"><%= @event.name %></h2>
+  <%= link_to event_path(id: @event.id), class: "btn btn-success" do %>
+    <p class="m-0">Voltar</p>
   <% end %>
 
   <div class="spacer-50"></div>
