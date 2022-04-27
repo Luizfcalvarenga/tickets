@@ -72,6 +72,7 @@ import "./membership_user_list";
 import "./partners";
 import "./payment_pooling";
 import "./masks";
+import "./iugu";
 
 const loadReactComponent = () => {
   const reactContainers = document.querySelectorAll("react");
