@@ -59,6 +59,6 @@ class Order < ApplicationRecord
   end
 
   def check_payment_actions_performed
-    status === "paid" && passes.count === order_items.count
+    status == "paid" && passes.count == order_items.count
   end
 end

@@ -15,7 +15,7 @@ module PartnerAdmin
 
       begin
         if @user.blank?
-          @user = User.create!(user_params.merge(password: "123456"))
+          @user = User.create!(user_params.merge(password: "89h23f8932hf892389fh"))
         else
           @user.update!(user_params)
         end

@@ -23,19 +23,19 @@ class QuestionAnswer < ApplicationRecord
   end
 
   def must_have_at_least_two_names_on_full_name_question
-    if question.prompt === "Nome completo" and value.split.length < 2
+    if question.prompt == "Nome completo" and value.split.length < 2
       errors.add(:value, "Nome completo deve ter pelo menos dois nomes")
     end
   end
 
   def must_be_a_valid_cpf_on_cpf_question
-    if question.prompt === "CPF" && !cpf_valid?(value)
+    if question.prompt == "CPF" && !cpf_valid?(value)
       errors.add(:value, "CPF inválido")
     end
   end
 
   def must_be_a_valid_cep_on_cep_question
-    return true unless question.prompt === "CEP"
+    return true unless question.prompt == "CEP"
 
     if !(/^\d{8}$/.match?(value))
       errors.add(:value, "CEP inválido, deve conter 8 digitos numéricos")

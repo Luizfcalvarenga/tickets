@@ -49,7 +49,7 @@ class PassPdfBuilder
 
     document.move_down 20
 
-    if @pass.related_entity.class === Membership
+    if @pass.related_entity.class == Membership
       document.text "Este passe é pessoal e intrasferível. Não compartilhe esse passe. Entrada mediante documento de identificação com foto.", align: :center
     else
       document.text "Este passe é pessoal e intrasferível. Depois que a entrada for liberada, o passe será cancelado. Não compartilhe esse passe. Entrada mediante documento de identificação com foto.", align: :center

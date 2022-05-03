@@ -8,7 +8,7 @@ class Question < ApplicationRecord
   validate :multiple_choice_question_must_have_at_least_two_options
 
   def multiple_choice_question_must_have_at_least_two_options
-    if kind === "multiple_choice" && options.length < 2
+    if kind == "multiple_choice" && options.present? && options.length < 2
       errors.add(:options, "A pergunta de multipla escolha deve ter pelo menos duas opções")
     end
   end

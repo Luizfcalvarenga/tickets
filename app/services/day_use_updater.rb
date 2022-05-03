@@ -58,15 +58,15 @@ class DayUseUpdater
   end
 
   def pass_types_to_update(day_use_schedule)
-    (day_use_schedule_params.find { |dusp| dusp[:weekday] === day_use_schedule.weekday }[:pass_types] || []).select{ |dusp| dusp[:id].present? }
+    (day_use_schedule_params.find { |dusp| dusp[:weekday] == day_use_schedule.weekday }[:pass_types] || []).select{ |dusp| dusp[:id].present? }
   end
 
   def new_pass_types(day_use_schedule)
-    (day_use_schedule_params.find { |dusp| dusp[:weekday] === day_use_schedule.weekday }[:pass_types] || []).select{ |dusp| dusp[:id].blank? }
+    (day_use_schedule_params.find { |dusp| dusp[:weekday] == day_use_schedule.weekday }[:pass_types] || []).select{ |dusp| dusp[:id].blank? }
   end
 
   def received_pass_types_ids(day_use_schedule)
-    (day_use_schedule_params.find { |dusp| dusp[:weekday] === day_use_schedule.weekday }[:pass_types] || []).sort_by { |dusp| dusp.is_a?(EventBatch) ? dusp.order : dusp[:order] }.map{ |dusp| dusp[:id]}.compact
+    (day_use_schedule_params.find { |dusp| dusp[:weekday] == day_use_schedule.weekday }[:pass_types] || []).sort_by { |dusp| dusp.is_a?(EventBatch) ? dusp.order : dusp[:order] }.map{ |dusp| dusp[:id]}.compact
   end
 
   private
