@@ -88,7 +88,7 @@
     <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
       <%= simple_form_for([:partner_admin, @order]) do |f| %>
         <select name="order_item[event_batch_id]" id="" class="w-100">
-          <% @event.open_batches.each do |batch| %>
+          <% @event.event_batches.each do |batch| %>
             <option value="<%= batch.id %>"><%= batch.pass_type %> - <%= batch.name %></option>
           <% end %>
         </select>
