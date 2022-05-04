@@ -8,6 +8,11 @@ module PartnerAdmin
       @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
       @total_sales = @passes.sum(:price_in_cents)
       @amount_to_receive = @passes.map(&:amount_to_transfer_to_partner).sum
+
+      respond_to do |format|
+        format.html
+        format.csv { send_data @passes.to_csv, filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
+      end
     end
 
     def create

@@ -69,4 +69,8 @@ class ApplicationController < ActionController::Base
   def redirect_to_return_url_if_one_is_provided
     redirect_to params[:return_url] if params[:return_url].present?
   end
+
+  def display_price(price_in_cents)
+    number_to_currency(price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")
+  end
 end

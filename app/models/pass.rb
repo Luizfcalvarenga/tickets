@@ -101,4 +101,14 @@ class Pass < ApplicationRecord
       } 
     end
   end
+
+  def self.to_csv
+    attributes = ["Email do usuário", "Nome do passe", "Entidade", "Participante", "Gerado em", "Preço", "Taxa (%)", "Valor a receber (R$)"]
+    CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+      csv << attributes
+      all.each do |pass|
+       csv << [pass.user.email, pass.name, pass.related_entity.name, "#{pass.holder_name} - #{pass.holder_cpf}", pass.created_at, ApplicationController.helpers.display_price(pass.price_in_cents), "#{pass.fee_percentage}%", ApplicationController.helpers.display_price(pass.amount_to_transfer_to_partner)]
+      end
+    end
+  end
 end
