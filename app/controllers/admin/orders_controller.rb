@@ -6,7 +6,7 @@ module Admin
       max_date = @reference_date.at_end_of_month
 
       @passes = Pass.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(created_at: :desc)
-      @total_sales = @passes.sum(:price_in_cents)
+      @total_sales = @passes.map(&:revenue_from_pass).sum
       @tax_amount = @total_sales - @passes.map(&:amount_to_transfer_to_partner).sum
     end
   end

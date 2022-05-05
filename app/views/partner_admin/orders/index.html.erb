@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <%= link_to request.url.gsub("/orders?", "/orders.csv?") do %>
+  <%= link_to request.url.gsub("/orders", "/orders.csv") do %>
     <p class="btn btn-success m-0">Baixar CSV</p>
   <% end %>
   

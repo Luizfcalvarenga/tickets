@@ -6,7 +6,7 @@ module PartnerAdmin
       max_date = @reference_date.at_end_of_month
 
       @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
-      @total_sales = @passes.sum(:price_in_cents)
+      @total_sales = @passes.map(&:revenue_from_pass).sum
       @amount_to_receive = @passes.map(&:amount_to_transfer_to_partner).sum
 
       respond_to do |format|

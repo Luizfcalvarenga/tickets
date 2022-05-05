@@ -29,8 +29,12 @@ class Pass < ApplicationRecord
     price_in_cents * (fee_percentage/100)
   end
 
+  def revenue_from_pass
+    absorb_fee ? price_in_cents : (price_in_cents + tax_amount)
+  end
+
   def amount_to_transfer_to_partner
-    absorb_fee ? price_in_cents - tax_amount : price_in_cents
+    absorb_fee ? (price_in_cents - tax_amount) : price_in_cents
   end
 
   def holder_name
@@ -103,11 +107,11 @@ class Pass < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = ["Email do usuário", "Nome do passe", "Entidade", "Participante", "Gerado em", "Preço", "Taxa (%)", "Valor a receber (R$)"]
+    attributes = ["Email do usuário", "Nome do passe", "Entidade", "Participante", "Gerado em", "Preço cadastrado", "Preço para consumidor final", "Taxa (%)", "Valor a receber (R$)"]
     CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
       csv << attributes
       all.each do |pass|
-       csv << [pass.user.email, pass.name, pass.related_entity.name, "#{pass.holder_name} - #{pass.holder_cpf}", pass.created_at, ApplicationController.helpers.display_price(pass.price_in_cents), "#{pass.fee_percentage}%", ApplicationController.helpers.display_price(pass.amount_to_transfer_to_partner)]
+       csv << [pass.user.email, pass.name, pass.related_entity.name, "#{pass.holder_name} - #{pass.holder_cpf}", pass.created_at, ApplicationController.helpers.display_price(pass.price_in_cents), ApplicationController.helpers.display_price(pass.revenue_from_pass), "#{pass.fee_percentage}%", ApplicationController.helpers.display_price(pass.amount_to_transfer_to_partner)]
       end
     end
   end
