@@ -64,6 +64,7 @@ window.toastr.options = {
 };
 
 // Internal imports
+import "./iugu";
 import "./add_card";
 import "./address_cep";
 import "./event_user_list";
@@ -72,7 +73,6 @@ import "./membership_user_list";
 import "./partners";
 import "./payment_pooling";
 import "./masks";
-import "./iugu";
 
 const loadReactComponent = () => {
   const reactContainers = document.querySelectorAll("react");
