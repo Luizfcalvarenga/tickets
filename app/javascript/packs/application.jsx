@@ -64,7 +64,6 @@ window.toastr.options = {
 };
 
 // Internal imports
-import "./iugu";
 import "./add_card";
 import "./address_cep";
 import "./event_user_list";
