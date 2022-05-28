@@ -12,30 +12,33 @@
     <% end %>
   <% end %>   
 
-  <ul class="nav nav-tabs underlined mb-5" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de inscritos</button>
+  <ul class="nav nav-tabs underlined mb-5 mt-3" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation" >
+      <button class="nav-link <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de inscritos</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Programação</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'schedules-tab' %>" id="schedules-tab" data-bs-toggle="tab" data-bs-target="#schedules" type="button" role="tab" aria-controls="profile" aria-selected="false">Programação</button>
     </li>
     <% if current_user.partner_admin? %>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="schedule-blocks-tab" data-bs-toggle="tab" data-bs-target="#schedule-blocks" type="button" role="tab" aria-controls="contact" aria-selected="false">Bloqueios de calendário</button>
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'schedule-blocks-tab' %>" id="schedule-blocks-tab" data-bs-toggle="tab" data-bs-target="#schedule-blocks" type="button" role="tab" aria-controls="contact" aria-selected="false">Bloqueios de calendário</button>
       </li>
     <% end %>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons-tab" data-bs-toggle="tab" data-bs-target="#coupons" type="button" role="tab" aria-controls="contact" aria-selected="false">Cupoms</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
     </li>
     <% if false %>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Editar</button>
+      <li class="nav-item " role="presentation">
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'controls-tab' %>" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Editar</button>
       </li>
     <% end %>
   </ul>
   
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="user-list" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list" role="tabpanel" aria-labelledby="home-tab">
       <div class="row mb-4">
         <% (0..6).to_a.map { |int| Time.current + int.days }.each do |date| %>
           <div class="date-card flex column center justify-content-between col-1 bg-dark mx-2 py-4 clickable <%= 'selected' if date.today? %>" data-date="<%= date.strftime('%d-%m-%Y') %>">
@@ -62,8 +65,8 @@
       </div>
     </div>
     
-    <div class="tab-pane fade" id="schedules" role="tabpanel" aria-labelledby="profile-tab">
-    <% @day_use_schedules.each do |day_use_schedule| %>
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'schedules-tab' %>" id="schedules" role="tabpanel" aria-labelledby="profile-tab">
+      <% @day_use_schedules.each do |day_use_schedule| %>
         <div class="flex center start bg-dark p-4 br-8 mb-2 <%= 'flex-column' if mobile_device? %> ">
           <p class="m-0 f-20"><%= day_use_schedule.weekday_display %></p>
           <% if day_use_schedule.open? %>
@@ -82,7 +85,7 @@
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="schedule-blocks" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'schedule-blocks-tab' %>" id="schedule-blocks" role="tabpanel" aria-labelledby="contact-tab">
       <table>
         <thead>
           <tr>
@@ -114,8 +117,43 @@
         <p class="btn btn-success w-100 mt-4">Criar Bloqueio</p>
       <% end %>
     </div>
+    
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons" role="tabpanel" aria-labelledby="contact-tab">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Código</th>
+            <th scope="col">Gerado em</th>
+            <th scope="col">Válido até</th>
+            <th scope="col">Valor do desconto</th>
+            <th scope="col">Utilização</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @day_use.coupons.each do |coupon| %>
+            <tr>
+              <td data-label="Código"><%= coupon.code %></td>
+              <td data-label="Gerado em"><%= coupon.created_at.strftime("%d/%m/%Y") %></td>
+              <td data-label="Válido até"><%= coupon.valid_until&.strftime("%d/%m/%Y")  %></td>
+              <td data-label="Valor do desconto"><%= coupon.discount_display %></td>
+              <td data-label="Utilização"><%= coupon.orders.paid.count %>/<%= coupon.redemption_limit %></td>
+              <td data-label="Ações">
+                <%= link_to edit_partner_admin_coupon_path(coupon) do %>
+                  <p class="btn btn-success m-0 px-5">Editar</p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
 
-    <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
+      <%= link_to new_partner_admin_coupon_path(entity_id: @day_use.id, entity_type: @day_use.class.name) do %>
+        <p class="btn btn-success w-100 mt-4">Criar Cupom</p>
+      <% end %>
+    </div>
+    
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
       <%= simple_form_for([:partner_admin, @order]) do |f| %>
         <select name="order_item[start_time]" class="w-100 my-2">
           <% @day_use.schedule_for_today.open_slots_for_date(Time.current).each do |slot| %>
@@ -192,7 +230,7 @@
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="controls" role="tabpanel" aria-labelledby="controls-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'controls-tab' %>" id="controls" role="tabpanel" aria-labelledby="controls-tab">
       <%= link_to edit_partner_admin_day_use_path(day_use_id: @day_use.id) do %>
         <p class="btn btn-success w-100">Editar Agendamento</p>
       <% end %>

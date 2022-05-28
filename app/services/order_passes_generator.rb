@@ -42,7 +42,7 @@ class OrderPassesGenerator
         ),
       )
 
-      Rails.env.production? ? PassConfirmationSenderJob.perform_later(pass.id) : PassConfirmationSenderJob.perform_now(pass.id)
+      PassConfirmationSenderJob.perform_later(pass.id)
 
       DiscordMessager.call("Novo passe comprado: #{order_item.full_description}. Valor: #{ActionController::Base.helpers.number_to_currency(order_item.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
     end

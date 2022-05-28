@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
       get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"
 
+      get 'coupons/:coupon_code', to: 'coupons#show', as: "show_coupon"
+
       get 'users/me', to: 'users#me'
     end
   end
@@ -45,6 +47,7 @@ Rails.application.routes.draw do
     patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders
+    resources :coupons
   end
 
   resources :partners do

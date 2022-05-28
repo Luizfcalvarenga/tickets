@@ -22,6 +22,7 @@ module PartnerAdmin
       @order = Order.new
 
       @day_use_blocks = @day_use.day_use_blocks
+      @coupons = @day_use.coupons
 
       respond_to do |format|
         format.html

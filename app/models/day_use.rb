@@ -13,6 +13,7 @@ class DayUse < ApplicationRecord
   has_many :day_use_schedule_pass_types, through: :day_use_schedules, dependent: :destroy
   has_many :passes, through: :day_use_schedule_pass_types
   has_many :day_use_blocks, dependent: :destroy
+  has_many :coupons, as: :entity, dependent: :destroy
 
   scope :open_for_weekday, ->(weekday) { joins(:day_use_schedules).where("day_use_schedules.opens_at is not null and day_use_schedules.closes_at is not null and day_use_schedules.weekday = ?", weekday) }
   scope :not_approved, -> { where(approved_at: nil) }

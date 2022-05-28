@@ -15,7 +15,7 @@ class Event < ApplicationRecord
 
   has_many :questions, dependent: :destroy
   has_many :event_communications
-  
+  has_many :coupons, as: :entity  
   has_many :accesses
   has_many :membership_discounts
   has_many :memberships, through: :membership_discounts

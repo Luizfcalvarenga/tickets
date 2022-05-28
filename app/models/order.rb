@@ -2,21 +2,17 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
   belongs_to :directly_generated_by, class_name: "User", foreign_key: "directly_generated_by_id", optional: true
+  belongs_to :coupon, optional: true
 
   has_many :order_items
   has_many :passes, through: :order_items
 
   accepts_nested_attributes_for :user
 
+  scope :paid, -> { where(status: "paid")}
+  
   def related_entity
-    sample_order_item = order_items.first
-    if sample_order_item.day_use_schedule_pass_type.present?
-      sample_order_item.day_use_schedule_pass_type.day_use
-    elsif sample_order_item.event_batch.present?
-      sample_order_item.event_batch.event
-    else 
-      raise
-    end
+    order_items.first.related_entity
   end
 
   def total_price_in_cents
@@ -24,7 +20,11 @@ class Order < ApplicationRecord
   end
 
   def total_price_is_zero?
-    total_price_in_cents.zero?
+    (total_price_in_cents - discount_value_in_cents).zero?
+  end
+
+  def discount_value_in_cents
+    order_items.map(&:discount_value_in_cents).sum
   end
 
   def nova_iugu_charge_params_hash
@@ -38,6 +38,7 @@ class Order < ApplicationRecord
           price_cents: order_item.total_in_cents,
         }
       end,
+      discount_cents: discount_value_in_cents,
       payer: {
         name: user.name,
         cpf_cnpj: user.document_number,
@@ -60,5 +61,9 @@ class Order < ApplicationRecord
 
   def check_payment_actions_performed
     status == "paid" && passes.count == order_items.count
+  end
+
+  def should_generate_new_invoice?
+    invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled" || !total_price_is_zero?
   end
 end
