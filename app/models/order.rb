@@ -2,12 +2,15 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :created_by, class_name: "User", foreign_key: "created_by_id", optional: true
   belongs_to :directly_generated_by, class_name: "User", foreign_key: "directly_generated_by_id", optional: true
+  belongs_to :coupon, optional: true
 
   has_many :order_items
   has_many :passes, through: :order_items
 
   accepts_nested_attributes_for :user
 
+  scope :paid, -> { where(status: "paid")}
+  
   def related_entity
     sample_order_item = order_items.first
     if sample_order_item.day_use_schedule_pass_type.present?

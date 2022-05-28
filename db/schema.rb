@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_06_162117) do
+ActiveRecord::Schema.define(version: 2022_05_27_014948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,20 @@ ActiveRecord::Schema.define(version: 2022_04_06_162117) do
     t.bigint "state_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "entity_type", null: false
+    t.bigint "entity_id", null: false
+    t.integer "redemption_limit"
+    t.datetime "valid_until"
+    t.string "code"
+    t.string "kind"
+    t.integer "discount"
+    t.datetime "deactivated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["entity_type", "entity_id"], name: "index_coupons_on_entity"
   end
 
   create_table "day_use_blocks", force: :cascade do |t|
@@ -257,6 +271,8 @@ ActiveRecord::Schema.define(version: 2022_04_06_162117) do
     t.bigint "created_by_id"
     t.bigint "directly_generated_by_id"
     t.boolean "free", default: false
+    t.bigint "coupon_id"
+    t.index ["coupon_id"], name: "index_orders_on_coupon_id"
     t.index ["created_by_id"], name: "index_orders_on_created_by_id"
     t.index ["directly_generated_by_id"], name: "index_orders_on_directly_generated_by_id"
     t.index ["user_id"], name: "index_orders_on_user_id"

@@ -12,31 +12,34 @@
     <% end %>
   <% end %>
 
-  <ul class="nav nav-tabs underlined mb-5" id="myTab" role="tablist">
+  <ul class="nav nav-tabs underlined mb-5 mt-3" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de inscritos</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="home" aria-selected="true">Lista de inscritos</button>
     </li>
     <% if current_user.partner_admin? %>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="batches-tab" data-bs-toggle="tab" data-bs-target="#batches" type="button" role="tab" aria-controls="profile" aria-selected="false">Lotes e preços</button>
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'batches-tab' %>" id="batches-tab" data-bs-toggle="tab" data-bs-target="#batches" type="button" role="tab" aria-controls="profile" aria-selected="false">Lotes e preços</button>
       </li>
     <% end %>
     <% if current_user.partner_admin? %>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Comunicados</button>
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'communications-tab' %>" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Comunicados</button>
       </li>
     <% end %>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons-tab" data-bs-toggle="tab" data-bs-target="#coupons" type="button" role="tab" aria-controls="contact" aria-selected="false">Cupoms</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
     </li>
     <% if false %>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Editar</button>
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'controls-tab' %>" id="controls-tab" data-bs-toggle="tab" data-bs-target="#controls" type="button" role="tab" aria-controls="contact" aria-selected="false">Editar</button>
       </li>
     <% end %>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane fade show active" id="user-list" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list" role="tabpanel" aria-labelledby="home-tab">
       <h3 class="title">Lista de inscritos</h3>
       <p><b> Total de inscritos: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
@@ -54,7 +57,7 @@
       </div>
     </div>
     
-    <div class="tab-pane fade" id="batches" role="tabpanel" aria-labelledby="profile-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'batches-tab' %>" id="batches" role="tabpanel" aria-labelledby="profile-tab">
       <% @event.event_batches.each do |event_batch| %>
         <div class="bg-primary-color flex center around p-4 br-8 my-4">
           <p class="f-24 fw-700 m-0 f-1x text-white"><%= event_batch.pass_type %> - <%= event_batch.name %></p>
@@ -78,14 +81,49 @@
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="communications" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'communications-tab' %>" id="communications" role="tabpanel" aria-labelledby="contact-tab">
       <h3>Comunicados do evento</h3>
       <%= link_to event_event_communications_path(event_id: @event.id) do %>
         <p class="btn btn-success w-100">Ver comunicados do evento (<%= @event.event_communications.count %>)</p>
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons" role="tabpanel" aria-labelledby="contact-tab">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Código</th>
+            <th scope="col">Gerado em</th>
+            <th scope="col">Válido até</th>
+            <th scope="col">Valor do desconto</th>
+            <th scope="col">Utilização</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @event.coupons.each do |coupon| %>
+            <tr>
+              <td data-label="Código"><%= coupon.code %></td>
+              <td data-label="Gerado em"><%= coupon.created_at.strftime("%d/%m/%Y") %></td>
+              <td data-label="Válido até"><%= coupon.valid_until&.strftime("%d/%m/%Y")  %></td>
+              <td data-label="Valor do desconto"><%= coupon.discount_display %></td>
+              <td data-label="Utilização"><%= coupon.orders.paid.count %>/<%= coupon.redemption_limit %></td>
+              <td data-label="Ações">
+                <%= link_to edit_partner_admin_coupon_path(coupon) do %>
+                  <p class="btn btn-success m-0 px-5">Editar</p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <%= link_to new_partner_admin_coupon_path(entity_id: @event.id, entity_type: @event.class.name) do %>
+        <p class="btn btn-success w-100 mt-4">Criar Cupom</p>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
       <%= simple_form_for([:partner_admin, @order]) do |f| %>
         <select name="order_item[event_batch_id]" id="" class="w-100">
           <% @event.event_batches.each do |batch| %>
@@ -150,7 +188,7 @@
       <% end %>
     </div>
 
-    <div class="tab-pane fade" id="controls" role="tabpanel" aria-labelledby="controls-tab">
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'controls-tab' %>" id="controls" role="tabpanel" aria-labelledby="controls-tab">
       <%= link_to edit_partner_admin_event_path(event_id: @event.id) do %>
         <p class="btn btn-success w-100">Editar evento</p>
       <% end %>

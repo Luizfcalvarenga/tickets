@@ -1,0 +1,21 @@
+<div class="page-wrapper">
+  <h1 class="title">
+    <% if @coupon.new_record?%>
+      Novo cupom de desconto para <%= @entity.name %>
+    <% else %>
+      Cupom de desconto <%= @coupon.code %> para <%= @entity.name %>
+    <% end %>
+  </h1>
+
+  <%= simple_form_for([:partner_admin, @coupon]) do |f| %>
+    <%= f.input :entity_id, as: :hidden, input_html: {value: @entity.id } %> 
+    <%= f.input :entity_type, as: :hidden, input_html: { value: @entity.class.name } %> 
+    <%= f.input :code %> 
+    <%= f.input :redemption_limit %>
+    <%= f.input :valid_until, as: :date, html5: true %>
+    <%= f.input :kind, as: :select, collection: Coupon.kinds %>
+    <%= f.input :discount %> 
+
+    <%= f.submit "Ativar Cupom", class: "btn btn-success mt-5 w-100" %>
+  <% end %>
+</div>

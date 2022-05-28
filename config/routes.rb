@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders
+    resources :coupons
   end
 
   resources :partners do
