@@ -15,7 +15,7 @@
       <tr>
         <td data-label="Usuário"><%= pass.user.email %></td>
         <% questions.each do |question| %>
-          <td><%= pass.question_answers.joins(:question).find_by(questions: {id: question.id}).value %></td>
+          <td><%= pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value %></td>
         <% end %>
         <td data-label="Acesso">
           <% if pass.accesses.present? %>
