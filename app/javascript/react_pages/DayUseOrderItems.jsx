@@ -59,10 +59,12 @@ export function DayUseOrderItems(props) {
       }, 0);
   };
 
-  const applyCoupon = async () => {
+  const applyCoupon = async (specificCoupon = "") => {
     try {
       const response = await axios.get(
-        `/api/v1/coupons/${couponCode}?entity_id=${props.dayUse.id}&entity_type=DayUse`
+        `/api/v1/coupons/${specificCoupon || couponCode}?entity_id=${
+          props.dayUse.id
+        }&entity_type=DayUse`
       );
       setCouponResult(response.data);
     } catch {
@@ -80,7 +82,7 @@ export function DayUseOrderItems(props) {
 
     if (couponCodeFromParams) {
       setCouponCode(couponCodeFromParams);
-      applyCoupon();
+      applyCoupon(couponCodeFromParams);
     }
   }, []);
 
@@ -204,7 +206,10 @@ export function DayUseOrderItems(props) {
             class="f-20"
             onChange={(e) => setCouponCode(e.target.value)}
           />
-          <p className="btn btn-success f-10 m-0 px-5" onClick={applyCoupon}>
+          <p
+            className="btn btn-success f-10 m-0 px-5"
+            onClick={() => applyCoupon()}
+          >
             Aplicar
           </p>
           <div className="f-40 text-center">

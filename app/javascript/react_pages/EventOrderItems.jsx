@@ -51,10 +51,10 @@ export function EventOrderItems(props) {
     );
   };
 
-  const applyCoupon = async () => {
+  const applyCoupon = async (specificCoupon = "") => {
     try {
       const response = await axios.get(
-        `/api/v1/coupons/${couponCode}?entity_id=${props.event.id}&entity_type=Event`
+        `/api/v1/coupons/${specificCoupon || couponCode}?entity_id=${props.event.id}&entity_type=Event`
       );
       setCouponResult(response.data);
     } catch {
@@ -72,9 +72,9 @@ export function EventOrderItems(props) {
 
     if (couponCodeFromParams) {
       setCouponCode(couponCodeFromParams);
-      applyCoupon();
+      applyCoupon(couponCodeFromParams);
     }
-  })
+  }, [])
 
   return (
     <div className="event-batches-order">
@@ -156,7 +156,7 @@ export function EventOrderItems(props) {
             class="f-20"
             onChange={(e) => setCouponCode(e.target.value)}
           />
-          <p className="btn btn-success f-10 m-0 px-5" onClick={applyCoupon}>
+          <p className="btn btn-success f-10 m-0 px-5" onClick={() => applyCoupon()}>
             Aplicar
           </p>
           <div className="f-40 text-center">
