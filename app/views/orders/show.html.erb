@@ -43,6 +43,12 @@
         <% end %>
       </tbody>
     </table>
+
+    <% if @order.coupon.present? %>
+      <p class="m-0 bg-success text-white p-4 br-8 mb-3 mt-3">
+        <i class="fa fa-info-circle my-3 pe-2"></i>Cupom de desconto aplicado: <%= @order.coupon.discount_display %> por passe.
+      </p>
+    <% end %>
   </div>
 
   <p class="m-0 bg-primary text-white p-4 br-8 mb-3">

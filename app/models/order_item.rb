@@ -7,8 +7,27 @@ class OrderItem < ApplicationRecord
 
   has_many :question_answers, dependent: :destroy
 
+  def related_entity
+    if day_use_schedule_pass_type.present?
+      day_use_schedule_pass_type.day_use
+    elsif event_batch.present?
+      event_batch.event
+    else 
+      raise
+    end
+  end
+
   def fee_value_in_cents
     absorb_fee ? 0 : price_in_cents * fee_percentage / 100
+  end
+
+  def discount_value_in_cents
+    coupon = order.coupon
+    return 0 if coupon.blank?
+
+    value = coupon.percentage? ? (price_in_cents * coupon.discount / 100) : coupon.discount
+
+    return value >= price_in_cents ? price_in_cents : value
   end
 
   def identification_name

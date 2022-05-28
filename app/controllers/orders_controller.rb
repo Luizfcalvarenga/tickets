@@ -2,8 +2,14 @@
 class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
+
+    if @order.total_price_is_zero?
+      @order.perform_after_payment_confirmation_actions
+      flash[:notice] = "Passes retirados com sucesso"
+      redirect_to dashboard_path_for_user(current_user) and return
+    end
     
-    if @order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled"
+    if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else
       begin
@@ -19,7 +25,7 @@ class OrdersController < ApplicationController
   end
   
   def create
-    if order_items_params.map { |oi| oi["quantity"].to_i }.sum.zero?
+     if order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
       redirect_to request.referrer and return
     end
@@ -31,6 +37,8 @@ class OrdersController < ApplicationController
     end
 
     @order = Order.create(user: current_user)
+
+    order_item = nil
 
     ActiveRecord::Base.transaction do
       order_items_params.each do |order_item_params|
@@ -59,9 +67,13 @@ class OrdersController < ApplicationController
           )
         end
       end
+
+      related_entity = order_item.related_entity
+      applicable_coupon = Coupon.active.find_by(entity_id: related_entity.id, entity_type: related_entity.class.name, code: params[:coupon_code])
+      @order.update!(coupon: applicable_coupon) if applicable_coupon.present? && applicable_coupon.can_be_applied?
     end
 
-    if (@order.invoice_id.blank? || @order.invoice_status == "expired" || @order.invoice_status == "canceled") && !@order.total_price_is_zero?
+    if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else
       begin

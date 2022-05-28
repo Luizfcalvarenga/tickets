@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
       get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"
 
+      get 'coupons/:coupon_code', to: 'coupons#show', as: "show_coupon"
+
       get 'users/me', to: 'users#me'
     end
   end
