@@ -73,4 +73,20 @@ class ApplicationController < ActionController::Base
   def display_price(price_in_cents)
     number_to_currency(price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")
   end
+
+  def weekday_for_wday(wday)
+    ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][wday]
+  end
+
+  def weekday_translations(weekday)
+    {
+      monday: "Segunda-feira",
+      tuesday: "Terça-feira",
+      wednesday: "Quarta-feira",
+      thursday: "Quinta-feira",
+      friday: "Sexta-feira",
+      saturday: "Sábado",
+      sunday: "Domingo",
+    }
+  end
 end

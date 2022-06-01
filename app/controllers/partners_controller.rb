@@ -1,5 +1,7 @@
 
 class PartnersController < ApplicationController
+  NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES = 10
+  
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
@@ -16,18 +18,15 @@ class PartnersController < ApplicationController
 
     @events = @partner.events.active
     @day_uses = @partner.day_uses.active
-    @weekdays = [
-      {value: "sunday", label: "Domingo", day_uses: @day_uses.open_for_weekday("sunday").uniq, order: 0, date: next_date_for_weekday("sunday")},
-      {value: "monday", label: "Segunda-feira", day_uses: @day_uses.open_for_weekday("monday").uniq, order: 1, date: next_date_for_weekday("monday")},
-      {value: "tuesday", label: "Terça-feira", day_uses: @day_uses.open_for_weekday("tuesday").uniq, order: 2, date: next_date_for_weekday("tuesday")},
-      {value: "wednesday", label: "Quarta-feira", day_uses: @day_uses.open_for_weekday("wednesday").uniq, order: 3, date: next_date_for_weekday("wednesday")},
-      {value: "thursday", label: "Quinta-feira", day_uses: @day_uses.open_for_weekday("thursday").uniq, order: 4, date: next_date_for_weekday("thursday")},
-      {value: "friday", label: "Sexta-feira", day_uses: @day_uses.open_for_weekday("friday").uniq, order: 5, date: next_date_for_weekday("friday")},
-      {value: "saturday", label: "Sábado", day_uses: @day_uses.open_for_weekday("saturday").uniq, order: 6, date: next_date_for_weekday("saturday")},
-    ]
-
-    current_weekday_value = Time.current.wday
-    @weekdays = @weekdays.select { |wd| wd[:order] >= current_weekday_value } + @weekdays.select { |wd| wd[:order] < current_weekday_value }
+    @open_days = []
+    days_count = 0
+    until @open_days.count >= NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES
+      date = Time.current + days_count.days
+      weekday = weekday_for_wday(date.wday)
+      day_uses_open_for_day = @day_uses.open_for_weekday(weekday).uniq
+      @open_days << {value: weekday, label: weekday_translations(weekday), day_uses: day_uses_open_for_day, date: date} if day_uses_open_for_day.present?
+      days_count += 1
+    end
 
     @memberships = @partner.memberships.active
 
