@@ -1,4 +1,3 @@
-
 class PartnersController < ApplicationController
   NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES = 10
   
@@ -20,7 +19,7 @@ class PartnersController < ApplicationController
     @day_uses = @partner.day_uses.active
     @open_days = []
     days_count = 0
-    until @open_days.count >= NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES
+    until @open_days.count >= NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES || days_count > 30
       date = Time.current + days_count.days
       weekday = weekday_for_wday(date.wday)
       day_uses_open_for_day = @day_uses.open_for_weekday(weekday).uniq
