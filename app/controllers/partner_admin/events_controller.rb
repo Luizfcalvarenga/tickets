@@ -88,6 +88,19 @@ module PartnerAdmin
       flash[:notice] = "Arquivos apagados"
       redirect_to dashboard_path_for_user(current_user)
     end
+
+    def clone
+      @event = Event.find(params[:id])
+
+      service = EventCloner.new(@event, current_user)
+      if service.call
+        flash[:notice] = "Evento clonado com sucesso"
+        redirect_to  edit_partner_admin_event_path(service.event)
+      else
+        flash[:alert] = "Erro ao clonar evento: #{service.errors}"
+        redirect_to dashboard_path_for_user(current_user)
+      end
+    end
     
     private
 

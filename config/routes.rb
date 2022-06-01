@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :events
     patch "events/:id/delete_attachments", to: "events#delete_attachments", as: "event_delete_attachments"
     patch "events/:id/toggle_activity", to: "events#toggle_activity", as: "event_toggle_activity"
+    post 'events/:id/clone', to: "events#clone", as: "event_clone"
     resources :memberships
     patch "memberships/:id/toggle_activity", to: "memberships#toggle_activity", as: "membership_toggle_activity"
     resources :day_uses do

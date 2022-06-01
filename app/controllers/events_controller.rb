@@ -10,10 +10,10 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
 
-    if !@event.active?
-      flash[:alert] = "Evento não encontrado ou está com as vendas suspensas"
-      redirect_to root_path
-    end
+    # if !@event.active?
+      # flash[:alert] = "Evento não encontrado ou está com as vendas suspensas"
+      # redirect_to root_path
+    # end
 
     @current_batches = @event.open_batches
     @order = Order.new
