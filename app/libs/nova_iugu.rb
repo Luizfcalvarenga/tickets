@@ -181,6 +181,35 @@ module NovaIugu
     end
   end
 
+  class DirectPayer
+    attr_reader :entity, :customer_payment_method_id
+
+    class DirectPayerParams < StandardError
+      def initialize(error_message)
+        @exception_type = "custom"
+        super(error_message)
+      end
+    end
+
+    def initialize(entity, customer_payment_method_id)
+      @entity = entity
+      @customer_payment_method_id = customer_payment_method_id
+    end
+
+    def call
+      @response = ::Iugu::Charge.create(direct_pay_params)
+
+      return @response.attributes["success"] == true
+    end
+
+    def direct_pay_params
+      @direct_pay_params ||= @entity.nova_iugu_charge_params_hash.except(:items).merge(
+        invoice_id: entity.invoice_id
+        customer_payment_method_id: customer_payment_method_id
+      )
+    end
+  end  
+
   class Charger
     attr_reader :entity, :response, :custom_params
 
@@ -226,7 +255,7 @@ module NovaIugu
     end
 
     def charge_params
-      @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(custom_params).merge(method: "bank_slip")
+      @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(invoice_id: entity.invoice_id).merge(custom_params)
     end
   end  
 
