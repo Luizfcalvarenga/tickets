@@ -50,7 +50,6 @@ class Order < ApplicationRecord
           number: "-",
         }
       },
-      customer_payment_method_id: "1B49A34E7581460FB9E77F757C78E992k",
       ignore_due_email: true,
       ignore_canceled_email: true,  
       due_date: (Time.current + 10.days),  
