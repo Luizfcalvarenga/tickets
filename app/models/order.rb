@@ -10,17 +10,20 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :user
 
   scope :paid, -> { where(status: "paid")}
+
+  INSTALLMENT_TAX_PERCENTAGE = 3
+  MAX_INSTALLMENTS = 12
   
   def related_entity
     order_items.first.related_entity
   end
 
   def total_price_in_cents
-    order_items.sum(:total_in_cents)
+    order_items.sum(:total_in_cents) - discount_value_in_cents
   end
 
   def total_price_is_zero?
-    (total_price_in_cents - discount_value_in_cents).zero?
+    total_price_in_cents.zero?
   end
 
   def discount_value_in_cents
@@ -51,8 +54,18 @@ class Order < ApplicationRecord
       ignore_due_email: true,
       ignore_canceled_email: true,  
       due_date: (Time.current + 10.days),  
-      payable_with: ["pix", "credit_card", "bank_slip"]
+      payable_with: ["pix", "credit_card"]
     }
+  end
+
+  def installment_options 
+    (1..MAX_INSTALLMENTS).map do |installment_count|
+      total_value = (total_price_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
+      {
+        count: installment_count,
+        value_in_cents: (total_value / installment_count).floor
+      }
+    end
   end
 
   def perform_after_payment_confirmation_actions
@@ -65,6 +78,6 @@ class Order < ApplicationRecord
   end
 
   def should_generate_new_invoice?
-    invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled" || !total_price_is_zero?
+    !total_price_is_zero? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
   end
 end

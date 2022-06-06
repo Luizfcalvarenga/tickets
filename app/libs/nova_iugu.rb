@@ -19,6 +19,8 @@ module NovaIugu
           invoice_url: @response.attributes["secure_url"],
           invoice_pdf: "#{@response.attributes["secure_url"]}.pdf",
           invoice_status: @response.attributes["status"],
+          invoice_pix_qrcode_url: @response.attributes["pix"]["qrcode"],
+          invoice_pix_qrcode_text: @response.attributes["pix"]["qrcode_text"],
         )
       else
         raise
@@ -182,7 +184,7 @@ module NovaIugu
   end
 
   class DirectPayer
-    attr_reader :entity, :customer_payment_method_id
+    attr_reader :entity, :customer_payment_method_id, :number_of_installments
 
     class DirectPayerParams < StandardError
       def initialize(error_message)
@@ -191,22 +193,46 @@ module NovaIugu
       end
     end
 
-    def initialize(entity, customer_payment_method_id)
+    def initialize(entity, customer_payment_method_id, number_of_installments = 1)
       @entity = entity
       @customer_payment_method_id = customer_payment_method_id
+      @number_of_installments = number_of_installments.to_i
     end
 
     def call
       @response = ::Iugu::Charge.create(direct_pay_params)
+      
+      if @response.attributes["success"] == true
+        @entity.update(
+          invoice_id: @response.attributes["invoice_id"],
+          invoice_url: @response.attributes["url"],
+          invoice_pdf: @response.attributes["pdf"]
+        )
 
-      return @response.attributes["success"] == true
+        ChargeCheckAndUpdateStatus.new(entity).call
+
+        entity.perform_after_payment_confirmation_actions if @entity.respond_to?(:perform_after_payment_confirmation_actions)
+        return true
+      else
+        return false
+      end
     end
 
     def direct_pay_params
-      @direct_pay_params ||= @entity.nova_iugu_charge_params_hash.except(:items).merge(
-        invoice_id: entity.invoice_id
-        customer_payment_method_id: customer_payment_method_id
+      @direct_pay_params ||= @entity.nova_iugu_charge_params_hash.merge(
+        customer_payment_method_id: customer_payment_method_id,
+        months: number_of_installments,
+        items: build_item_values_considering_number_of_installments
       )
+    end
+
+    def build_item_values_considering_number_of_installments
+      items = @entity.nova_iugu_charge_params_hash[:items]
+      return items if number_of_installments == 1
+      
+      items.each do |item|
+        item[:price_cents] = entity.installment_options.find { |option| option[:count].to_i == number_of_installments }[:value_in_cents]
+      end
     end
   end  
 

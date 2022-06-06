@@ -22,6 +22,11 @@ class OrdersController < ApplicationController
         end
       end
     end
+
+    NovaIugu::CustomerCreator.new(current_user).call if current_user.iugu_customer_id.blank?
+    
+    @payment_methods = Iugu::PaymentMethod.fetch({customer_id: current_user.iugu_customer_id}).results
+    @iugu_customer_id = current_user.iugu_customer_id
   end
   
   def create
@@ -98,6 +103,42 @@ class OrdersController < ApplicationController
     end
 
     redirect_to new_order_question_answer_path(order_id: @order.id) and return
+  end
+
+  def pay_with_card
+    order = Order.find(params[:id])
+    
+    customer_payment_method_id = params[:customer_payment_method_id]
+
+    delete_card_after_payment = false
+
+    if customer_payment_method_id.blank? && params[:token].present?
+      response = Iugu::PaymentMethod.create({
+        customer_id: current_user.iugu_customer_id,
+        description: "Cartão de crédito",
+        token: params[:token],
+        set_as_default: true,
+      })
+      customer_payment_method_id = response.attributes["id"]
+      delete_card_after_payment = true if params[:save_card] != "on"
+    end
+
+    service = NovaIugu::DirectPayer.new(order, customer_payment_method_id, params[:number_of_installments]&.to_i)
+
+    if service.call
+      flash[:notice] = "Aguarde nessa tela a confirmação do pagamento"
+    else
+      flash[:alert] = "Erro ao realizar pagamento"
+    end
+
+    if delete_card_after_payment
+      Iugu::PaymentMethod.new({
+        customer_id: current_user.iugu_customer_id,
+        id: customer_payment_method_id
+      }).delete
+    end
+
+    redirect_to order_path(order)
   end
 
   def status
