@@ -1,0 +1,22 @@
+<p style="font-size: 16px;">Olá, <%= @user.email %></p>
+
+<p style="font-size: 16px;">O organizador do evento <%= @event_communication.event.name %>, para o qual você comprou um ingresso, publicou o seguinte comunicado sobre o evento: <%= @event_communication.content.html_safe %></p>
+
+<p style="font-size: 16px;">Veja esse comunicado dentro da nossa plataforma:</p>
+
+<a href=<%= @event_url %> style="
+  color: #00c454;
+  font-family: EncodeSans, sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.87px;
+  text-decoration: none;
+  padding-top: 10px;
+  text-align: center;
+">
+  Acesse aqui
+</a>
+
+<p style="font-size: 16px;">Atenciosamente,</p>
+
+<p style="font-weight: bold;">Equipe Nuflowpass</p>
