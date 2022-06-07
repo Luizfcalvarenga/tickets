@@ -28,11 +28,20 @@ class Event < ApplicationRecord
   scope :upcoming, -> { where("scheduled_end < ?", Time.current) }
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end > ?", Time.current) }
-  scope :not_approved, -> { where(approved_at: nil) }
+  scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
+  scope :deactivated, -> { where.not(deactivated_at: nil) }
 
   def active?
     approved_at.present? && deactivated_at.blank?
+  end
+
+  def self.available_experiences_for_user(user)
+    return Event.pluck(:experience).compact.uniq if user.admin?
+
+    return user.partner.events.pluck(:experience).compact.uniq if user.partner.present?
+
+    []
   end
 
   def create_default_questions

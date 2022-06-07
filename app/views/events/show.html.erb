@@ -34,6 +34,19 @@
       </div>
     </div>
 
+    <% if @other_events_with_same_experience.present? %>
+      <h3 class="title">Outras datas para a experiência <%= @event.experience %></h3>
+      <div class="flex center start flex-wrap gap-24">
+        <% @other_events_with_same_experience.each do |event| %>
+          <div class="">
+            <%= link_to event_path(event) do %>
+              <p class="btn btn-success px-3"><%= event.scheduled_start.strftime("%d/%m") %> até <%= event.scheduled_end.strftime("%d/%m") %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <div class="">
       <div class="my-5 page-desktop">
         <p class="fs-24">

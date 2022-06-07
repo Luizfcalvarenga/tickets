@@ -16,8 +16,9 @@ class DayUse < ApplicationRecord
   has_many :coupons, as: :entity, dependent: :destroy
 
   scope :open_for_weekday, ->(weekday) { joins(:day_use_schedules).where("day_use_schedules.opens_at is not null and day_use_schedules.closes_at is not null and day_use_schedules.weekday = ?", weekday) }
-  scope :not_approved, -> { where(approved_at: nil) }
+  scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
+  scope :deactivated, -> { where.not(deactivated_at: nil) }
   
   def schedule_for_date(date)
     day_use_schedules.find_by(weekday: date.strftime("%A").downcase)

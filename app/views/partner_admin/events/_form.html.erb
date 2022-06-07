@@ -21,6 +21,26 @@
           </div>
         </div>
 
+        <div class="col-md-12 my-5">
+          <%= f.input :experience, input_html: { class: "my-3" } %>
+          <% if @experiences.present? %>
+            <p class="m-0">Digite uma nova experiência ou escolha uma experiência já existente:</p>
+            <select id="experience-select" class="w-100 my-3">
+              <% ([""] + @experiences).each do |experience| %>
+                <option value="<%= experience %>"><%= experience %></option>
+              <% end %>
+            </select>
+            <script>
+              document.querySelector("#experience-select").addEventListener("change", (e) => {
+                document.querySelector("#event_experience").value = e.target.value;
+              })
+            </script>
+          <% end %>
+          <p class="m-0 info-text p-4 br-8 mb-3">
+            <i class="fa fa-info-circle mx-3"></i>Se você deseja agrupar esse evento com outros eventos, digite o nome de como gostaria de chamar a experiência ou escolha uma experiência que você já tiver cadastrado.
+          </p>
+        </div>
+
         <h2 class="text-success h2 my-3">Documentos</h2>
         <div class="my-3">
           <%= f.input :presentation %>

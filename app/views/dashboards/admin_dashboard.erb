@@ -12,70 +12,79 @@
     <p class="btn btn-success w-100">Usuários</p>
   <% end %>
 
+  <%= simple_form_for(:admin_dashboard, url: admin_dashboard_path, method: :get) do |f| %>
+    <div class="flex justify-content-end align-items-end gap-24 w-100 mb-5">
+      <%= f.input :partner_id, collection: Partner.all, label: "Filtrar por parceiro:", include_blank: "Escolha um parceiro", required: false, selected: params[:admin_dashboard] && params[:admin_dashboard][:partner_id] %>
+      <%= f.submit "Trocar", class: "btn btn-success f-10" %>
+    </div>
+  <% end %>
+
   <h2 class="title">Entidades</h2>
-    <table>
-    <thead>
-      <tr>
-        <th scope="col" class="w-10">Tipo</th>
-        <th scope="col" class="w-10">Parceiro</th>
-        <th scope="col">Nome</th>
-        <th scope="col" class="w-15">Status</th>
-        <th scope="col" class="w-40">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @entities_to_approve.each do |entity| %>
+  <% @collections.each do |entity_collection| %>
+    <table class="my-5">
+      <thead>
         <tr>
-          <td data-label="Tipo">
-            <p class="text-white fw-700 m-0">
-              <% case entity.class.name %>
-              <% when "Event" %>
-                Evento
-              <% when "DayUse" %>
-                DayUse
-              <% when "Membership" %>
-                Mensalidade
-              <% else %>
-                -
-              <% end %>
-            </p>
-          </td>
-          <td data-label="Parceiro">
-            <p class="text-white fw-700 m-0">
-              <%= entity.partner.name %>
-            </p>
-          </td>
-          <td data-label="Nome">
-            <p class="text-white fw-700 m-0 f-30"><%= entity.name %></p>
-          </td>
-          <td data-label="Status">
-            <% if entity.deactivated_at.present? %>
-              <p class="text-white p-2 br-8 bg-danger fw-700 m-0 f-30">Desativado</p>
-            <% elsif entity.approved_at.present? %>
-              <p class="text-white p-2 br-8 bg-success fw-700 m-0 f-30">Aprovado</p>
-            <% elsif entity.approved_at.blank? %>
-              <p class="text-white p-2 br-8 bg-warning fw-700 m-0 f-30">Pendente aprovação</p>
-            <% end %>
-          </td>
-          <td data-label="Ações">
-            <%= link_to edit_entity_path(entity) do %>
-              <p class="btn btn-success m-0 w-20">Editar</p>
-            <% end %>
-
-            <%= link_to admin_approve_form_path(entity_class: entity.class.table_name, entity_id: entity.id) do %>
-              <p class="btn btn-success m-0 w-20">Aprovar</p>
-            <% end %>
-
-            <%= link_to partner_admin_event_clone_path(entity), method: :post, data: { confirm: "Deseja realmente clonar esse evento?" } do %>
-              <p class="btn btn-warning m-0 w-20">Clonar</p>
-            <% end if entity.class == Event %>
-
-            <%= link_to partner_admin_entity_toggle_activity_path(entity), method: :patch, data: { confirm: "Deseja realmente alterar essa entidade?" } do %>
-              <p class="btn m-0 px-5 w-33 <%= entity.deactivated_at.present? ? "btn-info" : "btn-danger" %>"><%= entity.deactivated_at.present? ? "Ativar" : "Desativar" %></p>
-            <% end %>
-          </td>
+          <th scope="col" class="w-10">Tipo</th>
+          <th scope="col" class="w-10">Parceiro</th>
+          <th scope="col">Nome</th>
+          <th scope="col" class="w-15">Status</th>
+          <th scope="col" class="w-40">Ações</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% entity_collection.each do |entity| %>
+          <tr>
+            <td data-label="Tipo">
+              <p class="text-white fw-700 m-0">
+                <% case entity.class.name %>
+                <% when "Event" %>
+                  Evento
+                <% when "DayUse" %>
+                  DayUse
+                <% when "Membership" %>
+                  Mensalidade
+                <% else %>
+                  -
+                <% end %>
+              </p>
+            </td>
+            <td data-label="Parceiro">
+              <p class="text-white fw-700 m-0">
+                <%= entity.partner.name %>
+              </p>
+            </td>
+            <td data-label="Nome">
+              <p class="text-white fw-700 m-0 f-30"><%= entity.name %></p>
+            </td>
+            <td data-label="Status">
+              <% if entity.deactivated_at.present? %>
+                <p class="text-white p-2 br-8 bg-danger fw-700 m-0 f-30">Desativado</p>
+              <% elsif entity.approved_at.present? %>
+                <p class="text-white p-2 br-8 bg-success fw-700 m-0 f-30">Aprovado</p>
+              <% elsif entity.approved_at.blank? %>
+                <p class="text-white p-2 br-8 bg-warning fw-700 m-0 f-30">Pendente aprovação</p>
+              <% end %>
+            </td>
+            <td data-label="Ações">
+              <%= link_to edit_entity_path(entity) do %>
+                <p class="btn btn-success m-0 w-20">Editar</p>
+              <% end %>
+
+              <%= link_to admin_approve_form_path(entity_class: entity.class.table_name, entity_id: entity.id) do %>
+                <p class="btn btn-success m-0 w-20">Aprovar</p>
+              <% end %>
+
+              <%= link_to partner_admin_event_clone_path(entity), method: :post, data: { confirm: "Deseja realmente clonar esse evento?" } do %>
+                <p class="btn btn-warning m-0 w-20">Clonar</p>
+              <% end if entity.class == Event %>
+
+              <%= link_to partner_admin_entity_toggle_activity_path(entity), method: :patch, data: { confirm: "Deseja realmente alterar essa entidade?" } do %>
+                <p class="btn m-0 px-5 w-33 <%= entity.deactivated_at.present? ? "btn-info" : "btn-danger" %>"><%= entity.deactivated_at.present? ? "Ativar" : "Desativar" %></p>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </div>

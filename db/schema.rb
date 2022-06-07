@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_06_003124) do
+ActiveRecord::Schema.define(version: 2022_06_07_031537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,7 @@ ActiveRecord::Schema.define(version: 2022_06_06_003124) do
     t.text "terms_of_use"
     t.boolean "deactivated_at"
     t.boolean "allow_installments", default: false
+    t.string "experience"
     t.index ["approved_by_id"], name: "index_events_on_approved_by_id"
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"

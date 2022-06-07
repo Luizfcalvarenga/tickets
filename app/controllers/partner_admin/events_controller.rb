@@ -25,6 +25,7 @@ module PartnerAdmin
       @event = Event.new
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
+      @experiences = current_user.partner.events.pluck(:experience).select(&:present?).uniq
     end
   
     def create
@@ -36,6 +37,7 @@ module PartnerAdmin
       else
         flash[:alert] = "Erro ao criar evento"
         @event = service.event
+        @experiences = current_user.partner.events.pluck(:experience).select(&:present?).uniq
         render :new
       end     
     end
@@ -44,12 +46,14 @@ module PartnerAdmin
       @event = Event.find(params[:id])
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
+      @experiences = @event.partner.events.pluck(:experience).select(&:present?).uniq
     end
 
     def update
       @event = Event.find(params[:id])
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
+      @experiences = @event.partner.events.pluck(:experience).select(&:present?).uniq
 
       service = EventUpdater.new(@event, params)
       
@@ -100,22 +104,6 @@ module PartnerAdmin
         flash[:alert] = "Erro ao clonar evento: #{service.errors}"
         redirect_to dashboard_path_for_user(current_user)
       end
-    end
-    
-    private
-
-    def event_params
-      params.require(:event).permit(:name, :description, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_images: [], supporters_images: [])
-        .merge(created_by: current_user, partner: current_user.partner)
-    end
-  
-    def create_batch_params
-      params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
-    end
-  
-    def questions_params
-
-      params[:questions] || []
     end
   end
 end
