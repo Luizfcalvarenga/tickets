@@ -19,6 +19,8 @@
 
     <div class="spacer-30"></div>
 
+    <%= f.input :monthly_pass_usage_limit, placeholder: "Limite de entradas por mês..." %>
+
     <%= f.input :price_in_cents, placeholder: "Preço da assinatura em centavos..." %>
 
     <%= f.input :recurrence_interval_in_months, placeholder: "Intervalo de recorrência em meses...", input_html: { min: 1 } %>

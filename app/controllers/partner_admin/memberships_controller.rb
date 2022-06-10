@@ -68,7 +68,7 @@ class PartnerAdmin::MembershipsController < ApplicationController
   private
 
   def membership_params
-    params.require(:membership).permit(:id, :name, :short_description, :description, :terms_of_use, :price_in_cents, :recurrence_interval_in_months, :minimum_subscription_months)
+    params.require(:membership).permit(:id, :name, :monthly_pass_usage_limit, :short_description, :description, :terms_of_use, :price_in_cents, :recurrence_interval_in_months, :minimum_subscription_months)
       .merge(@membership.blank? ? { partner_id: current_user.partner_id } : {})
   end
 end

@@ -16,6 +16,7 @@ class EventCreator
             name: batch_params[:name],
             quantity: batch_params[:quantity],
             price_in_cents: batch_params[:price_in_cents],
+            number_of_accesses_granted: batch_params[:number_of_accesses_granted],
             ends_at: batch_params[:ends_at],
             order: batch_params[:order])
         end
@@ -50,7 +51,7 @@ class EventCreator
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches] || []
+    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :number_of_accesses_granted, :quantity, :ends_at])[:event_batches] || []
   end
 
   def questions_params

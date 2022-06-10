@@ -31,6 +31,7 @@ class EventUpdater
         name: batch_params[:name],
         quantity: batch_params[:quantity],
         price_in_cents: batch_params[:price_in_cents],
+        number_of_accesses_granted: batch_params[:number_of_accesses_granted],
         ends_at: batch_params[:ends_at],
         order: batch_params[:order]
       )
@@ -46,6 +47,7 @@ class EventUpdater
         name: batch_params[:name],
         quantity: batch_params[:quantity],
         price_in_cents: batch_params[:price_in_cents],
+        number_of_accesses_granted: batch_params[:number_of_accesses_granted],
         ends_at: batch_params[:ends_at],
         order: batch_params[:order])
     end
@@ -122,7 +124,7 @@ class EventUpdater
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
+    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :number_of_accesses_granted, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
   end
 
   def questions_params

@@ -30,7 +30,8 @@ class DayUseUpdater
           
           update_pass_type = pass_type.update(
             name: pass_type_param[:name],
-            price_in_cents: pass_type_param[:price_in_cents]
+            price_in_cents: pass_type_param[:price_in_cents],
+            number_of_accesses_granted: pass_type_param[:number_of_accesses_granted],
           )
 
           if !update_pass_type 
@@ -42,7 +43,8 @@ class DayUseUpdater
           DayUseSchedulePassType.create!(
             day_use_schedule: day_use_schedule,
             name: pass_type_param[:name],
-            price_in_cents: pass_type_param[:price_in_cents]
+            price_in_cents: pass_type_param[:price_in_cents],
+            number_of_accesses_granted: pass_type_param[:number_of_accesses_granted],
           )
         end
       end
@@ -76,6 +78,6 @@ class DayUseUpdater
   end
 
   def day_use_schedule_params
-    params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :description, :photo, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes, pass_types: [:id, :name, :price_in_cents]])[:day_use_schedules]
+    params.require(:day_use).permit(day_use_schedules: [:weekday, :name, :description, :photo, :opens_at, :closes_at, :price_in_cents, :quantity_per_slot, :slot_duration_in_minutes, pass_types: [:id, :name, :price_in_cents, :number_of_accesses_granted]])[:day_use_schedules]
   end
 end

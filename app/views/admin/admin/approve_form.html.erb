@@ -38,7 +38,9 @@
   <%= simple_form_for(:approve, url: "/admin/approve/#{@entity.class.table_name}/#{@entity.id}", method: :patch) do |f| %>
     <%= f.input :fee_percentage, label: "Taxa do ingresso (em %)", input_html: { class: "mb-4", value: @entity.fee_percentage || @entity.partner.fee_percentage } %>
     <%= f.input :absorb_fee, as: :boolean, label: "O organizador vai absorver a taxa?", input_html: { checked: @entity.absorb_fee } %>
-    <%= f.input :allow_installments, as: :boolean, label: "Liberar compra parcelada", input_html: { checked: @entity.allow_installments } %>
+    <% if @entity.respond_to? :allow_installments %>
+      <%= f.input :allow_installments, as: :boolean, label: "Liberar compra parcelada", input_html: { checked: @entity.allow_installments } %>
+    <% end %>
 
     <p class="gs-190">Absorver a taxa: o cliente final não paga a taxa, e sim o organizador absorve ela e recebe um repasse com a taxa descontada.</p>
 

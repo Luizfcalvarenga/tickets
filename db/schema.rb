@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_07_031537) do
+ActiveRecord::Schema.define(version: 2022_06_10_005429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 2022_06_07_031537) do
     t.bigint "day_use_schedule_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "number_of_accesses_granted", default: 1
     t.index ["day_use_schedule_id"], name: "index_day_use_schedule_pass_types_on_day_use_schedule_id"
   end
 
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 2022_06_07_031537) do
     t.datetime "ends_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "number_of_accesses_granted", default: 1
     t.index ["event_id"], name: "index_event_batches_on_event_id"
   end
 
@@ -236,6 +238,7 @@ ActiveRecord::Schema.define(version: 2022_06_07_031537) do
     t.boolean "deactivated_at"
     t.integer "recurrence_interval_in_months", default: 1
     t.integer "minimum_subscription_months", default: 0
+    t.integer "monthly_pass_usage_limit", default: 9999
     t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end

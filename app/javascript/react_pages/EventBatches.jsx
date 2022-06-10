@@ -215,6 +215,24 @@ export function EventBatches(props) {
                       />
                     </div>
                     <div className="f-1x">
+                      <label htmlFor="">Número de acessos por passe</label>
+                      <input
+                        class="form-control my-2"
+                        type="text"
+                        name="event[event_batches][][number_of_accesses_granted]"
+                        value={eventBatch.number_of_accesses_granted}
+                        onChange={(e) =>
+                          updateEventBatch(
+                            e.target.value,
+                            "number_of_accesses_granted",
+                            passType,
+                            eventBatchIndex
+                          )
+                        }
+                        placeholder="Número de acessos por passe"
+                      />
+                    </div>
+                    <div className="f-1x">
                       <label htmlFor="">Data limite</label>
                       <input
                         class="form-control mx-1 date required"
