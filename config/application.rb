@@ -17,7 +17,7 @@ module ClubeDoEstudante
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
-		config.middleware.use Rack::Cors do
+    config.middleware.use Rack::Cors do
       allow do
         origins '*'
         resource '*',
@@ -27,15 +27,9 @@ module ClubeDoEstudante
       end
     end
 
-		config.active_job.queue_adapter = :sidekiq
-		
+    config.active_job.queue_adapter = :sidekiq
+    
     config.time_zone = "America/Sao_Paulo"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    config.action_mailer.delivery_method = :postmark
-
-    config.action_mailer.postmark_settings = {
-      api_token: ENV['POSTMARK_API_TOKEN']
-    }
   end
 end
