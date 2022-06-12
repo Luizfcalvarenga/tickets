@@ -81,4 +81,14 @@ class Order < ApplicationRecord
   def should_generate_new_invoice?
     !is_free? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
   end
+
+  def self.to_csv
+    attributes = ["Usuário", "Identificação do pedido", "Entidade", "Gerado em", "Preço", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
+    CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+      csv << attributes
+      all.each do |order|
+       csv << [order.user.email, order.id, order.related_entity.name, order.created_at.strftime("%d/%m/%Y - %H:%M"), ApplicationController.helpers.display_price(order.reference_value_in_cents), "#{order.order_items.first.fee_percentage}%", order.order_items.first.absorb_fee ? "Sim" : "Não", ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
+      end
+    end
+  end
 end
