@@ -2,7 +2,7 @@
   <div class="w-100 pb-5">  
 
     <div class="flex flex-column center around h-100">
-      <% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
+      <% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code.present? && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
         <button class="btn btn-success px-5 mb-5" data-bs-toggle="modal" data-bs-target="#group-buy-modal">COMPRA EM GRUPO</button>
       <% end %>
       <div class="h-100 pass-wrapper flex column center around position-relative">
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
+<% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code.present? && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
   <div id="group-buy-modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content bg-darker">
