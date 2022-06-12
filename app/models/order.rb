@@ -64,7 +64,8 @@ class Order < ApplicationRecord
       total_value = (reference_value_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
       {
         count: installment_count,
-        value_in_cents: (total_value / installment_count).floor
+        value_in_cents: (total_value / installment_count).floor,
+        total_value_in_cents: total_value
       }
     end
   end
