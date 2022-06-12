@@ -65,7 +65,7 @@ class Order < ApplicationRecord
       {
         count: installment_count,
         value_in_cents: (total_value / installment_count).floor,
-        total_value_in_cents: total_value
+        total_value_in_cents: total_value.floor
       }
     end
   end
