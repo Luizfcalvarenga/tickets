@@ -101,12 +101,20 @@
 
       <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
 
+      <div class="spacer-50"></div>
+
+      <%= f.input :group_buy, as: :boolean, label: "Compra em grupo", input_html: { checked: @event.group_buy } %>
+
+      <p class="m-0 info-text text-white p-4 br-8 mb-3 mt-3">
+        <i class="fa fa-info-circle my-3 pe-2"></i>Ao ativar a compra em grupo, o primeiro usuário que comprar um passe para esse evento irá receber um link para que apenas seus convidados possam comprar passes, e a venda de passes para o público geral será suspendida.
+      </p>
+
       <div class="spacer-25"></div>
       
       <h2 class="my-5 title">Perguntas para o participante</h2>
 
       <div class="participant-questions">
-        <react data-component="Questions" data-questions="<%= @event.questions.non_default.to_json %>" ></react>
+        <react data-component="Questions" data-questions="<%= @event.questions.active.non_default.to_json %>" ></react>
       </div>
 
       <div class="text-center">

@@ -30,7 +30,7 @@ class EventCreator
             prompt: question_params[:prompt],
             optional: question_params[:optional].present?,
             options: question_params[:options],
-            order: @event.questions.count,
+            order: @event.questions.active.count,
           )
         end
         
@@ -47,7 +47,7 @@ class EventCreator
 
   def event_params
     params.require(:event).permit(:name, :description, :experience, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_photos: [], supporters_photos: [])
-      .merge(created_by: current_user, partner: current_user.partner)
+      .merge(created_by: current_user, partner: current_user.partner, group_buy: params[:event][:group_buy].to_i == 1)
   end
 
   def create_batch_params

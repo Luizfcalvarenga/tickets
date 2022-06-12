@@ -93,6 +93,25 @@ module PartnerAdmin
       redirect_to dashboard_path_for_user(current_user)
     end
 
+    def delete_group
+      @event = Event.find(params[:id])
+
+      if !@event.group_buy || @event.group_buy_code.blank?
+        flash[:alert] = "Esse evento não possui um grupo ativo"
+        redirect_to dashboard_path_for_user(current_user) and return
+      end
+      
+      original_pass = @event.passes.order(:created_at).find_by(group_buy_code: @event.group_buy_code)
+
+      ActiveRecord::Base.transaction do 
+        original_pass.touch(:deactivated_at)
+        @event.update!(group_buy_code: nil)
+      end
+
+      flash[:notice] = "Grupo desfeito"
+      redirect_to  edit_partner_admin_event_path(@event)
+    end
+
     def clone
       @event = Event.find(params[:id])
 

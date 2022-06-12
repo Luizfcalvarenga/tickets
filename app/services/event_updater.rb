@@ -54,7 +54,7 @@ class EventUpdater
   end
 
   def update_questions
-    removed_questions.destroy_all
+    removed_questions.update_all(removed_at: Time.current)
 
     questions_to_update.each do |question_params|
       question = Question.find(question_params[:id])
@@ -65,11 +65,11 @@ class EventUpdater
         prompt: question_params[:prompt],
         optional: question_params[:optional].present?,
         options: question_params[:options],
-        order: @event.questions.count,
+        order: @event.questions.active.count,
       )
 
       if !update_question 
-        errors << {order: @event.questions.count, error: question.errors.full_messages.join(", ")}
+        errors << {order: @event.questions.active.count, error: question.errors.full_messages.join(", ")}
       end
     end
 
@@ -120,7 +120,7 @@ class EventUpdater
   private
 
   def event_params
-    params.require(:event).permit(:name, :description, :experience, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_photos: [], supporters_photos: [])
+    params.require(:event).permit(:name, :description, :experience, :photo, :presentation, :terms_of_use, :scheduled_start, :scheduled_end, :state_id, :city_id, :street_name, :street_number, :street_complement, :neighborhood, :cep, :address_complement, sponsors_photos: [], supporters_photos: []).merge(group_buy: params[:event][:group_buy].to_i == 1)
   end
 
   def create_batch_params

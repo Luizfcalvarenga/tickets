@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
 
-    if @order.total_price_is_zero?
+    if @order.is_free?
       @order.perform_after_payment_confirmation_actions
       flash[:notice] = "Passes retirados com sucesso"
       redirect_to dashboard_path_for_user(current_user) and return
@@ -72,8 +72,11 @@ class OrdersController < ApplicationController
           )
         end
       end
-
+      
       related_entity = order_item.related_entity
+
+      @order.calculate_and_set_financial_values!
+      
       applicable_coupon = Coupon.active.find_by(entity_id: related_entity.id, entity_type: related_entity.class.name, code: params[:coupon_code])
       @order.update!(coupon: applicable_coupon) if applicable_coupon.present? && applicable_coupon.can_be_applied?
     end

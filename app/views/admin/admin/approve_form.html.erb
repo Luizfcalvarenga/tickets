@@ -1,5 +1,5 @@
 <div class="page-wrapper">
-  <h1 class="title">Aprovação de administrador</h1>
+  <h1 class="title">Gestão de administrador</h1>
 
   <div class="bg-dark p-4 br-8 mb-5">
     <p class="text-white m-2"><span class="fw-700 pe-3">Tipo:</span>
@@ -34,6 +34,32 @@
       -
     <% end %>
   </div>
+
+  <% if @entity.group_buy %>
+    <div class="bg-dark p-4 br-8">
+      <% if @entity.group_buy_code.present? %>
+        <p class="success-text"><i class="fa fa-check-circle me-3 px-4"></i>Reservado para grupo</p>
+        <p class="text-white">Link de compra em grupo: <a href="<%= event_url(@entity, group_buy_code: @entity.group_buy_code) %>" target="_blank"><%= event_url(@entity, group_buy_code: @entity.group_buy_code) %></a></p>
+
+        <% original_pass = @entity.passes.order(:created_at).find_by(group_buy_code: @entity.group_buy_code) %>
+        <p class="text-white">Comprado em: <%= original_pass.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
+        <p class="text-white">ID da compra no Iugu: <%= original_pass.order_item.order.invoice_id %></p>
+        <p class="text-white">Dados do comprador</p>
+        <% original_pass.question_answers.each do |answer| %>
+          <p class="text-white"><%= answer.question.prompt %>: <%= answer.value %></p>
+        <% end %>
+
+        <%= link_to partner_admin_delete_group_path(@entity), method: :delete, data: { confirm: "Tem certeza que deseja deletar esse passe e desfazer o grupo? Você já fez o estorno do pagamento para o passe?" } do %>
+          <p class="btn btn-danger text-white">Desfazer grupo</p>
+        <% end %>
+      
+      <% else %>
+        <p class="text-white mb-0">Compra em grupo: <span class="text-success">Ativa</span></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="spacer-50"></div>
 
   <%= simple_form_for(:approve, url: "/admin/approve/#{@entity.class.table_name}/#{@entity.id}", method: :patch) do |f| %>
     <%= f.input :fee_percentage, label: "Taxa do ingresso (em %)", input_html: { class: "mb-4", value: @entity.fee_percentage || @entity.partner.fee_percentage } %>

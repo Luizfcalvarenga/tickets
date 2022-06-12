@@ -64,5 +64,7 @@ class DashboardsController < ApplicationController
     @collections = [:active, :not_approved, :deactivated].map do |scope|
       entities.map { |entity| entity.send(scope) }.reduce(:+)
     end
+
+    @events_with_group_buy = Event.where.not(group_buy_code: nil)
   end
 end

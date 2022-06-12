@@ -63,7 +63,7 @@
           <% if !mobile_device? %>
             <td data-label="">Total: </td> 
           <% end %>
-          <td data-label="Total"><%= display_price(@order.total_price_in_cents) %></td>
+          <td data-label="Total"><%= display_price(@order.reference_value_in_cents) %></td>
         </tr>
       </tbody>
     </table>

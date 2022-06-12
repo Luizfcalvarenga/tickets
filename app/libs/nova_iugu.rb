@@ -206,7 +206,10 @@ module NovaIugu
         @entity.update(
           invoice_id: @response.attributes["invoice_id"],
           invoice_url: @response.attributes["url"],
-          invoice_pdf: @response.attributes["pdf"]
+          invoice_pdf: @response.attributes["pdf"],
+          number_of_installments: number_of_installments,
+          invoice_pix_qrcode_url: nil,
+          invoice_pix_qrcode_text: nil,
         )
 
         ChargeCheckAndUpdateStatus.new(entity).call

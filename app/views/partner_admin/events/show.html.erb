@@ -137,7 +137,7 @@
           <%= uf.input :document_number %>
         <% end %>
         <div class="my-3"></div>
-        <% @event.questions.each_with_index do |question, index| %>
+        <% @event.questions.active.each_with_index do |question, index| %>
           <p class="mb-3">Pergunta <%= index + 1 %>: <%= question.prompt %></p>
           <div class="my-2">
             <input

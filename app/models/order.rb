@@ -18,12 +18,14 @@ class Order < ApplicationRecord
     order_items.first.related_entity
   end
 
-  def total_price_in_cents
-    order_items.sum(:total_in_cents) - discount_value_in_cents
+  def calculate_and_set_financial_values!
+    total_price_in_cents = order_items.sum(:total_in_cents) - discount_value_in_cents
+    self.update(reference_value_in_cents: total_price_in_cents)
+    self.update(amount_to_transfer_to_partner: order_items.map(&:amount_to_transfer_to_partner).sum)
   end
 
-  def total_price_is_zero?
-    total_price_in_cents.zero?
+  def is_free?
+    reference_value_in_cents.zero?
   end
 
   def discount_value_in_cents
@@ -59,7 +61,7 @@ class Order < ApplicationRecord
 
   def installment_options 
     (1..MAX_INSTALLMENTS).map do |installment_count|
-      total_value = (total_price_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
+      total_value = (reference_value_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
       {
         count: installment_count,
         value_in_cents: (total_value / installment_count).floor
@@ -77,6 +79,6 @@ class Order < ApplicationRecord
   end
 
   def should_generate_new_invoice?
-    !total_price_is_zero? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
+    !is_free? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
   end
 end

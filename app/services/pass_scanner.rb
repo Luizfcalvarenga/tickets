@@ -67,7 +67,11 @@ class PassScanner
   end
 
   def scan_event_pass
-    if @pass.accesses.count < @pass.event_batch.number_of_accesses_granted
+    if @pass.deactivated_at.present?
+      @result = false
+      @main_line = "Passe desativado"
+      @secondary_line = "Esse passe não está ativo"
+    elsif @pass.accesses.count < @pass.event_batch.number_of_accesses_granted
       @result = true
       @main_line = "Acesso liberado"
       @secondary_line = ""
@@ -75,10 +79,10 @@ class PassScanner
       @result = false
       @main_line = "Acesso negado"
       @secondary_line = "Esse passe já foi utilizado o limite de #{@pass.event_batch.number_of_accesses_granted} vez(es)"
-    # elsif Time.current < @pass.start_time.beginning_of_day
-    #   @result = false
-    #   @main_line = "Acesso negado"
-    #   @secondary_line = "Esse acesso só pode ser liberado no dia do evento"
+    elsif Time.current < @pass.start_time.beginning_of_day
+      @result = false
+      @main_line = "Acesso negado"
+      @secondary_line = "Esse acesso só pode ser liberado no dia do evento"
     else
       @result = false
       @main_line = "Acesso negado"
@@ -87,7 +91,11 @@ class PassScanner
   end
   
   def scan_day_use_pass
-    if @pass.accesses.count < @pass.day_use_schedule_pass_type.number_of_accesses_granted
+    if @pass.deactivated_at.present?
+      @result = false
+      @main_line = "Passe desativado"
+      @secondary_line = "Esse passe não está ativo"
+    elsif @pass.accesses.count < @pass.day_use_schedule_pass_type.number_of_accesses_granted
       @result = true
       @main_line = "Acesso liberado"
       @secondary_line = ""

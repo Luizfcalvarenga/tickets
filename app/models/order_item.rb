@@ -17,6 +17,10 @@ class OrderItem < ApplicationRecord
     end
   end
 
+  def amount_to_transfer_to_partner
+    absorb_fee ? (price_in_cents - price_in_cents * fee_percentage / 100) : price_in_cents
+  end
+
   def fee_value_in_cents
     absorb_fee ? 0 : price_in_cents * fee_percentage / 100
   end
