@@ -234,7 +234,7 @@ module NovaIugu
       return items if number_of_installments == 1
       
       items.each do |item|
-        item[:price_cents] = entity.installment_options.find { |option| option[:count].to_i == number_of_installments }[:total_value]
+        item[:price_cents] = entity.installment_options.find { |option| option[:count].to_i == number_of_installments }[:total_value_in_cents]
       end
     end
   end  
