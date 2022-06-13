@@ -11,7 +11,7 @@ class PassScanner
   def call
     restore_recent_read = Read.where("created_at > ?", MAXIMUM_RECENT_RESTORE_TIME_IN_SECONDS.seconds.ago).where(pass: @pass, read_by: scanner_user).first
 
-    if restore_recent_read
+    if restore_recent_read.present?
       @result = restore_recent_read.result
       @main_line = restore_recent_read.main_line
       @secondary_line = restore_recent_read.secondary_line
@@ -29,7 +29,7 @@ class PassScanner
   
       read = Read.create!(
         pass: @pass,
-        read_by: scanner_user,
+        read_by: @scanner_user,
         result: @result,
         main_line: @main_line,
         secondary_line: @secondary_line
