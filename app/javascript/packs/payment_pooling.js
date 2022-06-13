@@ -19,7 +19,6 @@ document.addEventListener("turbolinks:load", () => {
       document.querySelector(".payment-container").classList.add("hide");
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-      console.log(response.data)
       document.querySelector(".after-payment-button-link").href = response.data.button_url
       stopPolling = true;
     }

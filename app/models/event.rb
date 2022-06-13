@@ -36,14 +36,6 @@ class Event < ApplicationRecord
     approved_at.present? && deactivated_at.blank?
   end
 
-  def self.available_experiences_for_user(user)
-    return Event.pluck(:experience).compact.uniq if user.admin?
-
-    return user.partner.events.pluck(:experience).compact.uniq if user.partner.present?
-
-    []
-  end
-
   def create_default_questions
     Question.create!(
       event: self,

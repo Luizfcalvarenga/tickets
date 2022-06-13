@@ -284,7 +284,7 @@ module NovaIugu
     end
 
     def charge_params
-      @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(invoice_id: entity.invoice_id).merge(custom_params)
+      @charge_params ||= @entity.nova_iugu_charge_params_hash.merge(custom_params).merge(method: "bank_slip")
     end
   end  
 
