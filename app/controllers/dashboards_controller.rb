@@ -59,7 +59,7 @@ class DashboardsController < ApplicationController
   end
 
   def admin_dashboard
-    entities = [Event.order(:scheduled_start), DayUse.order(:created_at), Membership.order(:created_at)]
+    entities = [Event.order(scheduled_start: :desc), DayUse.order(created_at: :desc), Membership.order(created_at: :desc)]
     entities.map! { |entity_collection| entity_collection.where(partner_id: params[:admin_dashboard][:partner_id])} if params[:admin_dashboard].present? && params[:admin_dashboard][:partner_id].present?
     @collections = [:active, :not_approved, :deactivated].map do |scope|
       entities.map { |entity| entity.send(scope) }.reduce(:+)

@@ -19,9 +19,15 @@ class Order < ApplicationRecord
   end
 
   def calculate_and_set_financial_values!
-    total_price_in_cents = order_items.sum(:total_in_cents) - discount_value_in_cents
-    self.update(reference_value_in_cents: total_price_in_cents > 0 ? total_price_in_cents : 0)
     self.update(amount_to_transfer_to_partner: order_items.map(&:amount_to_transfer_to_partner).sum)
+
+    total_price_in_cents = order_items.sum(:total_in_cents) - discount_value_in_cents
+
+    if order_items.first.absorb_fee
+      self.update(reference_value_in_cents: total_price_in_cents > 0 ? total_price_in_cents : 0)
+    else
+      self.update(reference_value_in_cents: amount_to_transfer_to_partner)
+    end
   end
 
   def is_free?

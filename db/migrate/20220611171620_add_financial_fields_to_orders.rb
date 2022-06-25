@@ -7,6 +7,8 @@ class AddFinancialFieldsToOrders < ActiveRecord::Migration[6.1]
     change_column :orders, :net_value, 'integer USING CAST(net_value AS integer)'
     change_column :orders, :value, 'integer USING CAST(value AS integer)'
 
+    Order.all.select { |o| o.order_items.blank? }.each(&:destroy)
+
     Order.find_each do |order|
       order.calculate_and_set_financial_values!
       order.update(number_of_installments: 1)
