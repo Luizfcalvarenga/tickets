@@ -42,3 +42,4 @@ yarn-debug.log*
 .env*
 dump.rdb
 .dump*
+*.dump.*
