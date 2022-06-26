@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_27_014948) do
+ActiveRecord::Schema.define(version: 2022_06_11_210803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.bigint "day_use_schedule_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "number_of_accesses_granted", default: 1
     t.index ["day_use_schedule_id"], name: "index_day_use_schedule_pass_types_on_day_use_schedule_id"
   end
 
@@ -161,6 +162,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.datetime "ends_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "number_of_accesses_granted", default: 1
     t.index ["event_id"], name: "index_event_batches_on_event_id"
   end
 
@@ -198,6 +200,10 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.bigint "approved_by_id"
     t.text "terms_of_use"
     t.boolean "deactivated_at"
+    t.boolean "allow_installments", default: false
+    t.string "experience"
+    t.boolean "group_buy", default: false
+    t.string "group_buy_code"
     t.index ["approved_by_id"], name: "index_events_on_approved_by_id"
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"
@@ -234,6 +240,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.boolean "deactivated_at"
     t.integer "recurrence_interval_in_months", default: 1
     t.integer "minimum_subscription_months", default: 0
+    t.integer "monthly_pass_usage_limit", default: 9999
     t.index ["approved_by_id"], name: "index_memberships_on_approved_by_id"
     t.index ["partner_id"], name: "index_memberships_on_partner_id"
   end
@@ -261,9 +268,9 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.string "invoice_url"
     t.string "invoice_pdf"
     t.string "invoice_status"
-    t.string "net_value"
+    t.integer "net_value"
     t.integer "price_in_cents"
-    t.string "value"
+    t.integer "value"
     t.datetime "invoice_paid_at"
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
@@ -272,6 +279,12 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.bigint "directly_generated_by_id"
     t.boolean "free", default: false
     t.bigint "coupon_id"
+    t.string "invoice_pix_qrcode_url"
+    t.string "invoice_pix_qrcode_text"
+    t.integer "reference_value_in_cents"
+    t.integer "number_of_installments"
+    t.integer "amount_to_transfer_to_partner"
+    t.integer "amount_to_transfer_to_novamente_in_cents"
     t.index ["coupon_id"], name: "index_orders_on_coupon_id"
     t.index ["created_by_id"], name: "index_orders_on_created_by_id"
     t.index ["directly_generated_by_id"], name: "index_orders_on_directly_generated_by_id"
@@ -325,6 +338,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.boolean "absorb_fee"
     t.datetime "deactivated_at"
     t.boolean "free", default: false
+    t.string "group_buy_code"
     t.index ["day_use_schedule_pass_type_id"], name: "index_passes_on_day_use_schedule_pass_type_id"
     t.index ["directly_generated_by_id"], name: "index_passes_on_directly_generated_by_id"
     t.index ["event_batch_id"], name: "index_passes_on_event_batch_id"
@@ -356,6 +370,7 @@ ActiveRecord::Schema.define(version: 2022_05_27_014948) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "removed_at"
     t.index ["day_use_id"], name: "index_questions_on_day_use_id"
     t.index ["event_id"], name: "index_questions_on_event_id"
   end

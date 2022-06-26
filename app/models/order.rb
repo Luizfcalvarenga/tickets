@@ -10,17 +10,28 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :user
 
   scope :paid, -> { where(status: "paid")}
+
+  INSTALLMENT_TAX_PERCENTAGE = 3
+  MAX_INSTALLMENTS = 12
   
   def related_entity
     order_items.first.related_entity
   end
 
-  def total_price_in_cents
-    order_items.sum(:total_in_cents)
+  def calculate_and_set_financial_values!
+    self.update(amount_to_transfer_to_partner: order_items.map(&:amount_to_transfer_to_partner).sum)
+
+    total_price_in_cents = order_items.sum(:total_in_cents) - discount_value_in_cents
+
+    if order_items.first.absorb_fee
+      self.update(reference_value_in_cents: total_price_in_cents > 0 ? total_price_in_cents : 0)
+    else
+      self.update(reference_value_in_cents: amount_to_transfer_to_partner)
+    end
   end
 
-  def total_price_is_zero?
-    (total_price_in_cents - discount_value_in_cents).zero?
+  def is_free?
+    reference_value_in_cents.zero?
   end
 
   def discount_value_in_cents
@@ -54,6 +65,17 @@ class Order < ApplicationRecord
     }
   end
 
+  def installment_options 
+    (1..MAX_INSTALLMENTS).map do |installment_count|
+      total_value = (reference_value_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
+      {
+        count: installment_count,
+        value_in_cents: (total_value / installment_count).floor,
+        total_value_in_cents: total_value.floor
+      }
+    end
+  end
+
   def perform_after_payment_confirmation_actions
     OrderPassesGenerator.new(self).call
     self.update(status: "paid")
@@ -64,6 +86,16 @@ class Order < ApplicationRecord
   end
 
   def should_generate_new_invoice?
-    invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled" || !total_price_is_zero?
+    !is_free? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
+  end
+
+  def self.to_csv
+    attributes = ["Usuário", "Identificação do pedido", "Entidade", "Gerado em", "Preço", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
+    CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+      csv << attributes
+      all.each do |order|
+       csv << [order.user.email, order.id, order.related_entity.name, order.created_at.strftime("%d/%m/%Y - %H:%M"), ApplicationController.helpers.display_price(order.reference_value_in_cents), "#{order.order_items.first.fee_percentage}%", order.order_items.first.absorb_fee ? "Sim" : "Não", ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
+      end
+    end
   end
 end

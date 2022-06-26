@@ -196,6 +196,20 @@ form {
     transition: 300ms;
   }
 }
+.btn-underline {
+  color: $color-primary !important;
+  background-color: transparent !important;
+  text-decoration: underline;
+  text-decoration-color: $color-primary;
+  border: none;
+  border-radius: 24px !important;
+  &:hover {
+    color: $color-darker;
+    background-color: white;
+    opacity: 0.9;
+    transition: 300ms;
+  }
+}
 .toast {
   padding: 30px 60px !important;
   border-radius: 24px !important;

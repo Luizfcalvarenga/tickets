@@ -156,7 +156,7 @@ export function EventOrderItems(props) {
             class="f-20"
             onChange={(e) => setCouponCode(e.target.value)}
           />
-          <p className="btn btn-success f-10 m-0 px-5" onClick={() => applyCoupon()}>
+          <p className="btn btn-underline f-10 m-0 px-5" onClick={() => applyCoupon()}>
             Aplicar
           </p>
           <div className="f-40 text-center">

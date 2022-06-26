@@ -90,14 +90,19 @@ class Pass < ApplicationRecord
       }
     else
       return {
-        label: "Não utilizado",
+        label: "Desativado",
         class: "text-danger"
-      } if end_time.at_end_of_day < Time.current
+      } if deactivated_at.present?
 
       return {
         label: "Utilizado",
         class: "text-secondary"
       } if accesses.present?
+
+      return {
+        label: "Não utilizado",
+        class: "text-danger"
+      } if end_time.at_end_of_day < Time.current
 
       return {
         label: "Disponível",

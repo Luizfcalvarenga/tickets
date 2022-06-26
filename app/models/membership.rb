@@ -13,8 +13,9 @@ class Membership < ApplicationRecord
 
   after_create :create_plan_at_iugu
 
-  scope :not_approved, -> { where(approved_at: nil) }
+  scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
+  scope :deactivated, -> { where.not(deactivated_at: nil) }
 
   def identifier
     "nuflowpass-#{partner.id}-#{id}"

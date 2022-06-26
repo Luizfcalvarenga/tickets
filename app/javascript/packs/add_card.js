@@ -9,6 +9,8 @@ document.addEventListener("turbolinks:load", () => {
   jQuery(function ($) {
     $("#payment-form").submit(function (evt) {
       evt.preventDefault();
+      const submitButton = document.querySelector("submit-button")
+      if (submitButton) submitButton.setAttribute("disabled", "disabled")
 
       var form = $(this);
       var tokenResponseHandler = function (data) {

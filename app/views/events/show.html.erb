@@ -34,6 +34,19 @@
       </div>
     </div>
 
+    <% if @events_with_same_experience.present? %>
+      <h3 class="title">Datas para a experiência <%= @event.experience %></h3>
+      <div class="flex center start flex-wrap gap-24">
+        <% @events_with_same_experience.each do |event| %>
+          <div class="">
+            <%= link_to event_path(event) do %>
+              <p class="btn btn-success px-3"><%= event.scheduled_start.strftime("%d/%m") %> até <%= event.scheduled_end.strftime("%d/%m") %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <div class="">
       <div class="my-5 page-desktop">
         <p class="fs-24">
@@ -61,13 +74,23 @@
   <h1 class="title mt-4">Ingressos</h1>
 
   <div class="mb-5">
-    <% if @current_batches.present? %>
-      <%= simple_form_for(@order) do |f| %>
-        <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>"></react>
+    <% if @current_batches.present?  %>
+      <% if @event.group_buy_code.blank? || @event.group_buy_code == params[:group_buy_code] %>
+        <% if @event.group_buy %>
+          <p class="info-text text-white p-4 br-8 mb-5 mt-3">
+            <i class="fa fa-info-circle my-3 pe-2"></i>Essse evento é um evento em grupo. Quando você comprar um ingresso e a compra for confirmada, o evento será reservado para você e apenas pessoas com o link que você compartilhar poderão comprar ingressos para fechar o grupo. Se o grupo não for fechado em 48h, a reserva será cancelada.
+          </p>
+        <% end %>
 
-        <div class="text-center">
-          <%= f.submit "Comprar ingressos", class: "btn btn-success text-white mt-5 p-3" %>
-        </div>
+        <%= simple_form_for(@order) do |f| %>
+          <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>"></react>
+
+          <div class="text-center">
+            <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
+          </div>
+        <% end %>
+      <% else %>
+      <p class="danger-text p-4 br-8">Esse evento já está reservado para um grupo.</p>
       <% end %>
     <% else %>
       <p class="danger-text p-4 br-8">Evento esgotado</p>

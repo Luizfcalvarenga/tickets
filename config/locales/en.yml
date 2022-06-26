@@ -68,6 +68,7 @@ en:
         fee_percentage: Porcentagem de taxa
         absorb_fee: O organizador vai absorver a taxa?
         terms_of_use: Termos de uso
+        experience: Experiência
         state_id: Estado
         city_id: Cidade
         photo: Foto
@@ -89,6 +90,7 @@ en:
       membership:
         name: Nome
         price_in_cents: Preço em centavos por cobrança
+        monthly_pass_usage_limit: Limite de entradas por mês
         recurrence_interval_in_months: Intervalo entre cobranças em meses
         minimum_subscription_months: Tempo mínimo obrigatório de inscrição
     errors:

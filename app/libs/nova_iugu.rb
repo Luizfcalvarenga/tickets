@@ -19,6 +19,8 @@ module NovaIugu
           invoice_url: @response.attributes["secure_url"],
           invoice_pdf: "#{@response.attributes["secure_url"]}.pdf",
           invoice_status: @response.attributes["status"],
+          invoice_pix_qrcode_url: @response.attributes["pix"]["qrcode"],
+          invoice_pix_qrcode_text: @response.attributes["pix"]["qrcode_text"],
         )
       else
         raise
@@ -180,6 +182,62 @@ module NovaIugu
       @subscription_params ||= @entity.nova_iugu_subscription_params_hash.merge(custom_params)
     end
   end
+
+  class DirectPayer
+    attr_reader :entity, :customer_payment_method_id, :number_of_installments
+
+    class DirectPayerParams < StandardError
+      def initialize(error_message)
+        @exception_type = "custom"
+        super(error_message)
+      end
+    end
+
+    def initialize(entity, customer_payment_method_id, number_of_installments = 1)
+      @entity = entity
+      @customer_payment_method_id = customer_payment_method_id
+      @number_of_installments = number_of_installments.to_i
+    end
+
+    def call
+      @response = ::Iugu::Charge.create(direct_pay_params)
+      
+      if @response.attributes["success"] == true
+        @entity.update(
+          invoice_id: @response.attributes["invoice_id"],
+          invoice_url: @response.attributes["url"],
+          invoice_pdf: @response.attributes["pdf"],
+          number_of_installments: number_of_installments,
+          invoice_pix_qrcode_url: nil,
+          invoice_pix_qrcode_text: nil,
+        )
+
+        ChargeCheckAndUpdateStatus.new(entity).call
+
+        entity.perform_after_payment_confirmation_actions if @entity.respond_to?(:perform_after_payment_confirmation_actions)
+        return true
+      else
+        return false
+      end
+    end
+
+    def direct_pay_params
+      @direct_pay_params ||= @entity.nova_iugu_charge_params_hash.merge(
+        customer_payment_method_id: customer_payment_method_id,
+        months: number_of_installments,
+        items: build_item_values_considering_number_of_installments
+      )
+    end
+
+    def build_item_values_considering_number_of_installments
+      items = @entity.nova_iugu_charge_params_hash[:items]
+      return items if number_of_installments == 1
+      
+      items.each do |item|
+        item[:price_cents] = entity.installment_options.find { |option| option[:count].to_i == number_of_installments }[:total_value_in_cents]
+      end
+    end
+  end  
 
   class Charger
     attr_reader :entity, :response, :custom_params

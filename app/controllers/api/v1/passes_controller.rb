@@ -16,7 +16,12 @@ module Api
           render json: {
             result: false,
             main_line: "Código não encontado",
-            secondary_line: "Esse QR code não é válido ou não foi encontrado em nossa base"
+            secondary_line: "Esse QR code não é válido ou não foi encontrado em nossa base",
+            user_credentials: [],
+            question_list: [],
+            pass_generated_at: "",
+            price_in_cents: nil,
+            access_history: []
           } and return
         end
 

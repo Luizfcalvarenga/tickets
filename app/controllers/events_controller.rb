@@ -19,6 +19,8 @@ class EventsController < ApplicationController
     @order = Order.new
     @partner = @event.partner
 
+    @events_with_same_experience = @event.partner.events.where(experience: @event.experience).order(:scheduled_start).where("events.scheduled_start > ?", Time.current.at_beginning_of_day).select { |event| event.experience.present? }
+
     if !current_user
       session[:fall_back_url] = request.url
     end

@@ -6,12 +6,14 @@ module PartnerAdmin
       max_date = @reference_date.at_end_of_month
 
       @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
-      @total_sales = @passes.map(&:revenue_from_pass).sum
-      @amount_to_receive = @passes.map(&:amount_to_transfer_to_partner).sum
+
+      @orders = Order.joins(order_items: :pass).where(passes: {id: @passes.ids}).order(:created_at).distinct
+      @total_sales = @orders.map(&:reference_value_in_cents).sum
+      @amount_to_receive = @orders.map(&:amount_to_transfer_to_partner).sum
 
       respond_to do |format|
         format.html
-        format.csv { send_data @passes.to_csv, filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
+        format.csv { send_data @orders.to_csv, filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
       end
     end
 
@@ -67,6 +69,7 @@ module PartnerAdmin
       #   redirect_to request.referrer and return
       end
 
+      @order.calculate_and_set_financial_values!
       @order.perform_after_payment_confirmation_actions
 
       flash[:notice] = "Passe gerado com sucesso"

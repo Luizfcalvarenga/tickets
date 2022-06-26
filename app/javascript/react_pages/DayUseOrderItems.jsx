@@ -207,7 +207,7 @@ export function DayUseOrderItems(props) {
             onChange={(e) => setCouponCode(e.target.value)}
           />
           <p
-            className="btn btn-success f-10 m-0 px-5"
+            className="btn btn-underline text-underline f-10 m-0 px-5"
             onClick={() => applyCoupon()}
           >
             Aplicar

@@ -1,7 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.action_mailer.default_url_options = { host: "https://nuflowpass.com.br" }
+  config.action_mailer.default_url_options = { host: "https://nuflowpass-staging.herokuapp.com" }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -122,9 +122,5 @@ Rails.application.configure do
   # config.web_socket_server_url = "wss://qrcode-card.herokuapp.com/cable" 
   # config.action_cable.allowed_request_origins = ['https://qrcode-card.herokuapp.com', 'http://qrcode-card.herokuapp.com']
 
-  config.action_mailer.delivery_method = :postmark
-
-  config.action_mailer.postmark_settings = {
-    api_token: ENV['POSTMARK_API_TOKEN']
-  }
+  config.action_mailer.delivery_method = :test
 end

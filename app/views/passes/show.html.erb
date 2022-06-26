@@ -1,7 +1,10 @@
-
 <div class="page-wrapper w-100">
   <div class="w-100 pb-5">  
-    <div class="flex center around h-100">
+
+    <div class="flex flex-column center around h-100">
+      <% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code.present? && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
+        <button class="btn btn-success px-5 mb-5" data-bs-toggle="modal" data-bs-target="#group-buy-modal">COMPRA EM GRUPO</button>
+      <% end %>
       <div class="h-100 pass-wrapper flex column center around position-relative">
         <div>
           <% if @pass.partner.logo.attached? %>
@@ -33,3 +36,32 @@
     <%= link_to "Baixar", pass_download_path(identifier: @pass.identifier, download: true), target: :_blank, class: "btn btn-success w-100 mt-4 pe-3" %>
   </div>
 </div>
+
+<% if @pass.related_entity.class == Event && @pass.related_entity.group_buy_code.present? && @pass.related_entity.group_buy_code == @pass.group_buy_code %>
+  <div id="group-buy-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content bg-darker">
+        <div class="modal-body bg-darker p-5">
+          <h1 class="text-success">Compra em grupo</h1>
+          <p class="text-white" >Você adquiriu um ingresso para um evento em grupo. O evento está reservado e apenas pessoas com o seguinte link vão conseguir comprá-lo:</p>
+                    
+          <p class="my-5">
+            <a href="<%= event_url(@pass.related_entity, group_buy_code: @pass.group_buy_code) %>" target="_blank"><%= event_url(@pass.related_entity, group_buy_code: @pass.group_buy_code) %></a>
+          </p>
+
+          <p class="text-white mb-4">O grupo tem 48h para ser fechado ou então sua reserva será cancelada e seu pagamento estornado.</p>
+
+          <p class="text-white">Qualquer dúvida, entre em contato com: <a href="mailto:contato@nuflowshop.com.br">contato@nuflowshop.com.br</a> </p>
+        
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const myModal = new bootstrap.Modal(document.getElementById("group-buy-modal"), {});
+    myModal.show();
+  </script>
+<% end %>
+
+

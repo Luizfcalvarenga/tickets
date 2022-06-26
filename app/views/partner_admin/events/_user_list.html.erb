@@ -19,13 +19,13 @@
         <% end %>
         <td data-label="Acesso">
           <% if pass.accesses.present? %>
-            <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i><%= pass.accesses.first.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
+            <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i><%= pass.accesses.order(:created_at).last.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
           <% else %>
             <p class="m-0">-</p>
           <% end %>
         </td>
         <td data-label="Ações" class="pb-4 pb-sm-2">
-          <% if pass.accesses.blank? %>
+          <% if pass.accesses.count < pass.event_batch.number_of_accesses_granted %>
             <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= pass.partner.slug %>" data-pass-identifier="<%= pass.identifier %>" data-holder-name="<%= pass.holder_name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
           <% end %>
         </td>

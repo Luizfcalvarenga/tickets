@@ -2,12 +2,12 @@ class PaymentMethodsController < ApplicationController
   def index
     if !current_user.has_completed_profile?
       flash[:notice] = "Por favor, preecha as informações abaixo para prosseguir:"
-
+      
       redirect_to dashboard_path_for_user(current_user, return_url: request.referrer) and return
     end
-
+    
     NovaIugu::CustomerCreator.new(current_user).call if current_user.iugu_customer_id.blank?
-
+    
     @payment_methods = Iugu::PaymentMethod.fetch({customer_id: current_user.iugu_customer_id}).results
   end
 

@@ -179,7 +179,7 @@
 
         <p class="text-success mt-3 fs-20">Informações do participante do evento:</p>
 
-        <% @day_use.questions.each_with_index do |question, index| %>
+        <% @day_use.questions.active.each_with_index do |question, index| %>
           <p class="mb-3">Pergunta <%= index + 1 %>: <%= question.prompt %></p>
           <div class="my-2">
             <input

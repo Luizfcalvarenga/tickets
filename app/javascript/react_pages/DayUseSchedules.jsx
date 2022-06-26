@@ -318,6 +318,21 @@ export function DayUseSchedules(props) {
                               )
                             }
                           />
+                          <input
+                            class="form-control my-2"
+                            type="number"
+                            name="day_use[day_use_schedules][][pass_types][][number_of_accesses_granted]"
+                            placeholder="Número de acessos por passe"
+                            value={passType.number_of_accesses_granted}
+                            onChange={(e) =>
+                              handlePassTypeUpdate(
+                                "number_of_accesses_granted",
+                                e.target.value,
+                                weekday,
+                                passTypeIndex
+                              )
+                            }
+                          />
                           <p
                             className="btn btn-danger w-20 text-center"
                             onClick={() =>

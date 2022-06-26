@@ -52,7 +52,7 @@ class EventCloner
   # private
 
   def event_params
-    @base_event.attributes.except("id", "created_at", "updated_at", "created_by_id", "absorb_fee", "approved_at", "approved_by_id", "deactivated_at", "description", "terms_of_use").symbolize_keys.merge({description: @base_event.description, terms_of_use: @base_event.terms_of_use, created_by: current_user, name: "#{@base_event.name} (Clone)"})
+    @base_event.attributes.except("id", "created_at", "updated_at", "created_by_id", "absorb_fee", "approved_at", "approved_by_id", "deactivated_at", "description", "terms_of_use", "group_buy_code").symbolize_keys.merge({description: @base_event.description, terms_of_use: @base_event.terms_of_use, created_by: current_user, name: "#{@base_event.name} (Clone)"})
   end
 
   def create_batch_params
@@ -60,6 +60,6 @@ class EventCloner
   end
 
   def questions_params
-    @base_event.questions.map { |question| question.attributes.except("created_at", "updated_at", "id", "ends_at", "event_id", "day_use_id").symbolize_keys } || []
+    @base_event.questions.active.map { |question| question.attributes.except("created_at", "updated_at", "id", "ends_at", "event_id", "day_use_id").symbolize_keys } || []
   end
 end

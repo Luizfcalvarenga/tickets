@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   namespace :partner_admin do
     resources :events
     patch "events/:id/delete_attachments", to: "events#delete_attachments", as: "event_delete_attachments"
+    delete "events/:id/delete_group", to: "events#delete_group", as: "delete_group"
     patch "events/:id/toggle_activity", to: "events#toggle_activity", as: "event_toggle_activity"
     post 'events/:id/clone', to: "events#clone", as: "event_clone"
     resources :memberships
@@ -59,6 +60,7 @@ Rails.application.routes.draw do
     resources :question_answers, only: [:show, :new, :create]
   end
   get "orders/:id/status", to: "orders#status", as: "order_status"
+  post "orders/:id/pay_with_card", to: "orders#pay_with_card", as: "order_pay_with_card"
 
   namespace :admin do
     resources :orders
