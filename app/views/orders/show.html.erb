@@ -78,14 +78,18 @@
     <div class="tab-content mt-5" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-pix" role="tabpanel" aria-labelledby="nav-pix-tab">
         <p class="m-0 bg-primary text-white p-4 br-8 mb-3">
-          <i class="fa fa-info-circle my-3 pe-2"></i>Para pagar com PIX, scaneie o QR Code com o aplicativo do seu banco ou clique em "Pix Copia e Cola", pague no aplicativo do seu banco, e retorne aqui para acessar seus passes.
+          <i class="fa fa-info-circle my-3 pe-2"></i>Para pagar com PIX, scaneie o QR Code com o aplicativo do seu banco ou clique em "Clique aqui para copiar o código PIX", pague no aplicativo do seu banco, e retorne aqui para acessar seus passes.
         </p>
 
         <div class="flex center around column">
           <div class="bg-white p-5">
             <img src="<%= @order.invoice_pix_qrcode_url %>" alt="" class="w-100 h-100">
           </div>
-          <p class="btn btn-success px-5 mt-4" id="pix-copy-paste" data-copy-text="<%= @order.invoice_pix_qrcode_text %>">PIX Copia e cola</p>
+          <p class="btn btn-success px-5 mt-4" id="pix-copy-paste" data-copy-text="<%= @order.invoice_pix_qrcode_text %>">Clique aqui para copiar o código PIX</p>
+        
+          <p>Ou então copie o código abaixo:</p>
+
+          <p><%= @order.invoice_pix_qrcode_text %></p>
         </div>
       </div>
 
