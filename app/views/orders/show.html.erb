@@ -89,7 +89,9 @@
         
           <p>Ou então copie o código abaixo:</p>
 
-          <p><%= @order.invoice_pix_qrcode_text %></p>
+          <div class="flex center around">
+            <p class="w-50" style="overflow-wrap: break-word;"><%= @order.invoice_pix_qrcode_text %></p>
+          </div>
         </div>
       </div>
 
