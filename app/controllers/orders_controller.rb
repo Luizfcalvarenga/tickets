@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
   def create
      if order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
-      redirect_to request.referrer and return
+      redirect_to "#{request.referrer}?coupon_code=#{params[:coupon_code]}" and return
     end
 
     if !current_user.has_completed_profile?
@@ -66,7 +66,6 @@ class OrdersController < ApplicationController
             price_in_cents: entity.price_in_cents,
             fee_percentage: entity.fee_percentage,
             absorb_fee: entity.absorb_fee,
-            total_in_cents: entity.total_in_cents,
             start_time: start_time,
             end_time: end_time,
           )
@@ -74,13 +73,11 @@ class OrdersController < ApplicationController
       end
       
       related_entity = order_item.related_entity
-
-      @order.calculate_and_set_financial_values!
       
       applicable_coupon = Coupon.active.find_by(entity_id: related_entity.id, entity_type: related_entity.class.name, code: params[:coupon_code])
       @order.update!(coupon: applicable_coupon) if applicable_coupon.present? && applicable_coupon.can_be_applied?
     end
-
+    
     if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else

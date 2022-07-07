@@ -18,20 +18,28 @@ class Order < ApplicationRecord
     order_items.first.related_entity
   end
 
-  def calculate_and_set_financial_values!
-    self.update(amount_to_transfer_to_partner: order_items.map(&:amount_to_transfer_to_partner).sum)
+  def amount_to_transfer_to_partner
+    order_items.map(&:amount_to_transfer_to_partner).sum
+  end
 
-    total_price_in_cents = order_items.sum(:total_in_cents) - discount_value_in_cents
+  def price_in_cents
+    order_items.map(&:price_in_cents).sum
+  end
 
-    if order_items.first.absorb_fee
-      self.update(reference_value_in_cents: total_price_in_cents > 0 ? total_price_in_cents : 0)
-    else
-      self.update(reference_value_in_cents: amount_to_transfer_to_partner)
-    end
+  def total_in_cents
+    order_items.map(&:total_in_cents).sum
+  end
+
+  def platform_fee_value_in_cents
+    order_items.map(&:platform_fee_value_in_cents).sum
+  end
+
+  def displayed_fee_value_in_cents
+    order_items.map(&:displayed_fee_value_in_cents).sum
   end
 
   def is_free?
-    reference_value_in_cents.zero?
+    total_in_cents.zero?
   end
 
   def discount_value_in_cents
@@ -49,7 +57,6 @@ class Order < ApplicationRecord
           price_cents: order_item.total_in_cents,
         }
       end,
-      discount_cents: discount_value_in_cents,
       payer: {
         name: user.name,
         cpf_cnpj: user.document_number,
@@ -67,7 +74,7 @@ class Order < ApplicationRecord
 
   def installment_options 
     (1..MAX_INSTALLMENTS).map do |installment_count|
-      total_value = (reference_value_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
+      total_value = (price_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
       {
         count: installment_count,
         value_in_cents: (total_value / installment_count).floor,
@@ -94,7 +101,7 @@ class Order < ApplicationRecord
     CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
       csv << attributes
       all.each do |order|
-       csv << [order.user.email, order.id, order.related_entity.name, order.created_at.strftime("%d/%m/%Y - %H:%M"), ApplicationController.helpers.display_price(order.reference_value_in_cents), "#{order.order_items.first.fee_percentage}%", order.order_items.first.absorb_fee ? "Sim" : "Não", ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
+       csv << [order.user.email, order.id, order.related_entity.name, order.created_at.strftime("%d/%m/%Y - %H:%M"), ApplicationController.helpers.display_price(order.price_in_cents), "#{order.order_items.first.fee_percentage}%", order.order_items.first.absorb_fee ? "Sim" : "Não", ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
       end
     end
   end

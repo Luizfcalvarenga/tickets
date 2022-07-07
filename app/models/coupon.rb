@@ -24,8 +24,12 @@ class Coupon < ApplicationRecord
     deactivated_at.present?
   end
 
+  def utilization_count
+    OrderItem.where(order_id: orders.paid.ids).count
+  end
+
   def limit_reached?
-    orders.count >= redemption_limit
+    utilization_count >= redemption_limit
   end
 
   def expired?

@@ -46,12 +46,12 @@
         <th scope="col">Gerado em</th>
         <th scope="col">Absorver taxa?</th>
         <th scope="col">Valor de referência</th>
+        <th scope="col">Descontos</th>
+        <th scope="col">Taxa plataforma (%)</th>
         <th scope="col">Valor cobrado</th>
         <th scope="col">Receita líquida</th>
         <th scope="col">Taxa da Iugu</th>
-        <th scope="col">Taxa plataforma (%)</th>
-        <th scope="col">Taxa da plataforma</th>
-        <th scope="col">Receita líquida</th>
+        <th scope="col">Lucro líquido</th>
       </tr>
     </thead>
     <tbody>
@@ -61,13 +61,13 @@
         <td data-label="Nome do usuário"><%= order.id %></td>
         <td data-label="Gerado em"><%= order.created_at.strftime("%d/%m/%Y - %H:%M") %></td>
         <td data-label="Absorver taxa?"><%= order.order_items.first.absorb_fee ? "Sim" : "Não" %></td>
-        <td data-label="Valor de referência"><%= display_price(order.reference_value_in_cents) %></td>
+        <td data-label="Valor de referência"><%= display_price(order.price_in_cents) %></td>
+        <td data-label="Descontos"><%= display_price(order.discount_value_in_cents) %></td>
+        <td data-label="Taxa da plataforma"><%= display_price(order.platform_fee_value_in_cents) %></td>
         <td data-label="Valor cobrado"><%= display_price(order.value) %></td>
         <td data-label="Receita líquida"><%= display_price(order.net_value) %></td>
         <td data-label="Taxa da Iugu"><%= display_price(order.value - order.net_value) %></td>
-        <td data-label="Taxa plataforma"><%= order.order_items.first.fee_percentage %>%</td>
-        <td data-label="Taxa da plataforma"><%= display_price(order.reference_value_in_cents * order.order_items.first.fee_percentage / 100) %></td>
-        <td data-label="Receita líquida"><%= display_price(order.net_value - order.amount_to_transfer_to_partner) %></td>
+        <td data-label="Lucro líquido"><%= display_price(order.net_value - order.amount_to_transfer_to_partner) %></td>
       </tr>
       <% end %>
     </tbody>

@@ -20,6 +20,10 @@ export function DayUseOrderItems(props) {
     })
   );
 
+  const [originalSlotsInfosAndQuantities, _] = useState(
+    slotsInfosAndQuantities
+  );
+
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
 
@@ -44,17 +48,9 @@ export function DayUseOrderItems(props) {
       .map((sl) => sl.passTypes)
       .flat()
       .reduce((memo, el) => {
-        const discountAmountPerPass =
-          couponResult && couponResult.success
-            ? couponResult.coupon.kind == "percentage"
-              ? el.price_in_cents * (couponResult.coupon.discount / 100)
-              : couponResult.coupon.discount
-            : 0;
-        let pricePerPass = el.price_in_cents - discountAmountPerPass;
-        if (pricePerPass < 0) pricePerPass = 0;
-
         return (
-          memo + pricePerPass * el.quantity * (1 + props.feePercentage / 100)
+          memo +
+          el.price_in_cents * el.quantity * (1 + props.feePercentage / 100)
         );
       }, 0);
   };
@@ -67,11 +63,43 @@ export function DayUseOrderItems(props) {
         }&entity_type=DayUse`
       );
       setCouponResult(response.data);
+
+      if (response.data.success) {
+        setSlotsInfosAndQuantities(
+          props.openSlots.map((slot) => {
+            return {
+              id: slot.id,
+              start_time: slot.start_time,
+              end_time: slot.end_time,
+              passTypes: props.passTypes.map((passType) => {
+                const discountAmount =
+                  response.data.coupon.kind == "percentage"
+                    ? passType.price_in_cents *
+                      (response.data.coupon.discount / 100)
+                    : response.data.coupon.discount;
+                let newPrice = passType.price_in_cents - discountAmount;
+                if (newPrice <= 0) newPrice = 0;
+
+                return {
+                  id: passType.id,
+                  quantity: slotsInfosAndQuantities.find(s => s.id === slot.id).passTypes.find(p => p.id === passType.id).quantity,
+                  name: passType.name,
+                  price_in_cents: newPrice,
+                };
+              }),
+            };
+          })
+        );
+      } else {
+        setSlotsInfosAndQuantities(originalSlotsInfosAndQuantities);
+      }
     } catch {
       setCouponResult({
         result: false,
         message: "Erro ao buscar cupom",
       });
+
+      setSlotsInfosAndQuantities(originalSlotsInfosAndQuantities);
     }
   };
 

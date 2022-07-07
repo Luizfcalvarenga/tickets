@@ -20,6 +20,11 @@ export function EventOrderItems(props) {
     })
   );
 
+  const [
+    originalBatchesInfosAndQuantitIes,
+    _,
+  ] = useState(batchesInfosAndQuantities);
+
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
 
@@ -39,13 +44,7 @@ export function EventOrderItems(props) {
   const cartTotalInCents = () => {
     return batchesInfosAndQuantities.reduce(
       (partialSum, batchInfosAndQuantities) => {
-        const discountAmountPerPass = (couponResult && couponResult.success ? (couponResult.coupon.kind == "percentage" ? batchInfosAndQuantities.totalInCents * (couponResult.coupon.discount / 100) : couponResult.coupon.discount ) : 0)
-        let pricePerPass = batchInfosAndQuantities.totalInCents - discountAmountPerPass
-        if (pricePerPass < 0) pricePerPass = 0
-
-        return partialSum +
-          batchInfosAndQuantities.quantity *
-            pricePerPass;
+        return partialSum + batchInfosAndQuantities.quantity * batchInfosAndQuantities.totalInCents;
       },
       0
     );
@@ -54,14 +53,44 @@ export function EventOrderItems(props) {
   const applyCoupon = async (specificCoupon = "") => {
     try {
       const response = await axios.get(
-        `/api/v1/coupons/${specificCoupon || couponCode}?entity_id=${props.event.id}&entity_type=Event`
+        `/api/v1/coupons/${specificCoupon || couponCode}?entity_id=${
+          props.event.id
+        }&entity_type=Event`
       );
       setCouponResult(response.data);
+
+      if (response.data.success) {
+        setBatchesInfosAndQuantities(
+          props.eventBatches.map((eventBatch) => {
+            const discountAmount =
+              response.data.coupon.kind == "percentage"
+                ? eventBatch.price_in_cents *
+                  (response.data.coupon.discount / 100)
+                : response.data.coupon.discount;
+            let newPrice = eventBatch.price_in_cents - discountAmount;
+            if (newPrice <= 0) newPrice = 0;
+            return {
+              id: eventBatch.id,
+              passType: eventBatch.pass_type,
+              name: eventBatch.name,
+              ends_at: eventBatch.ends_at,
+              priceInCents: newPrice,
+              feeInCents: newPrice * parseFloat(props.feePercentage / 100),
+              totalInCents:
+                newPrice * (1 + parseFloat(props.feePercentage / 100)),
+              quantity: batchesInfosAndQuantities.find(b => b.id === eventBatch.id).quantity,
+            };
+          })
+        );
+      } else {
+        setBatchesInfosAndQuantities(originalBatchesInfosAndQuantitIes);
+      }
     } catch {
       setCouponResult({
         result: false,
         message: "Erro ao buscar cupom",
       });
+      setBatchesInfosAndQuantities(originalBatchesInfosAndQuantitIes);
     }
   };
 
@@ -74,7 +103,7 @@ export function EventOrderItems(props) {
       setCouponCode(couponCodeFromParams);
       applyCoupon(couponCodeFromParams);
     }
-  }, [])
+  }, []);
 
   return (
     <div className="event-batches-order">
@@ -104,8 +133,8 @@ export function EventOrderItems(props) {
                       {(batch.feeInCents / 100).toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
-                      })}&nbsp;
-                      taxa)
+                      })}
+                      &nbsp; taxa)
                     </>
                   )}
                 </p>
@@ -156,7 +185,10 @@ export function EventOrderItems(props) {
             class="f-20"
             onChange={(e) => setCouponCode(e.target.value)}
           />
-          <p className="btn btn-underline f-10 m-0 px-5" onClick={() => applyCoupon()}>
+          <p
+            className="btn btn-underline f-10 m-0 px-5"
+            onClick={() => applyCoupon()}
+          >
             Aplicar
           </p>
           <div className="f-40 text-center">

@@ -8,7 +8,7 @@ module PartnerAdmin
       @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
 
       @orders = Order.joins(order_items: :pass).where(passes: {id: @passes.ids}).order(:created_at).distinct
-      @total_sales = @orders.map(&:reference_value_in_cents).sum
+      @total_sales = @orders.map(&:price_in_cents).sum
       @amount_to_receive = @orders.map(&:amount_to_transfer_to_partner).sum
 
       respond_to do |format|
@@ -47,7 +47,6 @@ module PartnerAdmin
           price_in_cents: entity.price_in_cents,
           fee_percentage: entity.fee_percentage,
           absorb_fee: entity.absorb_fee,
-          total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
           start_time: start_time,
           end_time: end_time,
         )
@@ -69,7 +68,6 @@ module PartnerAdmin
       #   redirect_to request.referrer and return
       end
 
-      @order.calculate_and_set_financial_values!
       @order.perform_after_payment_confirmation_actions
 
       flash[:notice] = "Passe gerado com sucesso"
