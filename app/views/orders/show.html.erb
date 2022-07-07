@@ -24,9 +24,12 @@
       <thead>
         <tr>
           <th scope="col">Item</th>
-          <th scope="col">Nome do passe</th>
+          <th scope="col" class="w-30">Nome do passe</th>
           <th scope="col">Identificação</th>
-          <th scope="col">Valor do passe</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Descontos</th>
+          <th scope="col">Taxas</th>
+          <th scope="col">Total do passe</th>
         </tr>
       </thead>
       <tbody>
@@ -38,32 +41,28 @@
             <p class="m-0"><%= order_item.identification_name %></p>
             <p class="m-0"><%= order_item.identification_cpf %></p>
           </td>
-          <td data-label="Valor"><%= number_to_currency(order_item.price_in_cents / 100, unit: "R$", separator: ",", delimiter: ".") %>
-            <% if order_item.fee_value_in_cents > 0 %>
-              <span>
-                (+ <%= number_to_currency((order_item.fee_value_in_cents) / 100, unit: "R$", separator: ",", delimiter: ".") %> taxas)
-              </span>
-            <% end %>
+          <td data-label="Valor"><%= display_price(order_item.price_in_cents) %></td>
+          <td data-label="Descontos">
+            - <%= display_price(order_item.discount_value_in_cents) %>
+          </td>
+          <td data-label="Taxas">
+            + <%= display_price(order_item.displayed_fee_value_in_cents) %>
+          </td>
+          <td data-label="Total do passe">
+            <%= display_price(order_item.total_in_cents) %>
           </td>
         </tr>
         <% end %>
-        <% if @order.discount_value_in_cents > 0 %>
-          <tr>
-            <td data-label=""></td>
-            <td data-label=""></td>
-            <% if !mobile_device? %>
-              <td data-label="">Descontos: </td> 
-            <% end %>
-            <td data-label="Desconto">-<%= display_price(@order.discount_value_in_cents) %></td>
-          </tr>
-        <% end %>
         <tr>
+          <td data-label=""></td>
+          <td data-label=""></td>
+          <td data-label=""></td>
           <td data-label=""></td>
           <td data-label=""></td>
           <% if !mobile_device? %>
             <td data-label="">Total: </td> 
           <% end %>
-          <td data-label="Total"><%= display_price(@order.reference_value_in_cents) %></td>
+          <td data-label="Total"><%= display_price(@order.total_in_cents) %></td>
         </tr>
       </tbody>
     </table>

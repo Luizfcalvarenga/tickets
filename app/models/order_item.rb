@@ -17,12 +17,12 @@ class OrderItem < ApplicationRecord
     end
   end
 
-  def amount_to_transfer_to_partner
-    absorb_fee ? (price_in_cents - price_in_cents * fee_percentage / 100) : price_in_cents
+  def total_in_cents
+    (price_with_discount_in_cents * (absorb_fee ? 1 : 1 + (fee_percentage / 100))).to_i
   end
 
-  def fee_value_in_cents
-    absorb_fee ? 0 : price_in_cents * fee_percentage / 100
+  def price_with_discount_in_cents
+    price_in_cents - discount_value_in_cents
   end
 
   def discount_value_in_cents
@@ -32,6 +32,20 @@ class OrderItem < ApplicationRecord
     value = coupon.percentage? ? (price_in_cents * coupon.discount / 100) : coupon.discount
 
     return value >= price_in_cents ? price_in_cents : value
+  end
+
+  def amount_to_transfer_to_partner
+    total_in_cents - platform_fee_value_in_cents
+  end
+
+  def platform_fee_value_in_cents
+    # Effective value of platform fees for internal uses and display for partner
+    price_with_discount_in_cents * fee_percentage / 100
+  end
+
+  def displayed_fee_value_in_cents
+    # Value displayed to final user in platform fees
+    absorb_fee ? 0 : price_with_discount_in_cents * fee_percentage / 100
   end
 
   def identification_name

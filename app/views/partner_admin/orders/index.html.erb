@@ -46,10 +46,12 @@
     <thead>
       <tr>
         <th scope="col" class="w-20">Usuário</th>
-        <th scope="col" class="w-20">Identificação do pedido</th>
+        <th scope="col" class="w-10">Identificação do pedido</th>
         <th scope="col" class="w-20">Entidade</th>
         <th scope="col">Gerado em</th>
         <th scope="col">Preço</th>
+        <th scope="col">Cupom</th>
+        <th scope="col">Descontos</th>
         <th scope="col">Taxa</th>
         <th scope="col">Absorver taxa?</th>
         <th scope="col">A receber</th>
@@ -62,7 +64,9 @@
         <td data-label="Identificação do pedido"><%= order.id %></td>
         <td data-label="Identificação do pedido"><%= order.related_entity.name %></td>
         <td data-label="Gerado em"><%= order.created_at.strftime("%d/%m/%Y") %></td>
-        <td data-label="Preço"><%= display_price(order.reference_value_in_cents) %></td>
+        <td data-label="Preço"><%= display_price(order.price_in_cents) %></td>
+        <td data-label="Cupom" class="text-break"><%= order.coupon&.code || "-" %></td>
+        <td data-label="Descontos"><%= display_price(order.discount_value_in_cents) %></td>
         <td data-label="Taxa"><%= order.order_items.first.fee_percentage %>%</td>
         <td data-label="Absorver taxa?"><%= order.order_items.first.absorb_fee ? "Sim" : "Não" %></td>
         <td data-label="A receber"><%= display_price(order.amount_to_transfer_to_partner) %></td>

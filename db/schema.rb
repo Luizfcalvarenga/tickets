@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_11_210803) do
+ActiveRecord::Schema.define(version: 2022_07_07_033908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,7 +253,6 @@ ActiveRecord::Schema.define(version: 2022_06_11_210803) do
     t.datetime "end_time"
     t.integer "price_in_cents"
     t.float "fee_percentage", default: 10.0
-    t.integer "total_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "absorb_fee"
@@ -281,10 +280,7 @@ ActiveRecord::Schema.define(version: 2022_06_11_210803) do
     t.bigint "coupon_id"
     t.string "invoice_pix_qrcode_url"
     t.string "invoice_pix_qrcode_text"
-    t.integer "reference_value_in_cents"
     t.integer "number_of_installments"
-    t.integer "amount_to_transfer_to_partner"
-    t.integer "amount_to_transfer_to_novamente_in_cents"
     t.index ["coupon_id"], name: "index_orders_on_coupon_id"
     t.index ["created_by_id"], name: "index_orders_on_created_by_id"
     t.index ["directly_generated_by_id"], name: "index_orders_on_directly_generated_by_id"
