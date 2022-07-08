@@ -13,11 +13,14 @@
     <%= f.input :code %> 
     <%= f.input :redemption_limit %>
     <%= f.input :valid_until, as: :date, html5: true %>
-    <% if @coupon.new_record? %>
+    <% if @coupon.new_record? || @coupon.utilization_count.zero? %>
       <%= f.input :kind, as: :select, collection: Coupon.kinds %>
       <%= f.input :discount %> 
     <% else %>
-      Desconto: <%= @coupon.discount_display %>
+      <p class="text-white my-3">Desconto: <%= @coupon.discount_display %></p>
+      <p class="info-text text-white p-4 br-8 mb-5 mt-3">
+        <i class="fa fa-info-circle my-3 pe-2"></i>Não é possível editar o valor de desconto, pois esse cupom já foi utilizado. Se deseja desativar o cupom, coloque a data de validade no passado ou mude o número de utilizações para 0.
+      </p>
     <% end %>
 
     <%= f.submit "Ativar Cupom", class: "btn btn-success mt-5 w-100" %>
