@@ -13,8 +13,12 @@
     <%= f.input :code %> 
     <%= f.input :redemption_limit %>
     <%= f.input :valid_until, as: :date, html5: true %>
-    <%= f.input :kind, as: :select, collection: Coupon.kinds %>
-    <%= f.input :discount %> 
+    <% if @coupon.new_record? %>
+      <%= f.input :kind, as: :select, collection: Coupon.kinds %>
+      <%= f.input :discount %> 
+    <% else %>
+      Desconto: <%= @coupon.discount_display %>
+    <% end %>
 
     <%= f.submit "Ativar Cupom", class: "btn btn-success mt-5 w-100" %>
   <% end %>
