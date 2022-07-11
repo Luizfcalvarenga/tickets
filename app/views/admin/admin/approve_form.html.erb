@@ -35,7 +35,7 @@
     <% end %>
   </div>
 
-  <% if @entity.group_buy %>
+  <% if @entity.respond_to? :group_buy %>
     <div class="bg-dark p-4 br-8">
       <% if @entity.group_buy_code.present? %>
         <p class="success-text"><i class="fa fa-check-circle me-3 px-4"></i>Reservado para grupo</p>
