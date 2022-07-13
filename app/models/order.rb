@@ -84,6 +84,12 @@ class Order < ApplicationRecord
   end
 
   def perform_after_payment_confirmation_actions
+    if is_free?
+      self.update(
+        value: 0,
+        net_value: 0,
+      )
+    end
     OrderPassesGenerator.new(self).call
     self.update(status: "paid")
   end
