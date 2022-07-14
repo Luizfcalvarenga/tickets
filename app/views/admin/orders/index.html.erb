@@ -42,11 +42,13 @@
     <thead>
       <tr>
         <th scope="col" class="w-20">Usuário</th>
-        <th scope="col" class="w-20">Identificação do pedido</th>
-        <th scope="col">Gerado em</th>
+        <th scope="col" class="w-5">ID Pedido</th>
+        <th scope="col" class="w-10">Parceiro</th>
+        <th scope="col">Pago em</th>
         <th scope="col">Absorver taxa?</th>
         <th scope="col">Valor de referência</th>
         <th scope="col">Descontos</th>
+        <th scope="col">Taxa plataforma (R$)</th>
         <th scope="col">Taxa plataforma (%)</th>
         <th scope="col">Valor cobrado</th>
         <th scope="col">Receita líquida</th>
@@ -59,10 +61,12 @@
       <tr>
         <td data-label="Usuário"><%= order.user.email %></td>
         <td data-label="Nome do usuário"><%= order.id %></td>
-        <td data-label="Gerado em"><%= order.created_at.strftime("%d/%m/%Y - %H:%M") %></td>
+        <td data-label="Parceiro"><%= order.related_partner.name %></td>
+        <td data-label="Gerado em"><%= order.invoice_paid_at&.strftime("%d/%m/%Y - %H:%M") || "-" %></td>
         <td data-label="Absorver taxa?"><%= order.order_items.first.absorb_fee ? "Sim" : "Não" %></td>
         <td data-label="Valor de referência"><%= display_price(order.price_in_cents) %></td>
         <td data-label="Descontos"><%= display_price(order.discount_value_in_cents) %></td>
+        <td data-label="Taxa da plataforma"><%= order.fee_percentage %>%</td>
         <td data-label="Taxa da plataforma"><%= display_price(order.platform_fee_value_in_cents) %></td>
         <td data-label="Valor cobrado"><%= display_price(order.value) %></td>
         <td data-label="Receita líquida"><%= display_price(order.net_value) %></td>

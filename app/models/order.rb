@@ -18,6 +18,10 @@ class Order < ApplicationRecord
     order_items.first.related_entity
   end
 
+  def related_partner
+    order_items.first.partner
+  end
+
   def amount_to_transfer_to_partner
     order_items.map(&:amount_to_transfer_to_partner).sum
   end
@@ -36,6 +40,10 @@ class Order < ApplicationRecord
 
   def displayed_fee_value_in_cents
     order_items.map(&:displayed_fee_value_in_cents).sum
+  end
+
+  def fee_percentage
+    order_items.first.fee_percentage
   end
 
   def is_free?

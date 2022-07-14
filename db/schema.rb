@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_07_033908) do
+ActiveRecord::Schema.define(version: 2022_07_14_200138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,9 +256,11 @@ ActiveRecord::Schema.define(version: 2022_07_07_033908) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "absorb_fee"
+    t.bigint "partner_id"
     t.index ["day_use_schedule_pass_type_id"], name: "index_order_items_on_day_use_schedule_pass_type_id"
     t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["partner_id"], name: "index_order_items_on_partner_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -454,6 +456,7 @@ ActiveRecord::Schema.define(version: 2022_07_07_033908) do
   add_foreign_key "order_items", "day_use_schedule_pass_types"
   add_foreign_key "order_items", "event_batches"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "partners"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "created_by_id"
   add_foreign_key "orders", "users", column: "directly_generated_by_id"
