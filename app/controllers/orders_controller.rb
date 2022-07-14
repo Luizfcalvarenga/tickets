@@ -65,6 +65,7 @@ class OrdersController < ApplicationController
             day_use_schedule_pass_type_id: order_item_params[:day_use_schedule_pass_type_id],
             price_in_cents: entity.price_in_cents,
             fee_percentage: entity.fee_percentage,
+            partner: entity.partner,
             absorb_fee: entity.absorb_fee,
             start_time: start_time,
             end_time: end_time,

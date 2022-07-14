@@ -3,11 +3,12 @@ module PartnerAdmin
     def index
       @reference_date = params[:date].present? && params[:date][:year].present? && params[:date][:month].present? ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.current
       min_date = @reference_date.at_beginning_of_month
-      max_date = @reference_date.at_end_of_month
+      max_date = @reference_date.at_end_of_month.change(hour: 23, min: 59, sec: 59)
+      partner = current_user.partner
 
-      @passes = current_user.partner.passes.from_event_or_day_use.not_free.where("created_at > ? and created_at < ?", min_date, max_date).order(:created_at)
+      @orders = Order.joins(order_items: :pass).where(order_items: {partner: partner}).where("(invoice_paid_at > ? and invoice_paid_at < ?) OR (value = 0)", min_date, max_date).distinct(:id).order(:id)
+      @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
 
-      @orders = Order.joins(order_items: :pass).where(passes: {id: @passes.ids}).order(:created_at).distinct
       @total_sales = @orders.map(&:price_in_cents).sum
       @amount_to_receive = @orders.map(&:amount_to_transfer_to_partner).sum
 
@@ -46,6 +47,7 @@ module PartnerAdmin
           day_use_schedule_pass_type_id: params[:order_item][:day_use_schedule_pass_type_id],
           price_in_cents: entity.price_in_cents,
           fee_percentage: entity.fee_percentage,
+          partner: entity.partner,
           absorb_fee: entity.absorb_fee,
           start_time: start_time,
           end_time: end_time,

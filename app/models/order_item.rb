@@ -1,5 +1,6 @@
 class OrderItem < ApplicationRecord
   belongs_to :order
+  belongs_to :partner, optional: true
   belongs_to :event_batch, optional: true
   belongs_to :day_use_schedule_pass_type, optional: true
   

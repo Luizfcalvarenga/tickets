@@ -89,4 +89,9 @@ class ApplicationController < ActionController::Base
       sunday: "Domingo",
     }
   end
+
+  def datetime_in_current_timezone(datetime)
+    datetime.in_time_zone(Time.zone.name).change(hour: datetime.hour, min: datetime.min, sec: datetime.sec)
+  end
+  helper_method :datetime_in_current_timezone
 end
