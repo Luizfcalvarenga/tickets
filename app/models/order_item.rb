@@ -41,7 +41,7 @@ class OrderItem < ApplicationRecord
 
   def platform_fee_value_in_cents
     # Effective value of platform fees for internal uses and display for partner
-    price_with_discount_in_cents * fee_percentage / 100
+    (price_with_discount_in_cents * fee_percentage / 100).round
   end
 
   def displayed_fee_value_in_cents

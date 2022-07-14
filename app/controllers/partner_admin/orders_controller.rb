@@ -1,12 +1,12 @@
 module PartnerAdmin
   class OrdersController < ApplicationController
     def index
-      @reference_date = params[:date].present? && params[:date][:year].present? && params[:date][:month].present? ? Date.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.current
+      @reference_date = params[:date].present? && params[:date][:year].present? && params[:date][:month].present? ? Time.new(params[:date][:year].to_i, params[:date][:month].to_i, 1) : Time.current
       min_date = @reference_date.at_beginning_of_month
       max_date = @reference_date.at_end_of_month.change(hour: 23, min: 59, sec: 59)
       partner = current_user.partner
 
-      @orders = Order.joins(order_items: :pass).where(order_items: {partner: partner}).where("(invoice_paid_at > ? and invoice_paid_at < ?) OR (value = 0)", min_date, max_date).distinct(:id).order(:id)
+      @orders = Order.joins(order_items: :pass).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
       @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
 
       @total_sales = @orders.map(&:price_in_cents).sum

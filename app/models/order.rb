@@ -96,6 +96,7 @@ class Order < ApplicationRecord
       self.update(
         value: 0,
         net_value: 0,
+        invoice_paid_at: Time.current
       )
     end
     OrderPassesGenerator.new(self).call
@@ -110,12 +111,43 @@ class Order < ApplicationRecord
     !is_free? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
   end
 
-  def self.to_csv
-    attributes = ["Usuário", "Identificação do pedido", "Entidade", "Gerado em", "Preço", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
-    CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
-      csv << attributes
-      all.each do |order|
-       csv << [order.user.email, order.id, order.related_entity.name, order.created_at.strftime("%d/%m/%Y - %H:%M"), ApplicationController.helpers.display_price(order.price_in_cents), "#{order.order_items.first.fee_percentage}%", order.order_items.first.absorb_fee ? "Sim" : "Não", ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
+  def self.to_csv(mode = "partner")
+    if mode == "partner"
+      attributes = ["Usuário", "Identificação do pedido", "Entidade", "Pago em", "Preço", "Cupom", "Descontos", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
+      CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+        csv << attributes
+        all.each do |order|
+          csv << [order.user.email, 
+            order.id, 
+            order.related_entity.name, 
+            order.invoice_paid_at&.strftime("%d/%m/%Y") || "-", 
+            ApplicationController.helpers.display_price(order.price_in_cents), 
+            order.coupon&.code || "-", 
+            ApplicationController.helpers.display_price(order.discount_value_in_cents), 
+            "#{order.fee_percentage}%", 
+            order.order_items.first.absorb_fee ? "Sim" : "Não", 
+            ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
+        end
+      end
+    elsif mode == "admin"
+      attributes = ["Usuário", "Nome do usuário", "Parceiro", "Gerado em", "Absorver taxa?", "Valor de referência", "Descontos", "Taxa da plataforma", "Taxa da plataforma", "Valor cobrado", "Receita líquida", "Taxa da Iugu", "Lucro líquido" ]
+      CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+        csv << attributes
+        all.each do |order|
+          csv << [order.user.email, 
+            order.id, 
+            order.related_partner.name, 
+            order.invoice_paid_at&.strftime("%d/%m/%Y - %H:%M") || "-", 
+            order.order_items.first.absorb_fee ? "Sim" : "Não", 
+            ApplicationController.helpers.display_price(order.price_in_cents), 
+            ApplicationController.helpers.display_price(order.discount_value_in_cents), 
+            order.fee_percentage , 
+            ApplicationController.helpers.display_price(order.platform_fee_value_in_cents), 
+            ApplicationController.helpers.display_price(order.value), 
+            ApplicationController.helpers.display_price(order.net_value), 
+            ApplicationController.helpers.display_price(order.value - order.net_value), 
+            ApplicationController.helpers.display_price(order.net_value - order.amount_to_transfer_to_partner)]
+        end
       end
     end
   end
