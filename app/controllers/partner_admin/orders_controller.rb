@@ -6,7 +6,7 @@ module PartnerAdmin
       max_date = @reference_date.at_end_of_month.change(hour: 23, min: 59, sec: 59)
       partner = current_user.partner
 
-      @orders = Order.joins(order_items: :pass).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
+      @orders = Order.joins(:order_items).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
       @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
 
       @total_sales = @orders.map(&:price_in_cents).sum
@@ -28,7 +28,7 @@ module PartnerAdmin
           @user.update!(user_params)
         end
 
-        @order = Order.create(user: @user, directly_generated_by: current_user, free: true, invoice_paid_at: Time.current)
+        @order = Order.create(user: @user, directly_generated_by: current_user, free: true, invoice_paid_at: Time.current, value: 0, net_value: 0)
 
         if params[:order_item][:event_batch_id].present?
           entity = EventBatch.find(params[:order_item][:event_batch_id])

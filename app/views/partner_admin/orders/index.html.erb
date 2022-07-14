@@ -46,11 +46,12 @@
     <thead>
       <tr>
         <th scope="col" class="w-20">Usuário</th>
-        <th scope="col" class="w-10">Identificação do pedido</th>
-        <th scope="col" class="w-20">Entidade</th>
+        <th scope="col" class="w-5">Identificação do pedido</th>
+        <th scope="col" class="w-15">Entidade</th>
         <th scope="col">Pago em</th>
         <th scope="col">Preço</th>
         <th scope="col">Cupom</th>
+        <th scope="col">Gerado por</th>
         <th scope="col">Descontos</th>
         <th scope="col">Taxa</th>
         <th scope="col">Absorver taxa?</th>
@@ -66,6 +67,7 @@
         <td data-label="Pago em"><%= order.invoice_paid_at&.strftime("%d/%m/%Y") || "-" %></td>
         <td data-label="Preço"><%= display_price(order.price_in_cents) %></td>
         <td data-label="Cupom" class="text-break"><%= order.coupon&.code || "-" %></td>
+        <td data-label="Gerado por" class="text-break"><%= order.directly_generated_by&.email || "-" %></td>
         <td data-label="Descontos"><%= display_price(order.discount_value_in_cents) %></td>
         <td data-label="Taxa"><%= order.fee_percentage %>%</td>
         <td data-label="Absorver taxa?"><%= order.order_items.first.absorb_fee ? "Sim" : "Não" %></td>

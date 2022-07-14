@@ -27,6 +27,8 @@ class OrderItem < ApplicationRecord
   end
 
   def discount_value_in_cents
+    return price_in_cents if order.directly_generated_by_id.present?
+    
     coupon = order.coupon
     return 0 if coupon.blank?
 

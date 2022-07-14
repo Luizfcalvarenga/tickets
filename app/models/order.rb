@@ -113,7 +113,7 @@ class Order < ApplicationRecord
 
   def self.to_csv(mode = "partner")
     if mode == "partner"
-      attributes = ["Usuário", "Identificação do pedido", "Entidade", "Pago em", "Preço", "Cupom", "Descontos", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
+      attributes = ["Usuário", "Identificação do pedido", "Entidade", "Pago em", "Preço", "Cupom", "Gerado por", "Descontos", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
       CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
         csv << attributes
         all.each do |order|
@@ -123,6 +123,7 @@ class Order < ApplicationRecord
             order.invoice_paid_at&.strftime("%d/%m/%Y") || "-", 
             ApplicationController.helpers.display_price(order.price_in_cents), 
             order.coupon&.code || "-", 
+            order.directly_generated_by&.email,
             ApplicationController.helpers.display_price(order.discount_value_in_cents), 
             "#{order.fee_percentage}%", 
             order.order_items.first.absorb_fee ? "Sim" : "Não", 
