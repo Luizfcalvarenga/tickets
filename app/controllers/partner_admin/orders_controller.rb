@@ -28,7 +28,7 @@ module PartnerAdmin
           @user.update!(user_params)
         end
 
-        @order = Order.create(user: @user, directly_generated_by: current_user, free: true)
+        @order = Order.create(user: @user, directly_generated_by: current_user, free: true, invoice_paid_at: Time.current)
 
         if params[:order_item][:event_batch_id].present?
           entity = EventBatch.find(params[:order_item][:event_batch_id])
