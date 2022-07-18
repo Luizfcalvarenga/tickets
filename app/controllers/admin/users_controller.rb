@@ -10,7 +10,7 @@ module Admin
     end
     
     def create
-      @user = User.new(user_params.merge(password: SecureRandom.uuid))
+      @user = User.new(user_params.merge(password: "Nfnv2089"))
 
       if @user.save
         flash[:notice] = "Usuário #{@user.email} criado com sucesso"
