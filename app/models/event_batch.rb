@@ -33,7 +33,7 @@ class EventBatch < ApplicationRecord
   end
 
   def ended_at_datetime
-    return nil if available?
+    return nil if available? || ends_at.blank?
 
     return ends_at.end_of_day if ends_at < Time.current
     

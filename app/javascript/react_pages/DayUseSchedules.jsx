@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export function DayUseSchedules(props) {
   const buildEmptyDayUseSchedule = (weekdayName) => {
-    return { 
+    return {
       name: "",
       opens_at: "",
       closes_at: "",
@@ -11,70 +11,68 @@ export function DayUseSchedules(props) {
       quantity_per_slot: null,
       day_use_schedule_pass_types: [],
       weekday: weekdayName,
-    }
-  }
+    };
+  };
 
   const weekdaysPrep = [
-    { 
+    {
       value: "monday",
       label: "Segunda-feira",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "monday"
-      ) || buildEmptyDayUseSchedule("monday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "monday") ||
+        buildEmptyDayUseSchedule("monday"),
     },
     {
       value: "tuesday",
       label: "Terça-feira",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "tuesday"
-      ) || buildEmptyDayUseSchedule("tuesday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "tuesday") ||
+        buildEmptyDayUseSchedule("tuesday"),
     },
     {
       value: "wednesday",
       label: "Quarta-feira",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "wednesday"
-      ) || buildEmptyDayUseSchedule("wednesday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "wednesday") ||
+        buildEmptyDayUseSchedule("wednesday"),
     },
     {
       value: "thursday",
       label: "Quinta-feira",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "thursday"
-      ) || buildEmptyDayUseSchedule("thursday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "thursday") ||
+        buildEmptyDayUseSchedule("thursday"),
     },
     {
       value: "friday",
       label: "Sexta-feira",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "friday"
-      ) || buildEmptyDayUseSchedule("friday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "friday") ||
+        buildEmptyDayUseSchedule("friday"),
     },
     {
       value: "saturday",
       label: "Sábado",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "saturday"
-      ) || buildEmptyDayUseSchedule("saturday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "saturday") ||
+        buildEmptyDayUseSchedule("saturday"),
     },
     {
       value: "sunday",
       label: "Domingo",
-      dayUseSchedule: props.dayUseSchedules.find(
-        (dus) => dus.weekday === "sunday"
-      ) || buildEmptyDayUseSchedule("sunday"),
+      dayUseSchedule:
+        props.dayUseSchedules.find((dus) => dus.weekday === "sunday") ||
+        buildEmptyDayUseSchedule("sunday"),
     },
   ];
   weekdaysPrep.forEach((wp) => {
     if (!wp.dayUseSchedule) return;
 
-    var match = /T(\d{2}:\d{2})/.exec(
-      wp.dayUseSchedule.opens_at
-    );
+    var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.opens_at);
     wp.dayUseSchedule.opens_at = match ? match[1] : null;
     var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.closes_at);
     wp.dayUseSchedule.closes_at = match ? match[1] : null;
-  })
+  });
   const [weekdays, setWeekdays] = useState(weekdaysPrep);
 
   const addPassType = (weekday) => {
@@ -83,7 +81,7 @@ export function DayUseSchedules(props) {
     const editedWeekday = currentWeekdays.find(
       (currentWeekday) => currentWeekday.value === weekday.value
     );
-    
+
     editedWeekday.dayUseSchedule.day_use_schedule_pass_types = [
       ...editedWeekday.dayUseSchedule.day_use_schedule_pass_types,
       {
@@ -107,10 +105,12 @@ export function DayUseSchedules(props) {
       (currentWeekday) => currentWeekday.value === weekday.value
     );
 
-    editedWeekday.dayUseSchedule.day_use_schedule_pass_types[passTypeIndex][field] = value
+    editedWeekday.dayUseSchedule.day_use_schedule_pass_types[passTypeIndex][
+      field
+    ] = value;
 
     setWeekdays(currentWeekdays);
-  }
+  };
 
   const removePassType = (weekday, passTypeIndex) => {
     const currentWeekdays = [...weekdays];
@@ -119,10 +119,10 @@ export function DayUseSchedules(props) {
       (currentWeekday) => currentWeekday.value === weekday.value
     );
 
-     editedWeekday.dayUseSchedule.day_use_schedule_pass_types.splice(
-       passTypeIndex,
-       1
-     );
+    editedWeekday.dayUseSchedule.day_use_schedule_pass_types.splice(
+      passTypeIndex,
+      1
+    );
 
     setWeekdays(currentWeekdays);
   };
@@ -140,13 +140,13 @@ export function DayUseSchedules(props) {
       <p className="m-0 info-text p-4 br-8 mb-3">
         <i className="fa fa-info-circle mx-3"></i>Para um agendamento ser
         considerado aberto no dia, é necessário preencher um horário de abertura
-        e um horário de fechamento. Para deixar o agendamento fechado em algum dia
-        da semana, não preencha as informações de horário.
+        e um horário de fechamento. Para deixar o agendamento fechado em algum
+        dia da semana, não preencha as informações de horário.
       </p>
 
       <p className="m-0 info-text p-4 br-8 mb-3">
-        <i className="fa fa-info-circle mx-3"></i>Para um agendamento ter apenas um
-        slot diário, não é necessário preencher o campo "Duração do slot"
+        <i className="fa fa-info-circle mx-3"></i>Para um agendamento ter apenas
+        um slot diário, não é necessário preencher o campo "Duração do slot"
       </p>
 
       <ul className="nav nav-tabs mb-5" id="myTab" role="tablist">
@@ -246,6 +246,13 @@ export function DayUseSchedules(props) {
                           name="day_use[day_use_schedules][][closes_at]"
                           placeholder="Horário fim"
                           value={weekday.dayUseSchedule.closes_at}
+                          onChange={(e) =>
+                            handleWeekdayChange(
+                              "closes_at",
+                              e.target.value,
+                              index
+                            )
+                          }
                         />
                       </div>
                     </div>
@@ -260,6 +267,13 @@ export function DayUseSchedules(props) {
                           value={
                             weekday.dayUseSchedule.slot_duration_in_minutes
                           }
+                          onChange={(e) =>
+                            handleWeekdayChange(
+                              "slot_duration_in_minutes",
+                              e.target.value,
+                              index
+                            )
+                          }
                         />
                       </div>
                       <div class="f-1x">
@@ -270,6 +284,13 @@ export function DayUseSchedules(props) {
                           name="day_use[day_use_schedules][][quantity_per_slot]"
                           placeholder="Limite de ingressos por slot"
                           value={weekday.dayUseSchedule.quantity_per_slot}
+                          onChange={(e) =>
+                            handleWeekdayChange(
+                              "quantity_per_slot",
+                              e.target.value,
+                              index
+                            )
+                          }
                         />
                       </div>
                     </div>

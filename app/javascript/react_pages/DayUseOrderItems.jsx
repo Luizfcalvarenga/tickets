@@ -26,6 +26,7 @@ export function DayUseOrderItems(props) {
 
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
+  const [currentSlot, setCurrentSlot] = useState(slotsInfosAndQuantities[0]);
 
   const updateQuantity = (slotIndex, passTypeName, amount) => {
     const currentSlots = [...slotsInfosAndQuantities];
@@ -82,7 +83,9 @@ export function DayUseOrderItems(props) {
 
                 return {
                   id: passType.id,
-                  quantity: slotsInfosAndQuantities.find(s => s.id === slot.id).passTypes.find(p => p.id === passType.id).quantity,
+                  quantity: slotsInfosAndQuantities
+                    .find((s) => s.id === slot.id)
+                    .passTypes.find((p) => p.id === passType.id).quantity,
                   name: passType.name,
                   price_in_cents: newPrice,
                 };
@@ -133,6 +136,18 @@ export function DayUseOrderItems(props) {
     );
   };
 
+  const changeSlot = (amount) => {
+    const currentSlotIndex = slotsInfosAndQuantities.findIndex(
+      (slot) => slot === currentSlot
+    );
+    if (
+      currentSlotIndex + amount < 0 ||
+      currentSlotIndex + amount >= slotsInfosAndQuantities.length
+    )
+      return;
+    setCurrentSlot(slotsInfosAndQuantities[currentSlotIndex + amount]);
+  };
+
   return (
     <div className="event-batches-order">
       <div className="header bg-primary-color p-4">
@@ -140,11 +155,45 @@ export function DayUseOrderItems(props) {
           Ingressos para {moment(startTime()).strftime("%d/%m/%Y")}
         </p>
       </div>
+      {props.openSlots.length > 1 && (
+        <div className="border border-white p-4 flex center justify-content-center">
+          <div
+            className={`flex center between ${
+              window.mobileMode() ? "w-100" : "w-30"
+            }`}
+          >
+            <p className="m-0 fs-24 text-white">Horário:</p>
+            <div className="flex center between gap-16">
+              <i
+                className={`fa fa-caret-left fs-60 ${
+                  currentSlot !== slotsInfosAndQuantities[0]
+                    ? "text-success clickable"
+                    : "text-secondary"
+                }`}
+                onClick={() => changeSlot(-1)}
+              ></i>
+              <p className="m-0 text-center fs-24 text-white">
+                {moment(currentSlot.start_time).strftime("%H:%M")} -{" "}
+                {moment(currentSlot.end_time).strftime("%H:%M")}
+              </p>
+              <i
+                className={`fa fa-caret-right fs-60 ${
+                  currentSlot !==
+                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1]
+                    ? "text-success clickable"
+                    : "text-secondary"
+                }`}
+                onClick={() => changeSlot(1)}
+              ></i>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="body border-white border">
         {slotsInfosAndQuantities.map((slot, index) => {
           return (
-            <div>
+            <div className={slot === currentSlot ? "" : "d-none"}>
               {slot.passTypes.map((passType) => {
                 return (
                   <div className="border-bottom border-white p-4 flex center between">
@@ -216,7 +265,7 @@ export function DayUseOrderItems(props) {
                 );
               })}
               {slot.passTypes.length <= 0 && (
-                <p>Nenhum tipo de ingresso disponível.</p>
+                <p className="p-5">Nenhum tipo de ingresso disponível.</p>
               )}
             </div>
           );
