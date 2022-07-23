@@ -166,7 +166,8 @@ export function DayUseOrderItems(props) {
             <div className="flex center between gap-16">
               <i
                 className={`fa fa-caret-left fs-60 ${
-                  currentSlot !== slotsInfosAndQuantities[0]
+                  currentSlot.start_time !==
+                  slotsInfosAndQuantities[0].start_time
                     ? "text-success clickable"
                     : "text-secondary"
                 }`}
@@ -178,8 +179,8 @@ export function DayUseOrderItems(props) {
               </p>
               <i
                 className={`fa fa-caret-right fs-60 ${
-                  currentSlot !==
-                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1]
+                  currentSlot.start_time !==
+                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1].start_time
                     ? "text-success clickable"
                     : "text-secondary"
                 }`}
@@ -193,7 +194,11 @@ export function DayUseOrderItems(props) {
       <div className="body border-white border">
         {slotsInfosAndQuantities.map((slot, index) => {
           return (
-            <div className={slot === currentSlot ? "" : "d-none"}>
+            <div
+              className={
+                slot.start_time === currentSlot.start_time ? "" : "d-none"
+              }
+            >
               {slot.passTypes.map((passType) => {
                 return (
                   <div className="border-bottom border-white p-4 flex center between">

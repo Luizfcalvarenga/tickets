@@ -16,7 +16,7 @@
         <% @open_days.each do |open_day| %>
           <div 
             class="date-card-partner-show flex column center justify-content-between col-2 col-md-1 bg-dark mx-1 mx-md-2 py-4 clickable mb-2 <%= 'active' if open_day[:date].today? %>" data-date="<%= open_day[:date].strftime('%d-%m-%Y') %>"
-              data-bs-toggle="tab" data-bs-target="#nav-dayuse-<%= open_day[:value] %>" type="button" role="tab" aria-controls="nav-events" aria-selected="true">
+              data-bs-toggle="tab" data-bs-target="#nav-dayuse-<%= open_day[:date].strftime("%d-%m-%Y") %>" type="button" role="tab" aria-controls="nav-events" aria-selected="true">
             <p class="m-0 fs-36"><%= open_day[:date].day %></p>
             <p class="m-0 fs-18"><%= month_number_to_name_abr(open_day[:date].month) %></p>
             <p class="m-0 fs-18"><%= weekday_number_to_name_abr(open_day[:date].wday) %></p>
@@ -27,11 +27,11 @@
 
     <div class="tab-content mt-5" id="nav-tabContent">
       <% @open_days.each do |open_day| %>
-        <div class="tab-pane fade show <%= 'active' if open_day[:date].today? %>" id="nav-dayuse-<%= open_day[:value] %>" role="tabpanel" aria-labelledby="nav-events-tab">
+        <div class="tab-pane fade show <%= 'active' if open_day[:date].today? %>" id="nav-dayuse-<%= open_day[:date].strftime("%d-%m-%Y") %>" role="tabpanel" aria-labelledby="nav-events-tab">
           <div class="row">
             <% open_day[:day_uses].each do |day_use| %>
               <div class="col-12 col-md-4 mb-3">
-                <%= link_to day_use_path(day_use,  open_day[:date].strftime("%d-%m-%Y")) do %>
+                <%= link_to day_use_path(day_use, open_day[:date].strftime("%d-%m-%Y")) do %>
                   <% day_use_schedule = day_use.day_use_schedules.find_by(weekday: open_day[:value]) %>
                   <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path day_use_schedule.display_photo, height: 300, crop: :fill %>')">
                     <div class="flex center between w-100">
