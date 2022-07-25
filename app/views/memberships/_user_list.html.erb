@@ -20,7 +20,7 @@
           </p>
         </td>
         <td data-label="Número de acessos">
-          <p class="m-0"><%= Access.joins(:pass).where(passes: {partner_id: @partner.id, user_id: user.id}).count %> acessos</p>
+          <p class="m-0"><%= Access.joins(:pass).where(passes: {partner_id: @partner.id, user_id: user.id}).where.not(passes: {user_membership_id: nil}).count %> acessos</p>
           <p class="m-0">Desde <%= user.user_memberships.where(user_memberships: {membership_id: @memberships.ids}).minimum(:created_at).strftime("%d/%m/%Y") %></p>
         </td>
         <td data-label="Mensalidades ativas">
