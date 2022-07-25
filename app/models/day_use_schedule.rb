@@ -39,8 +39,8 @@ class DayUseSchedule < ApplicationRecord
       end_checkpoints << day_use_block.start_time if day_use_blocks_for_date.where.not(id: day_use_block.id).all? { |dub| (dub.start_time > day_use_block.start_time && dub.end_time > day_use_block.start_time) || (dub.start_time < day_use_block.start_time && dub.end_time < day_use_block.start_time) }
     end
 
-    start_checkpoints.sort!
-    end_checkpoints.sort!
+    start_checkpoints.map! { |sc| sc.change(day: date.day, month: date.month, year: date.year) }.sort!
+    end_checkpoints.map! { |ec| ec.change(day: date.day, month: date.month, year: date.year) }.sort!
     
     intervals = start_checkpoints.each_with_index.map { |start_time, index| [start_time, end_checkpoints[index]] }
 
