@@ -3,6 +3,7 @@ class UserMembership < ApplicationRecord
   belongs_to :membership
 
   has_many :passes
+  has_many :accesses, through: :passes
 
   scope :active, -> { where("iugu_active is true") }
 
