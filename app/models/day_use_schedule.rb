@@ -25,11 +25,11 @@ class DayUseSchedule < ApplicationRecord
   end
 
   def open_slots_for_date(date)
-    return [] if !open? || day_use.day_use_blocks.exists?(day_use.day_use_blocks.where(block_date: date.beginning_of_day..date.end_of_day))
+    return [] if !open?
 
     date = date.to_datetime.asctime.in_time_zone("Brazil/East")
 
-    day_use_blocks_for_date = day_use.day_use_blocks.where("day_use_blocks.weekday = 'all' or day_use_blocks.weekday = ?", weekday)
+    day_use_blocks_for_date = day_use.day_use_blocks.where("day_use_blocks.weekday = 'all' or day_use_blocks.weekday = ? or (day_use_blocks.block_date >= ? AND day_use_blocks.block_date <= ?)", weekday, date.beginning_of_day, date.end_of_day)
     
     start_checkpoints = [opens_at]
     end_checkpoints = [closes_at]
