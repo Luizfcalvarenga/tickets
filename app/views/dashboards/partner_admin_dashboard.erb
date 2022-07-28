@@ -20,7 +20,7 @@
             <th scope="col">Data término</th>
             <th scope="col">Local</th>
             <th scope="col">Máx Ingressos</th>
-            <th scope="col">Vendidos</th>
+            <th scope="col">Ingressos gerados</th>
           </tr>
         </thead>
         <tbody>
@@ -31,7 +31,7 @@
               <td data-label="Data término"><%= event.scheduled_end.strftime('%d/%m/%Y') %></td>
               <td data-label="Local"><%= event.city.name %>, <%= event.state.acronym %></td>
               <td data-label="Máx ingressos"><%= event.event_batches.sum(:quantity) %></td>
-              <td data-label="Vendidos"><%= event.passes.count %></td>
+              <td data-label="Ingressos gerados"><%= event.passes.count %></td>
               <td><%= link_to "Ver detalhes", partner_admin_event_path(event), class: "text-success" %></td>
             </tr>
           <% end %>

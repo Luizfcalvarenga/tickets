@@ -9,7 +9,7 @@ module PartnerAdmin
       @orders = Order.joins(:order_items).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
       @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
 
-      @total_sales = @orders.map(&:price_in_cents).sum
+      @total_sales = @orders.map(&:total_in_cents).sum
       @amount_to_receive = @orders.map(&:amount_to_transfer_to_partner).sum
 
       respond_to do |format|
