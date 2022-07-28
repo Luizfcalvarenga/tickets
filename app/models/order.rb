@@ -76,7 +76,8 @@ class Order < ApplicationRecord
       ignore_due_email: true,
       ignore_canceled_email: true,  
       due_date: (Time.current + 10.days),  
-      payable_with: ["pix", "credit_card"]
+      payable_with: ["pix", "credit_card"],
+      order_id: id
     }
   end
 
