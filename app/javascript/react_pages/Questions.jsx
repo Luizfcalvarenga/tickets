@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 export function Questions(props) {
   const [questions, setQuestions] = useState(props.questions);
+  console.log(props.questions)
 
   const addQuestion = () => {
     setQuestions([
@@ -20,7 +21,7 @@ export function Questions(props) {
   const addQuestionOption = (questionIndex) => {
     const currentQuestions = [...questions];
 
-    const editedQuestion = currentQuestions[questionIndex]
+    const editedQuestion = currentQuestions[questionIndex];
 
     editedQuestion.options = [...editedQuestion.options, ""];
 
@@ -33,6 +34,8 @@ export function Questions(props) {
     const editedQuestion = currentQuestions.find(
       (question) => question.order === questionIndex
     );
+
+    console.log(editedQuestion)
 
     editedQuestion.options.splice(questionOrderIndex, 1);
 
@@ -54,9 +57,9 @@ export function Questions(props) {
   const handleQuestionOptionalToggle = (questionIndex) => {
     const currentQuestions = [...questions];
 
-    const editedQuestion = currentQuestions[questionIndex]
+    const editedQuestion = currentQuestions[questionIndex];
 
-    editedQuestion.optional = !editedQuestion.optional
+    editedQuestion.optional = !editedQuestion.optional;
 
     setQuestions(currentQuestions);
   };
@@ -68,8 +71,8 @@ export function Questions(props) {
   ) => {
     const currentQuestions = [...questions];
 
-    const editedQuestion = currentQuestions[questionIndex]
-  
+    const editedQuestion = currentQuestions[questionIndex];
+
     editedQuestion.options[questionOptionIndex] = value;
 
     setQuestions(currentQuestions);
@@ -81,6 +84,26 @@ export function Questions(props) {
     currentQuestions.splice(questionIndex, 1);
 
     setQuestions(currentQuestions);
+  };
+
+  const restoreErrorForField = (field, questionFormIdentifier) => {
+    if (!props.errors || !props.errors.questions) return;
+
+    const question = props.errors.questions.find(
+      (eb) => eb.index == questionFormIdentifier
+    );
+
+    if (!question) return;
+
+    const questionErrors = question.error;
+    const error =
+      questionErrors && questionErrors[field] && questionErrors[field][0];
+
+    return (
+      <div className="text-danger">
+        <p>{error}</p>
+      </div>
+    );
   };
 
   return (
@@ -108,6 +131,11 @@ export function Questions(props) {
               <div className="flex center between gap-24">
                 <input
                   type="hidden"
+                  name="questions[][form_identifier]"
+                  value={questionIndex}
+                />
+                <input
+                  type="hidden"
                   name="questions[][id]"
                   value={question.id}
                 />
@@ -116,20 +144,23 @@ export function Questions(props) {
                   name="questions[][order]"
                   value={question.order}
                 />
-                <input
-                  class="form-control my-2 f-50"
-                  type="text"
-                  name="questions[][prompt]"
-                  placeholder="Texto da pergunta"
-                  value={question.prompt}
-                  onChange={(e) =>
-                    handleQuestionChange(
-                      "prompt",
-                      e.target.value,
-                      question.order
-                    )
-                  }
-                />
+                <div className="my-2 f-50">
+                  <input
+                    className="form-control my-2 f-50"
+                    type="text"
+                    name="questions[][prompt]"
+                    placeholder="Texto da pergunta"
+                    value={question.prompt}
+                    onChange={(e) =>
+                      handleQuestionChange(
+                        "prompt",
+                        e.target.value,
+                        question.order
+                      )
+                    }
+                  />
+                  {restoreErrorForField("prompt", questionIndex)}
+                </div>
                 <select
                   name="questions[][kind]"
                   id=""
@@ -144,6 +175,7 @@ export function Questions(props) {
                   </option>
                   <option value="open">Aberta</option>
                 </select>
+                {restoreErrorForField("kind", questionIndex)}
                 <div className="flex align-items-center gap-12 my-3 f-20">
                   <input
                     type="checkbox"
@@ -157,37 +189,39 @@ export function Questions(props) {
               </div>
               {question.kind === "multiple_choice" && (
                 <div>
-                  {question.options.map(
-                    (questionOption, questionOptionIndex) => {
-                      return (
-                        <div className="flex center">
-                          <input
-                            class="form-control my-2 f-90"
-                            type="text"
-                            name="questions[][options][]"
-                            value={questionOption}
-                            onChange={(e) =>
-                              handleQuestionOptionChange(
-                                e.target.value,
-                                questionIndex,
-                                questionOptionIndex
-                              )
-                            }
-                            placeholder="Texto da opção"
-                          />
-                          <i
-                            className="fa fa-trash f-10 text-center clickable"
-                            onClick={() =>
-                              removeQuestionOption(
-                                questionIndex,
-                                questionOptionIndex
-                              )
-                            }
-                          ></i>
-                        </div>
-                      );
-                    }
-                  )}
+                  {question.options &&
+                    question.options.map(
+                      (questionOption, questionOptionIndex) => {
+                        return (
+                          <div className="flex center">
+                            <input
+                              className="form-control my-2 f-90"
+                              type="text"
+                              name="questions[][options][]"
+                              value={questionOption}
+                              onChange={(e) =>
+                                handleQuestionOptionChange(
+                                  e.target.value,
+                                  questionIndex,
+                                  questionOptionIndex
+                                )
+                              }
+                              placeholder="Texto da opção"
+                            />
+                            <i
+                              className="fa fa-trash f-10 text-center clickable"
+                              onClick={() =>
+                                removeQuestionOption(
+                                  questionIndex,
+                                  questionOptionIndex
+                                )
+                              }
+                            ></i>
+                          </div>
+                        );
+                      }
+                    )}
+                  {restoreErrorForField("options", questionIndex)}
                   <p
                     className="btn btn-success p-3"
                     onClick={() => addQuestionOption(questionIndex)}

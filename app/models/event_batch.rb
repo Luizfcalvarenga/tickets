@@ -1,7 +1,7 @@
 class EventBatch < ApplicationRecord
   belongs_to :event
 
-  validates :price_in_cents, :quantity, :name, :pass_type, presence: true
+  validates :price_in_cents, :quantity, :name, :pass_type, :number_of_accesses_granted, presence: true
 
   has_many :passes
   has_many :event_batch_questions
@@ -30,13 +30,15 @@ class EventBatch < ApplicationRecord
   end
 
   def available?
-    removed_at.blank? && (ends_at.blank? || ends_at > Time.current) && OrderItem.where(event_batch_id: id).where("created_at > ?", Time.current - 10.minute).count < quantity
+    removed_at.blank? && (ends_at.blank? || ends_at.end_of_day > Time.current) && OrderItem.where(event_batch_id: id).where("created_at > ?", Time.current - 10.minute).count < quantity
   end
 
   def ended_at_datetime
     return nil if available? || ends_at.blank?
 
-    return ends_at.end_of_day if ends_at < Time.current
+    return ends_at.end_of_day if ends_at.end_of_day < Time.current
+
+    return updated_at if quantity == 0
     
     order_items.order(:created_at).last.created_at
   end

@@ -38,13 +38,15 @@ class EventUpdater
       )
 
       if !update_batch_result 
-        errors[:event_batches] << event_batch.errors.full_messages.join(", ")
-        raise
+        errors[:event_batches] << {
+          index: batch_params[:form_identifier],
+          error: event_batch.errors
+        }
       end
     end
 
     new_event_batches.each do |batch_params|
-      event_batch = EventBatch.create!(event: @event, 
+      event_batch = EventBatch.create(event: @event, 
         pass_type: batch_params[:pass_type],
         name: batch_params[:name],
         quantity: batch_params[:quantity],
@@ -54,10 +56,14 @@ class EventUpdater
         order: batch_params[:order])
 
       if !event_batch.persisted? 
-        errors[:event_batches] << event_batch.errors.full_messages.join(", ")
-        raise
+        errors[:event_batches] << {
+          index: batch_params[:form_identifier],
+          error: event_batch.errors
+        }
       end
     end
+
+    raise if errors[:event_batches].present?
   end
 
   def update_questions
@@ -74,10 +80,11 @@ class EventUpdater
         options: question_params[:options],
         order: @event.questions.active.count,
       )
-
       if !update_question 
-        errors[:questions] << question.errors.full_messages.join(", ")
-        raise
+        errors[:questions] << {
+          index: question_params[:form_identifier],
+          error: question.errors
+        }
       end
     end
 
@@ -87,15 +94,18 @@ class EventUpdater
         kind: question_params[:kind],
         prompt: question_params[:prompt],
         optional: question_params[:optional].present?,
-        options: question_params[:options],
+        options: question_params[:options] || [],
         order: question_params[:order],
       )
-
       if !question.persisted? 
-        errors[:questions] << question.errors.full_messages.join(", ")
-        raise
+        errors[:questions] << {
+          index: question_params[:form_identifier],
+          error: question.errors
+        }
       end
     end
+
+    raise if errors[:questions].present?
   end
 
   def removed_event_batches
@@ -137,7 +147,7 @@ class EventUpdater
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :number_of_accesses_granted, :name, :price_in_cents, :quantity, :ends_at])[:event_batches] || []
+    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :number_of_accesses_granted, :name, :price_in_cents, :quantity, :ends_at, :form_identifier])[:event_batches] || []
   end
 
   def questions_params

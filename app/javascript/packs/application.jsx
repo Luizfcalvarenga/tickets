@@ -105,6 +105,11 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.questions)
               : null
           }
+          errors={
+            container.dataset.errors
+              ? JSON.parse(container.dataset.errors)
+              : null
+          }
         />
       ),
       EventBatches: (
@@ -114,6 +119,9 @@ const loadReactComponent = () => {
           }
           eventBatches={
             container.dataset.eventBatches ? JSON.parse(container.dataset.eventBatches) : null
+          }
+          errors={
+            container.dataset.errors ? JSON.parse(container.dataset.errors) : null
           }
         />
       ),

@@ -285,7 +285,7 @@ export function DayUseOrderItems(props) {
             type="text"
             name="coupon_code"
             value={couponCode}
-            class="f-20"
+            className="f-20"
             onChange={(e) => setCouponCode(e.target.value)}
           />
           <p

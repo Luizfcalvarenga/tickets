@@ -3,7 +3,7 @@ class EventCreator
   def initialize(params, current_user)
     @params = params
     @current_user = current_user
-    @errors = {event_batches: [], questions: []}
+    @errors = {event: [], event_batches: [], questions: []}
   end
 
   def call
@@ -20,12 +20,16 @@ class EventCreator
             number_of_accesses_granted: batch_params[:number_of_accesses_granted],
             ends_at: batch_params[:ends_at],
             order: batch_params[:order])
+
+          if !event_batch.persisted? 
+            errors[:event_batches] << {
+              index: batch_params[:form_identifier],
+              error: event_batch.errors
+            }
+          end
         end
 
-        if !event_batch.persisted? 
-          errors[:event_batches] << event_batch.errors.full_messages.join(", ")
-          raise
-        end
+        raise if errors[:event_batches].present?
 
         @event.create_default_questions
       
@@ -35,18 +39,22 @@ class EventCreator
             kind: question_params[:kind],
             prompt: question_params[:prompt],
             optional: question_params[:optional].present?,
-            options: question_params[:options],
+            options: question_params[:options] || [],
             order: @event.questions.active.count,
           )
+          if !question.persisted? 
+            errors[:questions] << {
+              index: question_params[:form_identifier],
+              error: question.errors
+            }
+          end
         end
 
-        if !question.persisted? 
-          errors[:questions] << question.errors.full_messages.join(", ")
-          raise
-        end
+        raise if errors[:questions].present?
         
         return true
       else
+        errors[:event] = @event.errors
         raise
       end
     end
@@ -62,7 +70,7 @@ class EventCreator
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :number_of_accesses_granted, :quantity, :ends_at])[:event_batches] || []
+    params.require(:event).permit(event_batches: [:order, :pass_type, :name, :price_in_cents, :number_of_accesses_granted, :quantity, :ends_at, :form_identifier])[:event_batches] || []
   end
 
   def questions_params

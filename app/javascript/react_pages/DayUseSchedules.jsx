@@ -202,7 +202,7 @@ export function DayUseSchedules(props) {
                   />
                   <label htmlFor="">Descrição</label>
                   <textarea
-                    class="form-control my-2 f-60"
+                    className="form-control my-2 f-60"
                     type="text"
                     name="day_use[day_use_schedules][][description]"
                     placeholder="Descrição do dia"
@@ -211,12 +211,12 @@ export function DayUseSchedules(props) {
                       handleWeekdayChange("description", e.target.value, index)
                     }
                   />
-                  <div class="form-group file optional day_use_photo form-group-valid">
-                    <label class="file optional" for="day_use_photo">
+                  <div className="form-group file optional day_use_photo form-group-valid">
+                    <label className="file optional" for="day_use_photo">
                       Foto específica do dia
                     </label>
                     <input
-                      class="form-control-file is-valid file optional"
+                      className="form-control-file is-valid file optional"
                       type="file"
                       name="day_use[day_use_schedules][][photo]"
                     ></input>
@@ -257,7 +257,7 @@ export function DayUseSchedules(props) {
                       </div>
                     </div>
                     <div className="f-48 flex center gap-24">
-                      <div class="f-1x">
+                      <div className="f-1x">
                         <label htmlFor="">Duração do slot</label>
                         <input
                           className="form-control my-2"
@@ -276,7 +276,7 @@ export function DayUseSchedules(props) {
                           }
                         />
                       </div>
-                      <div class="f-1x">
+                      <div className="f-1x">
                         <label htmlFor="">Quantidade de passes por slot</label>
                         <input
                           className="form-control my-2"
@@ -310,7 +310,7 @@ export function DayUseSchedules(props) {
                         />
                         <div className="flex center between gap-24">
                           <input
-                            class="form-control my-2"
+                            className="form-control my-2"
                             type="text"
                             name="day_use[day_use_schedules][][pass_types][][name]"
                             placeholder="Tipo de ingresso"
@@ -325,7 +325,7 @@ export function DayUseSchedules(props) {
                             }
                           />
                           <input
-                            class="form-control my-2"
+                            className="form-control my-2"
                             type="number"
                             name="day_use[day_use_schedules][][pass_types][][price_in_cents]"
                             placeholder="Preço em centavos"
@@ -340,7 +340,7 @@ export function DayUseSchedules(props) {
                             }
                           />
                           <input
-                            class="form-control my-2"
+                            className="form-control my-2"
                             type="number"
                             name="day_use[day_use_schedules][][pass_types][][number_of_accesses_granted]"
                             placeholder="Número de acessos por passe"

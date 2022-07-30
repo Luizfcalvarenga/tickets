@@ -175,7 +175,7 @@ export function Scanner(props) {
       {loading && (
         <div id="loading-div" className="flex center around">
           <div className="h-50 w-50 flex column center around">
-            <div class="lds-dual-ring"></div>
+            <div className="lds-dual-ring"></div>
             <p className="m-0 text-white fs-24">Carregando...</p>
           </div>
         </div>
