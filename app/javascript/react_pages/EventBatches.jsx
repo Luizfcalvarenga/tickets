@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import "flatpickr/dist/themes/material_green.css";
 import Flatpickr from "react-flatpickr";
 const moment = require("moment-strftime");
 
 export function EventBatches(props) {
-  const uniquePassTypes = props.event.event_batches
+  const uniquePassTypes = props.eventBatches
     .map((eb) => eb.pass_type)
     .filter((value, index, self) => self.indexOf(value) === index);
 
@@ -12,7 +12,7 @@ export function EventBatches(props) {
     uniquePassTypes.map((passType) => {
       return {
         name: passType,
-        event_batches: props.event.event_batches.filter(
+        event_batches: props.eventBatches.filter(
           (eb) => eb.pass_type === passType
         ),
       };
@@ -133,6 +133,7 @@ export function EventBatches(props) {
             {passType.event_batches.map((eventBatch, eventBatchIndex) => {
               return (
                 <div key={eventBatch.order} className="mb-4">
+                  <h1>{eventBatch.removed_at}</h1>
                   <input
                     type="hidden"
                     name="event[event_batches][][id]"

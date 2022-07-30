@@ -9,11 +9,11 @@
         <div class="col-md-12">
           <%= f.input :name %>
         </div>
-        <div class="col-md-8">
-          <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
-        </div>
-        <div class="col-md-4 mt-3 files">
+        <div class="col-md-12 mt-3 file-upload">
           <%= f.input :photo %>
+        </div>
+        <div class="col-md-12">
+          <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
         </div>
         <div class="row">
           <div class="col-12">
@@ -99,7 +99,7 @@
 
       <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
 
-      <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
+      <react data-component="EventBatches" data-event="<%= @event.to_json %>" data-event-batches="<%= @event.event_batches.active.to_json %>"></react>
 
       <div class="spacer-50"></div>
 

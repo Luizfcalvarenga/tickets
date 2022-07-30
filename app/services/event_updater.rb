@@ -1,5 +1,5 @@
 class EventUpdater
-  attr_reader :event, :params
+  attr_reader :event, :params, :errors
   def initialize(event, params)
     @event = event
     @params = params
@@ -12,8 +12,8 @@ class EventUpdater
         update_questions
         
         return true
-      # else
-        # raise
+      else
+        raise
       end
     end
   # rescue
@@ -21,7 +21,7 @@ class EventUpdater
   end
 
   def update_batches
-    removed_event_batches.destroy_all
+    removed_event_batches.update_all(removed_at: Time.current)
 
     event_batches_to_update.each do |batch_params|
       event_batch = EventBatch.find(batch_params[:id])
@@ -86,7 +86,7 @@ class EventUpdater
   end
 
   def removed_event_batches
-    event.event_batches.where.not(id: received_event_batches_ids)
+    event.event_batches.active.where.not(id: received_event_batches_ids)
   end
 
   def event_batches_to_update
@@ -124,7 +124,7 @@ class EventUpdater
   end
 
   def create_batch_params
-    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :number_of_accesses_granted, :name, :price_in_cents, :quantity, :ends_at])[:event_batches]
+    params.require(:event).permit(event_batches: [:id, :order, :pass_type, :number_of_accesses_granted, :name, :price_in_cents, :quantity, :ends_at])[:event_batches] || []
   end
 
   def questions_params

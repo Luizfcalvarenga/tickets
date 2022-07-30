@@ -9,6 +9,7 @@ class EventBatch < ApplicationRecord
   has_many :order_items
 
   scope :available, -> { where("(event_batches.ends_at is null OR event_batches.ends_at > now()) and (select count(distinct order_items.id) from order_items inner join orders on order_items.order_id = orders.id where order_items.event_batch_id = event_batches.id and (orders.status = 'paid' or now()::time < (orders.created_at + interval '10 min')::time)) < event_batches.quantity") }
+  scope :active, -> { where(removed_at: nil) }
 
   delegate :partner, :fee_percentage, :absorb_fee, to: :event
 
