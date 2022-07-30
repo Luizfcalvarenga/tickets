@@ -31,7 +31,7 @@ class DashboardsController < ApplicationController
 
   def partner_admin_dashboard
     @partner = current_user.partner
-    @events = current_user.partner.events
+    @events = current_user.partner.events.order(scheduled_start: :desc)
     @day_uses = current_user.partner.day_uses    
     @memberships = @partner.memberships
     

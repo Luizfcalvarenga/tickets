@@ -10,7 +10,7 @@ class Question < ApplicationRecord
   scope :active, -> { where(removed_at: nil) }
 
   def multiple_choice_question_must_have_at_least_two_options
-    if kind == "multiple_choice" && options.present? && options.select(&:present?).length < 2
+    if kind == "multiple_choice" && (options.blank? || options.select(&:present?).length < 2)
       errors.add(:options, "A pergunta de multipla escolha deve ter pelo menos duas opções com texto escrito")
     end
   end

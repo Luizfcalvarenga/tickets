@@ -8,14 +8,15 @@ class EventUpdater
 
   def call
     ActiveRecord::Base.transaction do
-      if @event.update(event_params)
-        update_batches 
-        update_questions
+      event_update_result = @event.update(event_params)
+      update_batches 
+      update_questions
+
+      raise if !event_update_result
+      raise if errors[:event_batches].present?
+      raise if errors[:questions].present?
         
-        return true
-      else
-        raise
-      end
+      return true
     end
   rescue
     return false
@@ -62,8 +63,6 @@ class EventUpdater
         }
       end
     end
-
-    raise if errors[:event_batches].present?
   end
 
   def update_questions
@@ -104,8 +103,6 @@ class EventUpdater
         }
       end
     end
-
-    raise if errors[:questions].present?
   end
 
   def removed_event_batches

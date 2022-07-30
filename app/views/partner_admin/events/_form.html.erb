@@ -4,11 +4,14 @@
       <%= @event.new_record? ? "Criar novo evento" : "Atualizar evento" %>
     </h1>
 
+    <% if @event.errors.present? %>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento dos dados do evento.</p>
+    <% end %>
     <% if @errors[:event_batches].present? %>
-      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nos tipos de ingresso.</p>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nos tipos de ingresso. <span class="text-white clickable" onclick="document.querySelector('#event-batches').scrollIntoView()"><u>Clique aqui para ver os erros</u></span></p>
     <% end %>
     <% if @errors[:questions].present? %>
-      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nas perguntas para participantes.</p>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nas perguntas para participantes.  <span class="text-white clickable" onclick="document.querySelector('#questions').scrollIntoView()"><u>Clique aqui para ver os erros</u></span></p>
     <% end %>
 
     <%= simple_form_for([:partner_admin, @event]) do |f| %>
@@ -113,7 +116,7 @@
         </div>
       </div>
 
-      <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
+      <h2 class="my-5 title" id="event-batches">Tipos de ingresso, lotes e preços</h2>
 
       <react data-component="EventBatches" data-event="<%= @event.to_json %>" data-event-batches="<%= (@restore_params_after_error ? (params[:event][:event_batches] || []) : @event.event_batches.active).to_json %>" data-errors="<%= @errors.to_json %>"></react>
 
@@ -129,7 +132,7 @@
       
       <h2 class="my-5 title">Perguntas para o participante</h2>
 
-      <div class="participant-questions">
+      <div class="participant-questions" id="questions">
         <react data-component="Questions" data-questions="<%= (@restore_params_after_error ? (params[:questions] || []) : @event.questions.active.non_default).to_json %>" data-errors="<%= @errors.to_json %>"></react>
       </div>
 

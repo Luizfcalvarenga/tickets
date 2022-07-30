@@ -10,53 +10,50 @@ class EventCreator
     @event = Event.new(event_params)
     
     ActiveRecord::Base.transaction do
-      if @event.save
-        create_batch_params.each_with_index do |batch_params, index|
-          event_batch = EventBatch.create(event: @event, 
-            pass_type: batch_params[:pass_type],
-            name: batch_params[:name],
-            quantity: batch_params[:quantity],
-            price_in_cents: batch_params[:price_in_cents],
-            number_of_accesses_granted: batch_params[:number_of_accesses_granted],
-            ends_at: batch_params[:ends_at],
-            order: batch_params[:order])
+      event_save_result = @event.save
 
-          if !event_batch.persisted? 
-            errors[:event_batches] << {
-              index: batch_params[:form_identifier],
-              error: event_batch.errors
-            }
-          end
+      create_batch_params.each_with_index do |batch_params, index|
+        event_batch = EventBatch.create(event: @event, 
+          pass_type: batch_params[:pass_type],
+          name: batch_params[:name],
+          quantity: batch_params[:quantity],
+          price_in_cents: batch_params[:price_in_cents],
+          number_of_accesses_granted: batch_params[:number_of_accesses_granted],
+          ends_at: batch_params[:ends_at],
+          order: batch_params[:order])
+
+        if !event_batch.persisted? 
+          errors[:event_batches] << {
+            index: batch_params[:form_identifier],
+            error: event_batch.errors
+          }
         end
-
-        raise if errors[:event_batches].present?
-
-        @event.create_default_questions
-      
-        questions_params.each do |question_params|
-          question = Question.create(
-            event: @event,
-            kind: question_params[:kind],
-            prompt: question_params[:prompt],
-            optional: question_params[:optional].present?,
-            options: question_params[:options] || [],
-            order: @event.questions.active.count,
-          )
-          if !question.persisted? 
-            errors[:questions] << {
-              index: question_params[:form_identifier],
-              error: question.errors
-            }
-          end
-        end
-
-        raise if errors[:questions].present?
-        
-        return true
-      else
-        errors[:event] = @event.errors
-        raise
       end
+
+      @event.create_default_questions
+      
+      questions_params.each do |question_params|
+        question = Question.create(
+          event: @event,
+          kind: question_params[:kind],
+          prompt: question_params[:prompt],
+          optional: question_params[:optional].present?,
+          options: question_params[:options] || [],
+          order: @event.questions.active.count,
+        )
+        if !question.persisted? 
+          errors[:questions] << {
+            index: question_params[:form_identifier],
+            error: question.errors
+          }
+        end
+      end
+      
+      raise if !event_save_result
+      raise if errors[:event_batches].present?
+      raise if errors[:questions].present?
+      
+      return true
     end
   rescue
     return false
@@ -74,6 +71,8 @@ class EventCreator
   end
 
   def questions_params
-    params[:questions] || []
+    result = params[:questions] || []
+    result.each { |res| res[:options] = res[:options].presence || [] }
+    result
   end
 end
