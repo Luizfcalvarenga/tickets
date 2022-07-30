@@ -1,14 +1,14 @@
 class EventBatch < ApplicationRecord
   belongs_to :event
 
-  validates :price_in_cents, :quantity, :name, presence: true
+  validates :price_in_cents, :quantity, :name, :pass_type, presence: true
 
   has_many :passes
   has_many :event_batch_questions
   has_many :questions, through: :event_batch_questions
   has_many :order_items
 
-  scope :available, -> { where("(event_batches.ends_at is null OR event_batches.ends_at > now()) and (select count(distinct order_items.id) from order_items inner join orders on order_items.order_id = orders.id where order_items.event_batch_id = event_batches.id and (orders.status = 'paid' or now()::time < (orders.created_at + interval '10 min')::time)) < event_batches.quantity") }
+  scope :available, -> { where("(event.batches.removed_at IS NULL) AND (event_batches.ends_at is null OR event_batches.ends_at > now()) and (select count(distinct order_items.id) from order_items inner join orders on order_items.order_id = orders.id where order_items.event_batch_id = event_batches.id and (orders.status = 'paid' or now()::time < (orders.created_at + interval '10 min')::time)) < event_batches.quantity") }
   scope :active, -> { where(removed_at: nil) }
 
   delegate :partner, :fee_percentage, :absorb_fee, to: :event
@@ -30,7 +30,7 @@ class EventBatch < ApplicationRecord
   end
 
   def available?
-    (ends_at.blank? || ends_at > Time.current) && OrderItem.where(event_batch_id: id).where("created_at > ?", Time.current - 10.minute).count < quantity
+    removed_at.blank? && (ends_at.blank? || ends_at > Time.current) && OrderItem.where(event_batch_id: id).where("created_at > ?", Time.current - 10.minute).count < quantity
   end
 
   def ended_at_datetime

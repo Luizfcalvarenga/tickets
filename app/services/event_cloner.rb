@@ -56,7 +56,7 @@ class EventCloner
   end
 
   def create_batch_params
-    @base_event.event_batches.map { |event_batch| event_batch.attributes.except("created_at", "updated_at", "id", "event_id").symbolize_keys } || []
+    @base_event.event_batches.active.map { |event_batch| event_batch.attributes.except("created_at", "updated_at", "id", "event_id").symbolize_keys } || []
   end
 
   def questions_params

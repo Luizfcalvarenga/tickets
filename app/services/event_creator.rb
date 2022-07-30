@@ -1,8 +1,9 @@
 class EventCreator
-  attr_reader :event, :params, :current_user
+  attr_reader :event, :params, :current_user, :errors
   def initialize(params, current_user)
     @params = params
     @current_user = current_user
+    @errors = {event_batches: [], questions: []}
   end
 
   def call
@@ -11,7 +12,7 @@ class EventCreator
     ActiveRecord::Base.transaction do
       if @event.save
         create_batch_params.each_with_index do |batch_params, index|
-          EventBatch.create!(event: @event, 
+          event_batch = EventBatch.create(event: @event, 
             pass_type: batch_params[:pass_type],
             name: batch_params[:name],
             quantity: batch_params[:quantity],
@@ -21,10 +22,15 @@ class EventCreator
             order: batch_params[:order])
         end
 
+        if !event_batch.persisted? 
+          errors[:event_batches] << event_batch.errors.full_messages.join(", ")
+          raise
+        end
+
         @event.create_default_questions
       
         questions_params.each do |question_params|
-          question = Question.create!(
+          question = Question.create(
             event: @event,
             kind: question_params[:kind],
             prompt: question_params[:prompt],
@@ -33,14 +39,19 @@ class EventCreator
             order: @event.questions.active.count,
           )
         end
+
+        if !question.persisted? 
+          errors[:questions] << question.errors.full_messages.join(", ")
+          raise
+        end
         
         return true
       else
         raise
       end
     end
-  # rescue
-    # return false
+  rescue
+    return false
   end
 
   private

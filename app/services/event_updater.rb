@@ -3,6 +3,7 @@ class EventUpdater
   def initialize(event, params)
     @event = event
     @params = params
+    @errors = {event_batches: [], questions: []}
   end
 
   def call
@@ -16,8 +17,8 @@ class EventUpdater
         raise
       end
     end
-  # rescue
-    # return false
+  rescue
+    return false
   end
 
   def update_batches
@@ -37,12 +38,13 @@ class EventUpdater
       )
 
       if !update_batch_result 
-        errors << {order: batch_params[:order], error: event_batch.errors.full_messages.join(", ")}
+        errors[:event_batches] << event_batch.errors.full_messages.join(", ")
+        raise
       end
     end
 
     new_event_batches.each do |batch_params|
-      EventBatch.create!(event: @event, 
+      event_batch = EventBatch.create!(event: @event, 
         pass_type: batch_params[:pass_type],
         name: batch_params[:name],
         quantity: batch_params[:quantity],
@@ -50,6 +52,11 @@ class EventUpdater
         number_of_accesses_granted: batch_params[:number_of_accesses_granted],
         ends_at: batch_params[:ends_at],
         order: batch_params[:order])
+
+      if !event_batch.persisted? 
+        errors[:event_batches] << event_batch.errors.full_messages.join(", ")
+        raise
+      end
     end
   end
 
@@ -69,12 +76,13 @@ class EventUpdater
       )
 
       if !update_question 
-        errors << {order: @event.questions.active.count, error: question.errors.full_messages.join(", ")}
+        errors[:questions] << question.errors.full_messages.join(", ")
+        raise
       end
     end
 
     new_questions.each do |question_params|
-      question = Question.create!(
+      question = Question.create(
         event: @event,
         kind: question_params[:kind],
         prompt: question_params[:prompt],
@@ -82,6 +90,11 @@ class EventUpdater
         options: question_params[:options],
         order: question_params[:order],
       )
+
+      if !question.persisted? 
+        errors[:questions] << question.errors.full_messages.join(", ")
+        raise
+      end
     end
   end
 
