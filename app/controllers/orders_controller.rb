@@ -120,6 +120,12 @@ class OrdersController < ApplicationController
         token: params[:token],
         set_as_default: true,
       })
+
+      if response.errors.present?
+        flash[:alert] = "Erro ao realizar pagamento"
+        redirect_to request.referrer and return
+      end
+
       customer_payment_method_id = response.attributes["id"]
       delete_card_after_payment = true if params[:save_card] != "on"
     end

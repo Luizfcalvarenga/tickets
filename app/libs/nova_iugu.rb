@@ -225,7 +225,8 @@ module NovaIugu
       @direct_pay_params ||= @entity.nova_iugu_charge_params_hash.merge(
         customer_payment_method_id: customer_payment_method_id,
         months: number_of_installments,
-        items: build_item_values_considering_number_of_installments
+        items: build_item_values_considering_number_of_installments,
+        order_id: "#{@entity.nova_iugu_charge_params_hash[:order_id]}-card",
       )
     end
 
