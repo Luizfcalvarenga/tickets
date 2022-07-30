@@ -55,7 +55,7 @@ class OrderPassesGenerator
         if @order.passes.order(:created_at).find_by(order_item_id: pass.order_item_id) == pass
           PassConfirmationSenderJob.perform_later(pass.id)
 
-          DiscordMessager.call("Novo passe comprado: #{pass.order_item.full_description}. Valor: #{ActionController::Base.helpers.number_to_currency(pass.order_item.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
+          DiscordMessager.call("Novo passe comprado (ID ##{pass.id}): #{pass.order_item.full_description}. Valor: #{ActionController::Base.helpers.number_to_currency(pass.order_item.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")}")
         else
           pass.destroy
         end
