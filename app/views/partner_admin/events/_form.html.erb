@@ -21,12 +21,15 @@
         </div>
         <div class="col-md-12 mt-3 file-upload">
           <%= f.input :photo, input_html: { "data-current-image-url": @event.photo&.url } %>
+          <% if @event.errors.present? && @event.errors[:photo] %>
+            <div class="text-danger"><%= @event.errors[:photo].first %></div>
+          <% end %>
         </div>
         <div class="col-md-12">
           <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
         </div>
-        <% if @errors[:event].present? && @errors[:event][:description] %>
-          <div class="text-danger"><%= @errors[:event][:description].first %></div>
+        <% if @event.errors.present? && @event.errors[:description] %>
+          <div class="text-danger"><%= @event.errors[:description].first %></div>
         <% end %>
         <div class="row">
           <div class="col-12">
@@ -87,12 +90,12 @@
         <div class="col-md-6">
           <%= f.input :cep, input_html: { class: "input-cep" }  %>
           <%= f.input :state_id, collection: State.all.order(:name), input_html: { class: 'select-state' }  %>
-          <% if @errors[:event].present? && @errors[:event][:state] %>
-            <div class="text-danger"><%= @errors[:event][:state].first %></div>
+          <% if @event.errors.present? && @event.errors[:state] %>
+            <div class="text-danger"><%= @event.errors[:state].first %></div>
           <% end %>
           <%= f.input :city_id, as: :select, collection: @cities, input_html: { class: 'select-city' }, required: true %>
-          <% if @errors[:event].present? && @errors[:event][:city] %>
-            <div class="text-danger"><%= @errors[:event][:city].first %></div>
+          <% if @event.errors.present? && @event.errors[:city] %>
+            <div class="text-danger"><%= @event.errors[:city].first %></div>
           <% end %>
         </div>
         <div class="col-md-6">
