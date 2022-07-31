@@ -307,6 +307,9 @@ module NovaIugu
         return
       end
 
+      @entity.update(invoice_url: @invoice.attributes["secure_url"].gsub("?bs=true", "")) if @entity.invoice_url.blank?
+      @entity.update(invoice_pdf: @invoice.attributes["secure_url"].gsub("?bs=true", "") + ".pdf") if @entity.invoice_pdf.blank?
+
       if (@invoice.attributes["status"] == "paid")
         @entity.update(
           invoice_paid_at: @invoice.attributes["paid_at"],

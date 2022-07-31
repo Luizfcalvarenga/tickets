@@ -3,6 +3,7 @@ class Membership < ApplicationRecord
   belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
   has_many :user_memberships
+  has_many :user_membership_renewals, through: :user_memberships
   has_many :users, through: :user_memberships
 
   has_rich_text :description

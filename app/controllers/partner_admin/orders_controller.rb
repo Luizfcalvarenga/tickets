@@ -6,8 +6,8 @@ module PartnerAdmin
       max_date = @reference_date.at_end_of_month.change(hour: 23, min: 59, sec: 59)
       partner = current_user.partner
 
-      @orders = Order.joins(:order_items).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
-      @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
+      @orders = Order.joins(:order_items).where(order_items: {partner: partner}).where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).order(:invoice_paid_at).uniq
+      @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.map(&:id)})
 
       @total_sales = @orders.map(&:total_in_cents).sum
       @amount_to_receive = @orders.map(&:amount_to_transfer_to_partner).sum

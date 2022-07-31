@@ -70,7 +70,9 @@
               Sem data limite
             <% end %>
           </p>
-          <% if event_batch.in_sales? %>
+          <% if event_batch.removed_at.present? %>
+            <p class="danger-text br-8 p-3 m-0 f-1x text-center text-white">Desativado</p>
+          <% elsif event_batch.in_sales? %>
             <p class="success-text br-8 p-3 m-0 f-1x text-center text-white">Em vendas</p>
           <% elsif event_batch.available? %>
             <p class="info-text br-8 p-3 m-0 f-1x text-center text-white">Aguardando</p>

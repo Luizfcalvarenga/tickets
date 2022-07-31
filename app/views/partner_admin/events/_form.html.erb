@@ -4,17 +4,33 @@
       <%= @event.new_record? ? "Criar novo evento" : "Atualizar evento" %>
     </h1>
 
+    <% if @event.errors.present? %>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento dos dados do evento.</p>
+    <% end %>
+    <% if @errors[:event_batches].present? %>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nos tipos de ingresso. <span class="text-white clickable" onclick="document.querySelector('#event-batches').scrollIntoView()"><u>Clique aqui para ver os erros</u></span></p>
+    <% end %>
+    <% if @errors[:questions].present? %>
+      <p class="danger-text br-8 p-3">Houve algum erro de preenchimento nas perguntas para participantes.  <span class="text-white clickable" onclick="document.querySelector('#questions').scrollIntoView()"><u>Clique aqui para ver os erros</u></span></p>
+    <% end %>
+
     <%= simple_form_for([:partner_admin, @event]) do |f| %>
       <div class="row">
         <div class="col-md-12">
           <%= f.input :name %>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-12 mt-3 file-upload">
+          <%= f.input :photo, input_html: { "data-current-image-url": @event.photo&.url } %>
+          <% if @event.errors.present? && @event.errors[:photo] %>
+            <div class="text-danger"><%= @event.errors[:photo].first %></div>
+          <% end %>
+        </div>
+        <div class="col-md-12">
           <%= f.rich_text_area :description, placeholder: "Descrição do evento..." %>
         </div>
-        <div class="col-md-4 mt-3 files">
-          <%= f.input :photo %>
-        </div>
+        <% if @event.errors.present? && @event.errors[:description] %>
+          <div class="text-danger"><%= @event.errors[:description].first %></div>
+        <% end %>
         <div class="row">
           <div class="col-12">
           <%= f.rich_text_area :terms_of_use, placeholder: "Termos de uso para esse evento..." %>
@@ -74,7 +90,13 @@
         <div class="col-md-6">
           <%= f.input :cep, input_html: { class: "input-cep" }  %>
           <%= f.input :state_id, collection: State.all.order(:name), input_html: { class: 'select-state' }  %>
+          <% if @event.errors.present? && @event.errors[:state] %>
+            <div class="text-danger"><%= @event.errors[:state].first %></div>
+          <% end %>
           <%= f.input :city_id, as: :select, collection: @cities, input_html: { class: 'select-city' }, required: true %>
+          <% if @event.errors.present? && @event.errors[:city] %>
+            <div class="text-danger"><%= @event.errors[:city].first %></div>
+          <% end %>
         </div>
         <div class="col-md-6">
           <%= f.input :street_name, input_html: { class: "input-street-name" } %>
@@ -97,9 +119,9 @@
         </div>
       </div>
 
-      <h2 class="my-5 title">Tipos de ingresso, lotes e preços</h2>
+      <h2 class="my-5 title" id="event-batches">Tipos de ingresso, lotes e preços</h2>
 
-      <react data-component="EventBatches" data-event="<%= @event.to_json(include: :event_batches) %>"></react>
+      <react data-component="EventBatches" data-event="<%= @event.to_json %>" data-event-batches="<%= (@restore_params_after_error ? (params[:event][:event_batches] || []) : @event.event_batches.active).to_json %>" data-errors="<%= @errors.to_json %>"></react>
 
       <div class="spacer-50"></div>
 
@@ -113,8 +135,8 @@
       
       <h2 class="my-5 title">Perguntas para o participante</h2>
 
-      <div class="participant-questions">
-        <react data-component="Questions" data-questions="<%= @event.questions.active.non_default.to_json %>" ></react>
+      <div class="participant-questions" id="questions">
+        <react data-component="Questions" data-questions="<%= (@restore_params_after_error ? (params[:questions] || []) : @event.questions.active.non_default).to_json %>" data-errors="<%= @errors.to_json %>"></react>
       </div>
 
       <div class="text-center">

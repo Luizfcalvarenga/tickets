@@ -5,8 +5,8 @@ module Admin
       min_date = @reference_date.at_beginning_of_month
       max_date = @reference_date.at_end_of_month.change(hour: 23, min: 59, sec: 59)
 
-      @orders = Order.where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).distinct(:id).order(:id)
-      @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.ids})
+      @orders = Order.where("invoice_paid_at > ? and invoice_paid_at < ?", min_date, max_date).order(:invoice_paid_at).uniq
+      @passes = Pass.joins(order_item: :order).where(orders: {id: @orders.map(&:id)})
 
       @net_total_sales = @orders.map(&:net_value).compact.sum
       @net_result = @net_total_sales - @orders.map(&:amount_to_transfer_to_partner).sum

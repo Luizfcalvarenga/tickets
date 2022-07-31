@@ -65,6 +65,7 @@ window.toastr.options = {
 
 // Internal imports
 import "./add_card";
+import "./file_upload";
 import "./forms";
 import "./address_cep";
 import "./event_user_list";
@@ -105,12 +106,23 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.questions)
               : null
           }
+          errors={
+            container.dataset.errors
+              ? JSON.parse(container.dataset.errors)
+              : null
+          }
         />
       ),
       EventBatches: (
         <EventBatches
           event={
             container.dataset.event ? JSON.parse(container.dataset.event) : null
+          }
+          eventBatches={
+            container.dataset.eventBatches ? JSON.parse(container.dataset.eventBatches) : null
+          }
+          errors={
+            container.dataset.errors ? JSON.parse(container.dataset.errors) : null
           }
         />
       ),

@@ -7,19 +7,19 @@
 # Other methods should be private auxiliary methods
 
 class ApplicationService
-	attr_reader :errors
-	
+  attr_reader :errors
+  
   def self.call(*args, &block)
     new(*args, &block).call
-		return true
-	rescue
-		return false
+    return true
+  rescue
+    return false
   end
 
-	def self.call!(*args, &block)
+  def self.call!(*args, &block)
     new(*args, &block).call!
-		return true
-	rescue
-		return false
+    return true
+  rescue
+    return false
   end
 end

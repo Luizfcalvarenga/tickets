@@ -3,6 +3,7 @@ class OrderItem < ApplicationRecord
   belongs_to :partner, optional: true
   belongs_to :event_batch, optional: true
   belongs_to :day_use_schedule_pass_type, optional: true
+  belongs_to :user_membership_renewal, optional: true
   
   has_one :pass, dependent: :destroy
 
@@ -13,6 +14,8 @@ class OrderItem < ApplicationRecord
       day_use_schedule_pass_type.day_use
     elsif event_batch.present?
       event_batch.event
+    elsif user_membership_renewal.present?
+      user_membership_renewal.user_membership.membership
     else 
       raise
     end
@@ -70,6 +73,8 @@ class OrderItem < ApplicationRecord
       return "#{event_batch.event.name} - #{event_batch.pass_type} - #{event_batch.name}"
     elsif day_use_schedule_pass_type.present?
       return "#{day_use_schedule_pass_type.day_use_schedule.day_use.name} - #{day_use_schedule_pass_type.day_use_schedule.name} - #{day_use_schedule_pass_type.name} - #{start_time.strftime("%d/%m/%Y")} - #{start_time.strftime("%H:%M")} - #{end_time.strftime("%H:%M")}"
+    elsif user_membership_renewal.present?
+      return "Renovação da assinatura #{user_membership_renewal.user_membership.membership.name} - #{user_membership_renewal.renewal_date.strftime("%d/%m/%Y")}"
     else
       raise RecordInvalid
     end

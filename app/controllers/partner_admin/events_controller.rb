@@ -26,6 +26,7 @@ module PartnerAdmin
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
       @experiences = current_user.partner.events.pluck(:experience).select(&:present?).uniq
+      @errors = {}
     end
   
     def create
@@ -37,7 +38,11 @@ module PartnerAdmin
       else
         flash[:alert] = "Erro ao criar evento"
         @event = service.event
+        @states = State.all
+        @cities = @event.state.present? ? @event.state.cities : []
         @experiences = current_user.partner.events.pluck(:experience).select(&:present?).uniq
+        @errors = service.errors
+        @restore_params_after_error = true
         render :new
       end     
     end
@@ -47,6 +52,7 @@ module PartnerAdmin
       @states = State.all
       @cities = @event.state.present? ? @event.state.cities : []
       @experiences = @event.partner.events.pluck(:experience).select(&:present?).uniq
+      @errors = {}
     end
 
     def update
@@ -62,6 +68,8 @@ module PartnerAdmin
         redirect_to dashboard_path_for_user(current_user)
       else
         flash[:alert] = "Erro ao atualizar evento"
+        @errors = service.errors
+        @restore_params_after_error = true
         render :edit
       end  
     end

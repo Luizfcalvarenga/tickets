@@ -2,19 +2,15 @@ class UserMembership < ApplicationRecord
   belongs_to :user
   belongs_to :membership
 
+  has_many :user_membership_renewals
   has_many :passes
   has_many :accesses, through: :passes
 
-  scope :active, -> { where("iugu_active is true") }
+  scope :active, -> { where(deactivated_at: nil) }
 
   def create_plan_at_iugu
     self.update(iugu_active: true)
     NovaIugu::SubscriptionCreator.new(self).call
-  end
-
-  def active?
-    # check_activity!
-    deactivated_at.blank? && iugu_active
   end
 
   def nova_iugu_subscription_params_hash
