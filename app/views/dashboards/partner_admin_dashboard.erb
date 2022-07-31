@@ -69,21 +69,31 @@
     </div>
 
     <div class="tab-pane fade" id="nav-memberships" role="tabpanel" aria-labelledby="nav-memberships">
-      <div class="cards row">
-        <% @memberships.each do |membership| %>
-        <div class="card col-12 col-md-3 mb-3 text-center">
-          <div class="card-body bg-success d-flex align-items-center">
-            <div class="w-100">
-              <h2 class="bold h3 text-dark text-center"> <%= membership.name %></h2>
-              <p class=""><%= membership.user_memberships.count %> mensalistas - R$ <%= display_price(membership.price_in_cents) %>.</p>
-            </div>
-          </div>
-          <div class="card-footer bg-dark d-none">
-            <%= link_to "Editar", edit_partner_admin_membership_path(membership), class: "text-reset" %>
-          </div>
-        </div>      
-      <% end %>
-      </div>
+      <table id="user-list">
+        <thead>
+          <tr>
+            <th scope="col">Mensalidade</th>
+            <th scope="col">Criada em</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Mensalistas ativos</th>
+            <th scope="col">Total de cobranças</th>
+            <th scope="col">Receita total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @memberships.each do |membership| %>
+            <tr>
+              <td data-label="Mensalidade"><%= membership.name %></td>
+              <td data-label="Mensalidade"><%= membership.created_at.strftime("%d/%m/%Y") %></td>
+              <td data-label="Mensalidade"><%= display_price(membership.price_in_cents) %></td>
+              <td data-label="Mensalidade"><%= membership.user_memberships.active.count %></td>
+              <td data-label="Mensalidade"><%= membership.user_membership_renewals.count %></td>
+              <td data-label="Mensalidade"><%= display_price(OrderItem.where(user_membership_renewal: membership.user_membership_renewals).map(&:total_in_cents).sum) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
       <div class="text-center">
         <%= link_to new_partner_admin_membership_path do %>
           <button class="btn btn-success my-3">CRIAR NOVA ASSINATURA</button>
