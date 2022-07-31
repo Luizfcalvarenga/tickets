@@ -7,6 +7,8 @@ class Order < ApplicationRecord
   has_many :order_items
   has_many :passes, through: :order_items
 
+  validates :invoice_id, uniqueness: true, allow_blank: true
+
   accepts_nested_attributes_for :user
 
   scope :paid, -> { where(status: "paid")}
@@ -93,6 +95,9 @@ class Order < ApplicationRecord
   end
 
   def perform_after_payment_confirmation_actions
+    self.update(status: "paid")
+    return if related_entity.class == Membership
+
     if is_free?
       self.update(
         value: 0,
@@ -101,7 +106,6 @@ class Order < ApplicationRecord
       )
     end
     OrderPassesGenerator.new(self).call
-    self.update(status: "paid")
   end
 
   def check_payment_actions_performed

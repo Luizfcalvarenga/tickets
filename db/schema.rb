@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_30_152256) do
+ActiveRecord::Schema.define(version: 2022_07_31_182242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,10 +258,12 @@ ActiveRecord::Schema.define(version: 2022_07_30_152256) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "absorb_fee"
     t.bigint "partner_id"
+    t.bigint "user_membership_renewal_id"
     t.index ["day_use_schedule_pass_type_id"], name: "index_order_items_on_day_use_schedule_pass_type_id"
     t.index ["event_batch_id"], name: "index_order_items_on_event_batch_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["partner_id"], name: "index_order_items_on_partner_id"
+    t.index ["user_membership_renewal_id"], name: "index_order_items_on_user_membership_renewal_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -394,6 +396,14 @@ ActiveRecord::Schema.define(version: 2022_07_30_152256) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "user_membership_renewals", force: :cascade do |t|
+    t.bigint "user_membership_id", null: false
+    t.datetime "renewal_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_membership_id"], name: "index_user_membership_renewals_on_user_membership_id"
+  end
+
   create_table "user_memberships", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "membership_id", null: false
@@ -458,6 +468,7 @@ ActiveRecord::Schema.define(version: 2022_07_30_152256) do
   add_foreign_key "order_items", "event_batches"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "partners"
+  add_foreign_key "order_items", "user_membership_renewals"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "created_by_id"
   add_foreign_key "orders", "users", column: "directly_generated_by_id"
@@ -478,6 +489,7 @@ ActiveRecord::Schema.define(version: 2022_07_30_152256) do
   add_foreign_key "questions", "events"
   add_foreign_key "reads", "passes"
   add_foreign_key "reads", "users", column: "read_by_id"
+  add_foreign_key "user_membership_renewals", "user_memberships"
   add_foreign_key "user_memberships", "memberships"
   add_foreign_key "user_memberships", "users"
 end
