@@ -55,7 +55,7 @@ class DayUseSchedule < ApplicationRecord
         slots << {
           start_time: start_time,
           end_time: end_time,
-          order_item_count: OrderItem.where(day_use_schedule_pass_type_id: day_use_schedule_pass_types.ids, start_time: start_time).count
+          order_item_count: OrderItem.joins(:order).where(day_use_schedule_pass_type_id: day_use_schedule_pass_types.ids, start_time: start_time).where("orders.invoice_status = 'paid' OR order_items.created_at > ?", 10.minutes.ago).count
         }
       end
     end
