@@ -1,8 +1,6 @@
 module Api
   module V1
     class UsersController < Api::V1::BaseController 
-      skip_before_action :authenticate_user!, only: :show
-
       include DeviseTokenAuth::Concerns::SetUserByToken
 
       def me

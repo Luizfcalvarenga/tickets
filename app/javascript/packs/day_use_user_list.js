@@ -77,20 +77,6 @@ document.addEventListener("turbolinks:load", () => {
 
   addEventListenersToDirectAccessButtons();
 
-  const dateButtons = document.querySelectorAll(".date-card")
-  let currentDate = dateButtons[0].dataset.date
-
-  dateButtons.forEach((dateBtn) => {
-    dateBtn.addEventListener("click", () => {
-      currentDate = dateBtn.dataset.date;
-
-      dateButtons.forEach((b) => b.classList.remove("selected"))
-      dateBtn.classList.add("selected")
-
-      debouncedReloadList();
-    })
-  })
-
   const debouncedReloadList = debounce(() => {
     const tableElement = document.querySelector("#user-list");
     const tableElementParentNode = document.querySelector(
@@ -99,7 +85,7 @@ document.addEventListener("turbolinks:load", () => {
 
     if (!tableElement) return;
 
-    const url = `${window.location.href}?date=${currentDate}&query=${queryInput.value}`;
+    const url = `${window.location.href}?query=${queryInput.value}`;
 
     fetch(url, { headers: { Accept: "text/plain" } })
       .then((response) => response.text())

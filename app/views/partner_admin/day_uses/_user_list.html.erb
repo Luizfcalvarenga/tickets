@@ -26,7 +26,7 @@
           <td><%= question_answer.value %></td>
         <% end %>
         <td data-label="Passe"><%= pass.day_use_schedule_pass_type.name %></td>
-        <td data-label="Horário"><%= pass.start_time.strftime("%d/%m/%Y") %></td>
+        <td data-label="Data"><%= pass.start_time.strftime("%d/%m/%Y") %></td>
         <td data-label="Horário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
         <td data-label="Acesso">
           <% if pass.accesses.present? %>
