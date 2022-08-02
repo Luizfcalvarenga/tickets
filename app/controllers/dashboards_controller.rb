@@ -1,7 +1,8 @@
 class DashboardsController < ApplicationController
   def user_dashboard
-    @passes = current_user.passes.order(:start_time).active
-    @user_memberships = current_user.user_memberships
+    @passes = current_user.passes.where("day_use_schedule_pass_type_id IS NOT NULL or event_batch_id IS NOT NULL").order(start_time: :desc).active
+    @membership_passes = current_user.passes.where("user_membership_id IS NOT NULL").active
+    @orders = current_user.orders.order(created_at: :desc)
     @profile = current_user
   end
 

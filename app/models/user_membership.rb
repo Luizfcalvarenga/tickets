@@ -8,6 +8,10 @@ class UserMembership < ApplicationRecord
 
   scope :active, -> { where(deactivated_at: nil) }
 
+  def active?
+    deactivated_at.blank?
+  end
+
   def create_plan_at_iugu
     self.update(iugu_active: true)
     NovaIugu::SubscriptionCreator.new(self).call

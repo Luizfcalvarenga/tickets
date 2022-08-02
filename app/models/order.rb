@@ -157,4 +157,37 @@ class Order < ApplicationRecord
       end
     end
   end
+
+  def has_items_with_start_date_on_past?
+    order_items.where("start_time < ?", Time.current.beginning_of_day).exists? 
+  end
+
+  def status_display
+    return {
+      label: "Expirada",
+      class: "text-danger"
+    } if status != "paid" && has_items_with_start_date_on_past?
+
+    return {
+      label: "Gerada automaticamente",
+      class: "text-success"
+    } if status == "paid" && invoice_url.blank?
+
+    return {
+      label: "Pendente",
+      class: "text-warning"
+    } if status.blank?
+
+    {
+      paid: {
+        label: "Pago",
+        class: "text-success"
+      },
+      pending: {
+        label: "Pendente",
+        class: "text-warning"
+      },
+    }[status.to_sym]
+  end
 end
+

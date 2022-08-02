@@ -24,7 +24,7 @@ class PassPdfBuilder
     
     document.move_up 150
 
-    document.image URI.open(@pass.partner.logo.url), width: 150, height: 150
+    document.image URI.open(@pass.partner.logo&.service_url || "https://res.cloudinary.com/nuflow/image/upload/v1648740319/logo_preta_q88syu.png"), width: 150, height: 150
 
     document.move_down 20
 
@@ -67,16 +67,6 @@ class PassPdfBuilder
 
     document.image URI.open("https://res.cloudinary.com/nuflow/image/upload/v1648740319/logo_preta_q88syu.png"), width: 100, height: 100, position: :center
 
-    @document.render_file upload_directory
-
-    pass.pdf_pass.attach(io: File.open(upload_directory), filename: upload_name, content_type: 'application/pdf')
-  end
-
-  def upload_directory
-    "#{Rails.root}/public/#{upload_name}"
-  end
-
-  def upload_name
-    "Passe #{pass.name.gsub("/", "-")} - #{pass.holder_name}.pdf"
+    document.render
   end
 end

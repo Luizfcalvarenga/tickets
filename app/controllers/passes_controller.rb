@@ -20,13 +20,9 @@ class PassesController < ApplicationController
   def download
     @pass = Pass.find_by(identifier: params[:identifier])
 
-    PassPdfBuilder.new(@pass).call unless @pass.pdf_pass.attached?
+    file = PassPdfBuilder.new(@pass).call
 
-    if params[:download].present?
-      send_data @pass.pdf_pass.download, filename: @pass.pdf_pass.filename.to_s, content_type: @pass.pdf_pass.content_type
-    else
-      redirect_to rails_blob_path(@pass.pdf_pass, disposition: 'preview')
-    end
+    send_data file, filename: "Passe #{@pass.name.gsub("/", "-")} - #{@pass.holder_name}.pdf", content_type: "application/pdf"
   end
 
   private
