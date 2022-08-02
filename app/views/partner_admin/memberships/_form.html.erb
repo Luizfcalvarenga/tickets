@@ -2,6 +2,11 @@
   <h1 class="title"><%= @membership.new_record? ? "Criar nova assinatura" : "Editar assinatura #{@membership.name}" %></h1>
 
   <%= simple_form_for([:partner_admin, @membership]) do |f| %>
+    <% if @membership.persisted? %>
+      <p class="info-text text-white p-4 br-8 mb-5 mt-3">
+        <i class="fa fa-info-circle my-3 pe-2"></i>Atenção: alterar um plano já existente fará com que as próximas cobranças desse plano venham com os novos valores já ajustados e afetará os usuários já inscritos nesse plano.
+      </p>
+    <% end %>
     <%= f.input :name %>
 
     <p class="text-success fs-20 mb-0 mt-3" for="day_use_name">Descrição da assinatura</p>

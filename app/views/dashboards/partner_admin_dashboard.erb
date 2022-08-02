@@ -78,6 +78,7 @@
             <th scope="col">Mensalistas ativos</th>
             <th scope="col">Total de cobranças</th>
             <th scope="col">Receita total</th>
+            <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -89,6 +90,7 @@
               <td data-label="Mensalidade"><%= membership.user_memberships.active.count %></td>
               <td data-label="Mensalidade"><%= membership.user_membership_renewals.count %></td>
               <td data-label="Mensalidade"><%= display_price(OrderItem.where(user_membership_renewal: membership.user_membership_renewals).map(&:total_in_cents).sum) %></td>
+              <td data-label="Ações"><%= link_to "Editar", edit_partner_admin_membership_path(membership), class: "btn btn-success" %></td>
             </tr>
           <% end %>
         </tbody>

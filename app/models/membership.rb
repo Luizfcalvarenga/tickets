@@ -13,10 +13,13 @@ class Membership < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :partner_id }
 
   after_create :create_plan_at_iugu
+  after_update :update_plan_at_iugu
 
   scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
   scope :deactivated, -> { where.not(deactivated_at: nil) }
+
+  validates :price_in_cents, :recurrence_interval_in_months, numericality: { greater_than: 0 }
 
   def identifier
     "nuflowpass-#{partner.id}-#{id}"
@@ -26,16 +29,30 @@ class Membership < ApplicationRecord
     {
       name: name,
       identifier: identifier,
-      interval: recurrence_interval_in_months,
+      interval: recurrence_interval_in_months || 0,
       interval_type: "months",
-      value_cents: price_in_cents,
+      value_cents: price_in_cents || 0,
       payable_with: "credit_card",
       billing_days: 7,
     }
   end
 
   def create_plan_at_iugu
-    NovaIugu::PlanCreator.new(self).call
+    response = ::Iugu::Plan.create(nova_iugu_plan_params_hash)
+    self.update(iugu_plan_id: response.attributes["id"]) if response.errors.blank?
+  end
+
+  def update_plan_at_iugu
+    plan = fetch_plan_at_iugu
+    nova_iugu_plan_params_hash.each do |key, value|
+      plan.send("#{key}=", value)
+    end
+    response = plan.save
+    raise "Plan update error for plan #{id}: #{response.errors.inspect}" if !response
+  end
+
+  def fetch_plan_at_iugu
+    ::Iugu::Plan.fetch(iugu_plan_id)
   end
 
   def full_address
