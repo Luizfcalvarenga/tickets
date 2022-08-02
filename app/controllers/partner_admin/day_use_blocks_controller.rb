@@ -43,7 +43,9 @@ module PartnerAdmin
     private
 
     def day_use_block_params
-      params.require(:day_use_block).permit(:block_date, :weekday, :start_time, :end_time).merge(day_use: DayUse.find(params[:day_use_id]), created_by: current_user)
+      result = params.require(:day_use_block).permit(:block_date, :weekday, :start_time, :end_time).merge(day_use: DayUse.find(params[:day_use_id]), created_by: current_user)
+      result[:weekday] = nil if result[:block_date].present?
+      result
     end
   end
 end
