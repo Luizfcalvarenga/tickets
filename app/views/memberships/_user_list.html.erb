@@ -21,10 +21,10 @@
         </td>
         <td data-label="Número de acessos">
           <p class="m-0"><%= Access.joins(:pass).where(passes: {partner_id: @partner.id, user_id: user.id}).where.not(passes: {user_membership_id: nil}).count %> acessos</p>
-          <p class="m-0">Desde <%= user.user_memberships.where(user_memberships: {membership_id: @memberships.ids}).minimum(:created_at).strftime("%d/%m/%Y") %></p>
+          <p class="m-0">Desde <%= user.user_memberships.where(user_memberships: {membership_id: @memberships.map(&:id)}).minimum(:created_at).strftime("%d/%m/%Y") %></p>
         </td>
         <td data-label="Mensalidades ativas">
-          <% user_memberships = user.user_memberships.active.where(user_memberships: {membership_id: @memberships.ids}) %>
+          <% user_memberships = user.user_memberships.active.where(user_memberships: {membership_id: @memberships.map(&:id)}) %>
           <% user_memberships.each do |user_membership| %>
             <div class="flex center between mb-2 page-desktop">
               <p class="m-0"><%= user_membership.membership.name %> (<%= user_membership.accesses.for_current_month.count %> acessos esse mês)</p>

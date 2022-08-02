@@ -21,6 +21,10 @@ class Membership < ApplicationRecord
 
   validates :price_in_cents, :recurrence_interval_in_months, numericality: { greater_than: 0 }
 
+  def active?
+    approved_at.present? && deactivated_at.blank?
+  end
+
   def identifier
     "nuflowpass-#{partner.id}-#{id}"
   end
@@ -53,6 +57,10 @@ class Membership < ApplicationRecord
 
   def fetch_plan_at_iugu
     ::Iugu::Plan.fetch(iugu_plan_id)
+  end
+
+  def delete_plan_at_iugu
+    ::Iugu::Plan.fetch(iugu_plan_id).delete
   end
 
   def full_address

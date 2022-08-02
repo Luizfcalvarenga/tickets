@@ -78,6 +78,7 @@
             <th scope="col">Mensalistas ativos</th>
             <th scope="col">Total de cobranças</th>
             <th scope="col">Receita total</th>
+            <th scope="col">Visível?</th>
             <th scope="col">Ações</th>
           </tr>
         </thead>
@@ -85,11 +86,12 @@
           <% @memberships.each do |membership| %>
             <tr>
               <td data-label="Mensalidade"><%= membership.name %></td>
-              <td data-label="Mensalidade"><%= membership.created_at.strftime("%d/%m/%Y") %></td>
-              <td data-label="Mensalidade"><%= display_price(membership.price_in_cents) %></td>
-              <td data-label="Mensalidade"><%= membership.user_memberships.active.count %></td>
-              <td data-label="Mensalidade"><%= membership.user_membership_renewals.count %></td>
-              <td data-label="Mensalidade"><%= display_price(OrderItem.where(user_membership_renewal: membership.user_membership_renewals).map(&:total_in_cents).sum) %></td>
+              <td data-label="Criada em"><%= membership.created_at.strftime("%d/%m/%Y") %></td>
+              <td data-label="Valor"><%= display_price(membership.price_in_cents) %></td>
+              <td data-label="Mensalistas ativos"><%= membership.user_memberships.active.count %></td>
+              <td data-label="Total de cobranças"><%= membership.user_membership_renewals.count %></td>
+              <td data-label="Receita total"><%= display_price(OrderItem.where(user_membership_renewal: membership.user_membership_renewals).map(&:total_in_cents).sum) %></td>
+              <td data-label="Visível?"><%= membership.active? ? "Sim" : "Não" %></td>
               <td data-label="Ações"><%= link_to "Editar", edit_partner_admin_membership_path(membership), class: "btn btn-success" %></td>
             </tr>
           <% end %>

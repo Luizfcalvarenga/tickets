@@ -12,12 +12,12 @@ class DashboardsController < ApplicationController
 
   def partner_user_dashboard
     @partner = current_user.partner
-    @events = current_user.partner.events
-    @day_uses = current_user.partner.day_uses    
-    @memberships = @partner.memberships
+    @events = current_user.partner.events.active
+    @day_uses = current_user.partner.day_uses.active
+    @memberships = (@partner.memberships.active + @partner.memberships.joins(:user_memberships).merge(UserMembership.active)).uniq
     
-    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids}).group("users.id").order("users.name")
-  
+    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.map(&:id)}).group("users.id").order("users.name")
+
     if params[:query].present?
       sql_query = "users.email ILIKE :query OR users.name ILIKE :query OR translate(users.document_number, '.', '') ILIKE :query "
       @users = @users.where(sql_query, query: "%#{params[:query].gsub(".", "")}%") if params[:query].present?
@@ -32,12 +32,12 @@ class DashboardsController < ApplicationController
 
   def partner_admin_dashboard
     @partner = current_user.partner
-    @events = current_user.partner.events.order(scheduled_start: :desc)
-    @day_uses = current_user.partner.day_uses    
-    @memberships = @partner.memberships
+    @events = current_user.partner.events.order(scheduled_start: :desc).active
+    @day_uses = current_user.partner.day_uses.active
+    @memberships = (@partner.memberships.active + @partner.memberships.joins(:user_memberships).merge(UserMembership.active)).uniq
     
-    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.ids}).group("users.id").order("users.name")
-  
+    @users = User.joins(passes: [user_membership: :membership]).where(memberships: {id: @memberships.map(&:id)}).group("users.id").order("users.name")
+
     if params[:query].present?
       sql_query = "users.email ILIKE :query OR users.name ILIKE :query OR translate(users.document_number, '.', '') ILIKE :query "
       @users = @users.where(sql_query, query: "%#{params[:query].gsub(".", "")}%") if params[:query].present?
