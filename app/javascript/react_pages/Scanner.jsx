@@ -3,10 +3,24 @@ import React, { useEffect, useState } from "react";
 export function Scanner(props) {
   const [readResult, setReadResult] = useState();
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(true);
 
   const handleAccessModalClose = () => {
     $("#access-modal").hide();
   };
+
+  const onFocus = () => setIsFocused(true)
+  const onBlur = () => setIsFocused(false)
+
+  useEffect(() => {
+    window.addEventListener("focus", () => onFocus);
+    window.addEventListener("blur", () => onBlur);
+    onFocus();
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener("blur", onBlur);
+    };
+  }, []);
 
   useEffect(() => {
     const videoElement = document.querySelector("#reader-video");
@@ -54,7 +68,7 @@ export function Scanner(props) {
 
   return (
     <div className="main-div vh-100 w-100 position-relative bg-dark">
-      {!readResult ? (
+      {!readResult || !isFocused ? (
         <div className="flex column center vh-100">
           <div className="h-20 flex center around">
             <div>
@@ -130,9 +144,7 @@ export function Scanner(props) {
                 {readResult.question_list.map((question) => {
                   return (
                     <p className="m-0 text-white fs-18">
-                      <span className="fw-700">
-                        {question.question.prompt}
-                      </span>
+                      <span className="fw-700">{question.question.prompt}</span>
                       : {question.value}
                     </p>
                   );
