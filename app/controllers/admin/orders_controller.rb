@@ -13,7 +13,7 @@ module Admin
 
       respond_to do |format|
         format.html
-        format.csv { send_data @orders.to_csv("admin"), filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
+        format.csv { send_data Order.where(id: @orders.map(&:id)).to_csv("admin"), filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
       end
     end
   end
