@@ -31,21 +31,37 @@ class User < ApplicationRecord
     admin: "admin",
   }
 
+  def encrypt_email
+    @SECURE = 'brRPNZEt5r8MebFBdQHRVyFYReBdAgCN'
+    @CIPHER = 'aes-256-cbc'
+
+    crypt = ActiveSupport::MessageEncryptor.new(@SECURE, @CIPHER)
+    crypt.encrypt_and_sign(self.email)
+  end
+
+  def self.decrypt_email(email)
+    @SECURE = 'brRPNZEt5r8MebFBdQHRVyFYReBdAgCN'
+    @CIPHER = 'aes-256-cbc'
+
+    crypt = ActiveSupport::MessageEncryptor.new(@SECURE, @CIPHER)
+    crypt.decrypt_and_verify(email)
+  end
+
   def name_must_have_at_least_two_words
-    if name.present? && name.split.length < 2
+    if name.split.length < 2
       errors.add(:name, "deve ter pelo menos duas palavras")
     end
   end
 
   def cpf_must_be_valid
-    if document_number.present? && !cpf_valid?(document_number)
+    if !cpf_valid?(document_number)
       errors.add(:document_number, "inválido")
     end
   end
 
   def cep_must_be_valid
-    if cep.present? && cep.gsub(/[^0-9]/, '').length != 8
-      errors.add(:name, "deve ter 8 digitos numéricos")
+    if cep.gsub(/[^0-9]/, '').length != 8
+      errors.add(:cep, "deve ter 8 digitos numéricos")
     end
   end
 

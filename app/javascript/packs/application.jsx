@@ -67,6 +67,7 @@ window.toastr.options = {
 import "./add_card";
 import "./file_upload";
 import "./forms";
+import "./partner_admin_day_use";
 import "./address_cep";
 import "./event_user_list";
 import "./day_use_user_list";

@@ -4,13 +4,10 @@ module PartnerAdmin
       @day_use = DayUse.find(params[:id])
       @day_use_schedules = @day_use.day_use_schedules
 
-      date = params[:date].present? ? Date.new(*params[:date].split("-").reverse.map(&:to_i)) : Time.current  
-
-      @passes = @day_use.passes.for_date(date).distinct("passes.id")
+      @passes = @day_use.passes.after_date(Time.current).distinct("passes.id")
         .joins(question_answers: :question)
         .joins(:user)
-        # .where(question: { prompt: ["Nome completo"] })
-        # .order("question_answers.value")
+        .order(:start_time)
     
       if params[:query].present?
         sql_query = "question_answers.value ILIKE :query OR users.email ILIKE :query"

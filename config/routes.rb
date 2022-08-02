@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       mount_devise_token_auth_for 'User', at: 'auth'
 
+      get 'day_uses/:id', to: 'day_uses#show', as: "day_use"
+
       get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
       get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"
 

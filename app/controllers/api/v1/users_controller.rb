@@ -1,13 +1,15 @@
 module Api
-	module V1
-		class UsersController < Api::V1::BaseController 
-			include DeviseTokenAuth::Concerns::SetUserByToken
+  module V1
+    class UsersController < Api::V1::BaseController 
+      skip_before_action :authenticate_user!, only: :show
 
-			def me
-				authorize User
+      include DeviseTokenAuth::Concerns::SetUserByToken
 
-				render json: { id: current_user.id, email: current_user.email }
-			end
-		end
-	end
+      def me
+        authorize User
+
+        render json: { id: current_user.id, email: current_user.email }
+      end
+    end
+  end
 end

@@ -1,31 +1,33 @@
 <table id="user-list">
   <thead>
     <tr>
-      <% day_use.questions.default.order(:order).each do |day_use_question| %>
+      <th scope="col">Usuário</th>
+      <% day_use.questions.default.where(prompt: ["Nome completo", "CPF"]).order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
       <% end %>
-      <th scope="col">Usuário</th>
-      <th scope="col">Horário</th>
       <% day_use.questions.non_default.order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
       <% end %>
-      <th scope="col">Acesso</th>
       <th scope="col">Passe</th>
+      <th scope="col">Data</th>
+      <th scope="col">Horário</th>
+      <th scope="col">Acesso</th>
       <th scope="col">Ações</th>
     </tr>
   </thead>
   <tbody>
     <% passes.each do |pass| %>
       <tr>
-        <% pass.question_answers.joins(:question).merge(Question.default).order("questions.order").each do |question_answer| %>
+        <td data-label="Usuário"><%= pass.user.email %></td>
+        <% pass.question_answers.joins(:question).merge(Question.default.where(prompt: ["Nome completo", "CPF"])).order("questions.order").each do |question_answer| %>
           <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>
         <% end  %>
-        <td data-label="Usuário"><%= pass.user.email %></td>
-        <td data-label="Horário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
-        <td data-label="Passe"><%= pass.day_use_schedule_pass_type.name %></td>
         <% pass.question_answers.joins(:question).merge(Question.non_default).order("questions.order").each do |question_answer| %>
           <td><%= question_answer.value %></td>
         <% end %>
+        <td data-label="Passe"><%= pass.day_use_schedule_pass_type.name %></td>
+        <td data-label="Horário"><%= pass.start_time.strftime("%d/%m/%Y") %></td>
+        <td data-label="Horário"><%= pass.start_time.strftime("%H:%M") %> - <%= pass.end_time.strftime("%H:%M") %></td>
         <td data-label="Acesso">
           <% if pass.accesses.present? %>
             <p class="m-0"><i class="fa fa-check text-success fs-20 px-3"></i><%= pass.accesses.order(:created_at).last.created_at.strftime("%d/%m/%Y - %H:%M") %></p>
