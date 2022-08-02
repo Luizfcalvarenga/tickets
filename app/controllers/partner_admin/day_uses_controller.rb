@@ -40,7 +40,9 @@ module PartnerAdmin
         flash[:notice] = "Agendamento criado com sucesso"
         redirect_to dashboard_path_for_user(current_user)
       else
-        flash[:alert] = "Erro ao criar Agendamento"
+        @day_use = service.day_use
+        @day_use_schedules = @day_use.day_use_schedules
+        @restore_params_after_error = true
         render :new
       end 
     end

@@ -9,7 +9,6 @@ document.addEventListener("turbolinks:load", () => {
        label.innerHTML = `<div class="file-div"><img style="height: 300px" src="${currentImageUrl}"/></div>${fileUploadHTML}`;
     }
 
-    console.log(fileInput);
     label.addEventListener("click", () => {
       label
         .querySelector("input[type=file]")

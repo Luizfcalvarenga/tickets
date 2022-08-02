@@ -9,19 +9,26 @@
 
       <p class="text-success fs-20 mb-0 mt-4" for="day_use_name">Descrição</p>
       <%= f.rich_text_area :description, placeholder: "Descrição do Agendamento..." %>
+      <% if @day_use.errors.present? && @day_use.errors[:description] %>
+        <div class="text-danger"><%= @day_use.errors[:description].first %></div>
+      <% end %>
 
       <p class="text-success fs-20 mb-0 mt-4" for="day_use_name">Termos de uso</p>
       <%= f.rich_text_area :terms_of_use, placeholder: "Termos de uso para esse agendamento..." %>
 
       <div class="spacer-30"></div>
 
-      <%= f.input :photo, as: :file %>
+        <div class="col-md-12 mt-3 file-upload">
+          <%= f.input :photo, input_html: { "data-current-image-url": @day_use.photo&.url } %>
+          <% if @day_use.errors.present? && @day_use.errors[:photo] %>
+            <div class="text-danger"><%= @day_use.errors[:photo].first %></div>
+          <% end %>
+        </div>
 
       <div class="spacer-50"></div>
 
       <h2 class="title">Cronograma</h2>
-
-      <react data-component="DayUseSchedules" data-day-use-schedules="<%= @day_use_schedules.to_json(include: :day_use_schedule_pass_types) %>"></react>
+      <react data-component="DayUseSchedules" data-day-use-schedules="<%= (@restore_params_after_error ? (params[:day_use][:day_use_schedules] || []).to_json : @day_use_schedules.to_json(include: :day_use_schedule_pass_types)) %>"></react>
 
       <%= f.submit @day_use.new_record? ? "Criar novo Agendamento" : "Atualizar Agendamento", class: "btn btn-success mt-5 w-100" %>
     <% end %>

@@ -19,6 +19,15 @@ class DayUse < ApplicationRecord
   scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
   scope :deactivated, -> { where.not(deactivated_at: nil) }
+
+  validates :name, :description, presence: true
+  # validate :must_have_uploaded_photo
+
+  def must_have_uploaded_photo
+    if !photo.attached?
+      errors.add(:photo, "Deve ser enviado uma imagem para o banner do Agendamento")
+    end
+  end
   
   def schedule_for_date(date)
     day_use_schedules.find_by(weekday: date.strftime("%A").downcase)

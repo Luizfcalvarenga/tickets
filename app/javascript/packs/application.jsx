@@ -137,67 +137,67 @@ const loadReactComponent = () => {
           }
         />
       ),
-
+      
       EventOrderItems: (
         <EventOrderItems
-          event={
-            container.dataset.event ? JSON.parse(container.dataset.event) : null
-          }
-          eventBatches={
-            container.dataset.eventBatches
-              ? JSON.parse(container.dataset.eventBatches)
-              : null
-          }
-          feePercentage={
-            container.dataset.feePercentage
-              ? JSON.parse(container.dataset.feePercentage)
-              : null
-          }
+        event={
+          container.dataset.event ? JSON.parse(container.dataset.event) : null
+        }
+        eventBatches={
+          container.dataset.eventBatches
+          ? JSON.parse(container.dataset.eventBatches)
+          : null
+        }
+        feePercentage={
+          container.dataset.feePercentage
+          ? JSON.parse(container.dataset.feePercentage)
+          : null
+        }
         />
-      ),
-      DayUseOrderItems: (
-        <DayUseOrderItems
+        ),
+        DayUseOrderItems: (
+          <DayUseOrderItems
           dayUse={
             container.dataset.dayUse
-              ? JSON.parse(container.dataset.dayUse)
-              : null
+            ? JSON.parse(container.dataset.dayUse)
+            : null
           }
           dayUseSchedule={
             container.dataset.dayUseSchedule
-              ? JSON.parse(container.dataset.dayUseSchedule)
-              : null
+            ? JSON.parse(container.dataset.dayUseSchedule)
+            : null
           }
           openSlots={
             container.dataset.openSlots
-              ? JSON.parse(container.dataset.openSlots)
-              : null
+            ? JSON.parse(container.dataset.openSlots)
+            : null
           }
           passTypes={
             container.dataset.passTypes
-              ? JSON.parse(container.dataset.passTypes)
-              : null
+            ? JSON.parse(container.dataset.passTypes)
+            : null
           }
           date={
             container.dataset.date ? JSON.parse(container.dataset.date) : null
           }
           feePercentage={
             container.dataset.feePercentage
-              ? JSON.parse(container.dataset.feePercentage)
-              : null
+            ? JSON.parse(container.dataset.feePercentage)
+            : null
           }
-        />
-      ),
+          />
+          ),
+        };
+        
+        ReactDOM.render(components[container.dataset.component], container);
+      });
     };
-
-    ReactDOM.render(components[container.dataset.component], container);
-  });
-};
-
-const loadToastr = () => {
-  document.querySelectorAll(".flash").forEach((flash) => {
-    console.log(flash);
-    if (flash.dataset.type === "alert") {
-      global.toastr.error(flash.dataset.message);
+    
+    const loadToastr = () => {
+      document.querySelectorAll(".flash").forEach((flash) => {
+        console.log(flash);
+        if (flash.dataset.type === "alert") {
+          global.toastr.error(flash.dataset.message);
     } else if (flash.dataset.type === "notice") {
       global.toastr.success(flash.dataset.message);
     } else {

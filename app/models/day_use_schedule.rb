@@ -8,6 +8,21 @@ class DayUseSchedule < ApplicationRecord
 
   delegate :partner, to: :day_use
 
+  validate :must_have_name_if_day_is_open
+  validate :must_have_pass_types_if_day_is_open
+
+  def must_have_name_if_day_is_open
+    if open? && name.blank?
+      errors.add(:name, "não pode ficar em branco se o dia estiver aberto")
+    end
+  end
+
+  def must_have_pass_types_if_day_is_open
+    if open? && day_use_schedule_pass_types.blank?
+      errors.add(:pass_types, "deve ter tipos de passe se o dia estiver aberto")
+    end
+  end
+
   def weekday_display
     {
       monday: "Segunda-feira",

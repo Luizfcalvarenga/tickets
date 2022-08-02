@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export function DayUseSchedules(props) {
+  console.log(props)
   const buildEmptyDayUseSchedule = (weekdayName) => {
     return {
       name: "",
@@ -13,66 +14,93 @@ export function DayUseSchedules(props) {
       weekday: weekdayName,
     };
   };
+  const weekdaysTranslation = {
+    monday: "Segunda-feira",
+    tuesday: "Terça-feira",
+    wednesday: "Quarta-feira",
+    thursday: "Quinta-feira",
+    friday: "Sexta-feira",
+    saturday: "Sábado",
+    sunday: "Domingo",
+  }
+  const weekdaysArray = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
-  const weekdaysPrep = [
-    {
-      value: "monday",
-      label: "Segunda-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "monday") ||
-        buildEmptyDayUseSchedule("monday"),
-    },
-    {
-      value: "tuesday",
-      label: "Terça-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "tuesday") ||
-        buildEmptyDayUseSchedule("tuesday"),
-    },
-    {
-      value: "wednesday",
-      label: "Quarta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "wednesday") ||
-        buildEmptyDayUseSchedule("wednesday"),
-    },
-    {
-      value: "thursday",
-      label: "Quinta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "thursday") ||
-        buildEmptyDayUseSchedule("thursday"),
-    },
-    {
-      value: "friday",
-      label: "Sexta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "friday") ||
-        buildEmptyDayUseSchedule("friday"),
-    },
-    {
-      value: "saturday",
-      label: "Sábado",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "saturday") ||
-        buildEmptyDayUseSchedule("saturday"),
-    },
-    {
-      value: "sunday",
-      label: "Domingo",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "sunday") ||
-        buildEmptyDayUseSchedule("sunday"),
-    },
-  ];
+  const weekdaysPrep = weekdaysArray.map((weekday) => {
+    const findWeekdayOnProps = props.dayUseSchedules.find(
+      (dayUseSchedule) => dayUseSchedule.weekday === weekday
+    );
+    console.log(findWeekdayOnProps)
+    return {
+      value: weekday,
+      label: weekdaysTranslation[weekday],
+      dayUseSchedule: findWeekdayOnProps
+        ? { ...findWeekdayOnProps, day_use_schedule_pass_types: [] }
+        : buildEmptyDayUseSchedule(weekday),
+    };
+  })
+
+  // const weekdaysPrep = [
+  //   {
+  //     value: "monday",
+  //     label: "Segunda-feira",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "monday")} ||
+  //       buildEmptyDayUseSchedule("monday"),
+  //   },
+  //   {
+  //     value: "tuesday",
+  //     label: "Terça-feira",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "tuesday")} ||
+  //       buildEmptyDayUseSchedule("tuesday"),
+  //   },
+  //   {
+  //     value: "wednesday",
+  //     label: "Quarta-feira",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "wednesday")} ||
+  //       buildEmptyDayUseSchedule("wednesday"),
+  //   },
+  //   {
+  //     value: "thursday",
+  //     label: "Quinta-feira",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "thursday")} ||
+  //       buildEmptyDayUseSchedule("thursday"),
+  //   },
+  //   {
+  //     value: "friday",
+  //     label: "Sexta-feira",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "friday")} ||
+  //       buildEmptyDayUseSchedule("friday"),
+  //   },
+  //   {
+  //     value: "saturday",
+  //     label: "Sábado",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "saturday")} ||
+  //       buildEmptyDayUseSchedule("saturday"),
+  //   },
+  //   {
+  //     value: "sunday",
+  //     label: "Domingo",
+  //     dayUseSchedule:
+  //       {...props.dayUseSchedules.find((dus) => dus.weekday === "sunday")} ||
+  //       buildEmptyDayUseSchedule("sunday"),
+  //   },
+  // ];
+  // console.log(weekdaysPrep);
   weekdaysPrep.forEach((wp) => {
     if (!wp.dayUseSchedule) return;
 
-    var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.opens_at);
-    wp.dayUseSchedule.opens_at = match ? match[1] : null;
-    var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.closes_at);
-    wp.dayUseSchedule.closes_at = match ? match[1] : null;
+    // var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.opens_at);
+    // console.log(wp.dayUseSchedule, match)
+    // wp.dayUseSchedule.opens_at = match ? match[1] : null;
+    // var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.closes_at);
+    // wp.dayUseSchedule.closes_at = match ? match[1] : null;
   });
+  // console.log(weekdaysPrep);
   const [weekdays, setWeekdays] = useState(weekdaysPrep);
 
   const addPassType = (weekday) => {
