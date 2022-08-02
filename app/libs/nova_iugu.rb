@@ -49,47 +49,6 @@ module NovaIugu
     end
   end
 
-  class PlanCreator
-    attr_reader :entity, :custom_params
-
-    class PlanParamsException < StandardError
-      def initialize(error_message)
-        @exception_type = "custom"
-        super(error_message)
-      end
-    end
-    
-    def initialize(entity, custom_params = {})
-      @entity = entity
-      @custom_params = custom_params
-    end
-
-    def call
-      raise "Entity already has a Iugu Plan ID" if entity.iugu_plan_id.present?
-
-      validate_params!
-
-      @response = ::Iugu::Plan.create(plan_params)
-
-      entity.update!(
-        iugu_plan_id: @response.attributes["id"],
-      )
-    end
-
-    def validate_params!
-      raise PlanParamsException.new("Plan name (string) not specified at [:name]") if plan_params[:name].blank?
-      raise PlanParamsException.new("Plan unique identifier (int) not specified at [:identifier]") if plan_params[:identifier].blank?
-      raise PlanParamsException.new("Interval (int) not specified at [:interval] or not an integer bigger than 0") if plan_params[:interval].blank? || plan_params[:interval].class != Integer || plan_params[:interval] <= 0
-      raise PlanParamsException.new("Interval type not specified at [:interval_type] or not 'weeks' nor 'months'") if plan_params[:interval_type].blank? || !["weeks", "months"].include?(plan_params[:interval_type])
-      raise PlanParamsException.new("Value cents not specified at [:value_cents] or not an integer bigger than 0") if plan_params[:value_cents].blank? || plan_params[:value_cents].class != Integer || plan_params[:value_cents] <= 0
-      raise PlanParamsException.new("Payable With not specified at [:payable_with] or not an option of 'all', 'credit_card', 'bank_slip' or 'pix'") if plan_params[:payable_with].blank? || !['all', 'pix', 'credit_card', 'bank_slip'].include?(plan_params[:payable_with])
-    end
-
-    def plan_params
-      @plan_params ||= @entity.nova_iugu_plan_params_hash.merge(custom_params)
-    end
-  end
-
   class CustomerCreator
     attr_reader :entity, :custom_params
 
