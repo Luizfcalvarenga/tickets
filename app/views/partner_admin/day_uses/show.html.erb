@@ -38,17 +38,7 @@
   </ul>
   
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list" role="tabpanel" aria-labelledby="home-tab">
-      <div class="row mb-4">
-        <% (0..6).to_a.map { |int| Time.current + int.days }.each do |date| %>
-          <div class="date-card flex column center justify-content-between col-1 bg-dark mx-2 py-4 clickable <%= 'selected' if date.today? %>" data-date="<%= date.strftime('%d-%m-%Y') %>">
-            <p class="m-0 fs-36"><%= date.day %></p>
-            <p class="m-0 fs-18"><%= month_number_to_name_abr(date.month) %></p>
-            <p class="m-0 fs-18"><%= weekday_number_to_name_abr(date.wday) %></p>
-          </div>
-        <% end %>
-      </div>
-      
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list" role="tabpanel" aria-labelledby="home-tab">     
       <p><b> Total de inscritos: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
 
       <div class="flex center between mb-3">
@@ -155,16 +145,19 @@
     
     <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass" role="tabpanel" aria-labelledby="contact-tab">
       <%= simple_form_for([:partner_admin, @order]) do |f| %>
-        <select name="order_item[start_time]" class="w-100 my-2">
-          <% @day_use.schedule_for_today.open_slots_for_date(Time.current).each do |slot| %>
-            <option value="<%= slot[:start_time] %>"><%= slot[:start_time].strftime("%H:%M") %> - <%= slot[:end_time].strftime("%H:%M") %></option>
-          <% end %>
+        <p class="m-0 info-text p-4 br-8 mb-3">
+          <i class="fa fa-info-circle mx-3"></i>Selecione uma data para carregar os passes disponíveis:
+        </p>
+        <input id="generate-pass-date" class="form-control mx-1 datetime optional" type="date" id="order_created_at" data-day-use-id="<%= @day_use.id %>">
+
+        <div class="spacer-50"></div>
+        
+        <p class="text-success m-0">Slot:</p>
+        <select id="generate-pass-start-time" name="order_item[start_time]" disabled class="w-100 my-2">
         </select>
 
-        <select name="order_item[day_use_schedule_pass_type_id]" class="w-100 my-2">
-          <% @day_use.schedule_for_today.day_use_schedule_pass_types.each do |day_use_schedule_pass_type| %>
-            <option value="<%= day_use_schedule_pass_type.id %>"><%= day_use_schedule_pass_type.name %></option>
-          <% end %>
+        <p class="text-success m-0">Tipo de ingresso:</p>
+        <select id="generate-pass-pass-type" name="order_item[day_use_schedule_pass_type_id]" disabled class="w-100 my-2">
         </select>
 
         <p class="text-success mt-3 fs-20">Informações da conta do usuário:</p>
@@ -173,6 +166,7 @@
           <%= uf.input :email, label: "E-mail" %>
           <%= uf.input :name, label: "Nome completo" %>
           <%= uf.input :document_number, label: "CPF" %>
+          <%= uf.input :cep, label: "CEP" %>
         <% end %>
 
         <div class="my-3"></div>
@@ -208,6 +202,7 @@
               <% if ["Nome completo", "CPF", "CEP"].include?(question.prompt) %>
                 <input
                   type="text"
+                  id="pre-fill-by-<%= question.prompt.split()[0] %>"
                   name="order[user_answers][][value]"
                   data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
                   class="w-100 form-control"
