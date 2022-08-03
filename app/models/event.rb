@@ -51,7 +51,7 @@ class Event < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(event: self, prompt: "Nome completo")
 
     Question.create!(
       event: self,
@@ -60,7 +60,7 @@ class Event < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(event: self, prompt: "CPF")
 
     Question.create!(
       event: self,
@@ -69,7 +69,16 @@ class Event < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(event: self, prompt: "CEP")
+
+    Question.create!(
+      event: self,
+      kind: "open",
+      prompt: "Telefone",
+      optional: false,
+      order: questions.count,
+      default: true,
+    ) if !Question.exists?(event: self, prompt: "Telefone")
   end
 
   def open_batches

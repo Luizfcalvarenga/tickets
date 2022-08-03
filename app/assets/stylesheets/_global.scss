@@ -2,6 +2,7 @@
 @import "trix/dist/trix";
 $color-primary: #00c454;
 $color-darker: #101010;
+$color-dark: #222320;
 $white: #fff;
 
 @media (max-width: 768px) {
@@ -55,6 +56,9 @@ p {
 }
 .bg-darker {
   background: $color-darker;
+}
+.bg-dark {
+  background: $color-dark;
 }
 
 .vh-100 {

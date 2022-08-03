@@ -1,7 +1,7 @@
 <%= render "devise/shared/links" %>
 
 <div class="page-wrapper">
-  <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-80" : "vh-50 mt-5" %>">
+  <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-100" : "vh-80 mt-5" %>">
     <h2 class="text-center text-success f-20">Redefinir senha</h2>
 
       <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>

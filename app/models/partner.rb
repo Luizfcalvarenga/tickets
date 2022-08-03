@@ -39,7 +39,7 @@ class Partner < ApplicationRecord
     CSV.generate(headers: true, encoding: Encoding::UTF_8) do |csv|
       csv << attributes
       users.each do |user|
-        csv << [user.email, user.name, user.document_number, user.user_memberships.active.where(user_memberships: {membership_id: memberships.ids}).map { |um| um.membership.name }.join(", ")]
+        csv << [user.email, user.name, user.document_number, user.phone_number, user.user_memberships.active.where(user_memberships: {membership_id: memberships.ids}).map { |um| um.membership.name }.join(", ")]
       end
     end
   end

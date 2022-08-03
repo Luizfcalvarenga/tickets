@@ -134,10 +134,11 @@
         </select>
 
         <%= simple_fields_for :user do |uf| %>
-          <%= uf.input :email %>
-          <%= uf.input :name %>
-          <%= uf.input :document_number %>
-          <%= uf.input :cep %>
+          <%= uf.input :email, label: "E-mail" %>
+          <%= uf.input :name, label: "Nome completo" %>
+          <%= uf.input :document_number, label: "CPF" %>
+          <%= uf.input :cep, label: "CEP" %>
+          <%= uf.input :phone_number, label: "Telefone" %>
         <% end %>
         <div class="my-3"></div>
         <% @event.questions.active.each_with_index do |question, index| %>

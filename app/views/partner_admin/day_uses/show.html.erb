@@ -167,6 +167,7 @@
           <%= uf.input :name, label: "Nome completo" %>
           <%= uf.input :document_number, label: "CPF" %>
           <%= uf.input :cep, label: "CEP" %>
+          <%= uf.input :phone_number, label: "Telefone" %>
         <% end %>
 
         <div class="my-3"></div>
@@ -199,7 +200,7 @@
                 <% end %>
               </select>
             <% else %>
-              <% if ["Nome completo", "CPF", "CEP"].include?(question.prompt) %>
+              <% if ["Nome completo", "CPF", "CEP", "Telefone"].include?(question.prompt) %>
                 <input
                   type="text"
                   id="pre-fill-by-<%= question.prompt.split()[0] %>"

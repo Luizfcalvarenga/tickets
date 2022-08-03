@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   include DeviseTokenAuth::Concerns::User
 
+  REQUIRED_FIELDS = [:name, :document_number, :cep, :phone_number]
+
   has_many :orders
   has_many :passes
   has_many :event_batches, through: :passes
@@ -21,6 +23,7 @@ class User < ApplicationRecord
   validate :cpf_must_be_valid
   validate :name_must_have_at_least_two_words
   validate :cep_must_be_valid
+  validates :phone_number, presence: true
 
   after_create :notify_discord
 
@@ -87,7 +90,11 @@ class User < ApplicationRecord
   end
 
   def has_completed_profile?
-    name.present? && document_number.present? && cep.present?
+    missing_fields_on_profile.blank?
+  end
+
+  def missing_fields_on_profile
+    REQUIRED_FIELDS.select { |field| self.send(field).blank? } 
   end
 
   def has_payment_method?

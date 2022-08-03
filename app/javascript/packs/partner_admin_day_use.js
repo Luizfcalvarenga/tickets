@@ -54,4 +54,7 @@ document.addEventListener("turbolinks:load", () => {
   document.querySelector("#user_cep").addEventListener("input", (e) => {
     document.querySelector("#pre-fill-by-CEP").value = e.target.value;
   })
+  document.querySelector("#user_phone_number").addEventListener("input", (e) => {
+    document.querySelector("#pre-fill-by-Telefone").value = e.target.value;
+  })
 });
