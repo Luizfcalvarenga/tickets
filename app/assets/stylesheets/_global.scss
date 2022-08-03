@@ -618,3 +618,17 @@ hr {
 .event-card-home {
   height: 500px;
 }
+
+.danger-dot {
+  background: #DC3545;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  right: 0;
+  position: absolute;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

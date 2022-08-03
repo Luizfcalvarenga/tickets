@@ -64,7 +64,7 @@
             <div class="f-20"></div>
             <p class="m-0 f-20"><%= day_use_schedule.opens_at.strftime("%H:%M") %> - <%= day_use_schedule.closes_at.strftime("%H:%M") %></p>
             <div class="f-30">
-              <% day_use_schedule.day_use_schedule_pass_types.each do |day_use_schedule_pass_type| %>
+              <% day_use_schedule.day_use_schedule_pass_types.active.each do |day_use_schedule_pass_type| %>
                 <p class="m-0 f-20"><%= day_use_schedule_pass_type.name %> - <%= display_price(day_use_schedule_pass_type.price_in_cents) %></p>
               <% end %>
             </div>

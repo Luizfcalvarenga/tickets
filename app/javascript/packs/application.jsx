@@ -135,6 +135,11 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.dayUseSchedules)
               : null
           }
+          errors={
+            container.dataset.errors
+              ? JSON.parse(container.dataset.errors)
+              : null
+          }
         />
       ),
       

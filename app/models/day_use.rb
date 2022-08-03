@@ -21,7 +21,7 @@ class DayUse < ApplicationRecord
   scope :deactivated, -> { where.not(deactivated_at: nil) }
 
   validates :name, :description, presence: true
-  # validate :must_have_uploaded_photo
+  validate :must_have_uploaded_photo
 
   def must_have_uploaded_photo
     if !photo.attached?
