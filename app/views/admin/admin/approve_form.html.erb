@@ -53,8 +53,10 @@
           <p class="btn btn-danger text-white">Desfazer grupo</p>
         <% end %>
       
-      <% else %>
+      <% elsif @entity.group_buy %>
         <p class="text-white mb-0">Compra em grupo: <span class="text-success">Ativa</span></p>
+      <% else %>
+        <p class="text-white mb-0">Compra em grupo: <span class="text-danger">Desativada</span></p>
       <% end %>
     </div>
   <% end %>
