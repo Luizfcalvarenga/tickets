@@ -41,6 +41,8 @@ class UserMembershipsController < ApplicationController
           ),
         )
 
+        MembershipsFetcher.call
+
         DiscordMessager.call("Nova assinatura iniciada - #{membership.name}. Valor: R$ #{ActionController::Base.helpers.number_to_currency(user_membership.membership.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")} cobrados a cada #{user_membership.membership.recurrence_interval_in_months} meses")
 
         flash[:notice] = "Assinatura iniciada com sucesso"

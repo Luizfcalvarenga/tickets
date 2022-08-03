@@ -82,9 +82,9 @@ class OrderItem < ApplicationRecord
 
   def questions
     if event_batch.present?
-      event_batch.event.questions
+      event_batch.event.questions.order(:created_at)
     elsif day_use_schedule_pass_type.present?
-      day_use_schedule_pass_type.day_use_schedule.day_use.questions
+      day_use_schedule_pass_type.day_use_schedule.day_use.questions.order(:created_at)
     else
       raise
     end

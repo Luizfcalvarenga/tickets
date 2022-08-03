@@ -3,6 +3,10 @@ class DayUseSchedulePassType < ApplicationRecord
 
   has_many :passes
 
+  validates :name, :price_in_cents, presence: true
+  validates :price_in_cents, numericality: { greater_than: 0 }
+  validates :name, uniqueness: { scope: [:day_use_schedule_id, :deleted_at], message: "Já existe um tipo de passe com esse nome para esse dia" }
+
   scope :active, -> { where(deleted_at: nil) }
 
   def day_use

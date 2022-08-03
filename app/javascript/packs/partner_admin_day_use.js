@@ -2,7 +2,6 @@ import moment from "moment-strftime";
 
 document.addEventListener("turbolinks:load", () => {
   const generatePassDateInput = document.querySelector("#generate-pass-date");
-  console.log(generatePassDateInput);
   if (!generatePassDateInput) return;
 
   const generatePassOpenSlotsSelect = document.querySelector(

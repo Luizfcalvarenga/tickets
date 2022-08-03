@@ -8,6 +8,31 @@ class DayUseSchedule < ApplicationRecord
 
   delegate :partner, to: :day_use
 
+  validate :must_have_name_if_day_is_open
+  validate :must_have_closing_hours_if_has_start_hours_and_vice_versa
+  validate :closing_hours_must_be_after_opening_hours
+
+  def must_have_name_if_day_is_open
+    if open? && name.blank?
+      errors.add(:name, "não pode ficar em branco se o dia estiver aberto")
+    end
+  end
+
+  def must_have_closing_hours_if_has_start_hours_and_vice_versa
+    if opens_at.present? && closes_at.blank?
+      errors.add(:closes_at, "Deve ter horário de fechamento caso tenha horário de abertura")
+    end
+    if closes_at.present? && opens_at.blank?
+      errors.add(:opens_at, "Deve ter horário de abertura caso tenha horário de fechamento")
+    end
+  end
+
+  def closing_hours_must_be_after_opening_hours
+    if opens_at.present? && closes_at.present? && opens_at > closes_at
+      errors.add(:closes_at, "O horário de fechamento deve ser após o horário de abertura")
+    end
+  end
+
   def weekday_display
     {
       monday: "Segunda-feira",

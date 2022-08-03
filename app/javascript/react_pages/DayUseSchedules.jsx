@@ -13,66 +13,59 @@ export function DayUseSchedules(props) {
       weekday: weekdayName,
     };
   };
-
-  const weekdaysPrep = [
-    {
-      value: "monday",
-      label: "Segunda-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "monday") ||
-        buildEmptyDayUseSchedule("monday"),
-    },
-    {
-      value: "tuesday",
-      label: "Terça-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "tuesday") ||
-        buildEmptyDayUseSchedule("tuesday"),
-    },
-    {
-      value: "wednesday",
-      label: "Quarta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "wednesday") ||
-        buildEmptyDayUseSchedule("wednesday"),
-    },
-    {
-      value: "thursday",
-      label: "Quinta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "thursday") ||
-        buildEmptyDayUseSchedule("thursday"),
-    },
-    {
-      value: "friday",
-      label: "Sexta-feira",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "friday") ||
-        buildEmptyDayUseSchedule("friday"),
-    },
-    {
-      value: "saturday",
-      label: "Sábado",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "saturday") ||
-        buildEmptyDayUseSchedule("saturday"),
-    },
-    {
-      value: "sunday",
-      label: "Domingo",
-      dayUseSchedule:
-        props.dayUseSchedules.find((dus) => dus.weekday === "sunday") ||
-        buildEmptyDayUseSchedule("sunday"),
-    },
+  const weekdaysTranslation = {
+    monday: "Segunda-feira",
+    tuesday: "Terça-feira",
+    wednesday: "Quarta-feira",
+    thursday: "Quinta-feira",
+    friday: "Sexta-feira",
+    saturday: "Sábado",
+    sunday: "Domingo",
+  };
+  const weekdaysArray = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
   ];
+
+  const weekdaysPrep = weekdaysArray.map((weekday) => {
+    const findWeekdayOnProps = props.dayUseSchedules.find(
+      (dayUseSchedule) => dayUseSchedule.weekday === weekday
+    );
+    if (
+      findWeekdayOnProps &&
+      (!findWeekdayOnProps.day_use_schedule_pass_types ||
+        !findWeekdayOnProps.day_use_schedule_pass_types.length === 0)
+    ) {
+      findWeekdayOnProps.day_use_schedule_pass_types = [];
+    }
+
+    return {
+      value: weekday,
+      label: weekdaysTranslation[weekday],
+      dayUseSchedule: findWeekdayOnProps
+        ? { ...findWeekdayOnProps }
+        : buildEmptyDayUseSchedule(weekday),
+    };
+  });
+
   weekdaysPrep.forEach((wp) => {
     if (!wp.dayUseSchedule) return;
 
-    var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.opens_at);
-    wp.dayUseSchedule.opens_at = match ? match[1] : null;
-    var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.closes_at);
-    wp.dayUseSchedule.closes_at = match ? match[1] : null;
+    if (wp.dayUseSchedule.opens_at && !wp.dayUseSchedule.opens_at.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
+      var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.opens_at);
+      wp.dayUseSchedule.opens_at = match ? match[1] : null;
+    }
+    if (wp.dayUseSchedule.opens_at && !wp.dayUseSchedule.closes_at.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
+      var match = /T(\d{2}:\d{2})/.exec(wp.dayUseSchedule.closes_at);
+      wp.dayUseSchedule.closes_at = match ? match[1] : null;
+    }
   });
+
   const [weekdays, setWeekdays] = useState(weekdaysPrep);
 
   const addPassType = (weekday) => {
@@ -88,6 +81,7 @@ export function DayUseSchedules(props) {
         id: null,
         name: "",
         deleted_at: null,
+        number_of_accesses_granted: 1,
         priceInCents: 0,
         dayUseScheduleId: null,
       },
@@ -99,15 +93,14 @@ export function DayUseSchedules(props) {
   const handlePassTypeUpdate = (field, value, weekday, passTypeIndex) => {
     const currentWeekdays = [...weekdays];
 
-    console.log(weekday);
-
     const editedWeekday = currentWeekdays.find(
       (currentWeekday) => currentWeekday.value === weekday.value
     );
 
-    editedWeekday.dayUseSchedule.day_use_schedule_pass_types[passTypeIndex][
-      field
-    ] = value;
+    
+    editedWeekday.dayUseSchedule.day_use_schedule_pass_types.filter(
+      (pass_type) => !pass_type.deleted_at
+    )[passTypeIndex][field] = value;
 
     setWeekdays(currentWeekdays);
   };
@@ -135,6 +128,51 @@ export function DayUseSchedules(props) {
     setWeekdays(currentWeekdays);
   };
 
+  const restoreErrorForField = (field, weekday) => {
+    if (!props.errors || !props.errors.day_use_schedules) return;
+
+    const dayUseSchedule = props.errors.day_use_schedules.find(
+      (eb) => eb.weekday == weekday
+    );
+
+    if (!dayUseSchedule) return;
+
+    const dayUseScheduleErrors = dayUseSchedule.error;
+    const error =
+      dayUseScheduleErrors &&
+      dayUseScheduleErrors[field] &&
+      dayUseScheduleErrors[field][0];
+
+    return (
+      <div className="text-danger">
+        <p>{error}</p>
+      </div>
+    );
+  };
+  const restoreErrorForPassTypeField = (field, weekday, passTypeIndex) => {
+    if (!props.errors || !props.errors.day_use_schedules) return;
+
+    const dayUseSchedule = props.errors.day_use_schedules.find(
+      (eb) => eb.weekday == weekday
+    );
+
+    if (!dayUseSchedule) return;
+
+    const dayUseSchedulePassTypeErrors =
+      dayUseSchedule &&
+      dayUseSchedule.pass_types &&
+      dayUseSchedule.pass_types[passTypeIndex] &&
+      dayUseSchedule.pass_types[passTypeIndex][field];
+
+    if (!dayUseSchedulePassTypeErrors) return;
+
+    return (
+      <div className="text-danger">
+        <p>{dayUseSchedulePassTypeErrors[0]}</p>
+      </div>
+    );
+  };
+
   return (
     <div className="">
       <p className="m-0 info-text p-4 br-8 mb-3">
@@ -149,12 +187,24 @@ export function DayUseSchedules(props) {
         um slot diário, não é necessário preencher o campo "Duração do slot"
       </p>
 
+      {props.errors &&
+        props.errors.day_use_schedules &&
+        props.errors.day_use_schedules.length > 0 && (
+          <p className="m-0 danger-text p-4 br-8 mb-3">
+            <i className="fa fa-exclamation-triangle mx-3"></i>Houve erro no
+            agendamento de algum dia. Verifique os dias de semana com o símbolo
+            de erro abaixo.
+          </p>
+        )}
+
       <ul className="nav nav-tabs mb-5" id="myTab" role="tablist">
         {weekdays.map((weekday) => {
           return (
-            <li className="nav-item" role="presentation">
+            <li className="nav-item position-relative" role="presentation">
               <button
-                className={`nav-link ${weekday.value === "monday" && "active"}`}
+                className={`nav-link position-relative ${
+                  weekday.value === "monday" && "active"
+                }`}
                 id={`${weekday.value}-tab`}
                 data-bs-toggle="tab"
                 data-bs-target={`#weekday-${weekday.value}`}
@@ -164,7 +214,12 @@ export function DayUseSchedules(props) {
                 aria-selected="true"
               >
                 {weekday.label}
-              </button>
+              </button>{" "}
+              {props.errors &&
+                props.errors.day_use_schedules &&
+                props.errors.day_use_schedules.find(
+                  (eb) => eb.weekday == weekday.value
+                ) && <div className="danger-dot">!</div>}
             </li>
           );
         })}
@@ -200,6 +255,7 @@ export function DayUseSchedules(props) {
                       handleWeekdayChange("name", e.target.value, index)
                     }
                   />
+                  {restoreErrorForField("name", weekday.value)}
                   <label htmlFor="">Descrição</label>
                   <textarea
                     className="form-control my-2 f-60"
@@ -255,6 +311,8 @@ export function DayUseSchedules(props) {
                           }
                         />
                       </div>
+                      {restoreErrorForField("opens_at", weekday.value)}
+                      {restoreErrorForField("closes_at", weekday.value)}
                     </div>
                     <div className="f-48 flex center gap-24">
                       <div className="f-1x">
@@ -298,6 +356,7 @@ export function DayUseSchedules(props) {
                 </div>
 
                 <label htmlFor="">Tipos de passes</label>
+                {restoreErrorForField("pass_types", weekday.value)}
                 {weekday.dayUseSchedule.day_use_schedule_pass_types
                   .filter((pass_type) => !pass_type.deleted_at)
                   .map((passType, passTypeIndex) => {
@@ -305,55 +364,74 @@ export function DayUseSchedules(props) {
                       <div className="mb-4" key={passTypeIndex}>
                         <input
                           type="hidden"
-                          name="day_use[day_use_schedules][][pass_types][][id]"
+                          name="day_use[day_use_schedules][][day_use_schedule_pass_types][][id]"
                           value={passType.id}
                         />
                         <div className="flex center between gap-24">
-                          <input
-                            className="form-control my-2"
-                            type="text"
-                            name="day_use[day_use_schedules][][pass_types][][name]"
-                            placeholder="Tipo de ingresso"
-                            value={passType.name}
-                            onChange={(e) =>
-                              handlePassTypeUpdate(
-                                "name",
-                                e.target.value,
-                                weekday,
-                                passTypeIndex
-                              )
-                            }
-                          />
-                          <input
-                            className="form-control my-2"
-                            type="number"
-                            name="day_use[day_use_schedules][][pass_types][][price_in_cents]"
-                            placeholder="Preço em centavos"
-                            value={passType.price_in_cents}
-                            onChange={(e) =>
-                              handlePassTypeUpdate(
-                                "price_in_cents",
-                                e.target.value,
-                                weekday,
-                                passTypeIndex
-                              )
-                            }
-                          />
-                          <input
-                            className="form-control my-2"
-                            type="number"
-                            name="day_use[day_use_schedules][][pass_types][][number_of_accesses_granted]"
-                            placeholder="Número de acessos por passe"
-                            value={passType.number_of_accesses_granted}
-                            onChange={(e) =>
-                              handlePassTypeUpdate(
-                                "number_of_accesses_granted",
-                                e.target.value,
-                                weekday,
-                                passTypeIndex
-                              )
-                            }
-                          />
+                          <div className="f-1x">
+                            <input
+                              className="form-control my-2"
+                              type="text"
+                              name="day_use[day_use_schedules][][day_use_schedule_pass_types][][name]"
+                              placeholder="Tipo de ingresso"
+                              value={passType.name}
+                              onChange={(e) =>
+                                handlePassTypeUpdate(
+                                  "name",
+                                  e.target.value,
+                                  weekday,
+                                  passTypeIndex
+                                )
+                              }
+                            />
+                            {restoreErrorForPassTypeField(
+                              "name",
+                              weekday.value,
+                              passTypeIndex
+                            )}
+                          </div>
+
+                          <div className="f-1x">
+                            <input
+                              className="form-control my-2"
+                              type="number"
+                              name="day_use[day_use_schedules][][day_use_schedule_pass_types][][price_in_cents]"
+                              placeholder="Preço em centavos"
+                              value={passType.price_in_cents}
+                              onChange={(e) =>
+                                handlePassTypeUpdate(
+                                  "price_in_cents",
+                                  e.target.value,
+                                  weekday,
+                                  passTypeIndex
+                                )
+                              }
+                            />
+                            {restoreErrorForPassTypeField(
+                              "price_in_cents",
+                              weekday.value,
+                              passTypeIndex
+                            )}
+                          </div>
+
+                          <div className="f-1x">
+                            <input
+                              className="form-control my-2"
+                              type="number"
+                              name="day_use[day_use_schedules][][day_use_schedule_pass_types][][number_of_accesses_granted]"
+                              placeholder="Número de acessos por passe"
+                              value={passType.number_of_accesses_granted}
+                              onChange={(e) =>
+                                handlePassTypeUpdate(
+                                  "number_of_accesses_granted",
+                                  e.target.value,
+                                  weekday,
+                                  passTypeIndex
+                                )
+                              }
+                            />
+                          </div>
+
                           <p
                             className="btn btn-danger w-20 text-center"
                             onClick={() =>

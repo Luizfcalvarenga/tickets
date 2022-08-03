@@ -12,7 +12,7 @@ module Api
 
         render json: {
           open_slots_for_date: day_use_schedule.open_slots_for_date(date),
-          pass_types: day_use_schedule.day_use_schedule_pass_types.order(:name)
+          pass_types: day_use_schedule.day_use_schedule_pass_types.active.order(:name)
         }
       end
     end

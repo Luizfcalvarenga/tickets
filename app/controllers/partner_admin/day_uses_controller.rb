@@ -2,7 +2,13 @@ module PartnerAdmin
   class DayUsesController < ApplicationController
     def show
       @day_use = DayUse.find(params[:id])
-      @day_use_schedules = @day_use.day_use_schedules
+      @day_use_schedules = @day_use.day_use_schedules.order(Arel.sql("CASE day_use_schedules.weekday WHEN 'monday' THEN 0 " \
+        "WHEN 'tuesday' THEN 1 " \
+        "WHEN 'wednesday' THEN 2 " \
+        "WHEN 'thursday' THEN 3 " \
+        "WHEN 'friday' THEN 4 " \
+        "WHEN 'saturday' THEN 5 " \
+        "WHEN 'sunday' THEN 6 END"))
 
       @passes = @day_use.passes.after_date(Time.current).distinct("passes.id")
         .joins(question_answers: :question)
@@ -40,7 +46,10 @@ module PartnerAdmin
         flash[:notice] = "Agendamento criado com sucesso"
         redirect_to dashboard_path_for_user(current_user)
       else
-        flash[:alert] = "Erro ao criar Agendamento"
+        @day_use = service.day_use
+        @day_use_schedules = @day_use.day_use_schedules
+        @restore_params_after_error = true
+        @errors = service.errors
         render :new
       end 
     end
@@ -60,7 +69,11 @@ module PartnerAdmin
         redirect_to dashboard_path_for_user(current_user)
       else
         flash[:alert] = "Erro ao atualizar Agendamento"
-        render :new
+        @day_use = service.day_use
+        @day_use_schedules = @day_use.day_use_schedules
+        @restore_params_after_error = true
+        @errors = service.errors
+        render :edit
       end 
     end
 
