@@ -46,6 +46,7 @@ class DayUseCreator
         
         current_errors = @errors[:day_use_schedules]
         pass_types.each_with_index do |pass_type, index|
+          next if pass_type.persisted?
           current_errors << {weekday: day_use_schedule_param[:weekday], pass_types: []  } if current_errors.find { |error| error[:weekday] == day_use_schedule_param[:weekday] }.blank?
           current_errors.find { |error| error[:weekday] == day_use_schedule_param[:weekday] }[:pass_types][index] = pass_type.errors
         end
