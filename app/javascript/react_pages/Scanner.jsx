@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 export function Scanner(props) {
   const [readResult, setReadResult] = useState();
   const [loading, setLoading] = useState(false);
-  const [scannerLib, setScannerLib] = useState();
 
   const handleAccessModalClose = () => {
     $("#access-modal").hide();
@@ -49,18 +48,9 @@ export function Scanner(props) {
     } else {
       const qrScanner = new props.scanner(videoElement, onSuccess);
 
-      setScannerLib(qrScanner);
-
       qrScanner.start();
     }
   }, [readResult]);
-
-  useEffect(() => {
-    return () => {
-      console.log("key")
-      scannerLib && scannerLib.stop();
-    }
-  })
 
   return (
     <div className="main-div vh-100 w-100 position-relative bg-dark">

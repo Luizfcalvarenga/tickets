@@ -84,7 +84,7 @@ class DayUseUpdater
   end
 
   def removed_pass_types(day_use_schedule)
-    day_use_schedule.day_use_schedule_pass_types.where.not(id: received_pass_types_ids(day_use_schedule))
+    day_use_schedule.day_use_schedule_pass_types.active.where.not(id: received_pass_types_ids(day_use_schedule))
   end
 
   def pass_types_to_update(day_use_schedule)

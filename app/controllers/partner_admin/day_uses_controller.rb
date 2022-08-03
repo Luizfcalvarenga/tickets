@@ -73,7 +73,7 @@ module PartnerAdmin
         @day_use_schedules = @day_use.day_use_schedules
         @restore_params_after_error = true
         @errors = service.errors
-        render :new
+        render :edit
       end 
     end
 

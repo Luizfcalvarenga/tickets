@@ -41,7 +41,7 @@
         data-day-use="<%= @day_use.to_json %>" 
         data-day-use-schedule="<%= @day_use_schedule.to_json %>"
         data-open-slots="<%= @day_use_schedule.open_slots_for_date(@date).to_json %>"
-        data-pass-types="<%= @day_use_schedule.day_use_schedule_pass_types.where(deleted_at: nil).to_json %>"
+        data-pass-types="<%= @day_use_schedule.day_use_schedule_pass_types.active.to_json %>"
         data-date="<%= @date.to_json %>"
         data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
 
