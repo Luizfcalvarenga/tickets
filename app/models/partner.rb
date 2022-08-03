@@ -1,5 +1,4 @@
 class Partner < ApplicationRecord
-  belongs_to :main_contact, optional: true, class_name: "User"
   belongs_to :city
   belongs_to :state
 
@@ -21,8 +20,6 @@ class Partner < ApplicationRecord
   def slugify
     self.slug = name.parameterize if name.present?
   end
-
-  attr_accessor :main_contact_email
 
   has_one_attached :logo
   has_one_attached :banner

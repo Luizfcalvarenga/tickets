@@ -71,7 +71,6 @@ class User < ApplicationRecord
       csv << attributes
       all.each do |user|
           csv << user.attributes.values_at(*attributes)
-          # csv << [user.email, user.access]
       end
     end
   end
