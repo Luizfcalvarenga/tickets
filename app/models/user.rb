@@ -51,7 +51,7 @@ class User < ApplicationRecord
   end
 
   def name_must_have_at_least_two_words
-    if name.split.length < 2
+    if name.present? && name.split.length < 2
       errors.add(:name, "deve ter pelo menos duas palavras")
     end
   end
