@@ -30,6 +30,8 @@ class Question < ApplicationRecord
       value = order_item.order.user.document_number
     elsif prompt == "CEP"
       value = order_item.order.user.cep
+    elsif prompt == "Telefone"
+      value = order_item.order.user.phone_number
     else
     end
 

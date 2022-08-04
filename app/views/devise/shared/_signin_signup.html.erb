@@ -6,10 +6,10 @@
     <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#sign-up" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Criar conta</button>
   </div>
 
-  <div class="row pt-3">
-    <div id="sign-in" class="col-12 col-md-6 mb-4 <%= 'collapse multi-collapse' if mobile_device? %>">
-      <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-90" : "vh-80 mt-5" %>">
-        <h2 class="text-center text-success f-20">Fazer Login</h2>
+  <div class="pt-3 w-100 <%= 'd-table-row' if !mobile_device? %>">
+    <div id="sign-in" class="mb-4 bg-dark p-3 <%= mobile_device? ? 'collapse multi-collapse' : 'd-table-cell vw-40' %>">
+      <div class="h-100 p-5 br-12 d-flex flex-column <%= mobile_device? ? "vh-90" : "mt-5" %>">
+        <h2 class="text-center text-success f-10">Fazer Login</h2>
         <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
           <div class="h-100">
             <div class="h-80">
@@ -37,9 +37,10 @@
         <% end %>
       </div>
     </div>
-    <div id="sign-up" class="col-12 col-md-6 <%= 'collapse multi-collapse' if mobile_device? %>">
-      <div class="bg-dark br-12 d-flex flex-column <%= mobile_device? ? "p-3" : "p-5 vh-80 mt-5" %>">
-        <h2 class="text-center text-success f-20">Criar conta</h2>
+    <div class="d-table-cell w-5"></div>
+    <div id="sign-up" class="mb-4 bg-dark p-3 <%= mobile_device? ? 'collapse multi-collapse' : 'd-table-cell vw-40' %>">
+      <div class="br-12 d-flex flex-column <%= mobile_device? ? "p-3" : "p-5 mt-5" %>">
+        <h2 class="text-center text-success f-10">Criar conta</h2>
         <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
           <div class="h-80">
             <%= f.error_notification %>
@@ -55,6 +56,10 @@
                           required: true,
                           autofocus: true,
                           input_html: { class: "mask-cpf" } %>
+              <%= f.input :phone_number,
+                          required: true,
+                          autofocus: true,
+                          input_html: { class: "mask-phone" } %>
               <%= f.input :cep,
                           required: true,
                           autofocus: true,

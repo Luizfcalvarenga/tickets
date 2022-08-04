@@ -45,7 +45,7 @@ class DayUse < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(day_use: self, prompt: "Nome completo")
 
     question = Question.create!(
       day_use: self,
@@ -54,7 +54,7 @@ class DayUse < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(day_use: self, prompt: "CPF")
 
     Question.create!(
       day_use: self,
@@ -63,7 +63,16 @@ class DayUse < ApplicationRecord
       optional: false,
       order: questions.count,
       default: true,
-    )
+    ) if !Question.exists?(day_use: self, prompt: "CEP")
+
+    Question.create!(
+      day_use: self,
+      kind: "open",
+      prompt: "Telefone",
+      optional: false,
+      order: questions.count,
+      default: true,
+    ) if !Question.exists?(day_use: self, prompt: "Telefone")
   end
 
   def passes_csv

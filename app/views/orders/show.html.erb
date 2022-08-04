@@ -67,6 +67,16 @@
       </tbody>
     </table>
 
+    <% if @order.related_entity.terms_of_use.present? %>
+      <div class="my-5">
+        <p class="text-white">Ao fazer o pagamento, concordo com os seguintes termos de uso:</p>
+
+        <div class="text-white scrollable vh-30 p-5 bg-dark">
+          <%= @order.related_entity.terms_of_use.body.html_safe %>
+        </div>
+      </div>
+    <% end %>
+
     <nav>
       <div class="nav nav-tabs underlined mt-5" id="nav-tab" role="tablist">
         <button class="nav-link active" id="nav-pix-tab" data-bs-toggle="tab" data-bs-target="#nav-pix" type="button" role="tab" aria-controls="nav-pix" aria-selected="true">PIX</button>

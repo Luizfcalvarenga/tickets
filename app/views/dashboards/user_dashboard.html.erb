@@ -124,6 +124,10 @@
           <%= cl_image_tag current_user.photo.key, height: 300, width: 300, crop: :fit %>
         <% end %>
 
+        <% if !current_user.has_completed_profile? %>
+          <p class="m-0 info-text p-4 br-8 mb-3"><i class="fa fa-info-circle mx-3"></i>Os seguintes campos estão faltando no seu cadastro: <%= current_user.missing_fields_on_profile.map { |field| User.human_attribute_name(field) }.to_sentence %></p>
+        <% end %>
+
         <%= simple_form_for @profile, :url => profiles_path, :method => :patch do |f| %>
           <% if params[:return_url].present? %>
             <input type="hidden" name="return_url" value="<%= params[:return_url] %>">
@@ -131,6 +135,7 @@
 
           <%= f.input :name %>
           <%= f.input :document_number, label: "Número de CPF", input_html: { class: "mask-cpf" } %>
+          <%= f.input :phone_number, label: "Telefone", input_html: { class: "mask-phone" } %>
           <%= f.input :cep, label: "CEP", input_html: { class: "mask-cep" } %>
 
           <%= f.submit "Confirmar dados", class: "btn btn-success mt-5 text-center" %>

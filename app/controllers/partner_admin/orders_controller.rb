@@ -80,7 +80,7 @@ module PartnerAdmin
     private
 
     def user_params
-      params.require(:user).permit(:email, :name, :document_number, :cep)
+      params.require(:user).permit(:email, :name, :document_number, :cep, :phone_number)
     end
 
     def question_answers_params

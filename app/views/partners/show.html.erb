@@ -1,7 +1,12 @@
 <% if @partner.banner.attached? %>
-  <%= cl_image_tag @partner.banner.key, crop: :fill, class: "partner-banner" %>
-<% else %>
-  <%= image_tag "background_1.jpg", crop: :fill, class: "partner-banner" %>
+  <% if mobile_device? %>
+    <%= cl_image_tag @partner.banner.key, crop: :fill, class:"mw-100" %>   
+  <% else %>
+    <div class="flex center around mt-5">
+        <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= @partner.banner.url %>')">
+      </div>
+    </div>
+  <% end %>
 <% end %>
 <div class="partner-show-wrapper position-relative">
   <% if @partner.logo.attached? %>

@@ -10,19 +10,19 @@ puts "Criando lista de estados e cidades..."
 StatesAndCitiesPopulate.populate!
 puts "-- OK!"
 
-Partner.destroy_all
-Read.destroy_all
-Pass.destroy_all
-Event.destroy_all
-User.destroy_all
-Membership.destroy_all
-DayUse.destroy_all
-DayUseSchedule.destroy_all
+# Partner.destroy_all
+# Read.destroy_all
+# Pass.destroy_all
+# Event.destroy_all
+# User.destroy_all
+# Membership.destroy_all
+# DayUse.destroy_all
+# DayUseSchedule.destroy_all
 
-puts "Criando usuários e parceiros..."
+# puts "Criando usuários e parceiros..."
 
-admin_user = User.create!(email: "admin@app.com", password: "123456", access: "admin") 
-
+# admin_user = User.create!(email: "admin@app.com", password: "123456", access: "admin", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31994717196", name: "Admin Plataforma")
+ 
 # User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Name.name)
 
 # (1..NUMBER_OF_USERS).each do |counter|

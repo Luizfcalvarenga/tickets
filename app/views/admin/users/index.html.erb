@@ -21,6 +21,7 @@
         <th scope="col" class="w-25">Email</th>
         <th scope="col" class="w-25">Nome completo</th>
         <th scope="col">CPF</th>
+        <th scope="col">Telefone</th>
         <th scope="col">CEP</th>
         <th scope="col">Criado em</th>
         <th scope="col">Parceiro</th>
@@ -33,6 +34,7 @@
         <td data-label="Email"><%= user.email %></td>
         <td data-label="Nome completo"><%= user.name %></td>
         <td data-label="CPF"><%= user.document_number %></td>
+        <td data-label="CPF"><%= user.phone_number %></td>
         <td data-label="CEP"><%= user.cep %></td>
         <td data-label="Criado em"><%= user.created_at.strftime("%d/%m/%Y - %H:%M") %></td>
         <td data-label="Parceiro"><%= user.partner&.name || "-" %></td>

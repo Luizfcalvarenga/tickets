@@ -25,7 +25,7 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit(:email, :name, :document_number, :cep, :partner_id, :access)
+      params.require(:user).permit(:email, :name, :document_number, :cep, :partner_id, :access, :phone_number)
     end
   end
 end
