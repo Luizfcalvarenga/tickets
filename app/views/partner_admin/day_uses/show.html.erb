@@ -127,7 +127,7 @@
               <td data-label="Gerado em"><%= coupon.created_at.strftime("%d/%m/%Y") %></td>
               <td data-label="Válido até"><%= coupon.valid_until&.strftime("%d/%m/%Y")  %></td>
               <td data-label="Valor do desconto"><%= coupon.discount_display %></td>
-              <td data-label="Utilização"><%= coupon.orders.paid.count %>/<%= coupon.redemption_limit %></td>
+              <td data-label="Utilização"><%= coupon.utilization_count %>/<%= coupon.redemption_limit %></td>
               <td data-label="Ações">
                 <%= link_to edit_partner_admin_coupon_path(coupon) do %>
                   <p class="btn btn-success m-0 px-5">Editar</p>

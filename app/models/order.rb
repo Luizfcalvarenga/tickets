@@ -79,7 +79,7 @@ class Order < ApplicationRecord
       ignore_canceled_email: true,  
       due_date: (Time.current + 10.days),  
       payable_with: ["pix", "credit_card"],
-      order_id: id,
+      order_id: Rails.env.production? ? id : nil,
     }
   end
 

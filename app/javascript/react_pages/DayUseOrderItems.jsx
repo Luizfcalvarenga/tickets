@@ -5,9 +5,8 @@ import { TailSpin } from "react-loader-spinner";
 export function DayUseOrderItems(props) {
   const [slotsInfosAndQuantities, setSlotsInfosAndQuantities] = useState();
 
-  const [originalSlotsInfosAndQuantities, _] = useState(
-    slotsInfosAndQuantities
-  );
+  const [originalSlotsInfosAndQuantities, setOriginalSlotsInfosAndQuantities] =
+    useState();
 
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
@@ -24,11 +23,11 @@ export function DayUseOrderItems(props) {
   const fetchAvailablePasses = async () => {
     const response = await axios(`/api/v1/day_uses/${props.dayUse.id}`);
     const sanitizedSlotsInfosAndQuantities = response.data.available_slots.map(
-      (slot) => {
+      (date) => {
         return {
-          date: slot.date,
-          weekdayDisplay: slot.weekday_display,
-          openSlotsForDate: slot.open_slots_for_date.map((slot) => {
+          date: date.date,
+          weekday_display: date.weekday_display,
+          open_slots_for_date: date.open_slots_for_date.map((slot) => {
             return {
               start_time: slot.start_time,
               end_time: slot.end_time,
@@ -38,7 +37,7 @@ export function DayUseOrderItems(props) {
                   quantity: 0,
                   name: passType.name,
                   price_in_cents: passType.price_in_cents,
-                  availableQuantity: passType.available_quantity,
+                  available_quantity: passType.available_quantity,
                   slot: slot,
                 };
               }),
@@ -48,9 +47,10 @@ export function DayUseOrderItems(props) {
       }
     );
     setSlotsInfosAndQuantities(sanitizedSlotsInfosAndQuantities);
+    setOriginalSlotsInfosAndQuantities(sanitizedSlotsInfosAndQuantities);
 
     setCurrentDate(sanitizedSlotsInfosAndQuantities[0]);
-    setCurrentSlot(sanitizedSlotsInfosAndQuantities[0].openSlotsForDate[0]);
+    setCurrentSlot(sanitizedSlotsInfosAndQuantities[0].open_slots_for_date[0]);
     setWaitingForPasses(false);
   };
 
@@ -87,6 +87,11 @@ export function DayUseOrderItems(props) {
       form.appendChild(endTimeInputElement);
     });
 
+    const couponCodeInput = document.createElement("input");
+    couponCodeInput.name = "coupon_code";
+    couponCodeInput.value = couponCode;
+    form.appendChild(couponCodeInput);
+
     document.body.appendChild(form);
 
     setWaitingSubmit(true);
@@ -99,7 +104,7 @@ export function DayUseOrderItems(props) {
 
     const editedSlotItem = currentSlotsInfosAndQuantities
       .find((date) => date.date == currentDate.date)
-      .openSlotsForDate.find(
+      .open_slots_for_date.find(
         (slot) => slot.start_time == currentSlot.start_time
       );
 
@@ -110,7 +115,7 @@ export function DayUseOrderItems(props) {
     );
 
     if (editedPassType.quantity === 0 && amount < 0) return;
-    if (editedPassType.quantity === passType.availableQuantity && amount > 0)
+    if (editedPassType.quantity === passType.available_quantity && amount > 0)
       return;
 
     editedPassType.quantity = editedPassType.quantity + amount;
@@ -120,7 +125,7 @@ export function DayUseOrderItems(props) {
 
   const flattenedPasses = () => {
     return slotsInfosAndQuantities
-      .map((sl) => sl.openSlotsForDate)
+      .map((sl) => sl.open_slots_for_date)
       .flat()
       .map((slot) => slot.passTypes)
       .flat();
@@ -144,33 +149,47 @@ export function DayUseOrderItems(props) {
       setCouponResult(response.data);
 
       if (response.data.success) {
-        setSlotsInfosAndQuantities(
-          props.openSlots.map((slot) => {
+        const recalculatedSlotsInfosAndQuantities =
+          originalSlotsInfosAndQuantities.map((date) => {
             return {
-              id: slot.id,
-              start_time: slot.start_time,
-              end_time: slot.end_time,
-              passTypes: props.passTypes.map((passType) => {
-                const discountAmount =
-                  response.data.coupon.kind == "percentage"
-                    ? passType.price_in_cents *
-                      (response.data.coupon.discount / 100)
-                    : response.data.coupon.discount;
-                let newPrice = passType.price_in_cents - discountAmount;
-                if (newPrice <= 0) newPrice = 0;
-
+              date: date.date,
+              weekday_display: date.weekday_display,
+              open_slots_for_date: date.open_slots_for_date.map((slot) => {
                 return {
-                  id: passType.id,
-                  quantity: slotsInfosAndQuantities
-                    .find((s) => s.id === slot.id)
-                    .passTypes.find((p) => p.id === passType.id).quantity,
-                  name: passType.name,
-                  price_in_cents: newPrice,
+                  start_time: slot.start_time,
+                  end_time: slot.end_time,
+                  passTypes: slot.passTypes.map((passType) => {
+                    const discountAmount =
+                      response.data.coupon.kind == "percentage"
+                        ? passType.price_in_cents *
+                          (response.data.coupon.discount / 100)
+                        : response.data.coupon.discount;
+                    let newPrice = passType.price_in_cents - discountAmount;
+                    if (newPrice <= 0) newPrice = 0;
+
+                    return {
+                      id: passType.id,
+                      quantity: flattenedPasses().find(
+                        (fp) =>
+                          fp.id === passType.id && fp.slot == passType.slot
+                      ).quantity,
+                      name: passType.name,
+                      price_in_cents: newPrice,
+                      available_quantity: passType.available_quantity,
+                      slot: slot,
+                    };
+                  }),
                 };
               }),
             };
-          })
+          });
+
+        setCurrentDate(recalculatedSlotsInfosAndQuantities[0]);
+        setCurrentSlot(
+          recalculatedSlotsInfosAndQuantities[0].open_slots_for_date[0]
         );
+
+        setSlotsInfosAndQuantities(recalculatedSlotsInfosAndQuantities);
       } else {
         setSlotsInfosAndQuantities(originalSlotsInfosAndQuantities);
       }
@@ -213,7 +232,7 @@ export function DayUseOrderItems(props) {
     const newCurrentDate = slotsInfosAndQuantities[currentDateIndex + amount];
     setCurrentDate(newCurrentDate);
 
-    const slotToRecover = newCurrentDate.openSlotsForDate.find((slot) => {
+    const slotToRecover = newCurrentDate.open_slots_for_date.find((slot) => {
       return (
         moment(slot.start_time).strftime("%H:%M") ===
         moment(recoverSlotTime).strftime("%H:%M")
@@ -221,20 +240,22 @@ export function DayUseOrderItems(props) {
     });
     setCurrentSlot(
       slotToRecover ||
-        slotsInfosAndQuantities[currentDateIndex + amount].openSlotsForDate[0]
+        slotsInfosAndQuantities[currentDateIndex + amount]
+          .open_slots_for_date[0]
     );
   };
 
   const changeSlot = (amount) => {
-    const currentSlotIndex = currentDate.openSlotsForDate.findIndex(
+    const currentSlotIndex = currentDate.open_slots_for_date.findIndex(
       (slot) => slot === currentSlot
     );
     if (
       currentSlotIndex + amount < 0 ||
-      currentSlotIndex + amount >= currentDate.openSlotsForDate.length
+      currentSlotIndex + amount >= currentDate.open_slots_for_date.length
     )
       return;
-    const updatedSlot = currentDate.openSlotsForDate[currentSlotIndex + amount];
+    const updatedSlot =
+      currentDate.open_slots_for_date[currentSlotIndex + amount];
     setCurrentSlot(updatedSlot);
     setRecoverSlotTime(updatedSlot.start_time);
   };
@@ -273,7 +294,7 @@ export function DayUseOrderItems(props) {
                   new Date(currentDate.date).toDateString() ===
                     new Date().toDateString()
                     ? " (Hoje)"
-                    : currentDate.weekdayDisplay}
+                    : currentDate.weekday_display}
                 </p>
                 <i
                   className={`f-10 fa fa-caret-right fs-60 ${
@@ -289,10 +310,10 @@ export function DayUseOrderItems(props) {
             </div>
           </div>
 
-          <div className="border border-white p-4 flex center justify-content-center">
-            {currentDate &&
-            currentDate.openSlotsForDate &&
-            currentDate.openSlotsForDate.length > 0 ? (
+          {currentDate &&
+          currentDate.open_slots_for_date &&
+          currentDate.open_slots_for_date.length > 1 ? (
+            <div className="border border-white p-4 flex center justify-content-center">
               <div
                 className={`flex center between ${
                   window.mobileMode() ? "w-100" : "w-30"
@@ -326,10 +347,18 @@ export function DayUseOrderItems(props) {
                   ></i>
                 </div>
               </div>
-            ) : (
-              <p className="p-5">Nenhum ingresso disponível para esta data.</p>
-            )}
-          </div>
+            </div>
+          ) : (
+            <>
+              {currentDate.open_slots_for_date.length == 0 && (
+                <div className="border border-white p-4 flex center justify-content-center">
+                  <p className="p-5">
+                    Nenhum ingresso disponível para esta data.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="body border-white border">
             {currentSlot &&
