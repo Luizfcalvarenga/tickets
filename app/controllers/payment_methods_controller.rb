@@ -3,7 +3,7 @@ class PaymentMethodsController < ApplicationController
     if !current_user.has_completed_profile?
       flash[:notice] = "Por favor, preecha as informações abaixo para prosseguir:"
       
-      redirect_to dashboard_path_for_user(current_user, return_url: request.referrer) and return
+      redirect_to dashboard_path_for_user(current_user, current_tab: "nav-acc-info", return_url: request.referrer) and return
     end
     
     NovaIugu::CustomerCreator.new(current_user).call if current_user.iugu_customer_id.blank?
