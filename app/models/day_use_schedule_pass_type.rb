@@ -8,6 +8,7 @@ class DayUseSchedulePassType < ApplicationRecord
   validates :name, uniqueness: { scope: [:day_use_schedule_id, :deleted_at], message: "Já existe um tipo de passe com esse nome para esse dia" }
 
   scope :active, -> { where(deleted_at: nil) }
+  scope :available_for_start_time, ->(start_time) { joins(:day_use_schedule).where('(select count(distinct passes.id) from passes where passes.day_use_schedule_pass_type_id = day_use_schedule_pass_types.id and passes.start_time = ?) < day_use_schedules.quantity_per_slot', start_time) }
 
   def day_use
     @day_use ||= day_use_schedule.day_use

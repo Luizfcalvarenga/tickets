@@ -67,27 +67,24 @@ class DayUseSchedule < ApplicationRecord
     start_checkpoints.map! { |sc| sc.change(day: date.day, month: date.month, year: date.year) }.sort!
     end_checkpoints.map! { |ec| ec.change(day: date.day, month: date.month, year: date.year) }.sort!
     
-    intervals = start_checkpoints.each_with_index.map { |start_time, index| [start_time, end_checkpoints[index]] }
+    open_intervals = start_checkpoints.each_with_index.map { |start_time, index| [start_time, end_checkpoints[index]] }
 
     slots = []
 
-    intervals.each do |interval|
-      number_of_slots = ((interval.last - interval.first)/(60 * sanitized_slot_duration_in_minutes).floor).to_i
-    
-      number_of_slots.times do |i|
-        start_time = date.change(hour: interval.first.hour, min: opens_at.min) + (i * sanitized_slot_duration_in_minutes).minutes
-        end_time = start_time + sanitized_slot_duration_in_minutes.minutes
-        slots << {
-          start_time: start_time,
-          end_time: end_time,
-          order_item_count: OrderItem.joins(:order).where(day_use_schedule_pass_type_id: day_use_schedule_pass_types.ids, start_time: start_time).where("orders.invoice_status = 'paid' OR order_items.created_at > ?", 10.minutes.ago).count
-        }
-      end
+    number_of_slots = ((closes_at - opens_at)/(60 * sanitized_slot_duration_in_minutes).floor).to_i
+  
+    number_of_slots.times do |i|
+      start_time = date.change(hour: opens_at.hour, min: opens_at.min) + (i * sanitized_slot_duration_in_minutes).minutes
+      end_time = start_time + sanitized_slot_duration_in_minutes.minutes
+      available_passes_for_slot = open_intervals.any? { |interval| start_time.between?(interval.first, interval.last) } ? day_use_schedule_pass_types.active.available_for_start_time(start_time) : []
+      slots << {
+        start_time: start_time,
+        end_time: end_time,
+        available_pass_types: available_passes_for_slot
+      }
     end
 
-    return slots if quantity_per_slot.blank?
-
-    slots.reject { |slot| slot[:order_item_count] >= quantity_per_slot }
+    slots
   end
 
   def sanitized_slot_duration_in_minutes

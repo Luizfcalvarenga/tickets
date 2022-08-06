@@ -3,17 +3,22 @@ import moment from "moment-strftime";
 
 export function DayUseOrderItems(props) {
   const [slotsInfosAndQuantities, setSlotsInfosAndQuantities] = useState(
-    props.openSlots.map((slot) => {
+    props.availablePassesPerDate.map((slot) => {
       return {
-        id: slot.id,
-        start_time: slot.start_time,
-        end_time: slot.end_time,
-        passTypes: props.passTypes.map((passType) => {
+        date: slot.date,
+        openSlotsForDate: slot.open_slots_for_date.map((slot) => {
           return {
-            id: passType.id,
-            quantity: 0,
-            name: passType.name,
-            price_in_cents: passType.price_in_cents,
+            id: slot.id,
+            start_time: slot.start_time,
+            end_time: slot.end_time,
+            passTypes: slot.available_pass_types.map((passType) => {
+              return {
+                id: passType.id,
+                quantity: 0,
+                name: passType.name,
+                price_in_cents: passType.price_in_cents,
+              };
+            }),
           };
         }),
       };
@@ -152,9 +157,10 @@ export function DayUseOrderItems(props) {
     <div className="event-batches-order">
       <div className="header bg-primary-color p-4">
         <p className="mb-0 fw-700 text-white">
-          Ingressos para {moment(startTime()).strftime("%d/%m/%Y")}
+          Ingressos para {props.dayUse.name}
         </p>
       </div>
+
       {props.openSlots.length > 1 && (
         <div className="border border-white p-4 flex center justify-content-center">
           <div
@@ -180,7 +186,8 @@ export function DayUseOrderItems(props) {
               <i
                 className={`fa fa-caret-right fs-60 ${
                   currentSlot.start_time !==
-                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1].start_time
+                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1]
+                    .start_time
                     ? "text-success clickable"
                     : "text-secondary"
                 }`}
@@ -191,7 +198,44 @@ export function DayUseOrderItems(props) {
         </div>
       )}
 
-      <div className="body border-white border">
+      {/* {props.openSlots.length > 1 && (
+        <div className="border border-white p-4 flex center justify-content-center">
+          <div
+            className={`flex center between ${
+              window.mobileMode() ? "w-100" : "w-30"
+            }`}
+          >
+            <p className="m-0 fs-24 text-white">Horário:</p>
+            <div className="flex center between gap-16">
+              <i
+                className={`fa fa-caret-left fs-60 ${
+                  currentSlot.start_time !==
+                  slotsInfosAndQuantities[0].start_time
+                    ? "text-success clickable"
+                    : "text-secondary"
+                }`}
+                onClick={() => changeSlot(-1)}
+              ></i>
+              <p className="m-0 text-center fs-24 text-white">
+                {moment(currentSlot.start_time).strftime("%H:%M")} -{" "}
+                {moment(currentSlot.end_time).strftime("%H:%M")}
+              </p>
+              <i
+                className={`fa fa-caret-right fs-60 ${
+                  currentSlot.start_time !==
+                  slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1]
+                    .start_time
+                    ? "text-success clickable"
+                    : "text-secondary"
+                }`}
+                onClick={() => changeSlot(1)}
+              ></i>
+            </div>
+          </div>
+        </div>
+      )} */}
+
+      {/* <div className="body border-white border">
         {slotsInfosAndQuantities.map((slot, index) => {
           return (
             <div
@@ -312,7 +356,7 @@ export function DayUseOrderItems(props) {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
       <p className="text-center text-white mt-5">
         <i className="fas fa-shopping-cart fs-30 mr-3"></i>

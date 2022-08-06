@@ -92,4 +92,14 @@ class DayUse < ApplicationRecord
   def display_photo
     photo&.key.present? ? photo.key : partner.logo.key
   end
+
+  def available_passes_per_date
+    (0..60).to_a.map do |days_ahead|
+      date = Time.current + days_ahead.days
+      {
+        date: date,
+        open_slots_for_date: schedule_for_date(date).open_slots_for_date(date)
+      }
+    end
+  end
 end
