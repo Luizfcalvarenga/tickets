@@ -1,4 +1,6 @@
 class DayUseSchedule < ApplicationRecord
+  include ::ModelConcern
+
   belongs_to :day_use
 
   has_many :passes
@@ -76,11 +78,13 @@ class DayUseSchedule < ApplicationRecord
     number_of_slots.times do |i|
       start_time = date.change(hour: opens_at.hour, min: opens_at.min) + (i * sanitized_slot_duration_in_minutes).minutes
       end_time = start_time + sanitized_slot_duration_in_minutes.minutes
-      available_passes_for_slot = open_intervals.any? { |interval| start_time.between?(interval.first, interval.last) } ? day_use_schedule_pass_types.active.available_for_start_time(start_time) : []
+      available_passes_for_slot = open_intervals.any? { |interval| start_time.between?(interval.first, interval.last) } ? day_use_schedule_pass_types.active.available_for_start_time(datetime_in_current_timezone(start_time)) : []
       slots << {
         start_time: start_time,
         end_time: end_time,
-        available_pass_types: available_passes_for_slot
+        available_pass_types: available_passes_for_slot.map { |pass_type| {
+          **pass_type.attributes, available_quantity: pass_type.available_quantity_for_slot(start_time)
+        }}
       }
     end
 
@@ -92,7 +96,6 @@ class DayUseSchedule < ApplicationRecord
   end
 
   def display_photo
-    # photo&.key.present? ? photo.key : (day_use.photo&.key.present? ? day_use.photo.key : partner.logo.key)
     day_use.display_photo
   end
 end

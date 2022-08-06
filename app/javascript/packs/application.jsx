@@ -171,11 +171,6 @@ const loadReactComponent = () => {
               ? JSON.parse(container.dataset.dayUse)
               : null
           }
-          availablePassesPerDate={
-            container.dataset.availablePassesPerDate
-              ? JSON.parse(container.dataset.availablePassesPerDate)
-              : null
-          }
           feePercentage={
             container.dataset.feePercentage
               ? JSON.parse(container.dataset.feePercentage)

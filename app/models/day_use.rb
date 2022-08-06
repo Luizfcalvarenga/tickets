@@ -1,4 +1,6 @@
 class DayUse < ApplicationRecord
+  include ::ModelConcern
+
   belongs_to :partner
   belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
@@ -98,6 +100,7 @@ class DayUse < ApplicationRecord
       date = Time.current + days_ahead.days
       {
         date: date,
+        weekday_display: weekday_translation(weekday_for_wday(date.wday)),
         open_slots_for_date: schedule_for_date(date).open_slots_for_date(date)
       }
     end
