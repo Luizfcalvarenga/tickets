@@ -20,6 +20,7 @@ module Api
         @day_use = DayUse.find(params[:id])
 
         render json: {
+          day_use_packages: @day_use.day_use_packages.map { |package| {**package.attributes, day_use_schedule_pass_type_ids: package.day_use_schedule_pass_type_ids} },
           available_slots: @day_use.available_passes_per_date,
           day_use: @day_use,
           fee_percentage: @day_use.absorb_fee ? 0 : @day_use.fee_percentage,

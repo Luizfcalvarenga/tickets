@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment-strftime";
 import { TailSpin } from "react-loader-spinner";
+import _ from "lodash";
 
 export function DayUseOrderItems(props) {
   const [slotsInfosAndQuantities, setSlotsInfosAndQuantities] = useState();
@@ -15,6 +16,8 @@ export function DayUseOrderItems(props) {
   const [recoverSlotTime, setRecoverSlotTime] = useState();
   const [waitingSubmit, setWaitingSubmit] = useState(false);
   const [waitingForPasses, setWaitingForPasses] = useState(true);
+  const [dayUsePackages, setDayUsePackages] = useState([]);
+  const [currentAppliedPackage, setCurrentAppliedPackage] = useState();
 
   useEffect(() => {
     fetchAvailablePasses();
@@ -51,6 +54,7 @@ export function DayUseOrderItems(props) {
 
     setCurrentDate(sanitizedSlotsInfosAndQuantities[0]);
     setCurrentSlot(sanitizedSlotsInfosAndQuantities[0].open_slots_for_date[0]);
+    setDayUsePackages(response.data.day_use_packages);
     setWaitingForPasses(false);
   };
 
@@ -124,15 +128,68 @@ export function DayUseOrderItems(props) {
   };
 
   const flattenedPasses = () => {
-    return slotsInfosAndQuantities
+    return [...slotsInfosAndQuantities]
       .map((sl) => sl.open_slots_for_date)
       .flat()
       .map((slot) => slot.passTypes)
       .flat();
   };
 
-  const cartTotalInCents = () => {
-    return flattenedPasses().reduce((memo, el) => {
+  const passesWithQuantity = () => {
+    return _.cloneDeep(flattenedPasses()).filter((pass) => pass.quantity > 0);
+  };
+
+  const calculateCartTotalInCents = () => {
+    if (!dayUsePackages.length > 0) return;
+
+    let sortedPassesWithQuantity = [...passesWithQuantity()].sort(
+      (a, b) => a.price_in_cents - b.price_in_cents
+    );
+
+    if (dayUsePackages && dayUsePackages.length) {
+      dayUsePackages.forEach((dayUsePackage) => {
+        const appliablePasses = sortedPassesWithQuantity.filter((pass) =>
+          dayUsePackage.day_use_schedule_pass_type_ids.includes(pass.id)
+        );
+        const totalQuantity = appliablePasses
+          .map((pass) => pass.quantity)
+          .reduce((a, b) => a + b, 0);
+        const countOfPassesToApply =
+          Math.floor(totalQuantity / dayUsePackage.quantity_of_passes) *
+          dayUsePackage.quantity_of_passes;
+
+        if (countOfPassesToApply <= 0) return;
+
+        // setCurrentAppliedPackage(dayUsePackage);
+
+        const individualPassesArray = appliablePasses.map((pass) => {
+          const arr = [];
+          for (let i = 0; i < pass.quantity; i++) {
+            arr.push({...pass, quantity: 1});
+          }
+          return arr;
+        }).flat();
+
+        individualPassesArray
+          .flat()
+          .slice(0, countOfPassesToApply)
+          .forEach((passToApplyDiscount) => {
+            const discountAmount =
+              dayUsePackage.kind == "percentage"
+                ? (passToApplyDiscount.price_in_cents *
+                    dayUsePackage.discount) /
+                  100
+                : dayUsePackage.discount;
+            let newPrice = passToApplyDiscount.price_in_cents - discountAmount;
+            if (newPrice <= 0) newPrice = 0;
+
+            passToApplyDiscount.price_in_cents = newPrice;
+          });
+        sortedPassesWithQuantity = individualPassesArray;
+      });
+    }
+
+    return sortedPassesWithQuantity.reduce((memo, el) => {
       return (
         memo + el.price_in_cents * el.quantity * (1 + props.feePercentage / 100)
       );
@@ -140,67 +197,63 @@ export function DayUseOrderItems(props) {
   };
 
   const applyCoupon = async (specificCoupon = "") => {
-    try {
-      const response = await axios.get(
-        `/api/v1/coupons/${specificCoupon || couponCode}?entity_id=${
-          props.dayUse.id
-        }&entity_type=DayUse`
-      );
-      setCouponResult(response.data);
+    const response = await axios.get(
+      `/api/v1/coupons/${specificCoupon || couponCode || "null"}?entity_id=${
+        props.dayUse.id
+      }&entity_type=DayUse`
+    );
+    setCouponResult(response.data);
 
-      if (response.data.success) {
-        const recalculatedSlotsInfosAndQuantities =
-          originalSlotsInfosAndQuantities.map((date) => {
+    const recalculatedSlotsInfosAndQuantities =
+      originalSlotsInfosAndQuantities.map((date) => {
+        return {
+          date: date.date,
+          weekday_display: date.weekday_display,
+          open_slots_for_date: date.open_slots_for_date.map((slot) => {
             return {
-              date: date.date,
-              weekday_display: date.weekday_display,
-              open_slots_for_date: date.open_slots_for_date.map((slot) => {
-                return {
-                  start_time: slot.start_time,
-                  end_time: slot.end_time,
-                  passTypes: slot.passTypes.map((passType) => {
-                    const discountAmount =
-                      response.data.coupon.kind == "percentage"
-                        ? passType.price_in_cents *
-                          (response.data.coupon.discount / 100)
-                        : response.data.coupon.discount;
-                    let newPrice = passType.price_in_cents - discountAmount;
-                    if (newPrice <= 0) newPrice = 0;
+              start_time: slot.start_time,
+              end_time: slot.end_time,
+              passTypes: slot.passTypes.map((passType) => {
+                const discountAmount = response.data.success
+                  ? response.data.coupon.kind == "percentage"
+                    ? passType.price_in_cents *
+                      (response.data.coupon.discount / 100)
+                    : response.data.coupon.discount
+                  : 0;
+                let newPrice = passType.price_in_cents - discountAmount;
+                if (newPrice <= 0) newPrice = 0;
 
-                    return {
-                      id: passType.id,
-                      quantity: flattenedPasses().find(
-                        (fp) =>
-                          fp.id === passType.id && fp.slot == passType.slot
-                      ).quantity,
-                      name: passType.name,
-                      price_in_cents: newPrice,
-                      available_quantity: passType.available_quantity,
-                      slot: slot,
-                    };
-                  }),
+                return {
+                  id: passType.id,
+                  quantity: flattenedPasses().find(
+                    (fp) =>
+                      fp.id === passType.id &&
+                      fp.slot.start_time == passType.slot.start_time
+                  ).quantity,
+                  name: passType.name,
+                  price_in_cents: newPrice,
+                  available_quantity: passType.available_quantity,
+                  slot: slot,
                 };
               }),
             };
-          });
-
-        setCurrentDate(recalculatedSlotsInfosAndQuantities[0]);
-        setCurrentSlot(
-          recalculatedSlotsInfosAndQuantities[0].open_slots_for_date[0]
-        );
-
-        setSlotsInfosAndQuantities(recalculatedSlotsInfosAndQuantities);
-      } else {
-        setSlotsInfosAndQuantities(originalSlotsInfosAndQuantities);
-      }
-    } catch {
-      setCouponResult({
-        result: false,
-        message: "Erro ao buscar cupom",
+          }),
+        };
       });
 
-      setSlotsInfosAndQuantities(originalSlotsInfosAndQuantities);
-    }
+    setCurrentDate(
+      recalculatedSlotsInfosAndQuantities.find(
+        (date) => date.date === currentDate.date
+      )
+    );
+    setCurrentSlot(
+      recalculatedSlotsInfosAndQuantities
+        .map((date) => date.open_slots_for_date)
+        .flat()
+        .find((slot) => slot.start_time === currentSlot.start_time)
+    );
+
+    setSlotsInfosAndQuantities(recalculatedSlotsInfosAndQuantities);
   };
 
   useEffect(() => {
@@ -260,7 +313,6 @@ export function DayUseOrderItems(props) {
     setRecoverSlotTime(updatedSlot.start_time);
   };
 
-  // return <div></div>;
   return (
     <div className="event-batches-order">
       <div className="header bg-primary-color p-4">
@@ -467,7 +519,7 @@ export function DayUseOrderItems(props) {
           <p className="text-center text-white mt-5">
             <i className="fas fa-shopping-cart fs-30 mr-3"></i>
             <span className="px-3">
-              {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
+              {(calculateCartTotalInCents() / 100).toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
               })}

@@ -1,0 +1,27 @@
+<div class="page-wrapper">
+  <h1 class="title">
+    <% if @day_use_package.new_record? %>
+      Novo pacote de passes para <%= @day_use.name %>
+    <% else %>
+      Pacote de passes <%= @day_use_package.description %> para <%= @day_use.name %>
+    <% end %>
+  </h1>
+
+  <%= simple_form_for([:partner_admin, @day_use, @day_use_package]) do |f| %>
+    <%= f.input :description %> 
+    <%= f.input :quantity_of_passes %>
+    <%= f.input :kind, as: :select, collection: Coupon.kinds %>
+    <%= f.input :discount %> 
+
+    <div class="spacer-50"></div>
+    <p class="fs-20 text-success">Tipos de passe incluídos no pacote:</p>
+
+    <%= f.collection_check_boxes(:day_use_schedule_pass_type_ids, @day_use.day_use_schedule_pass_types.active.order_by_weekday, :id, :name) do |b| %>
+      <div>
+        <%= b.label { b.check_box(class: "me-3") + b.object.name + " (#{ weekday_translation(b.object.day_use_schedule.weekday)})" }  %>
+      </div>    
+    <% end %>
+
+    <%= f.submit "#{@day_use_package.new_record? ? "Ativar" : "Atualizar"} pacote", class: "btn btn-success mt-5 w-100" %>
+  <% end %>
+</div>

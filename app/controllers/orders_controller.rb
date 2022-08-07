@@ -76,7 +76,10 @@ class OrdersController < ApplicationController
       related_entity = order_item.related_entity
       
       applicable_coupon = Coupon.active.find_by(entity_id: related_entity.id, entity_type: related_entity.class.name, code: params[:coupon_code])
-      @order.update!(coupon: applicable_coupon) if applicable_coupon.present? && applicable_coupon.can_be_applied?
+      if applicable_coupon.present? && applicable_coupon.can_be_applied?
+        @order.update!(coupon: applicable_coupon) 
+        @order.order_items.each { |order_item| CouponOrderItem.create(order_item: order_item, coupon: applicable_coupon) }
+      end
     end
     
     if @order.should_generate_new_invoice?

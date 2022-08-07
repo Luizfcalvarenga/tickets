@@ -10,7 +10,7 @@ class DayUse < ApplicationRecord
   has_one_attached :photo
 
   has_many :questions
-
+  has_many :day_use_packages
   has_many :day_use_schedules, dependent: :destroy
   has_many :day_use_schedule_pass_types, through: :day_use_schedules, dependent: :destroy
   has_many :passes, through: :day_use_schedule_pass_types

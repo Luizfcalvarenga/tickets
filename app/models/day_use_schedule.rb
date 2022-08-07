@@ -35,6 +35,16 @@ class DayUseSchedule < ApplicationRecord
     end
   end
 
+  def self.order_by_weekday
+    order(Arel.sql("CASE day_use_schedules.weekday WHEN 'monday' THEN 0 " \
+        "WHEN 'tuesday' THEN 1 " \
+        "WHEN 'wednesday' THEN 2 " \
+        "WHEN 'thursday' THEN 3 " \
+        "WHEN 'friday' THEN 4 " \
+        "WHEN 'saturday' THEN 5 " \
+        "WHEN 'sunday' THEN 6 END"))
+  end
+
   def weekday_display
     {
       monday: "Segunda-feira",

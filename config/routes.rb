@@ -43,11 +43,15 @@ Rails.application.routes.draw do
     delete "events/:id/delete_group", to: "events#delete_group", as: "delete_group"
     patch "events/:id/toggle_activity", to: "events#toggle_activity", as: "event_toggle_activity"
     post 'events/:id/clone', to: "events#clone", as: "event_clone"
+
     resources :memberships
     patch "memberships/:id/toggle_activity", to: "memberships#toggle_activity", as: "membership_toggle_activity"
+
     resources :day_uses do
       resources :day_use_blocks, only: [ :new, :create, :destroy ]
+      resources :day_use_packages, only: [ :new, :create, :edit, :update, :destroy ]
     end
+    
     patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders

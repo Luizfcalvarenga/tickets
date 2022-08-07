@@ -6,6 +6,8 @@ class OrderItem < ApplicationRecord
   belongs_to :user_membership_renewal, optional: true
   
   has_one :pass, dependent: :destroy
+  has_one :coupon_order_item
+  has_one :coupon, through: :coupon_order_item
 
   has_many :question_answers, dependent: :destroy
 
@@ -32,7 +34,6 @@ class OrderItem < ApplicationRecord
   def discount_value_in_cents
     return price_in_cents if order.directly_generated_by_id.present?
     
-    coupon = order.coupon
     return 0 if coupon.blank?
 
     value = coupon.percentage? ? (price_in_cents * coupon.discount / 100) : coupon.discount

@@ -2,13 +2,7 @@ module PartnerAdmin
   class DayUsesController < ApplicationController
     def show
       @day_use = DayUse.find(params[:id])
-      @day_use_schedules = @day_use.day_use_schedules.order(Arel.sql("CASE day_use_schedules.weekday WHEN 'monday' THEN 0 " \
-        "WHEN 'tuesday' THEN 1 " \
-        "WHEN 'wednesday' THEN 2 " \
-        "WHEN 'thursday' THEN 3 " \
-        "WHEN 'friday' THEN 4 " \
-        "WHEN 'saturday' THEN 5 " \
-        "WHEN 'sunday' THEN 6 END"))
+      @day_use_schedules = @day_use.day_use_schedules.order_by_weekday
 
       @passes = @day_use.passes.after_date(Time.current).distinct("passes.id")
         .joins(question_answers: :question)
