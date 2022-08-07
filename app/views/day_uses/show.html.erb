@@ -22,12 +22,13 @@
 
   <% if @day_use.day_use_packages.present? %>
     <div class="info-text p-4 my-4 br-8">
-      <p class="text-white m-0"><i class="fa fa-info-circle me-3"></i>  Pacotes disponíveis:</p>
+      <p class="text-white m-0"><i class="fa fa-info-circle me-3"></i>Pacotes disponíveis:</p>
       <ul>
         <% @day_use.day_use_packages.each do |day_use_package| %>
           <li class="m-0"><%= day_use_package.description %></li>
         <% end %>
       </ul>
+      <p class="text-white m-0">Observação: pacotes de desconto não são aplicados quando você já está utilizando um cupom de desconto.</p>
     </div>
   <% end %>
 

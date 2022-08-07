@@ -4,10 +4,11 @@ import { TailSpin } from "react-loader-spinner";
 import _ from "lodash";
 
 export function DayUseOrderItems(props) {
-  const [slotsInfosAndQuantities, setSlotsInfosAndQuantities] = useState();
-
+  const [availablePassTypes, setAvailablePassTypes] = useState([]);
   const [originalSlotsInfosAndQuantities, setOriginalSlotsInfosAndQuantities] =
     useState();
+  const [orderItems, setOrderItems] = useState([]);
+  const [recalculatedOrderItems, setRecalculatedOrderItems] = useState([]);
 
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
@@ -17,7 +18,7 @@ export function DayUseOrderItems(props) {
   const [waitingSubmit, setWaitingSubmit] = useState(false);
   const [waitingForPasses, setWaitingForPasses] = useState(true);
   const [dayUsePackages, setDayUsePackages] = useState([]);
-  const [currentAppliedPackage, setCurrentAppliedPackage] = useState();
+  const [currentAppliedPackage, setCurrentAppliedPackage] = useState(null);
 
   useEffect(() => {
     fetchAvailablePasses();
@@ -37,7 +38,6 @@ export function DayUseOrderItems(props) {
               passTypes: slot.available_pass_types.map((passType) => {
                 return {
                   id: passType.id,
-                  quantity: 0,
                   name: passType.name,
                   price_in_cents: passType.price_in_cents,
                   available_quantity: passType.available_quantity,
@@ -49,11 +49,11 @@ export function DayUseOrderItems(props) {
         };
       }
     );
-    setSlotsInfosAndQuantities(sanitizedSlotsInfosAndQuantities);
-    setOriginalSlotsInfosAndQuantities(sanitizedSlotsInfosAndQuantities);
-
     setCurrentDate(sanitizedSlotsInfosAndQuantities[0]);
     setCurrentSlot(sanitizedSlotsInfosAndQuantities[0].open_slots_for_date[0]);
+    setAvailablePassTypes(sanitizedSlotsInfosAndQuantities);
+    setOriginalSlotsInfosAndQuantities(sanitizedSlotsInfosAndQuantities);
+
     setDayUsePackages(response.data.day_use_packages);
     setWaitingForPasses(false);
   };
@@ -66,12 +66,10 @@ export function DayUseOrderItems(props) {
     form.method = "POST";
     form.action = "/orders";
 
-    flattenedPasses().forEach((passType) => {
-      if (passType.quantity == 0) return;
-
+    orderItems.forEach((passType) => {
       const quantityInputElement = document.createElement("input");
       quantityInputElement.name = "order[order_items][][quantity]";
-      quantityInputElement.value = passType.quantity;
+      quantityInputElement.value = 1;
       form.appendChild(quantityInputElement);
 
       const passTypeIdInputElement = document.createElement("input");
@@ -103,75 +101,72 @@ export function DayUseOrderItems(props) {
     form.submit();
   };
 
-  const updateQuantity = (passType, amount) => {
-    const currentSlotsInfosAndQuantities = [...slotsInfosAndQuantities];
-
-    const editedSlotItem = currentSlotsInfosAndQuantities
-      .find((date) => date.date == currentDate.date)
-      .open_slots_for_date.find(
-        (slot) => slot.start_time == currentSlot.start_time
+  const addItemToShoppingCart = (passType) => {
+    console.log(passType);
+    const countOfItensInCart = orderItems.filter((item) => {
+      return (
+        item.id === passType.id &&
+        currentSlot.start_time === item.slot.start_time
       );
+    }).length;
 
-    const editedPassType = editedSlotItem.passTypes.find(
-      (passTypeToBeFound) => {
-        return passTypeToBeFound.id === passType.id;
-      }
+    if (countOfItensInCart >= passType.available_quantity) return;
+
+    setOrderItems([...orderItems, { ...passType, key: orderItems.length }]);
+  };
+
+  const removeItemFromShoppingCart = (passType) => {
+    const currentOrderItems = [...orderItems];
+    const index = currentOrderItems.findIndex(
+      (item) =>
+        item.id === passType.id &&
+        currentSlot.start_time === item.slot.start_time
     );
 
-    if (editedPassType.quantity === 0 && amount < 0) return;
-    if (editedPassType.quantity === passType.available_quantity && amount > 0)
-      return;
-
-    editedPassType.quantity = editedPassType.quantity + amount;
-
-    setSlotsInfosAndQuantities(currentSlotsInfosAndQuantities);
+    if (index !== -1) {
+      currentOrderItems.splice(index, 1);
+      setOrderItems(currentOrderItems);
+    }
   };
 
-  const flattenedPasses = () => {
-    return [...slotsInfosAndQuantities]
-      .map((sl) => sl.open_slots_for_date)
-      .flat()
-      .map((slot) => slot.passTypes)
-      .flat();
-  };
+  const appliedPackage = () => {
+    let orderItensSortedByPrice = _.cloneDeep(orderItems)
+      .sort((a, b) => a.price_in_cents - b.price_in_cents)
+      .map(({ applied_package, ...keepAttrs }) => keepAttrs);
 
-  const passesWithQuantity = () => {
-    return _.cloneDeep(flattenedPasses()).filter((pass) => pass.quantity > 0);
+    if (dayUsePackages && dayUsePackages.length) {
+      const dayUsePackage = dayUsePackages[0];
+
+      const appliablePasses = orderItensSortedByPrice.filter((pass) =>
+        dayUsePackage.day_use_schedule_pass_type_ids.includes(pass.id)
+      );
+      const countOfPassesToApply =
+        Math.floor(appliablePasses.length / dayUsePackage.quantity_of_passes) *
+        dayUsePackage.quantity_of_passes;
+
+      if (countOfPassesToApply <= 0) return;
+
+      return dayUsePackage;
+    }
   };
 
   const calculateCartTotalInCents = () => {
-    if (!dayUsePackages.length > 0) return;
-
-    let sortedPassesWithQuantity = [...passesWithQuantity()].sort(
+    let orderItensSortedByPrice = _.cloneDeep(orderItems).sort(
       (a, b) => a.price_in_cents - b.price_in_cents
     );
 
     if (dayUsePackages && dayUsePackages.length) {
-      dayUsePackages.forEach((dayUsePackage) => {
-        const appliablePasses = sortedPassesWithQuantity.filter((pass) =>
-          dayUsePackage.day_use_schedule_pass_type_ids.includes(pass.id)
-        );
-        const totalQuantity = appliablePasses
-          .map((pass) => pass.quantity)
-          .reduce((a, b) => a + b, 0);
-        const countOfPassesToApply =
-          Math.floor(totalQuantity / dayUsePackage.quantity_of_passes) *
-          dayUsePackage.quantity_of_passes;
+      const dayUsePackage = dayUsePackages[0];
 
-        if (countOfPassesToApply <= 0) return;
+      const appliablePasses = orderItensSortedByPrice.filter((pass) =>
+        dayUsePackage.day_use_schedule_pass_type_ids.includes(pass.id)
+      );
+      const countOfPassesToApply =
+        Math.floor(appliablePasses.length / dayUsePackage.quantity_of_passes) *
+        dayUsePackage.quantity_of_passes;
 
-        // setCurrentAppliedPackage(dayUsePackage);
-
-        const individualPassesArray = appliablePasses.map((pass) => {
-          const arr = [];
-          for (let i = 0; i < pass.quantity; i++) {
-            arr.push({...pass, quantity: 1});
-          }
-          return arr;
-        }).flat();
-
-        individualPassesArray
-          .flat()
+      if (countOfPassesToApply > 0 && (!couponResult || !couponResult.success)) {
+        appliablePasses
           .slice(0, countOfPassesToApply)
           .forEach((passToApplyDiscount) => {
             const discountAmount =
@@ -185,14 +180,12 @@ export function DayUseOrderItems(props) {
 
             passToApplyDiscount.price_in_cents = newPrice;
           });
-        sortedPassesWithQuantity = individualPassesArray;
-      });
+        orderItensSortedByPrice = appliablePasses;
+      }
     }
 
-    return sortedPassesWithQuantity.reduce((memo, el) => {
-      return (
-        memo + el.price_in_cents * el.quantity * (1 + props.feePercentage / 100)
-      );
+    return orderItensSortedByPrice.reduce((memo, el) => {
+      return memo + el.price_in_cents * (1 + props.feePercentage / 100);
     }, 0);
   };
 
@@ -225,11 +218,6 @@ export function DayUseOrderItems(props) {
 
                 return {
                   id: passType.id,
-                  quantity: flattenedPasses().find(
-                    (fp) =>
-                      fp.id === passType.id &&
-                      fp.slot.start_time == passType.slot.start_time
-                  ).quantity,
                   name: passType.name,
                   price_in_cents: newPrice,
                   available_quantity: passType.available_quantity,
@@ -252,11 +240,27 @@ export function DayUseOrderItems(props) {
         .flat()
         .find((slot) => slot.start_time === currentSlot.start_time)
     );
+    setAvailablePassTypes(recalculatedSlotsInfosAndQuantities);
 
-    setSlotsInfosAndQuantities(recalculatedSlotsInfosAndQuantities);
+    const currentOrderItems = [...orderItems];
+    currentOrderItems.forEach((item) => {
+      item.price_in_cents = recalculatedSlotsInfosAndQuantities
+        .map((date) => date.open_slots_for_date)
+        .flat()
+        .map((slot) => slot.passTypes)
+        .flat()
+        .find(
+          (passType) =>
+            passType.id === item.id &&
+            passType.slot.start_time === item.slot.start_time
+        ).price_in_cents;
+    });
+    setOrderItems(currentOrderItems);
   };
 
   useEffect(() => {
+    if (!originalSlotsInfosAndQuantities) return;
+    
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const couponCodeFromParams = urlParams.get("coupon_code");
@@ -265,7 +269,7 @@ export function DayUseOrderItems(props) {
       setCouponCode(couponCodeFromParams);
       applyCoupon(couponCodeFromParams);
     }
-  }, []);
+  }, [originalSlotsInfosAndQuantities]);
 
   const feeInCents = (passType) => {
     return (
@@ -274,15 +278,15 @@ export function DayUseOrderItems(props) {
   };
 
   const changeDate = (amount) => {
-    const currentDateIndex = slotsInfosAndQuantities.findIndex(
+    const currentDateIndex = availablePassTypes.findIndex(
       (date) => date === currentDate
     );
     if (
       currentDateIndex + amount < 0 ||
-      currentDateIndex + amount >= slotsInfosAndQuantities.length
+      currentDateIndex + amount >= availablePassTypes.length
     )
       return;
-    const newCurrentDate = slotsInfosAndQuantities[currentDateIndex + amount];
+    const newCurrentDate = availablePassTypes[currentDateIndex + amount];
     setCurrentDate(newCurrentDate);
 
     const slotToRecover = newCurrentDate.open_slots_for_date.find((slot) => {
@@ -293,8 +297,7 @@ export function DayUseOrderItems(props) {
     });
     setCurrentSlot(
       slotToRecover ||
-        slotsInfosAndQuantities[currentDateIndex + amount]
-          .open_slots_for_date[0]
+        availablePassTypes[currentDateIndex + amount].open_slots_for_date[0]
     );
   };
 
@@ -333,7 +336,7 @@ export function DayUseOrderItems(props) {
               <div className="flex center between f-70">
                 <i
                   className={`f-10 fa fa-caret-left fs-60 ${
-                    currentDate.date !== slotsInfosAndQuantities[0].date
+                    currentDate.date !== availablePassTypes[0].date
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
@@ -351,8 +354,7 @@ export function DayUseOrderItems(props) {
                 <i
                   className={`f-10 fa fa-caret-right fs-60 ${
                     currentDate.date !==
-                    slotsInfosAndQuantities[slotsInfosAndQuantities.length - 1]
-                      .date
+                    availablePassTypes[availablePassTypes.length - 1].date
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
@@ -376,7 +378,7 @@ export function DayUseOrderItems(props) {
                   <i
                     className={`f-10 fa fa-caret-left fs-60 ${
                       currentSlot.start_time !==
-                      slotsInfosAndQuantities[0].start_time
+                      availablePassTypes[0].start_time
                         ? "text-success clickable"
                         : "text-secondary"
                     }`}
@@ -389,9 +391,8 @@ export function DayUseOrderItems(props) {
                   <i
                     className={`f-10 fa fa-caret-right fs-60 ${
                       currentSlot.start_time !==
-                      slotsInfosAndQuantities[
-                        slotsInfosAndQuantities.length - 1
-                      ].start_time
+                      availablePassTypes[availablePassTypes.length - 1]
+                        .start_time
                         ? "text-success clickable"
                         : "text-secondary"
                     }`}
@@ -454,12 +455,21 @@ export function DayUseOrderItems(props) {
                     >
                       <i
                         className="fa fa-minus-circle fs-30 text-white clickable"
-                        onClick={() => updateQuantity(passType, -1)}
+                        onClick={() => removeItemFromShoppingCart(passType)}
                       ></i>
-                      <p className="m-0 text-white">{passType.quantity}</p>
+                      <p className="m-0 text-white">
+                        {
+                          orderItems.filter((item) => {
+                            return (
+                              item.id === passType.id &&
+                              currentSlot.start_time === item.slot.start_time
+                            );
+                          }).length
+                        }
+                      </p>
                       <i
                         className="fa fa-plus-circle fs-30 text-white clickable"
-                        onClick={() => updateQuantity(passType, 1)}
+                        onClick={() => addItemToShoppingCart(passType)}
                       ></i>
                     </div>
                   </div>
@@ -516,7 +526,9 @@ export function DayUseOrderItems(props) {
             </div>
           </div>
 
-          <p className="text-center text-white mt-5">
+          <p className="text-center text-white mt-5">Resumo do pedido</p>
+
+          <p className="text-center text-white mt-1">
             <i className="fas fa-shopping-cart fs-30 mr-3"></i>
             <span className="px-3">
               {(calculateCartTotalInCents() / 100).toLocaleString("pt-BR", {
@@ -525,15 +537,45 @@ export function DayUseOrderItems(props) {
               })}
             </span>
           </p>
+          {appliedPackage() && !couponCode && (
+            <div className="flex center around gap-24 mb-3">
+              <p className="m-0 text-success">
+                <i className="fa fa-check-circle f-24 text-success me-3"></i>
+                {`Pacote aplicado: ${appliedPackage().description}`}
+              </p>
+            </div>
+          )}
+          {orderItems.map((orderItem) => {
+            return (
+              <p className="text-center text-white fs-14">
+                {orderItem.name} -{" "}
+                {moment(orderItem.slot.start_time).strftime("%d/%m/%Y")} -{" "}
+                {moment(orderItem.slot.start_time).strftime("%H:%M")} -{" "}
+                {moment(orderItem.slot.end_time).strftime("%H:%M")}
+              </p>
+            );
+          })}
 
           <div class="text-center">
             <p
-              class={`btn btn-success w-100 mt-5 p-3 ${
+              class={`btn btn-success w-100 mt-2 p-3 ${
                 waitingSubmit && "disabled"
               }`}
               onClick={submitForm}
             >
               Comprar ingressos
+            </p>
+          </div>
+          <div class="text-center">
+            <p
+              class={`btn btn-secondary w-100 mt-2 p-3 ${
+                waitingSubmit && "disabled"
+              }`}
+              onClick={() => {
+                setOrderItems([]);
+              }}
+            >
+              Resetar carrinho
             </p>
           </div>
         </div>

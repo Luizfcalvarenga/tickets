@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 2022_08_07_022301) do
   end
 
   create_table "coupons", force: :cascade do |t|
-    t.string "entity_type", null: false
-    t.bigint "entity_id", null: false
+    t.string "entity_type"
+    t.bigint "entity_id"
     t.integer "redemption_limit"
     t.datetime "valid_until"
     t.string "code"
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 2022_08_07_022301) do
     t.datetime "deactivated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "day_use_package_id"
+    t.index ["day_use_package_id"], name: "index_coupons_on_day_use_package_id"
     t.index ["entity_type", "entity_id"], name: "index_coupons_on_entity"
   end
 
@@ -482,6 +484,7 @@ ActiveRecord::Schema.define(version: 2022_08_07_022301) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "coupon_order_items", "coupons"
   add_foreign_key "coupon_order_items", "order_items"
+  add_foreign_key "coupons", "day_use_packages"
   add_foreign_key "day_use_blocks", "users", column: "created_by_id"
   add_foreign_key "day_use_package_pass_types", "day_use_packages"
   add_foreign_key "day_use_package_pass_types", "day_use_schedule_pass_types"
