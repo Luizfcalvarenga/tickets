@@ -56,7 +56,7 @@ class OrderProcessor
           day_use_package: day_use_package,
           redemption_limit: 999,
           valid_until: Time.current - 1.day,
-          code: '92h3f8923h89fh3289fh',
+          code: SecureRandom.uuid,
           kind: day_use_package.kind,
           discount: day_use_package.discount)
         appliable_items.first(count_of_passes_to_apply).each do |order_item|

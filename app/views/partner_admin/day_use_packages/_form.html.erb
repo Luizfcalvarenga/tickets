@@ -24,4 +24,8 @@
 
     <%= f.submit "#{@day_use_package.new_record? ? "Ativar" : "Atualizar"} pacote", class: "btn btn-success mt-5 w-100" %>
   <% end %>
+
+  <%= link_to partner_admin_day_use_day_use_package_path(@day_use_package), method: :delete, data: { confirm: "Tem certeza? Isso irá desativar esse pacote para sempre" } do %>
+    <p class="btn btn-danger text-white w-100 mt-3">Desativar pacote</p>
+  <% end %>
 </div>

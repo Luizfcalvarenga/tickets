@@ -39,11 +39,11 @@ module PartnerAdmin
     def destroy
       @day_use_package = DayUsePackage.find(params[:id])
 
-      if @day_use_package.destroy
-        flash[:notice] = "Bloqueio reomvido com sucesso"
+      if @day_use_package.update(deactivated_at: Time.current)
+        flash[:notice] = "Pacote removido com sucesso"
         redirect_to partner_admin_day_use_path(@day_use_package.day_use)
       else
-        flash[:alert] = "Erro ao remover bloqueio de Agendamento"
+        flash[:alert] = "Erro ao remover pacote de agendamentos"
         render :new
       end
     end

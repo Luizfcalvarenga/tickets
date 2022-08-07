@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth'
 
       get 'day_uses/:id', to: 'day_uses#show', as: "day_use"
+      get 'day_uses/:id/generate_pass', to: 'day_uses#show_for_generate_pass', as: "day_use_generate_pass"
 
       get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
       get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"

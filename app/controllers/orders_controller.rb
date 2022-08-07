@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
   end
   
   def create
-    if params[:order].blank?
+    if params[:order].blank? || order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
       redirect_to "#{request.referrer}?coupon_code=#{params[:coupon_code]}" and return
     end

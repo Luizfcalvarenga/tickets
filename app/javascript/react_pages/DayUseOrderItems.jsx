@@ -130,11 +130,11 @@ export function DayUseOrderItems(props) {
   };
 
   const appliedPackage = () => {
-    let orderItensSortedByPrice = _.cloneDeep(orderItems)
-      .sort((a, b) => a.price_in_cents - b.price_in_cents)
-      .map(({ applied_package, ...keepAttrs }) => keepAttrs);
-
     if (dayUsePackages && dayUsePackages.length) {
+      let orderItensSortedByPrice = _.cloneDeep(orderItems)
+        .sort((a, b) => a.price_in_cents - b.price_in_cents)
+        .map(({ applied_package, ...keepAttrs }) => keepAttrs);
+
       const dayUsePackage = dayUsePackages[0];
 
       const appliablePasses = orderItensSortedByPrice.filter((pass) =>
@@ -144,7 +144,8 @@ export function DayUseOrderItems(props) {
         Math.floor(appliablePasses.length / dayUsePackage.quantity_of_passes) *
         dayUsePackage.quantity_of_passes;
 
-      if (countOfPassesToApply <= 0) return;
+      if (countOfPassesToApply <= 0 || (couponResult && couponResult.success))
+        return;
 
       return dayUsePackage;
     }
@@ -165,7 +166,10 @@ export function DayUseOrderItems(props) {
         Math.floor(appliablePasses.length / dayUsePackage.quantity_of_passes) *
         dayUsePackage.quantity_of_passes;
 
-      if (countOfPassesToApply > 0 && (!couponResult || !couponResult.success)) {
+      if (
+        countOfPassesToApply > 0 &&
+        (!couponResult || !couponResult.success)
+      ) {
         appliablePasses
           .slice(0, countOfPassesToApply)
           .forEach((passToApplyDiscount) => {
@@ -260,7 +264,7 @@ export function DayUseOrderItems(props) {
 
   useEffect(() => {
     if (!originalSlotsInfosAndQuantities) return;
-    
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const couponCodeFromParams = urlParams.get("coupon_code");
@@ -336,13 +340,23 @@ export function DayUseOrderItems(props) {
               <div className="flex center between f-70">
                 <i
                   className={`f-10 fa fa-caret-left fs-60 ${
+                    availablePassTypes.findIndex(
+                      (date) => date.date === currentDate.date
+                    ) > 6
+                      ? "text-success clickable"
+                      : "text-secondary"
+                  }`}
+                  onClick={() => changeDate(-7)}
+                ></i>
+                <i
+                  className={`f-10 fa fa-caret-left fs-60 ${
                     currentDate.date !== availablePassTypes[0].date
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
                   onClick={() => changeDate(-1)}
                 ></i>
-                <p className="f-80 m-0 text-center fs-18 text-white">
+                <p className="f-60 m-0 text-center fs-18 text-white">
                   {moment(currentDate.date).strftime("%d/%m/%Y")}
                   <br />
                   {currentDate &&
@@ -359,6 +373,16 @@ export function DayUseOrderItems(props) {
                       : "text-secondary"
                   }`}
                   onClick={() => changeDate(1)}
+                ></i>
+                <i
+                  className={`f-10 fa fa-caret-right fs-60 ${
+                    availablePassTypes.findIndex(
+                      (date) => date.date === currentDate.date
+                    ) < availablePassTypes.length - 7
+                      ? "text-success clickable"
+                      : "text-secondary"
+                  }`}
+                  onClick={() => changeDate(7)}
                 ></i>
               </div>
             </div>
@@ -537,7 +561,7 @@ export function DayUseOrderItems(props) {
               })}
             </span>
           </p>
-          {appliedPackage() && !couponCode && (
+          {appliedPackage() && (
             <div className="flex center around gap-24 mb-3">
               <p className="m-0 text-success">
                 <i className="fa fa-check-circle f-24 text-success me-3"></i>
