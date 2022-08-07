@@ -27,5 +27,5 @@
 
   <%= link_to partner_admin_day_use_day_use_package_path(@day_use_package), method: :delete, data: { confirm: "Tem certeza? Isso irá desativar esse pacote para sempre" } do %>
     <p class="btn btn-danger text-white w-100 mt-3">Desativar pacote</p>
-  <% end %>
+  <% end if !@day_use_package.new_record? %>
 </div>
