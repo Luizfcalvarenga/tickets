@@ -338,7 +338,7 @@ export function DayUseOrderItems(props) {
             >
               <p className="m-0 fs-20 text-white f-20">Data:</p>
               <div className="flex center between f-70">
-                <i
+                {/* <i
                   className={`f-10 fa fa-caret-left fs-60 ${
                     availablePassTypes.findIndex(
                       (date) => date.date === currentDate.date
@@ -347,7 +347,7 @@ export function DayUseOrderItems(props) {
                       : "text-secondary"
                   }`}
                   onClick={() => changeDate(-7)}
-                ></i>
+                ></i> */}
                 <i
                   className={`f-10 fa fa-caret-left fs-60 ${
                     currentDate.date !== availablePassTypes[0].date
@@ -374,7 +374,7 @@ export function DayUseOrderItems(props) {
                   }`}
                   onClick={() => changeDate(1)}
                 ></i>
-                <i
+                {/* <i
                   className={`f-10 fa fa-caret-right fs-60 ${
                     availablePassTypes.findIndex(
                       (date) => date.date === currentDate.date
@@ -383,7 +383,7 @@ export function DayUseOrderItems(props) {
                       : "text-secondary"
                   }`}
                   onClick={() => changeDate(7)}
-                ></i>
+                ></i> */}
               </div>
             </div>
           </div>

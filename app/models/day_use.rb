@@ -96,13 +96,20 @@ class DayUse < ApplicationRecord
   end
 
   def available_passes_per_date
+    dates = []
+    
     (0..60).to_a.map do |days_ahead|
       date = Time.current + days_ahead.days
-      {
+      day_use_schedule_for_date = schedule_for_date(date)
+      next if !day_use_schedule_for_date.open?
+      
+      dates << {
         date: date,
         weekday_display: weekday_translation(weekday_for_wday(date.wday)),
-        open_slots_for_date: schedule_for_date(date).open_slots_for_date(date)
+        open_slots_for_date: day_use_schedule_for_date.open_slots_for_date(date)
       }
     end
+    
+    dates
   end
 end
