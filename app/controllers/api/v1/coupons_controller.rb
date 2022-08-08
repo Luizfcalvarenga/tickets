@@ -4,9 +4,9 @@ module Api
       skip_before_action :authenticate_user!
       
       def show
-        render json: {error: "Entidade não encontrada"} and return if params[:entity_id].blank? || params[:entity_type].blank?
+        @entity = params[:entity_type].classify.constantize.find_by(id: params[:entity_id])
 
-        @entity = params[:entity_type].classify.constantize.find(params[:entity_id])
+        render json: {error: "Entidade não encontrada"} and return if @entity.blank?
 
         render json: CouponChecker.new(params[:coupon_code], @entity).call
       end

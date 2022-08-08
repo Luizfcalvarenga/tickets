@@ -88,6 +88,11 @@ en:
         weekday: Dia de semana
         start_time: Horário de início do bloqueio
         end_time: Horário de final do bloqueio
+      day_use_package:
+        description: Descrição
+        quantity_of_passes: Quantidade de passes para promoçao
+        kind: Tipo de desconto
+        discount: Valor do desconto por passe
       membership:
         name: Nome
         price_in_cents: Preço em centavos por cobrança

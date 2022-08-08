@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth'
 
       get 'day_uses/:id', to: 'day_uses#show', as: "day_use"
+      get 'day_uses/:id/generate_pass', to: 'day_uses#show_for_generate_pass', as: "day_use_generate_pass"
 
       get 'passes/:identifier/show', to: 'passes#show', as: "pass_show"
       get 'passes/:identifier/scan', to: 'passes#scan', as: "pass_scan"
@@ -43,11 +44,15 @@ Rails.application.routes.draw do
     delete "events/:id/delete_group", to: "events#delete_group", as: "delete_group"
     patch "events/:id/toggle_activity", to: "events#toggle_activity", as: "event_toggle_activity"
     post 'events/:id/clone', to: "events#clone", as: "event_clone"
+
     resources :memberships
     patch "memberships/:id/toggle_activity", to: "memberships#toggle_activity", as: "membership_toggle_activity"
+
     resources :day_uses do
       resources :day_use_blocks, only: [ :new, :create, :destroy ]
+      resources :day_use_packages, only: [ :new, :create, :edit, :update, :destroy ]
     end
+    
     patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders
@@ -81,8 +86,7 @@ Rails.application.routes.draw do
     resources :event_communications, only: [:index, :show, :new, :create]
   end
 
-  get "day_uses/:id/:date", to: "day_uses#show", as: "day_use"
-  get "day_uses", to: "day_uses#index"
+  resources :day_uses, only: [:index, :show]
 
   resources :memberships, only: [:show]
   resources :user_memberships

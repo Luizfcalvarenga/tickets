@@ -2,13 +2,15 @@ require Rails.root.join('db/seeds/states_and_cities_populate')
 require 'faker'
 require 'uri'
 
-NUMBER_OF_USERS = 0
-NUMBER_OF_EVENTS = 0
-NUMBER_OF_DAY_USES = 0
+User.create!(email: "galo@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31981981981", name: Faker::Name.name)
 
-puts "Criando lista de estados e cidades..."
-StatesAndCitiesPopulate.populate!
-puts "-- OK!"
+# NUMBER_OF_USERS = 0
+# NUMBER_OF_EVENTS = 0
+# NUMBER_OF_DAY_USES = 0
+
+# puts "Criando lista de estados e cidades..."
+# StatesAndCitiesPopulate.populate!
+# puts "-- OK!"
 
 # Partner.destroy_all
 # Read.destroy_all

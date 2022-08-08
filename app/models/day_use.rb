@@ -1,4 +1,6 @@
 class DayUse < ApplicationRecord
+  include ::ModelConcern
+
   belongs_to :partner
   belongs_to :approved_by, class_name: "User", foreign_key: "approved_by_id", optional: true
 
@@ -8,7 +10,7 @@ class DayUse < ApplicationRecord
   has_one_attached :photo
 
   has_many :questions
-
+  has_many :day_use_packages
   has_many :day_use_schedules, dependent: :destroy
   has_many :day_use_schedule_pass_types, through: :day_use_schedules, dependent: :destroy
   has_many :passes, through: :day_use_schedule_pass_types
@@ -91,5 +93,23 @@ class DayUse < ApplicationRecord
 
   def display_photo
     photo&.key.present? ? photo.key : partner.logo.key
+  end
+
+  def available_passes_per_date
+    dates = []
+    
+    (0..60).to_a.map do |days_ahead|
+      date = Time.current + days_ahead.days
+      day_use_schedule_for_date = schedule_for_date(date)
+      next if !day_use_schedule_for_date.open?
+      
+      dates << {
+        date: date,
+        weekday_display: weekday_translation(weekday_for_wday(date.wday)),
+        open_slots_for_date: day_use_schedule_for_date.open_slots_for_date(date)
+      }
+    end
+    
+    dates
   end
 end

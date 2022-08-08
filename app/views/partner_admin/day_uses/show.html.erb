@@ -28,6 +28,9 @@
       <button class="nav-link <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons-tab" data-bs-toggle="tab" data-bs-target="#coupons" type="button" role="tab" aria-controls="contact" aria-selected="false">Cupoms</button>
     </li>
     <li class="nav-item" role="presentation">
+      <button class="nav-link <%= 'show active' if params[:current_tab] == 'packages-tab' %>" id="packages-tab" data-bs-toggle="tab" data-bs-target="#packages" type="button" role="tab" aria-controls="contact" aria-selected="false">Pacotes</button>
+    </li>
+    <li class="nav-item" role="presentation">
       <button class="nav-link <%= 'show active' if params[:current_tab] == 'generate-pass-tab' %>" id="generate-pass-tab" data-bs-toggle="tab" data-bs-target="#generate-pass" type="button" role="tab" aria-controls="contact" aria-selected="false">Gerar passe</button>
     </li>
     <% if false %>
@@ -127,7 +130,7 @@
               <td data-label="Gerado em"><%= coupon.created_at.strftime("%d/%m/%Y") %></td>
               <td data-label="Válido até"><%= coupon.valid_until&.strftime("%d/%m/%Y")  %></td>
               <td data-label="Valor do desconto"><%= coupon.discount_display %></td>
-              <td data-label="Utilização"><%= coupon.orders.paid.count %>/<%= coupon.redemption_limit %></td>
+              <td data-label="Utilização"><%= coupon.utilization_count %>/<%= coupon.redemption_limit %></td>
               <td data-label="Ações">
                 <%= link_to edit_partner_admin_coupon_path(coupon) do %>
                   <p class="btn btn-success m-0 px-5">Editar</p>
@@ -140,6 +143,39 @@
 
       <%= link_to new_partner_admin_coupon_path(entity_id: @day_use.id, entity_type: @day_use.class.name) do %>
         <p class="btn btn-success w-100 mt-4">Criar Cupom</p>
+      <% end %>
+    </div>
+
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'packages-tab' %>" id="packages" role="tabpanel" aria-labelledby="contact-tab">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" class="w-50">Descrição</th>
+            <th scope="col">Gerado em</th>
+            <th scope="col">Quantidade de passes</th>
+            <th scope="col">Valor do desconto</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @day_use.day_use_packages.active.each do |day_use_package| %>
+            <tr>
+              <td data-label="Descrição" class="text-start"><%= day_use_package.description %></td>
+              <td data-label="Criado"><%= day_use_package.created_at.strftime("%d/%m/%Y") %></td>
+              <td data-label="Quantidade de passes"><%= day_use_package.quantity_of_passes %></td>
+              <td data-label="Valor do desconto"><%= day_use_package.discount_display %>/passe</td>
+              <td data-label="Ações">
+                <%= link_to edit_partner_admin_day_use_day_use_package_path(day_use_id: @day_use.id, id: day_use_package.id) do %>
+                  <p class="btn btn-success m-0 px-5">Editar</p>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <%= link_to new_partner_admin_day_use_day_use_package_path(day_use_id: @day_use.id) do %>
+        <p class="btn btn-success w-100 mt-4">Criar novo pacote</p>
       <% end %>
     </div>
     

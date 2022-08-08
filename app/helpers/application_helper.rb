@@ -66,6 +66,18 @@ module ApplicationHelper
     }[weekday_number.to_s]
   end
 
+  def weekday_translation(weekday)
+    {
+      monday: "Segunda-feira",
+      tuesday: "Terça-feira",
+      wednesday: "Quarta-feira",
+      thursday: "Quinta-feira",
+      friday: "Sexta-feira",
+      saturday: "Sábado",
+      sunday: "Domingo",
+    }[weekday.to_sym]
+  end
+
   def edit_entity_path(entity)
     case entity.class.name 
     when "Event" 

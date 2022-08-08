@@ -1,5 +1,6 @@
 class Coupon < ApplicationRecord
-  belongs_to :entity, polymorphic: true
+  belongs_to :entity, polymorphic: true, optional: true
+  belongs_to :day_use_package, optional: true
 
   has_many :orders
 

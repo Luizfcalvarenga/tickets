@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_03_203514) do
+ActiveRecord::Schema.define(version: 2022_08_07_022301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,9 +73,18 @@ ActiveRecord::Schema.define(version: 2022_08_03_203514) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "coupon_order_items", force: :cascade do |t|
+    t.bigint "coupon_id", null: false
+    t.bigint "order_item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["coupon_id"], name: "index_coupon_order_items_on_coupon_id"
+    t.index ["order_item_id"], name: "index_coupon_order_items_on_order_item_id"
+  end
+
   create_table "coupons", force: :cascade do |t|
-    t.string "entity_type", null: false
-    t.bigint "entity_id", null: false
+    t.string "entity_type"
+    t.bigint "entity_id"
     t.integer "redemption_limit"
     t.datetime "valid_until"
     t.string "code"
@@ -84,6 +93,8 @@ ActiveRecord::Schema.define(version: 2022_08_03_203514) do
     t.datetime "deactivated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "day_use_package_id"
+    t.index ["day_use_package_id"], name: "index_coupons_on_day_use_package_id"
     t.index ["entity_type", "entity_id"], name: "index_coupons_on_entity"
   end
 
@@ -98,6 +109,29 @@ ActiveRecord::Schema.define(version: 2022_08_03_203514) do
     t.bigint "created_by_id"
     t.index ["created_by_id"], name: "index_day_use_blocks_on_created_by_id"
     t.index ["day_use_id"], name: "index_day_use_blocks_on_day_use_id"
+  end
+
+  create_table "day_use_package_pass_types", force: :cascade do |t|
+    t.bigint "day_use_schedule_pass_type_id", null: false
+    t.bigint "day_use_package_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_use_package_id"], name: "index_day_use_package_pass_types_on_day_use_package_id"
+    t.index ["day_use_schedule_pass_type_id"], name: "duspt_index"
+  end
+
+  create_table "day_use_packages", force: :cascade do |t|
+    t.bigint "day_use_id", null: false
+    t.string "description"
+    t.integer "quantity_of_passes"
+    t.datetime "deactivated_at"
+    t.string "kind"
+    t.integer "discount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "created_by_id"
+    t.index ["created_by_id"], name: "index_day_use_packages_on_created_by_id"
+    t.index ["day_use_id"], name: "index_day_use_packages_on_day_use_id"
   end
 
   create_table "day_use_schedule_pass_types", force: :cascade do |t|
@@ -448,7 +482,14 @@ ActiveRecord::Schema.define(version: 2022_08_03_203514) do
   add_foreign_key "accesses", "users", column: "granted_by_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "coupon_order_items", "coupons"
+  add_foreign_key "coupon_order_items", "order_items"
+  add_foreign_key "coupons", "day_use_packages"
   add_foreign_key "day_use_blocks", "users", column: "created_by_id"
+  add_foreign_key "day_use_package_pass_types", "day_use_packages"
+  add_foreign_key "day_use_package_pass_types", "day_use_schedule_pass_types"
+  add_foreign_key "day_use_packages", "day_uses"
+  add_foreign_key "day_use_packages", "users", column: "created_by_id"
   add_foreign_key "day_use_schedule_pass_types", "day_use_schedules"
   add_foreign_key "day_use_schedules", "day_uses"
   add_foreign_key "day_uses", "partners"

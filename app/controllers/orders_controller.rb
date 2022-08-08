@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
   end
   
   def create
-    if order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
+    if params[:order].blank? || order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
       redirect_to "#{request.referrer}?coupon_code=#{params[:coupon_code]}" and return
     end
@@ -43,41 +43,7 @@ class OrdersController < ApplicationController
 
     @order = Order.create(user: current_user)
 
-    order_item = nil
-
-    ActiveRecord::Base.transaction do
-      order_items_params.each do |order_item_params|
-        if order_item_params[:event_batch_id].present?
-          entity = EventBatch.find(order_item_params[:event_batch_id])
-          start_time = entity.event.scheduled_start
-          end_time = entity.event.scheduled_end
-        elsif order_item_params[:day_use_schedule_pass_type_id].present?
-          entity = DayUseSchedulePassType.find(order_item_params[:day_use_schedule_pass_type_id])
-          start_time = order_item_params[:start_time].to_datetime
-          end_time = order_item_params[:start_time].to_datetime +  entity.day_use_schedule.sanitized_slot_duration_in_minutes.minute
-        else
-          raise
-        end
-
-        order_item_params[:quantity].to_i.times do 
-          order_item = OrderItem.create(order: @order,
-            event_batch_id: order_item_params[:event_batch_id],
-            day_use_schedule_pass_type_id: order_item_params[:day_use_schedule_pass_type_id],
-            price_in_cents: entity.price_in_cents,
-            fee_percentage: entity.fee_percentage,
-            partner: entity.partner,
-            absorb_fee: entity.absorb_fee,
-            start_time: start_time,
-            end_time: end_time,
-          )
-        end
-      end
-      
-      related_entity = order_item.related_entity
-      
-      applicable_coupon = Coupon.active.find_by(entity_id: related_entity.id, entity_type: related_entity.class.name, code: params[:coupon_code])
-      @order.update!(coupon: applicable_coupon) if applicable_coupon.present? && applicable_coupon.can_be_applied?
-    end
+    OrderProcessor.new(@order, order_items_params, params[:coupon_code]).call
     
     if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call

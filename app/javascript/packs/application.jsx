@@ -120,10 +120,14 @@ const loadReactComponent = () => {
             container.dataset.event ? JSON.parse(container.dataset.event) : null
           }
           eventBatches={
-            container.dataset.eventBatches ? JSON.parse(container.dataset.eventBatches) : null
+            container.dataset.eventBatches
+              ? JSON.parse(container.dataset.eventBatches)
+              : null
           }
           errors={
-            container.dataset.errors ? JSON.parse(container.dataset.errors) : null
+            container.dataset.errors
+              ? JSON.parse(container.dataset.errors)
+              : null
           }
         />
       ),
@@ -142,67 +146,49 @@ const loadReactComponent = () => {
           }
         />
       ),
-      
+
       EventOrderItems: (
         <EventOrderItems
-        event={
-          container.dataset.event ? JSON.parse(container.dataset.event) : null
-        }
-        eventBatches={
-          container.dataset.eventBatches
-          ? JSON.parse(container.dataset.eventBatches)
-          : null
-        }
-        feePercentage={
-          container.dataset.feePercentage
-          ? JSON.parse(container.dataset.feePercentage)
-          : null
-        }
-        />
-        ),
-        DayUseOrderItems: (
-          <DayUseOrderItems
-          dayUse={
-            container.dataset.dayUse
-            ? JSON.parse(container.dataset.dayUse)
-            : null
+          event={
+            container.dataset.event ? JSON.parse(container.dataset.event) : null
           }
-          dayUseSchedule={
-            container.dataset.dayUseSchedule
-            ? JSON.parse(container.dataset.dayUseSchedule)
-            : null
-          }
-          openSlots={
-            container.dataset.openSlots
-            ? JSON.parse(container.dataset.openSlots)
-            : null
-          }
-          passTypes={
-            container.dataset.passTypes
-            ? JSON.parse(container.dataset.passTypes)
-            : null
-          }
-          date={
-            container.dataset.date ? JSON.parse(container.dataset.date) : null
+          eventBatches={
+            container.dataset.eventBatches
+              ? JSON.parse(container.dataset.eventBatches)
+              : null
           }
           feePercentage={
             container.dataset.feePercentage
-            ? JSON.parse(container.dataset.feePercentage)
-            : null
+              ? JSON.parse(container.dataset.feePercentage)
+              : null
           }
-          />
-          ),
-        };
-        
-        ReactDOM.render(components[container.dataset.component], container);
-      });
+        />
+      ),
+      DayUseOrderItems: (
+        <DayUseOrderItems
+          dayUse={
+            container.dataset.dayUse
+              ? JSON.parse(container.dataset.dayUse)
+              : null
+          }
+          feePercentage={
+            container.dataset.feePercentage
+              ? JSON.parse(container.dataset.feePercentage)
+              : null
+          }
+        />
+      ),
     };
-    
-    const loadToastr = () => {
-      document.querySelectorAll(".flash").forEach((flash) => {
-        console.log(flash);
-        if (flash.dataset.type === "alert") {
-          global.toastr.error(flash.dataset.message);
+
+    ReactDOM.render(components[container.dataset.component], container);
+  });
+};
+
+const loadToastr = () => {
+  document.querySelectorAll(".flash").forEach((flash) => {
+    console.log(flash);
+    if (flash.dataset.type === "alert") {
+      global.toastr.error(flash.dataset.message);
     } else if (flash.dataset.type === "notice") {
       global.toastr.success(flash.dataset.message);
     } else {

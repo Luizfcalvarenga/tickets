@@ -17,16 +17,6 @@ class PartnersController < ApplicationController
 
     @events = @partner.events.active
     @day_uses = @partner.day_uses.active
-    @open_days = []
-    days_count = 0
-    until @open_days.count >= NUMBER_OF_DAYS_FORWARD_TO_SHOW_DAY_USES || days_count > 30
-      date = Time.current + days_count.days
-      weekday = weekday_for_wday(date.wday)
-      day_uses_open_for_day = @day_uses.open_for_weekday(weekday).uniq
-      @open_days << {value: weekday, label: weekday_translations(weekday), day_uses: day_uses_open_for_day, date: date} if day_uses_open_for_day.present?
-      days_count += 1
-    end
-
     @memberships = @partner.memberships.active
 
     if current_user.present?

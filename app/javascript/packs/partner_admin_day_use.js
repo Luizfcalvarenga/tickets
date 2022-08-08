@@ -14,7 +14,7 @@ document.addEventListener("turbolinks:load", () => {
   generatePassDateInput.addEventListener("change", (e) => {
     if (e.target.value.length == 10 && e.target.value[0] !== "0") {
       fetch(
-        `/api/v1/day_uses/${generatePassDateInput.dataset.dayUseId}?date=${e.target.value}`
+        `/api/v1/day_uses/${generatePassDateInput.dataset.dayUseId}/generate_pass?date=${e.target.value}`
       )
         .then((response) => response.json())
         .then((data) => {
