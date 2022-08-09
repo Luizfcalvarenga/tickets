@@ -8,7 +8,6 @@ export function DayUseOrderItems(props) {
   const [originalSlotsInfosAndQuantities, setOriginalSlotsInfosAndQuantities] =
     useState();
   const [orderItems, setOrderItems] = useState([]);
-  const [recalculatedOrderItems, setRecalculatedOrderItems] = useState([]);
 
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
@@ -18,7 +17,6 @@ export function DayUseOrderItems(props) {
   const [waitingSubmit, setWaitingSubmit] = useState(false);
   const [waitingForPasses, setWaitingForPasses] = useState(true);
   const [dayUsePackages, setDayUsePackages] = useState([]);
-  const [currentAppliedPackage, setCurrentAppliedPackage] = useState(null);
 
   useEffect(() => {
     fetchAvailablePasses();
@@ -304,6 +302,37 @@ export function DayUseOrderItems(props) {
         availablePassTypes[currentDateIndex + amount].open_slots_for_date[0]
     );
   };
+  
+  const changeWeekAvailable = (amount) => {
+    return availablePassTypes.find((date) => {
+      return moment(date.date).format("YYYY-MM-DD") === moment(currentDate.date).add(amount, "weeks").format(
+        "YYYY-MM-DD"
+      );
+    })
+  }
+
+  const changeWeek = (amount) => {
+    const newCurrentDate = availablePassTypes.find((date) => {
+      return moment(date.date).format("YYYY-MM-DD") === moment(currentDate.date).add(amount, "weeks").format(
+        "YYYY-MM-DD"
+      );
+    })
+
+    if (!newCurrentDate) return;
+
+    setCurrentDate(newCurrentDate);
+
+    const slotToRecover = newCurrentDate.open_slots_for_date.find((slot) => {
+      return (
+        moment(slot.start_time).strftime("%H:%M") ===
+        moment(recoverSlotTime).strftime("%H:%M")
+      );
+    });
+    setCurrentSlot(
+      slotToRecover ||
+        availablePassTypes[currentDateIndex + amount].open_slots_for_date[0]
+    );
+  }
 
   const changeSlot = (amount) => {
     const currentSlotIndex = currentDate.open_slots_for_date.findIndex(
@@ -336,27 +365,25 @@ export function DayUseOrderItems(props) {
                 window.mobileMode() ? "w-100" : "w-30"
               }`}
             >
-              <p className="m-0 fs-20 text-white f-20">Data:</p>
-              <div className="flex center between f-70">
-                {/* <i
-                  className={`f-10 fa fa-caret-left fs-60 ${
-                    availablePassTypes.findIndex(
-                      (date) => date.date === currentDate.date
-                    ) > 6
+              <div className={`flex center between w-100`}>
+                <i
+                  className={`f-10 fas fa-forward rotate-180 fs-48 ${
+                    changeWeekAvailable(-1)
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
-                  onClick={() => changeDate(-7)}
-                ></i> */}
+                  onClick={() => changeWeek(-1)}
+                ></i>
                 <i
-                  className={`f-10 fa fa-caret-left fs-60 ${
-                    currentDate.date !== availablePassTypes[0].date
+                  className={`f-10 fa fa-caret-left text-end fs-60 ${
+                    currentDate.date !==
+                    availablePassTypes[0].date
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
                   onClick={() => changeDate(-1)}
                 ></i>
-                <p className="f-60 m-0 text-center fs-18 text-white">
+                <p className="f-50 m-0 text-center fs-18 text-white">
                   {moment(currentDate.date).strftime("%d/%m/%Y")}
                   <br />
                   {currentDate &&
@@ -374,16 +401,14 @@ export function DayUseOrderItems(props) {
                   }`}
                   onClick={() => changeDate(1)}
                 ></i>
-                {/* <i
-                  className={`f-10 fa fa-caret-right fs-60 ${
-                    availablePassTypes.findIndex(
-                      (date) => date.date === currentDate.date
-                    ) < availablePassTypes.length - 7
+                <i
+                  className={`f-10 fas fa-forward fs-48 ${
+                    changeWeekAvailable(1)
                       ? "text-success clickable"
                       : "text-secondary"
                   }`}
-                  onClick={() => changeDate(7)}
-                ></i> */}
+                  onClick={() => changeWeek(1)}
+                ></i>
               </div>
             </div>
           </div>
@@ -609,8 +634,8 @@ export function DayUseOrderItems(props) {
             <TailSpin
               type="TailSpin"
               color="#00C454"
-              height={125}
-              width={125}
+              height={mobileMode() ? 50 : 125}
+              width={mobileMode() ? 50 : 125}
             />
             <p className="gs-230 mt-3">Carregando ingressos...</p>
           </div>
