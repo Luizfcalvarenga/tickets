@@ -63,6 +63,7 @@ export function DayUseOrderItems(props) {
 
     form.method = "POST";
     form.action = "/orders";
+    form.classList = "d-none";
 
     orderItems.forEach((passType) => {
       const quantityInputElement = document.createElement("input");
@@ -299,7 +300,7 @@ export function DayUseOrderItems(props) {
     });
     setCurrentSlot(
       slotToRecover ||
-        availablePassTypes[currentDateIndex + amount].open_slots_for_date[0]
+        newCurrentDate.open_slots_for_date[0]
     );
   };
   
@@ -330,7 +331,7 @@ export function DayUseOrderItems(props) {
     });
     setCurrentSlot(
       slotToRecover ||
-        availablePassTypes[currentDateIndex + amount].open_slots_for_date[0]
+        newCurrentDate.open_slots_for_date[0]
     );
   }
 

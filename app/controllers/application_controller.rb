@@ -70,6 +70,10 @@ class ApplicationController < ActionController::Base
     redirect_to params[:return_url] if params[:return_url].present?
   end
 
+  def restore_order_if_one_is_provided
+    raise params[:restore_order]
+  end
+
   def display_price(price_in_cents)
     number_to_currency(price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")
   end

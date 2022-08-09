@@ -1,5 +1,7 @@
 
 class OrdersController < ApplicationController
+  skip_before_action :authenticate_user!, only: :create
+
   def show
     @order = Order.find(params[:id])
 
@@ -35,10 +37,16 @@ class OrdersController < ApplicationController
       redirect_to "#{request.referrer}?coupon_code=#{params[:coupon_code]}" and return
     end
 
-    if !current_user.has_completed_profile?
-      flash[:notice] = "Por favor, preecha as informações abaixo para prosseguir:"
+    if !current_user
+      flash[:notice] = "Por favor, faça o login ou crie uma conta para continuar. Seu pedido está salvo."
+      session[:restore_order] = order_items_params
+      redirect_to new_user_session_path and return
+    end
 
-      redirect_to dashboard_path_for_user(current_user, current_tab: "nav-acc-info", return_url: request.referrer) and return
+    if !current_user.has_completed_profile?
+      flash[:notice] = "Por favor, preecha as informações de perfil abaixo para prosseguir. Seu pedido está salvo."
+      session[:restore_order] = order_items_params
+      redirect_to new_user_session_path and return
     end
 
     @order = Order.create(user: current_user)
