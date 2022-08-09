@@ -30,6 +30,10 @@ class OrdersController < ApplicationController
     @payment_methods = Iugu::PaymentMethod.fetch({customer_id: current_user.iugu_customer_id}).results
     @iugu_customer_id = current_user.iugu_customer_id
   end
+
+  def restore
+    @order_item_params = params[:order_restore_params]
+  end
   
   def create
     if params[:order].blank? || order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?

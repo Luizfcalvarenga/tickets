@@ -10,8 +10,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "trix";
 import "@rails/actiontext";
-import flatpickr from "flatpickr";
-import { Portuguese } from "flatpickr/dist/l10n/pt.js";
 
 import QrScanner from "qr-scanner";
 
@@ -22,6 +20,7 @@ import { EventBatches } from "../react_pages/EventBatches";
 import { EventOrderItems } from "../react_pages/EventOrderItems";
 import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
 import { DayUseSchedules } from "../react_pages/DayUseSchedules";
+import { RestoreOrder } from "../react_pages/RestoreOrder";
 
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
@@ -146,7 +145,15 @@ const loadReactComponent = () => {
           }
         />
       ),
-
+      RestoreOrder: (
+        <RestoreOrder
+          orderParams={
+            container.dataset.orderParams
+              ? JSON.parse(container.dataset.orderParams)
+              : null
+          }
+        />
+      ),
       EventOrderItems: (
         <EventOrderItems
           event={
