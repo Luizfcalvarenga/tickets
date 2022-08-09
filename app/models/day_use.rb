@@ -102,12 +102,14 @@ class DayUse < ApplicationRecord
       date = Time.current + days_ahead.days
       day_use_schedule_for_date = schedule_for_date(date)
       next if !day_use_schedule_for_date.open?
+
+      open_slots_for_date = day_use_schedule_for_date.open_slots_for_date(date)
       
       dates << {
         date: date,
         weekday_display: weekday_translation(weekday_for_wday(date.wday)),
-        open_slots_for_date: day_use_schedule_for_date.open_slots_for_date(date)
-      }
+        open_slots_for_date: open_slots_for_date
+      } if open_slots_for_date.map { |open_slots| open_slots[:available_pass_types] }.any?(&:present?)
     end
     
     dates
