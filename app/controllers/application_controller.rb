@@ -79,8 +79,6 @@ class ApplicationController < ActionController::Base
   end
 
   def restore_order_if_one_is_stored
-    # session[:restore_order] = nil if 
-
     if current_user && session[:restore_order].present?
       restore_params = session[:restore_order]
       session[:restore_order] = nil
