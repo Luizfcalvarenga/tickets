@@ -12,6 +12,9 @@ class OrderProcessor
 
     ActiveRecord::Base.transaction do
       order_items_params.each do |order_item_params|
+        order_item_params[:event_batch_id] = nil if order_item_params[:event_batch_id] == "undefined"
+        order_item_params[:day_use_schedule_pass_type_id] = nil if order_item_params[:day_use_schedule_pass_type_id] == "undefined"
+        
         if order_item_params[:event_batch_id].present?
           entity = EventBatch.find(order_item_params[:event_batch_id])
           start_time = entity.event.scheduled_start

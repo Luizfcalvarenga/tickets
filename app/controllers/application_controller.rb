@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
+  prepend_before_action :save_restore_order_params
   before_action :authenticate_user!, unless: :auth_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :restore_order_if_one_is_stored
@@ -10,6 +11,12 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
   private
+
+  def save_restore_order_params
+    if params[:order].present? && !user_signed_in?
+      session[:restore_order] = params[:order]
+    end
+  end
 
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb

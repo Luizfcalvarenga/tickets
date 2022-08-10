@@ -5,13 +5,14 @@ import { TailSpin } from "react-loader-spinner";
 
 export function RestoreOrder(props) {
   useEffect(() => {
+    console.log(props)
     var form = document.createElement("form");
 
     form.method = "POST";
     form.action = "/orders";
     form.classList = "d-none";
 
-    props.orderParams.order.forEach((passType) => {
+    props.orderParams.order.order_items.forEach((passType) => {
       const quantityInputElement = document.createElement("input");
       quantityInputElement.name = "order[order_items][][quantity]";
       quantityInputElement.value = 1;
