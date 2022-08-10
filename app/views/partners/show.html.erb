@@ -13,11 +13,18 @@
     <%= cl_image_tag @partner.logo.key, height: 200, width: 220, crop: :fit, class: "partner-show-logo" %>
   <% end %>
 
-  <% if @partner.bike_park? %>
-    <h2>Agendamentos disponíveis</h2>
+  <% if @memberships.present? %>
+    <nav class="<%= mobile_device? && 'mt-5' %>">
+      <div class="nav nav-tabs underlined" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-experiences-tab" data-bs-toggle="tab" data-bs-target="#nav-experiences" type="button" role="tab" aria-controls="nav-experiences" aria-selected="true">EXPERIÊNCIAS</button>
+          <button class="nav-link" id="nav-memberships-tab" data-bs-toggle="tab" data-bs-target="#nav-memberships" type="button" role="tab" aria-controls="nav-memberships" aria-selected="true">ASSINATURAS</button>
+      </div>
+    </nav>
+  <% end %>
+  
 
-    <div class="tab-content mt-5" id="nav-tabContent">
-     
+  <div class="tab-content mt-5" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-experiences" role="tabpanel" aria-labelledby="nav-experiences-tab">
       <div class="row">
         <% @day_uses.each do |day_use| %>
           <div class="col-12 col-md-4 mb-3">
@@ -30,39 +37,22 @@
             <% end %>
           </div>
         <% end %>
-      </div>
-
-    </div>
-
-    <div class="spacer-50"></div>
-  <% end %>
-
-  <h2>Eventos</h2>
-  
-  <div class="row">
-    <% @events.each do |event| %>
-      <div class="col-12 col-md-4 mb-3">
-        <%= link_to event_path(event)do %>
-          <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
-            <div class="flex center between w-100">
-              <p class="text-white mb-0"><%= event.name %></p>
-              <p class="text-white mb-0"><%= event.scheduled_start.strftime("%d/%m/%Y") %></p>
-            </div>
+        <% @events.each do |event| %>
+          <div class="col-12 col-md-4 mb-3">
+            <%= link_to event_path(event)do %>
+              <div class="card-category px-4 py-2 flex justify-content-start align-items-end clickable" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('<%= cl_image_path event.photo.key, height: 300, crop: :fill %>')">
+                <div class="flex center between w-100">
+                  <p class="text-white mb-0"><%= event.name %></p>
+                  <p class="text-white mb-0"><%= event.scheduled_start.strftime("%d/%m/%Y") %></p>
+                </div>
+              </div>
+            <% end %>
           </div>
         <% end %>
       </div>
-    <% end %>
-  </div>
-  <% if @events.blank? %>
-    <p class="text-white">Nenhum evento programado até o momento.</p>
-  <% end %>
+    </div>
 
-  <div class="spacer-50"></div>
-
-  <% if @partner.bike_park? %>
-    <h2>Assinaturas disponíveis</h2>
-
-    <div>
+    <div class="tab-pane fade show" id="nav-memberships" role="tabpanel" aria-labelledby="nav-memberships-tab">
       <% @memberships.each do |membership| %>
         <div class="membership bg-dark w-100 p-4 br-8 text-white flex center gap-24 justify-content-between justify-content-md-start mb-2 flex-column flex-md-row">
           <div class="f-30">
@@ -87,14 +77,10 @@
         </div>
       <% end %>  
     </div>
+  </div>
 
-    <% if @memberships.blank? %>
-      <p class="text-white">Nenhuma assinatura programada até o momento.</p>
-    <% end %>
-
-    <h2 class="text-success text-center mt-5">Sobre o local</h2>
-    <p><%= @partner.about %></p>
-    
-  <% end %>
+  <h2 class="text-success text-center mt-5">Sobre o local</h2>
+  <p><%= @partner.about %></p>
+  
 </div>
 
