@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     resources :events, only: [:show]
   end
 
+  get "orders/restore", to: "orders#restore", as: "restore_order"
   resources :orders do
     resources :question_answers, only: [:show, :new, :create]
   end

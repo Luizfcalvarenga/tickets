@@ -28,18 +28,16 @@ class OrdersController < ApplicationController
     @payment_methods = Iugu::PaymentMethod.fetch({customer_id: current_user.iugu_customer_id}).results
     @iugu_customer_id = current_user.iugu_customer_id
   end
+
+  def restore
+    @order_item_params = params[:order_restore_params]
+  end
   
   def create
     if params[:order].blank? || order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
       redirect_to "#{request.referrer}?coupon_code=#{params[:coupon_code]}" and return
     end
-
-    # if !current_user
-    #   flash[:notice] = "Por favor, faça o login ou crie uma conta para continuar."
-    #   session[:restore_order] = order_items_params
-    #   redirect_to new_user_session_path and return
-    # end
 
     if !current_user.has_completed_profile?
       flash[:notice] = "Por favor, preecha as informações de perfil abaixo para prosseguir."

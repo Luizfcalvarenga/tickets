@@ -1,14 +1,22 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
+  prepend_before_action :save_restore_order_params
   before_action :authenticate_user!, unless: :auth_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :restore_order_if_one_is_stored
 
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   skip_before_action :verify_authenticity_token
 
   private
+
+  def save_restore_order_params
+    if params[:order].present? && !user_signed_in?
+      session[:restore_order] = params[:order]
+    end
+  end
 
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb
@@ -70,8 +78,13 @@ class ApplicationController < ActionController::Base
     redirect_to params[:return_url] if params[:return_url].present?
   end
 
-  def restore_order_if_one_is_provided
-    raise params[:restore_order]
+  def restore_order_if_one_is_stored
+    if current_user && session[:restore_order].present?
+      restore_params = session[:restore_order]
+      session[:restore_order] = nil
+      flash[:notice] = "Estamos recuperando seu pedido..."
+      redirect_to restore_order_path(order_restore_params: {order: restore_params}) and return
+    end
   end
 
   def display_price(price_in_cents)
