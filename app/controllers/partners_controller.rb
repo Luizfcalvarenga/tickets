@@ -4,7 +4,13 @@ class PartnersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
 
   def index
-    @partners = Partner.bike_park.active.order(:created_at)
+    @partners = Partner.bike_park.active
+    if current_user.present?
+      @sorted_passes_partner_ids = current_user.passes.joins(:partner).order(created_at: :desc).pluck(:partner_id).uniq
+      @partners = @partners.sort_by { |partner| @sorted_passes_partner_ids.index(partner.id) || 999 }
+    else
+      @partners = @partners.order(:created_at)
+    end
   end
   
   def show
