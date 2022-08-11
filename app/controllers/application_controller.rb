@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
   include Pundit
 
-  prepend_before_action :save_restore_order_params
+  # prepend_before_action :save_restore_order_params
   before_action :authenticate_user!, unless: :auth_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :restore_order_if_one_is_stored
+  # before_action :restore_order_if_one_is_stored
 
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?

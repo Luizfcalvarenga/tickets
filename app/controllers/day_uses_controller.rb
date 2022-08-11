@@ -9,6 +9,9 @@ class DayUsesController < ApplicationController
     @day_use = DayUse.find(params[:id])
     @order = Order.new
 
-    session[:restore_order] = nil if current_user.present?
+    # session[:restore_order] = nil if current_user.present?
+    if !current_user
+      session[:fall_back_url] = request.url
+    end
   end
 end
