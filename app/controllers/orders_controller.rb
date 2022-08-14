@@ -42,9 +42,9 @@ class OrdersController < ApplicationController
     end
 
     if !current_user.has_completed_profile?
-      flash[:notice] = "Por favor, preecha as informações de perfil abaixo para prosseguir."
-      session[:restore_order] = order_items_params
-      redirect_to new_user_session_path and return
+      # session[:restore_order] = order_items_params
+      flash[:notice] = "Por favor, preecha as informações abaixo para prosseguir:"
+      redirect_to dashboard_path_for_user(current_user, current_tab: "nav-acc-info", return_url: request.referrer) and return
     end
 
     @order = Order.create(user: current_user)
