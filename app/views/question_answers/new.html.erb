@@ -45,7 +45,7 @@
                 <% end %>
               </select>
             <% else %>
-              <% if ["Nome completo", "CPF", "CEP"].include?(question.prompt) %>
+              <% if ["Nome completo", "CPF", "CEP", "Telefone"].include?(question.prompt) %>
                 <input
                   type="text"
                   name="user_answers[][value]"

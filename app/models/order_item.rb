@@ -34,7 +34,7 @@ class OrderItem < ApplicationRecord
   def discount_value_in_cents
     return price_in_cents if order.directly_generated_by_id.present?
     
-    return 0 if coupon.blank?
+    return 0 if coupon.blank? || coupon.discount.blank?
 
     value = coupon.percentage? ? (price_in_cents * coupon.discount / 100) : coupon.discount
 

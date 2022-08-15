@@ -11,13 +11,15 @@ class Coupon < ApplicationRecord
 
   scope :active, -> { where(deactivated_at: nil) }
 
+  validates :code, :redemption_limit, :valid_until, :kind, :discount, presence: true
+
   def discount_display
     if percentage?
       "#{discount}%"
     elsif fixed?
       ApplicationController.helpers.display_price(discount)
     else 
-      raise
+      "-"
     end
   end
 

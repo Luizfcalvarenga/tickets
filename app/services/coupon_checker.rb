@@ -9,7 +9,7 @@ class CouponChecker
   def call
     @coupon = Coupon.active.find_by(entity_id: entity.id, entity_type: entity.class.name, code: coupon_code)
 
-    if @coupon.blank?
+    if @coupon.blank? || @coupon.kind.blank? || @coupon.discount.blank?
       return {
         success: false,
         message: "Cupom não encontrado ou desativado"

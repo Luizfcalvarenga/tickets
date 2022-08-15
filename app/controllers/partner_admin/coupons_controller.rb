@@ -29,6 +29,7 @@ module PartnerAdmin
         flash[:notice] = "Cupom atualizado com sucesso"
         redirect_to redirect_route
       else
+        @entity = @coupon.entity
         flash[:alert] = "Erro ao criar cupom"
         render :edit
       end
