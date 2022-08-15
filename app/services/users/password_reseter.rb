@@ -17,8 +17,9 @@ module Users
     def generate_password_token
       @token, encrypted = Devise.token_generator.generate(User, :reset_password_token)
 
-      user.update(reset_password_token: encrypted, reset_password_sent_at: Time.now.utc)
-      # user.update_attributes(reset_password_token: encrypted, reset_password_sent_at: Time.now.utc)
+      user.reset_password_token = encrypted
+      user.reset_password_sent_at = Time.now.utc
+      user.save(validate: false)
     end
 
     def notify_user

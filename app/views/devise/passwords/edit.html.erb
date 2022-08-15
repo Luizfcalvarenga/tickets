@@ -1,31 +1,33 @@
 <%= render "devise/shared/links" %>
 
-<div class="page-wrapper">
-  <div class="p-5 bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-100" : "vh-80 mt-5" %>">
-    <h2 class="text-center text-success f-20">Redefinir senha</h2>
+<div class="page-wrapper flex center justify-content-around">
+  <div class="bg-dark br-12 d-flex flex-column <%= mobile_device? ? "vh-50 w-90 p-3" : "vh-50 mt-5 w-50 p-5" %>">
+    <div>
+      <h2 class="text-center text-success f-20">Redefinir senha</h2>
 
       <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-      <%= f.error_notification %>
+        <%= f.error_notification %>
 
-      <%= f.input :reset_password_token, as: :hidden %>
-      <%= f.full_error :reset_password_token %>
+        <%= f.input :reset_password_token, as: :hidden %>
+        <%= f.full_error :reset_password_token %>
 
-      <div class="form-inputs">
-        <%= f.input :password,
-                    label: "New password",
-                    required: true,
-                    autofocus: true,
-                    hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                    input_html: { autocomplete: "new-password" } %>
-        <%= f.input :password_confirmation,
-                    label: "Confirm your new password",
-                    required: true,
-                    input_html: { autocomplete: "new-password" } %>
-      </div>
+        <div class="form-inputs">
+          <%= f.input :password,
+                      label: "Nova senha",
+                      required: true,
+                      autofocus: true,
+                      hint: ("No mínimo #{@minimum_password_length} caracteres" if @minimum_password_length),
+                      input_html: { autocomplete: "new-password" } %>
+          <%= f.input :password_confirmation,
+                      label: "Confirmar nova senha",
+                      required: true,
+                      input_html: { autocomplete: "new-password" } %>
+        </div>
 
-      <div class="form-actions">
-        <%= f.button :submit, "Redefinir senha", class: "btn btn-success my-3" %>
-      </div>
-    <% end %>
+        <div class="form-actions">
+          <%= f.button :submit, "Redefinir senha", class: "btn btn-success my-3" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

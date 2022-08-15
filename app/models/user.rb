@@ -34,20 +34,15 @@ class User < ApplicationRecord
     admin: "admin",
   }
 
-  def encrypt_email
-    @SECURE = 'brRPNZEt5r8MebFBdQHRVyFYReBdAgCN'
-    @CIPHER = 'aes-256-cbc'
-
-    crypt = ActiveSupport::MessageEncryptor.new(@SECURE, @CIPHER)
-    crypt.encrypt_and_sign(self.email)
-  end
-
-  def self.decrypt_email(email)
-    @SECURE = 'brRPNZEt5r8MebFBdQHRVyFYReBdAgCN'
-    @CIPHER = 'aes-256-cbc'
-
-    crypt = ActiveSupport::MessageEncryptor.new(@SECURE, @CIPHER)
-    crypt.decrypt_and_verify(email)
+  def reset_password(new_password, new_password_confirmation)
+    if new_password.present?
+      self.password = new_password
+      self.password_confirmation = new_password_confirmation
+      save(validate: false)
+    else
+      errors.add(:password, :blank)
+      false
+    end
   end
 
   def name_must_have_at_least_two_words
