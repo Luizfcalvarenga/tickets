@@ -1,7 +1,11 @@
 class PassesController < ApplicationController
   def show
-    @pass = Pass.find(params[:id])
+    @pass = Pass.find_by(id: params[:id])
 
+    if @pass.blank?
+      flash[:alert] = "Passe não encontrado"
+      redirect_to dashboard_path_for_user(current_user) and return
+    end
     if !current_user || @pass.user != current_user
       flash[:alert] = "Você não tem permissão para ver esse passe"
       redirect_to dashboard_path_for_user(current_user)

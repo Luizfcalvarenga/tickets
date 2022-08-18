@@ -58,6 +58,7 @@
         <th scope="col">Receita líquida</th>
         <th scope="col">Taxa da Iugu</th>
         <th scope="col">Lucro líquido</th>
+        <th scope="col">Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -76,6 +77,9 @@
         <td data-label="Receita líquida"><%= display_price(order.net_value) %></td>
         <td data-label="Taxa da Iugu"><%= display_price(order.value - order.net_value) %></td>
         <td data-label="Lucro líquido"><%= display_price(order.net_value - order.amount_to_transfer_to_partner) %></td>
+        <td data-label="Ações">
+          <%= link_to "Destruir", admin_order_path(order), class: "btn btn-danger", method: :delete, data: { confirm: "Cuidado! Tem certeza que deseja destruir esse pedido e todos os passes gerados por ele? Essa ação não pode ser revertida." } %>
+        </td>
       </tr>
       <% end %>
     </tbody>

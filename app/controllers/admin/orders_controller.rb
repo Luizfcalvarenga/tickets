@@ -16,5 +16,21 @@ module Admin
         format.csv { send_data Order.where(id: @orders.map(&:id)).to_csv("admin"), filename: "Nuflowpass - Controle financeiro - #{@reference_date.strftime("%B/%Y")}.csv" }
       end
     end
+
+    def destroy
+      order = Order.find(params[:id])
+
+      order.order_items.each do |order_item|
+        order_item.pass&.accesses&.destroy_all
+        order_item.pass&.reads&.destroy_all
+        order_item.pass&.destroy!
+        order_item.coupon_order_item&.destroy!
+        order_item.question_answers.destroy_all
+        order_item.destroy!
+      end
+      order.destroy!
+
+      redirect_to admin_orders_path, notice: "Pedido #{order.id} excluído com sucesso."
+    end
   end
 end
