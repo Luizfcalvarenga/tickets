@@ -30,7 +30,7 @@ class EventBatch < ApplicationRecord
   end
 
   def available?
-    removed_at.blank? && (ends_at.blank? || ends_at.end_of_day > Time.current) && OrderItem.where(event_batch_id: id).where("created_at > ?", Time.current - 10.minute).count < quantity
+    removed_at.blank? && (ends_at.blank? || ends_at.end_of_day > Time.current) && Pass.where(event_batch_id: id).count < quantity
   end
 
   def ended_at_datetime
