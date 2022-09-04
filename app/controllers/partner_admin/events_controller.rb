@@ -12,7 +12,7 @@ module PartnerAdmin
         @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
       end
 
-      @passes = @passes.first(50)    
+      @passes = @passes.limit(50)    
 
       @order = Order.new
 
