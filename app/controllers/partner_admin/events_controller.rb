@@ -10,7 +10,9 @@ module PartnerAdmin
       if params[:query].present?
         sql_query = "question_answers.value ILIKE :query OR users.email ILIKE :query"
         @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
-      end      
+      end
+
+      @passes = @passes.first(50)    
 
       @order = Order.new
 
