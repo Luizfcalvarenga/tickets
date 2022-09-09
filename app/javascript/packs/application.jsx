@@ -24,6 +24,7 @@ import { RestoreOrder } from "../react_pages/RestoreOrder";
 
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
+import "chartkick/chart.js"
 
 Rails.start();
 Turbolinks.start();

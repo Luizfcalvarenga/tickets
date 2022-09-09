@@ -8,6 +8,21 @@ import Swal from "sweetalert2";
 document.addEventListener("turbolinks:load", () => {
   if (!document.querySelector("#event-show-page")) return;
 
+  let page = parseInt(document.querySelector(".pagination").dataset.currentPage, 10)
+
+  const addEventListenersToPaginate = () => {
+    document.querySelectorAll(".paginate-button").forEach((paginateButton) => {
+      paginateButton.addEventListener("click", () => {
+        const offset = parseInt(paginateButton.dataset.paginateOffset, 10)
+        if (!paginateButton.classList.contains("clickable")) return;
+
+        page += offset
+        document.querySelector(".spinner").classList.remove("d-none")
+        debouncedReloadList();
+      })
+    })
+  }
+
   const addEventListenersToDirectAccessButtons = () => {
     const accessModal = document.querySelector("#access-modal");
 
@@ -75,6 +90,7 @@ document.addEventListener("turbolinks:load", () => {
   };
 
   addEventListenersToDirectAccessButtons();
+  addEventListenersToPaginate();
 
   const debouncedReloadList = debounce(() => {
     const tableElement = document.querySelector("#user-list");
@@ -82,13 +98,14 @@ document.addEventListener("turbolinks:load", () => {
 
     if (!tableElement) return;
 
-    const url = `${window.location.href}?query=${queryInput.value}`;
+    const url = `${window.location.href}?query=${queryInput.value}&page=${page}`;
 
     fetch(url, { headers: { Accept: "text/plain" } })
       .then((response) => response.text())
       .then((data) => {
         tableElementParentNode.innerHTML = data;
         addEventListenersToDirectAccessButtons();
+        addEventListenersToPaginate();
       });
   }, 500);
 
@@ -101,6 +118,7 @@ document.addEventListener("turbolinks:load", () => {
 
   window.addEventListener("reload-user-list", () => {
     addEventListenersToDirectAccessButtons();
+    addEventListenersToPaginate();
 
     queryInput.value = "";
     debouncedReloadList();

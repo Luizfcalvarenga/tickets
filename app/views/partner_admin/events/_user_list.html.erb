@@ -1,3 +1,10 @@
+<div class="pagination flex align-items-center mb-3" data-current-page="<%= params[:page].to_i || 0 %>" data-max-pages="<%= @max_pages %>">
+  <p class="mb-0 mr-3 me-3">Página</p>
+  <p class="border mb-0 p-2 paginate-button px-3 <%= (params[:page].to_i || 0) > 0 && "btn-success clickable color-white" %>" data-paginate-offset="-1"><</p>
+  <p class="mb-0 p-2 px-3 paginate-counter"><%= (params[:page].to_i || 0) + 1 %>/<%= @max_pages + 1 %></p>
+  <p class="border mb-0 p-2 paginate-button px-3 <%= (params[:page].to_i || 0) < @max_pages && "btn-success clickable color-white" %>"  data-paginate-offset="+1">></p>
+  <div class="spinner ms-4 d-none"></div>
+</div>
 <table id="user-list">
   <thead>
     <tr>
