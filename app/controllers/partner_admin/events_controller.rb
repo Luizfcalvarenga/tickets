@@ -12,9 +12,14 @@ module PartnerAdmin
         @passes = @passes.where(sql_query, query: "%#{params[:query]}%") if params[:query].present?
       end
 
-      @passes = @passes.limit(50)    
+      @total_passes_count = @passes.count
+      @access_count = @passes.joins(:accesses).uniq.count
+
+      @passes = @passes.limit(50).offset((params[:page] || 0).to_i * 50 )    
 
       @order = Order.new
+
+      @max_pages = (@total_passes_count / 50).ceil
 
       respond_to do |format|
         format.html

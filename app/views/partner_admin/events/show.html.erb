@@ -23,6 +23,11 @@
     <% end %>
     <% if current_user.partner_admin? %>
       <li class="nav-item" role="presentation">
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'insights-tab' %>" id="insights-tab" data-bs-toggle="tab" data-bs-target="#insights" type="button" role="tab" aria-controls="profile" aria-selected="false">Insights</button>
+      </li>
+    <% end %>
+    <% if current_user.partner_admin? %>
+      <li class="nav-item" role="presentation">
         <button class="nav-link <%= 'show active' if params[:current_tab] == 'communications-tab' %>" id="communications-tab" data-bs-toggle="tab" data-bs-target="#communications" type="button" role="tab" aria-controls="contact" aria-selected="false">Comunicados</button>
       </li>
     <% end %>
@@ -41,7 +46,7 @@
   <div class="tab-content">
     <div class="tab-pane fade <%= 'show active' if params[:current_tab].blank? || params[:current_tab] == 'user-list-tab' %>" id="user-list" role="tabpanel" aria-labelledby="home-tab">
       <h3 class="title">Lista de inscritos</h3>
-      <p><b> Total de inscritos: </b> <%= @passes.length %> | <b> Total de acessos: </b> <%= Access.where(pass_id: @passes.ids).count %> </p>
+      <p><b> Total de inscritos: </b> <%= @total_passes_count %> | <b> Total de acessos: </b> <%= @access_count %> | <b> Taxa de acesso: </b> <%= ('%.2f' % (@access_count * 100.to_f/@total_passes_count)) %>%</p>
 
       <div class="flex center between mb-3">
         <div class="form-group f-60">
@@ -81,6 +86,35 @@
           <% end %>
         </div>
       <% end %>
+    </div>
+
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'insights-tab' %>" id="insights" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="row my-3">
+        <div class="col-12 col-md-4 p-2">
+          <div class="br-8 bg-dark flex center around flex-column p-4">
+            <p class="fw-bold text-white">Total de inscritos</p>
+            <p class="fw-bold text-white fs-30 m-0"><%= @total_passes_count %></p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 p-2 br-8">
+          <div class="br-8 bg-dark flex center around flex-column p-4">
+            <p class="fw-bold text-white">Total de acessos</p>
+            <p class="fw-bold text-white fs-30 m-0"><%= @access_count %></p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 p-2 br-8">
+          <div class="br-8 bg-dark flex center around flex-column p-4">
+            <p class="fw-bold text-white">Taxa de acesso</p>
+            <p class="fw-bold text-white fs-30 m-0"><%= ('%.2f' % (@access_count * 100.to_f/@total_passes_count)) %>%</p>
+          </div>
+        </div>
+      </div>
+            
+      <h3 class="text-success">Geração de passes</h3>
+      <%= line_chart @passes.group_by_day(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
+
+      <h3 class="text-success">Acessos</h3>
+      <%= line_chart Access.where(pass_id: @event.passes.ids).where("created_at > ?", @event.scheduled_start.beginning_of_day).group_by_hour(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
     </div>
 
     <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'communications-tab' %>" id="communications" role="tabpanel" aria-labelledby="contact-tab">
