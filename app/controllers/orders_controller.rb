@@ -94,6 +94,7 @@ class OrdersController < ApplicationController
       })
 
       if response.errors.present?
+        DiscordMessager.call("Erro ao realizar pagamento: #{response.errors.inspect}")
         flash[:alert] = "Erro ao realizar pagamento"
         redirect_to request.referrer and return
       end

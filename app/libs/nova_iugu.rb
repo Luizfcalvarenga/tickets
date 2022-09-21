@@ -160,6 +160,8 @@ module NovaIugu
 
     def call
       @response = ::Iugu::Charge.create(direct_pay_params)
+
+      DiscordMessager.call("Chamada para pagamento com cartão: #{direct_pay_params.inspect}. Resultado: #{@response.inspect}")
       
       if @response.attributes["success"] == true
         @entity.update(
