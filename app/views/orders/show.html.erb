@@ -110,7 +110,7 @@
             <h3 class="text-success">Parcelamento</h3>
             <select name="number_of_installments" id="select-number-of-installments" class="mx-5">
               <% @order.installment_options.each do |installment_option| %>
-                <option value="<%= installment_option[:count] %>"><%= installment_option[:count] %>x de <%= display_price(installment_option[:value_in_cents]) %> (Total de <%= display_price(installment_option[:value_in_cents] * installment_option[:count]) %>)</option>
+                <option value="<%= installment_option[:count] %>"><%= installment_option[:count] %>x de <%= display_price(installment_option[:value_in_cents]) %></option>
               <% end %>
             </select>
           <% end %>
