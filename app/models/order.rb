@@ -116,6 +116,15 @@ class Order < ApplicationRecord
     !is_free? && (invoice_id.blank? || invoice_status == "expired" || invoice_status == "canceled")
   end
 
+  def unsafe_destroy
+    order_items.each do |order_item|
+      order_item.pass.accesses.destroy_all
+      order_item.pass.destroy
+      order_item.destroy
+    end
+    self.destroy
+  end
+
   def self.to_csv(mode = "partner")
     if mode == "partner"
       attributes = ["Usuário", "Identificação do pedido", "Entidade", "Pago em", "Preço", "Cupom", "Gerado por", "Descontos", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
