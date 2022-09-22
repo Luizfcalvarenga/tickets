@@ -21,7 +21,6 @@ import { EventOrderItems } from "../react_pages/EventOrderItems";
 import { DayUseOrderItems } from "../react_pages/DayUseOrderItems";
 import { DayUseSchedules } from "../react_pages/DayUseSchedules";
 import { RestoreOrder } from "../react_pages/RestoreOrder";
-const Trix = require("trix");
 
 import "../stylesheets/application";
 import "flatpickr/dist/flatpickr.min.css";
