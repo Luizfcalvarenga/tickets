@@ -16,7 +16,6 @@
       <%= @day_use.description %>
     </p>
 
-
     <div class="spacer-50"></div>
   </div>
 
@@ -35,4 +34,52 @@
   <react data-component="DayUseOrderItems" 
     data-day-use="<%= @day_use.to_json %>" 
     data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
+
+  <div class="third-section-event-show container bg-dark p-5 text-center text-md-start mt-5">
+    <div class="mb-3">
+      <h3>SOBRE O ORGANIZADOR</h3>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-2">
+        <%= cl_image_tag @day_use.partner.logo.key, crop: :fit , class: "br-50 mx-auto d-block mb-5 w-100"%>
+      </div>
+      <div class="col-sm-12 col-md-10">
+        <div>
+          <%= link_to partner_path(@day_use.partner) do %>
+            <h3><span class="text-success clickable"><%= @day_use.partner.name %></span></h3>
+          <% end %>
+        </div>
+        <div>
+          <p class="py-2 page-desktop"><%= @day_use.partner.about.truncate(400) %></p>
+          <p class="py-2 page-mobile"><%= @day_use.partner.about.truncate(200) %></p>
+        </div>
+        <div class="text-center text-md-start">
+          <button class="btn btn-success btn-lg me-0 me-md-5" data-bs-toggle="modal" data-bs-target="#producer-modal">FALE COM O ORGANIZADOR</button>
+          <%= link_to partner_path(@day_use.partner) do %>
+            <p class="btn btn-dark btn-lg mt-3 mt-md-0 m-0">VISITAR PÁGINA DO ORGANIZADOR</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="producer-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body bg-darker p-5">
+        <h1 class="text-success">Fale com o organizador</h1>
+        <p class="text-white">O organizador nos disponibilizou os seguintes contatos: </p>
+          <% if @day_use.partner.contact_email.present? %>
+            <p class="text-white"><i class="fas fa-envelope pe-4"></i><%= @day_use.partner.contact_email %></p>
+          <% end %>
+          <% if @day_use.partner.contact_phone_1.present? %>
+            <p class="text-white"><i class="fas fa-phone pe-4"></i><%= @day_use.partner.contact_phone_1 %></p>
+          <% end %>
+          <% if @day_use.partner.contact_phone_2.present? %>
+            <p class="text-white"><i class="fas fa-phone pe-4"></i><%= @day_use.partner.contact_phone_2 %></p>
+          <% end %>
+      </div>
+    </div>
+  </div>
 </div>

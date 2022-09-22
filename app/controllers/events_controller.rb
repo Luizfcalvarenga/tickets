@@ -3,12 +3,16 @@ class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    @events = Event.active.where("scheduled_end > ?", Time.current).order(:scheduled_start)
-    @past_events = Event.active.where("scheduled_end < ?", Time.current).order(:scheduled_start)
+    @events = Event.active.not_hidden.where("scheduled_end > ?", Time.current).order(:scheduled_start)
+    @past_events = Event.active.where("scheduled_end < ?", Time.current).order(scheduled_start: :desc)
   end
   
   def show
-    @event = Event.find(params[:id])
+    @event = Event.find_by(id: params[:id]) || Event.find_by(slug: params[:id])
+    if @event.blank?
+      flash[:alert] = "Evento não encontrado"
+      redirect_to root_path and return
+    end
 
     # if !@event.active?
       # flash[:alert] = "Evento não encontrado ou está com as vendas suspensas"

@@ -13,7 +13,7 @@
         <p><span class="fw-700">Ingresso #<%= index + 1 %>:</span> <%= order_item.full_description %></p>
 
         <% order_item.questions.active.each_with_index do |question, index| %>
-          <p class="mb-3">Pergunta <%= index + 1 %>: <%= question.prompt %></p>
+          <p class="mb-3"><%= question.prompt %></p>
           <div class="my-2">
             <input
               type="hidden"

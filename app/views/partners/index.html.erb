@@ -1,11 +1,12 @@
 <% if @partners.present? %>
   <div class="page-wrapper"> 
     <h1 class="title">Bike Parks</h1>
+    <p class="text-white">Clique para acessar o parceiro:</p>
 
-    <div class="container mt-5">
+    <div class="container mt-2">
       <div class="row">
         <% @partners.each do |partner| %>
-          <div class="col-sm-12 col-md-6 col-lg-4 p-2 clickable" style="min-height: 500px">
+          <div class="col-sm-12 col-md-6 col-lg-4 p-2 clickable page-desktop" style="min-height: 500px">
             <div class="bg-dark p-4 h-100">
               <%= link_to partner_path(partner) do %>
                 <div class="flex center around mb-4">
@@ -21,6 +22,26 @@
                 <div class="p-2">
                   <p class="text-white mb-5"><%= partner.about.truncate(300) %></p>
                   <p class="text-center"><%= partner.city.name %>, <%= partner.state.acronym %></p>
+                </div>
+              <% end %> 
+            </div>
+          </div>
+
+          <div class="page-mobile clickable">
+            <div class="bg-dark p-2 mb-1">
+              <%= link_to partner_path(partner) do %>
+                <div class="flex center around mb-2 f-1x">
+                  <div>
+                    <% if partner.logo.attached? %>
+                      <%= image_tag cl_image_path partner.logo.key, height: 130, crop: :fill %>
+                    <% else %>
+                      <%= image_tag 'default.png', height: 130 %>
+                    <% end %>
+                  </div>
+                  <div class="p-2 f-2x">
+                    <h3 class="text-left"><span class="text-success"><%= partner.name %></span></h3>
+                    <p class="text-left text-white"><%= partner.city.name %>, <%= partner.state.acronym %></p>
+                  </div>
                 </div>
               <% end %> 
             </div>

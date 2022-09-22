@@ -17,38 +17,36 @@
   </div>
   <div class="container page-desktop mb-5">
     <% @events.each do |event| %>
-      <div class="row mb-4 flex-around bg-dark event-card">
-        <div class="col-5 p-0 h-100">
-          <%= link_to event_path(event), class: "h-100 w-100 clickable" do %>
+      <%= link_to event_path(event), class: "h-100 w-100 clickable text-decoration-none" do %>
+        <div class="row mb-4 flex-around bg-dark event-card">
+          <div class="col-5 p-0 h-100">      
             <% if event.photo.attached? %>
                 <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
               <% else %>
                 <%= image_tag 'default.png' %>
             <% end %>
-          <% end %>
-        </div>
-        <div class="col-7 p-5 h-100 d-flex flex-column">
-          <div class="d-flex justify-content-between f-30">
-            <p><span class="text-success fs-24"><%= event.name %></span></p>
-            <div class="d-flex justify-content-between">
-              <div>
-                <i aria-hidden="true" class="fas fa-calendar"></i>
-                <h5 class="vbar px-2"><%= event.scheduled_start.strftime('%d/%m/%Y') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h5>
-              </div>
-              <div>
-                <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
-                <h5 class="vbar px-2">Localização - <%= event.city.name %>, <%= event.state.acronym %></h5>
+          </div>
+          <div class="col-7 p-5 h-100 d-flex flex-column">
+            <div class="d-flex justify-content-between f-30">
+              <p><span class="text-success fs-24"><%= event.name %></span></p>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <i aria-hidden="true" class="fas fa-calendar"></i>
+                  <h5 class="vbar px-2"><%= event.scheduled_start.strftime('%d/%m/%Y') %> / <%=  event.scheduled_start.strftime("%H:%M") %></h5>
+                </div>
+                <div>
+                  <i aria-hidden="true" class="fas fa-map-marked-alt"></i>
+                  <h5 class="vbar px-2">Localização - <%= event.city.name %>, <%= event.state.acronym %></h5>
+                </div>
               </div>
             </div>
+            <div class="overflow-auto f-60">
+              <p class="mb-0 fs-16 text-white"><%= event.description.to_plain_text.truncate(400) %></p>
+            </div>
+            <p class="btn btn-success btn-lg px-5 w-40">COMPRAR</p>
           </div>
-          <div class="overflow-auto f-60">
-            <p class="mb-0 fs-16"><%= event.description.to_plain_text.truncate(400) %></p>
-          </div>
-          <%= link_to event_path(event), class: "" do %>
-            <button class="btn btn-success btn-lg px-5">COMPRAR</button>
-          <% end %>
         </div>
-      </div>
+      <% end %>
     <% end %>
 
     <% if @events.blank? %>
@@ -58,25 +56,26 @@
 
   <div class="container page-mobile mb-5">
     <% @events.each do |event| %>
-      <div class="pt-3">
-        <%= link_to event_path(event), class: "" do %>
-          <% if event.photo.attached? %>
-              <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
-            <% else %>
-              <%= image_tag 'default.png' %>
-          <% end %>
+      <%= link_to event_path(event), class: "h-100 w-100 clickable text-decoration-none" do %>
+        <div class="pt-3">
+            <% if event.photo.attached? %>
+                <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
+              <% else %>
+                <%= image_tag 'default.png' %>
+            <% end %>
+          </div>
+          <div class="bg-dark">
+            <div class="d-flex justify-content-between p-2">
+              <h3><span class="text-success fs-30"><%= event.name %></span></h3>
+              <h4><span class="text-success"><%= event.scheduled_start.strftime('%d/%m/%Y') %> - <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
+            </div>
+            <div class="p-2">
+              <p class="fs-16 text-white"><%= event.description.to_plain_text.truncate(80) %></p>
+              <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+              <p class="btn btn-success btn-lg px-5 w-60">COMPRAR</p>
+            </div>
+          </div>
         <% end %>
-        </div>
-        <div class="bg-dark">
-          <div class="d-flex justify-content-between p-2">
-            <h3><span class="text-success fs-30"><%= event.name %></span></h3>
-            <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
-          </div>
-          <div class="p-2">
-            <p class="fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
-            <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
-          </div>
-        </div>
       <% end %>
 
       <% if @events.blank? %>
@@ -124,7 +123,7 @@
             <p class="mb-0 fs-16"><%= event.description.to_plain_text.truncate(400) %></p>
           </div>
           <%= link_to event_path(event), class: "" do %>
-            <button class="btn btn-success btn-lg px-5">COMPRAR</button>
+            <button class="btn btn-success btn-lg px-5">VER EVENTO</button>
           <% end %>
         </div>
       </div>
@@ -133,23 +132,24 @@
 
   <div class="container page-mobile mb-5">
     <% @past_events.each do |event| %>
-      <div class="pt-3">
-        <%= link_to event_path(event), class: "" do %>
-          <% if event.photo.attached? %>
-              <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
-            <% else %>
-              <%= image_tag 'default.png' %>
-          <% end %>
+      <div class="pt-3">  
+        <% if event.photo.attached? %>
+            <%= cl_image_tag event.photo.key, crop: :fill, class: "w-100 h-100", style: "width: 100%;" %>
+          <% else %>
+            <%= image_tag 'default.png' %>
         <% end %>
         </div>
         <div class="bg-dark">
           <div class="d-flex justify-content-between p-2">
             <h3><span class="text-success fs-30"><%= event.name %></span></h3>
-            <h4><span class="text-success"><%= event.scheduled_start.strftime('%A, %d de %B') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
+            <h4><span class="text-success"><%= event.scheduled_start.strftime('%d/%m/%Y') %> / <%=  event.scheduled_start.strftime("%H:%M") %></span></h4>
           </div>
           <div class="p-2">
-            <p class="fs-16"><%= event.description.to_plain_text.truncate(80) %></p>
+            <p class="fs-16 text-white"><%= event.description.to_plain_text.truncate(80) %></p>
             <p>Localização - <%= event.city.name %>, <%= event.state.acronym %></p>
+            <%= link_to event_path(event), class: "" do %>
+              <button class="btn btn-success btn-lg px-5">VER EVENTO</button>
+            <% end %>
           </div>
         </div>
       <% end %> 

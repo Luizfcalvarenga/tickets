@@ -26,6 +26,7 @@ module Admin
           approved_by: current_user
         }
         update_params.merge!({allow_installments: params[:approve][:allow_installments].to_i == 1}) if @entity.respond_to? :allow_installments
+        update_params.merge!({hide_from_events_index: params[:approve][:hide_from_events_index].to_i == 1}) if @entity.respond_to? :hide_from_events_index
 
         @entity.update(update_params)
 

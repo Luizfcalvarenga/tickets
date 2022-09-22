@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   skip_before_action :authenticate_user!, except: [:dashboard, :clean]
 
   def home
-    @events = Event.active.where("scheduled_end > ?", Time.current).order(:scheduled_start)
+    @events = Event.active.not_hidden.where("scheduled_end > ?", Time.current).order(:scheduled_start)
   end
 
   def partnership

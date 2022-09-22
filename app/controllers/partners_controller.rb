@@ -21,7 +21,7 @@ class PartnersController < ApplicationController
       redirect_to root_path and return
     end
 
-    @events = @partner.events.active
+    @events = @partner.events.active.upcoming
     @day_uses = @partner.day_uses.active
     @memberships = @partner.memberships.active
 

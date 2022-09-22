@@ -26,12 +26,19 @@ class Event < ApplicationRecord
   validates :name, :description, :cep, :street_name, :street_number, :neighborhood, :scheduled_start, :scheduled_end, presence: true
   validate :must_have_uploaded_photo
 
-  scope :upcoming, -> { where("scheduled_end < ?", Time.current) }
+  validates :slug,
+    presence: true,
+    uniqueness: true,
+    length: {minimum: 2, maximum: 30},
+    format: {with: /\A[a-zA-Z0-9\-]+\Z/}
+    
+  scope :upcoming, -> { where("scheduled_end > ?", Time.current) }
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
-  scope :past, -> { where("scheduled_end > ?", Time.current) }
+  scope :past, -> { where("scheduled_end < ?", Time.current) }
   scope :not_approved, -> { where(approved_at: nil, deactivated_at: nil) }
   scope :active, -> { where.not(approved_at: nil).where(deactivated_at: nil) }
   scope :deactivated, -> { where.not(deactivated_at: nil) }
+  scope :not_hidden, -> { where(hide_from_events_index: false) }
 
   def must_have_uploaded_photo
     if !photo.attached?

@@ -29,4 +29,52 @@
     <%= f.input :membership_id, as: :hidden, input_html: { value: @membership.id } %>
     <%= f.submit "Inscrever", class: "btn btn-success w-100" %>
   <% end %>
+
+  <div class="third-section-event-show container bg-dark p-5 text-center text-md-start mt-5">
+    <div class="mb-3">
+      <h3>SOBRE O ORGANIZADOR</h3>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-2">
+        <%= cl_image_tag @membership.partner.logo.key, crop: :fit , class: "br-50 mx-auto d-block mb-5 w-100"%>
+      </div>
+      <div class="col-sm-12 col-md-10">
+        <div>
+          <%= link_to partner_path(@membership.partner) do %>
+            <h3><span class="text-success clickable"><%= @membership.partner.name %></span></h3>
+          <% end %>
+        </div>
+        <div>
+          <p class="py-2 page-desktop"><%= @membership.partner.about.truncate(400) %></p>
+          <p class="py-2 page-mobile"><%= @membership.partner.about.truncate(200) %></p>
+        </div>
+        <div class="text-center text-md-start">
+          <button class="btn btn-success btn-lg me-0 me-md-5" data-bs-toggle="modal" data-bs-target="#producer-modal">FALE COM O ORGANIZADOR</button>
+          <%= link_to partner_path(@membership.partner) do %>
+            <p class="btn btn-dark btn-lg mt-3 mt-md-0 m-0">VISITAR PÁGINA DO ORGANIZADOR</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="producer-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content bg-darker">
+      <div class="modal-body bg-darker p-5">
+        <h1 class="text-success">Fale com o organizador</h1>
+        <p class="text-white">O organizador nos disponibilizou os seguintes contatos: </p>
+          <% if @membership.partner.contact_email.present? %>
+            <p class="text-white"><i class="fas fa-envelope pe-4"></i><%= @membership.partner.contact_email %></p>
+          <% end %>
+          <% if @membership.partner.contact_phone_1.present? %>
+            <p class="text-white"><i class="fas fa-phone pe-4"></i><%= @membership.partner.contact_phone_1 %></p>
+          <% end %>
+          <% if @membership.partner.contact_phone_2.present? %>
+            <p class="text-white"><i class="fas fa-phone pe-4"></i><%= @membership.partner.contact_phone_2 %></p>
+          <% end %>
+      </div>
+    </div>
+  </div>
 </div>

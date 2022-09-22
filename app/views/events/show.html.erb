@@ -11,27 +11,37 @@
 <div class="page-wrapper">
 
   <div class="second-section-event-show">
-    <div class="d-flex align-items-center justify-content-start mt-5">
-      <h1 class="title align-middle mb-0 text-success"><%= @event.name %></h1>
-      <% if false %>
-        <div class="border border-success border-2 d-flex align-items-center justify-content-between px-4 py-2 mx-5">
-          <a href="#"><i class="fab fa-whatsapp me-3"></i>Compartilhe</a>
-        </div>
-      <% end %>
+    <div class="row mt-5 <%= mobile_device? && 'flex-column' %>">
+      <h1 class="title align-middle mb-0 text-success col-12 col-md-9"><%= @event.name %></h1>
+      <div class="col-12 col-md-3">
+        <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
+      </div>
+      <script>
+        document.querySelector("#copy-paste").addEventListener("click", (e) => {
+          navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
+            e.target.innerHTML = "Link copiado!"
+          })  
+        });
+      </script>
     </div>
-    <div class="d-flex justify-content-between my-5 rectangle br-8">
-      <div class="page-desktop f-1x flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
+    <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop">
+      <div class="f-1x flex center around p-4 f-1x">
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
       </div>
+    </div>
+    <div class="my-3 br-8 page-mobile">
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
     </div>
 
     <% if @events_with_same_experience.present? %>
