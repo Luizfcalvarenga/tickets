@@ -23,7 +23,8 @@
       </div>
       <div class="page-desktop">
         <ul class="list-unstyled">
-          <li class="text-success clickable text-uppercase" data-bs-toggle="modal" data-bs-target="#contato-nuflow-modal">Fale conosco</li>
+          <a href="https://api.whatsapp.com/send/?phone=553196225074&text=Oi,+preciso+de+ajuda+com+meu+ingresso&type=phone_number&app_absent=0&utm=nuflowpass" target="_blank" class="text-success clickable text-uppercase page-desktop">Fale conosco</a>
+          
           <% if user_signed_in? %>
             <li class="">
               <%= link_to "LOGOUT", destroy_user_session_path, method: :delete %>
@@ -41,7 +42,9 @@
       </div>
     </div>
     <p class="text-white">CNPJ: 38.559.372/0001-25</li>
-    <p class="text-success clickable text-uppercase page-mobile" data-bs-toggle="modal" data-bs-target="#contato-nuflow-modal">Fale conosco</p>
+    <div>
+      <a href="https://api.whatsapp.com/send/?phone=553196225074&text=Oi,+preciso+de+ajuda+com+meu+ingresso&type=phone_number&app_absent=0&utm=nuflowpass" target="_blank" class="text-success clickable text-uppercase page-mobile">Fale conosco</a>
+    </div>
     <p class="page-mobile py-5 text-center">Desenvolvido por <a href="https://novamente.cc/" class="refer-links" target="_blank">Novamente</a></p>
   </div>
 </footer>

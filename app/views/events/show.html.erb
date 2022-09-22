@@ -24,19 +24,24 @@
         });
       </script>
     </div>
-    <div class="d-flex justify-content-between my-5 rectangle br-8">
-      <div class="page-desktop f-1x flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
+    <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop">
+      <div class="f-1x flex center around p-4 f-1x">
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
       </div>
+    </div>
+    <div class="my-3 br-8 page-mobile">
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
+      <p class="m-0 text-left fs-20 text-white d-flex"><i aria-hidden="true" class="fas fa-map-marked-alt px-3"></i><span class="text-success"></span><span> <%= @event.city.name %>, <%= @event.state.acronym %> </span></p>
     </div>
 
     <% if @events_with_same_experience.present? %>
