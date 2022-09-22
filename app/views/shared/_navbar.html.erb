@@ -30,7 +30,8 @@
         </li>
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "DASHBOARD", dashboard_path_for_user(current_user), class: "text-success nav-link text-decoration-underline" %>
+            <% dashboard_label_for_user = current_user.user? ? "MINHA CONTA" : "DASHBOARD" %>
+            <%= link_to dashboard_label_for_user, dashboard_path_for_user(current_user), class: "text-success nav-link text-decoration-underline" %>
           </li>
           <li class="nav-item active">
             <%= link_to "LOGOUT", destroy_user_session_path, method: :delete, class: "text-success nav-link text-decoration-underline" %>

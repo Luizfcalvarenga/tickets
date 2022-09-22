@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_09_135446) do
+ActiveRecord::Schema.define(version: 2022_09_22_195253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -241,6 +241,8 @@ ActiveRecord::Schema.define(version: 2022_08_09_135446) do
     t.boolean "group_buy", default: false
     t.string "group_buy_code"
     t.integer "order", default: 0
+    t.string "slug"
+    t.boolean "hide_from_events_index", default: false
     t.index ["approved_by_id"], name: "index_events_on_approved_by_id"
     t.index ["city_id"], name: "index_events_on_city_id"
     t.index ["created_by_id"], name: "index_events_on_created_by_id"

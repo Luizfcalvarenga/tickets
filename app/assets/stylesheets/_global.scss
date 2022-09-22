@@ -5,27 +5,6 @@ $color-darker: #101010;
 $color-dark: #222320;
 $white: #fff;
 
-@media (max-width: 768px) {
-  h1 {
-    font-size: 36px !important;
-  }
-  h2 {
-    font-size: 36px !important;
-  }
-  h3 {
-    font-size: 18px !important;
-  }
-  h4 {
-    font-size: 14px !important;
-  }
-  p {
-    font-size: 16px;
-  }
-
-  li {
-    font-size: 16px;
-  }
-}
 h1 {
   font-size: 70px;
 }
@@ -43,6 +22,27 @@ h5 {
 }
 p {
   font-size: 16px;
+}
+@media (max-width: 768px) {
+  h1 {
+    font-size: 36px !important;
+  }
+  h2 {
+    font-size: 36px !important;
+  }
+  h3 {
+    font-size: 26px !important;
+  }
+  h4 {
+    font-size: 22px !important;
+  }
+  p {
+    font-size: 14px;
+  }
+
+  li {
+    font-size: 16px;
+  }
 }
 
 .title {
@@ -668,5 +668,21 @@ hr {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.trix-content {
+  img {
+    max-width: 50%;
+  }
+}
+
+
+.share-button {
+  width: 200px;
+
+  @media screen and (max-width: 768px) {
+    width: 240px;
+    margin-top: 20px;
   }
 }

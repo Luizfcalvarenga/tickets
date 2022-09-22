@@ -23,7 +23,7 @@
       </div>
       <div class="page-desktop">
         <ul class="list-unstyled">
-          <li class="text-white">CNPJ: 38.559.372/0001-25</li>
+          <li class="text-success clickable text-uppercase" data-bs-toggle="modal" data-bs-target="#contato-nuflow-modal">Fale conosco</li>
           <% if user_signed_in? %>
             <li class="">
               <%= link_to "LOGOUT", destroy_user_session_path, method: :delete %>
@@ -35,11 +35,13 @@
             <li class="">
               <%= link_to "CADASTRE-SE", new_user_registration_path, class: "" %>
             </li>
-            <p class="landing-title f-rajdhani fs-16 my-2">Desenvolvido por <a href="https://novamente.cc/" class="refer-links" target="_blank">Novamente</a></p>
           <% end %>
+          <p class="landing-title f-rajdhani fs-16 my-2">Desenvolvido por <a href="https://novamente.cc/" class="refer-links" target="_blank">Novamente</a></p>
         </ul>
       </div>
     </div>
+    <p class="text-white">CNPJ: 38.559.372/0001-25</li>
+    <p class="text-success clickable text-uppercase page-mobile" data-bs-toggle="modal" data-bs-target="#contato-nuflow-modal">Fale conosco</p>
     <p class="page-mobile py-5 text-center">Desenvolvido por <a href="https://novamente.cc/" class="refer-links" target="_blank">Novamente</a></p>
   </div>
 </footer>

@@ -69,8 +69,11 @@
     <% if @entity.respond_to? :allow_installments %>
       <%= f.input :allow_installments, as: :boolean, label: "Liberar compra parcelada", input_html: { checked: @entity.allow_installments } %>
     <% end %>
-
     <p class="gs-190">Absorver a taxa: o cliente final não paga a taxa, e sim o organizador absorve ela e recebe um repasse com a taxa descontada.</p>
+    <% if @entity.respond_to? :hide_from_events_index %>
+      <%= f.input :hide_from_events_index, as: :boolean, label: "Esconder da lista de eventos", input_html: { checked: @entity.hide_from_events_index } %>
+    <% end %>
+
 
     <%= f.submit "Aprovar", class: "btn btn-success mt-5 w-100" %>
   <% end %>
