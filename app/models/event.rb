@@ -29,6 +29,7 @@ class Event < ApplicationRecord
   validates :slug,
     presence: true,
     uniqueness: true,
+    allow_blank: true,
     length: {minimum: 2, maximum: 30},
     format: {with: /\A[a-zA-Z0-9\-]+\Z/}
     
