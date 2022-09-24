@@ -1,6 +1,7 @@
 <table id="user-list">
   <thead>
     <tr>
+      <th scope="col"># pedido</th>
       <th scope="col">Usuário</th>
       <% day_use.questions.default.where(prompt: ["Nome completo", "CPF"]).order(:order).each do |day_use_question| %>
         <td><%= day_use_question.prompt %></td>
@@ -18,6 +19,7 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
+        <td><%= pass.order.id %></td>
         <td data-label="Usuário"><%= pass.user.email %></td>
         <% pass.question_answers.joins(:question).merge(Question.default.where(prompt: ["Nome completo", "CPF"])).order("questions.order").each do |question_answer| %>
           <td data-label="<%= question_answer.question.prompt %>"><%= question_answer.value %></td>

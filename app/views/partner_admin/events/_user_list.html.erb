@@ -8,6 +8,7 @@
 <table id="user-list">
   <thead>
     <tr>
+      <th scope="col"># pedido</th>
       <th scope="col">Usuário</th>
       <% questions = event.questions.order(:order) %>
       <% questions.order(:order).each do |question| %>
@@ -20,6 +21,7 @@
   <tbody>
     <% passes.each do |pass| %>
       <tr>
+        <td><%= pass.order.id %></td>
         <td data-label="Usuário"><%= pass.user.email %></td>
         <% questions.each do |question| %>
           <td><%= pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value %></td>
