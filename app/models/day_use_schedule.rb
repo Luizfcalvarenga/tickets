@@ -67,6 +67,8 @@ class DayUseSchedule < ApplicationRecord
     date = date.to_datetime.asctime.in_time_zone("Brazil/East")
 
     day_use_blocks_for_date = day_use.day_use_blocks.where("day_use_blocks.weekday = 'all' or day_use_blocks.weekday = ? or (day_use_blocks.block_date >= ? AND day_use_blocks.block_date <= ?)", weekday, date.beginning_of_day, date.end_of_day)
+
+    return [] if day_use_blocks_for_date.where("weekday IS NULL AND (start_time IS NULL OR end_time IS NULL)").exists?
     
     start_checkpoints = [opens_at]
     end_checkpoints = [closes_at]
