@@ -24,6 +24,11 @@
         <button class="nav-link <%= 'show active' if params[:current_tab] == 'schedule-blocks-tab' %>" id="schedule-blocks-tab" data-bs-toggle="tab" data-bs-target="#schedule-blocks" type="button" role="tab" aria-controls="contact" aria-selected="false">Bloqueios de calendário</button>
       </li>
     <% end %>
+    <% if current_user.partner_admin? %>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link <%= 'show active' if params[:current_tab] == 'insights-tab' %>" id="insights-tab" data-bs-toggle="tab" data-bs-target="#insights" type="button" role="tab" aria-controls="profile" aria-selected="false">Insights</button>
+      </li>
+    <% end %>
     <li class="nav-item" role="presentation">
       <button class="nav-link <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons-tab" data-bs-toggle="tab" data-bs-target="#coupons" type="button" role="tab" aria-controls="contact" aria-selected="false">Cupoms</button>
     </li>
@@ -109,6 +114,17 @@
       <%= link_to new_partner_admin_day_use_day_use_block_path(day_use_id: @day_use.id) do %>
         <p class="btn btn-success w-100 mt-4">Criar Bloqueio</p>
       <% end %>
+    </div>
+
+    <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'insights-tab' %>" id="insights" role="tabpanel" aria-labelledby="profile-tab">           
+      <h3 class="text-success">Vendas por dia</h3>
+      <%= column_chart @day_use.passes.where("passes.created_at > ?", 1.month.ago).group_by_day(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
+      <h3 class="text-success">Acessos por dia</h3>
+
+      <%= column_chart Access.where(pass_id: @day_use.passes.where("passes.created_at > ?", 1.month.ago).ids).group_by_day(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
+
+      <h3 class="text-success">Acessos por hora do dia</h3>
+      <%= column_chart Access.where(pass_id: @day_use.passes.where("passes.created_at > ?", 1.month.ago).ids).group_by_hour_of_day(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
     </div>
     
     <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'coupons-tab' %>" id="coupons" role="tabpanel" aria-labelledby="contact-tab">
