@@ -85,7 +85,7 @@ class Order < ApplicationRecord
 
   def installment_options 
     (1..MAX_INSTALLMENTS).map do |installment_count|
-      total_value = (price_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
+      total_value = (total_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
       {
         count: installment_count,
         value_in_cents: (total_value / installment_count).floor,
