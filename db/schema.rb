@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(version: 2022_09_22_195253) do
     t.datetime "end_time"
     t.integer "price_in_cents"
     t.float "fee_percentage", default: 10.0
+    t.integer "total_in_cents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "absorb_fee"
