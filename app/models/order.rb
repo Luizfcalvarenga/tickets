@@ -13,9 +13,9 @@ class Order < ApplicationRecord
 
   scope :paid, -> { where(status: "paid")}
 
-  INSTALLMENT_TAX_PERCENTAGE = 0
-  MAX_INSTALLMENTS = 3
-  
+  INSTALLMENT_TAX_PERCENTAGE = 2.85
+  MAX_INSTALLMENTS = 5
+
   def related_entity
     order_items.first.related_entity
   end
@@ -76,14 +76,14 @@ class Order < ApplicationRecord
         }
       },
       ignore_due_email: true,
-      ignore_canceled_email: true,  
-      due_date: (Time.current + 10.days),  
+      ignore_canceled_email: true,
+      due_date: (Time.current + 10.days),
       payable_with: ["pix", "credit_card"],
       order_id: Rails.env.production? ? id : nil,
     }
   end
 
-  def installment_options 
+  def installment_options
     (1..MAX_INSTALLMENTS).map do |installment_count|
       total_value = (total_in_cents * (1 + INSTALLMENT_TAX_PERCENTAGE.to_f/100)**(installment_count - 1))
       {
@@ -131,16 +131,16 @@ class Order < ApplicationRecord
       CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
         csv << attributes
         all.each do |order|
-          csv << [order.user.email, 
-            order.id, 
-            order.related_entity.name, 
-            order.invoice_paid_at&.strftime("%d/%m/%Y") || "-", 
-            ApplicationController.helpers.display_price(order.price_in_cents), 
-            order.coupon&.code || "-", 
+          csv << [order.user.email,
+            order.id,
+            order.related_entity.name,
+            order.invoice_paid_at&.strftime("%d/%m/%Y") || "-",
+            ApplicationController.helpers.display_price(order.price_in_cents),
+            order.coupon&.code || "-",
             order.directly_generated_by&.email,
-            ApplicationController.helpers.display_price(order.discount_value_in_cents), 
-            "#{order.fee_percentage}%", 
-            order.order_items.first.absorb_fee ? "Sim" : "Não", 
+            ApplicationController.helpers.display_price(order.discount_value_in_cents),
+            "#{order.fee_percentage}%",
+            order.order_items.first.absorb_fee ? "Sim" : "Não",
             ApplicationController.helpers.display_price(order.amount_to_transfer_to_partner)]
         end
       end
@@ -149,18 +149,18 @@ class Order < ApplicationRecord
       CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
         csv << attributes
         all.each do |order|
-          csv << [order.user.email, 
-            order.id, 
-            order.related_partner.name, 
-            order.invoice_paid_at&.strftime("%d/%m/%Y - %H:%M") || "-", 
-            order.order_items.first.absorb_fee ? "Sim" : "Não", 
-            ApplicationController.helpers.display_price(order.price_in_cents), 
-            ApplicationController.helpers.display_price(order.discount_value_in_cents), 
-            order.fee_percentage , 
-            ApplicationController.helpers.display_price(order.platform_fee_value_in_cents), 
-            ApplicationController.helpers.display_price(order.value), 
-            ApplicationController.helpers.display_price(order.net_value), 
-            ApplicationController.helpers.display_price(order.value - order.net_value), 
+          csv << [order.user.email,
+            order.id,
+            order.related_partner.name,
+            order.invoice_paid_at&.strftime("%d/%m/%Y - %H:%M") || "-",
+            order.order_items.first.absorb_fee ? "Sim" : "Não",
+            ApplicationController.helpers.display_price(order.price_in_cents),
+            ApplicationController.helpers.display_price(order.discount_value_in_cents),
+            order.fee_percentage ,
+            ApplicationController.helpers.display_price(order.platform_fee_value_in_cents),
+            ApplicationController.helpers.display_price(order.value),
+            ApplicationController.helpers.display_price(order.net_value),
+            ApplicationController.helpers.display_price(order.value - order.net_value),
             ApplicationController.helpers.display_price(order.net_value - order.amount_to_transfer_to_partner)]
         end
       end
@@ -168,7 +168,7 @@ class Order < ApplicationRecord
   end
 
   def has_items_with_start_date_on_past?
-    order_items.where("start_time < ?", Time.current.beginning_of_day).exists? 
+    order_items.where("start_time < ?", Time.current.beginning_of_day).exists?
   end
 
   def status_display
