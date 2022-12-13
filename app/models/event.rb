@@ -109,7 +109,7 @@ class Event < ApplicationRecord
     CSV.generate(headers: true, encoding: "iso-8859-1") do |csv|
       csv << attributes
       passes.each do |pass|
-        csv << [pass.user.email, pass.user.document_number, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + ordered_questions.map { |question| pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value&.gsub(",", " ")&.gsub("\n", " ")&.gsub("\r", " ")&.gsub("–", "-")&.gsub("⁰", "o") }
+        csv << [pass.user.email, pass.user.document_number, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + ordered_questions.map { |question| pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value&.gsub(",", " ")&.gsub("\n", " ")&.gsub("\r", " ")&.gsub("–", "-")&.gsub("⁰", "o")&.gsub("“", "'")&.gsub("”", "'") }
       end
     end
   end
