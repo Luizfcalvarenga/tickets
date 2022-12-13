@@ -13,7 +13,7 @@ class Order < ApplicationRecord
 
   scope :paid, -> { where(status: "paid")}
 
-  INSTALLMENT_TAX_PERCENTAGE = 2.85
+  INSTALLMENT_TAX_PERCENTAGE = 2.89
   MAX_INSTALLMENTS = 5
 
   def related_entity
