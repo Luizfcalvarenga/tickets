@@ -106,7 +106,7 @@ class Event < ApplicationRecord
   def passes_csv
     ordered_questions = questions.order("questions.order")
     attributes = ["Email do usuário", "CPF", "Tipo do passe", "Lote", "Valor pago (em centavos)"] + ordered_questions.map(&:prompt)
-    CSV.generate(headers: true, encoding: "iso-8859-1") do |csv|
+    CSV.generate(headers: true) do |csv|
       csv << attributes
       passes.each do |pass|
         csv << [pass.user.email, pass.user.document_number, pass.event_batch.pass_type, pass.event_batch.name, pass.event_batch.price_in_cents] + ordered_questions.map { |question| pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value&.gsub(",", " ")&.gsub("\n", " ")&.gsub("\r", " ")&.gsub("–", "-")&.gsub("⁰", "o")&.gsub("“", "'")&.gsub("”", "'") }
