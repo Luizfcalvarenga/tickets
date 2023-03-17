@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/faker-ruby/faker.git
-  revision: efedb39cb752ef575f1f6af0fe944064d3bb379b
-  branch: master
-  specs:
-    faker (2.23.0)
-      i18n (>= 1.8.11, < 2)
-
-GIT
   remote: https://github.com/iugu/iugu-ruby
   revision: ac2985783591e36863ae78a1d5294aa39f5ef014
   specs:
@@ -128,6 +120,8 @@ GEM
       railties (>= 3.2)
     erubi (1.11.0)
     execjs (2.7.0)
+    faker (3.1.0)
+      i18n (>= 1.8.11, < 2)
     ffi (1.15.5)
     font-awesome-sass (6.2.0)
       sassc (~> 2.0)
@@ -355,7 +349,7 @@ DEPENDENCIES
   devise
   devise_token_auth
   dotenv-rails
-  faker!
+  faker
   font-awesome-sass
   groupdate
   honeybadger (~> 4.0)
@@ -395,4 +389,4 @@ RUBY VERSION
    ruby 3.0.1p64
 
 BUNDLED WITH
-   2.3.19
+   2.4.3

@@ -17,6 +17,31 @@ class UserMembership < ApplicationRecord
     NovaIugu::SubscriptionCreator.new(self).call
   end
 
+  def generate_pass
+    identifier = SecureRandom.uuid
+
+    pass = Pass.create(
+      identifier: identifier,
+      user_membership: self,
+      name: membership.name,
+      partner_id: membership.partner_id,
+      user: user,
+      qrcode_svg: RQRCode::QRCode.new(identifier).as_svg(
+        color: "000",
+        shape_rendering: "crispEdges",
+        module_size: 5,
+        standalone: true,
+        use_path: true,
+      ),
+    )
+
+    MembershipsFetcher.call
+
+    DiscordMessager.call("Nova assinatura iniciada - #{membership.name}. Valor: R$ #{ActionController::Base.helpers.number_to_currency(membership.price_in_cents.to_f/100, unit: "R$", separator: ",", delimiter: ".")} cobrados a cada #{membership.recurrence_interval_in_months} meses")
+  
+    pass.persisted?
+  end
+
   def nova_iugu_subscription_params_hash
     {
       plan_identifier: membership.identifier,

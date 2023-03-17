@@ -55,7 +55,7 @@ gem 'httparty'
 gem "honeybadger", "~> 4.0"
 
 # mover para apenas development depois de testar em produção
-gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+gem 'faker'
 
 group :development, :test do  gem 'pry-byebug'
   gem 'pry-rails'

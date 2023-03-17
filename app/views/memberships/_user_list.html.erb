@@ -26,13 +26,17 @@
         <td data-label="Mensalidades ativas">
           <% user_memberships = user.user_memberships.active.where(user_memberships: {membership_id: @memberships.map(&:id)}) %>
           <% user_memberships.each do |user_membership| %>
+            <% pass = Pass.find_by(user_membership: user_membership) %>
+            <% user_membership.generate_pass if pass.blank? %>
+            <% pass = Pass.find_by(user_membership: user_membership) %>
+            
             <div class="flex center between mb-2 page-desktop">
               <p class="m-0"><%= user_membership.membership.name %> (<%= user_membership.accesses.for_current_month.count %> acessos esse mês)</p>
-              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
+              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= pass.identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
             </div>
             <div class="mb-2 page-mobile">
               <p class="m-0"><%= user_membership.membership.name %> (<%= user_membership.accesses.for_current_month.count %> acessos esse mês)</p>
-              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= Pass.find_by(user_membership: user_membership).identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
+              <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= pass.identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
             </div>
           <% end %>
           <% if user_memberships.blank? %>
