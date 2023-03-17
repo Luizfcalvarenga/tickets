@@ -29,7 +29,7 @@
             <% pass = Pass.find_by(user_membership: user_membership) %>
             <% user_membership.generate_pass if pass.blank? %>
             <% pass = Pass.find_by(user_membership: user_membership) %>
-            
+
             <div class="flex center between mb-2 page-desktop">
               <p class="m-0"><%= user_membership.membership.name %> (<%= user_membership.accesses.for_current_month.count %> acessos esse mês)</p>
               <p class="m-0 btn btn-success toggle-access-modal" data-partner-slug="<%= current_user.partner.slug %>" data-pass-identifier="<%= pass.identifier %>" data-holder-name="<%= user.name %>" data-scanner-user-id="<%= current_user.id %>">Liberar acesso</p>
