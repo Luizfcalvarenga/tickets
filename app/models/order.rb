@@ -128,7 +128,7 @@ class Order < ApplicationRecord
   def self.to_csv(mode = "partner")
     if mode == "partner"
       attributes = ["Usuário", "Identificação do pedido", "Entidade", "Pago em", "Preço", "Cupom", "Gerado por", "Descontos", "Taxa", "Absorver taxa?", "Valor a receber (R$)"]
-      CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+      CSV.generate(headers: true) do |csv|
         csv << attributes
         all.each do |order|
           csv << [order.user.email,
@@ -146,7 +146,7 @@ class Order < ApplicationRecord
       end
     elsif mode == "admin"
       attributes = ["Usuário", "Nome do usuário", "Parceiro", "Gerado em", "Absorver taxa?", "Valor de referência", "Descontos", "Taxa da plataforma", "Taxa da plataforma", "Valor cobrado", "Receita líquida", "Taxa da Iugu", "Lucro líquido" ]
-      CSV.generate(headers: true, encoding: Encoding::ISO_8859_1) do |csv|
+      CSV.generate(headers: true) do |csv|
         csv << attributes
         all.each do |order|
           csv << [order.user.email,
