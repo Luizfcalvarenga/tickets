@@ -775,5 +775,25 @@ hr {
 .buy-scroll-btn {
   padding: 1rem;
   border: 2px solid $color-primary;
-  
+
+}
+
+.toggle-coupon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  align-items: center;
+  padding: 8px;
+
+  &:hover {
+    color: $color-primary;
+
+  }
+}
+
+.btn-clicked {
+  color: $color-primary;
+  i {
+    transform: rotate(-180deg);
+  }
 }

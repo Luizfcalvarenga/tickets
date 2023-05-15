@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
-  const [applyCouponCode, setApplyCouponCode] = useState(false)
+  const [couponSection, setCouponSection] = useState(false)
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
       return {
@@ -42,13 +42,10 @@ export function EventOrderItems(props) {
     setBatchesInfosAndQuantities(currentBatches);
   };
 
-  const showApplyCouponCode = () => {
-    if (applyCouponCode === false) {
-      setApplyCouponCode(true)
-    } else {
-      setApplyCouponCode(true)
-    }
-  }
+  const toggleCouponSection = (e) => {
+    e.currentTarget.classList.toggle('btn-clicked')
+    setCouponSection((prevCouponSection) => !prevCouponSection);
+  };
 
   const cartTotalInCents = () => {
     return batchesInfosAndQuantities.reduce(
@@ -181,8 +178,8 @@ export function EventOrderItems(props) {
             </div>
           );
         })}
-        <button onClick={() => showApplyCouponCode()}>Aplicar Cumpom</button>
-        {applyCouponCode && (
+        <button type="button" className="toggle-coupon-btn w-100 d-flex justify-content-around" onClick={(e) => toggleCouponSection(e)}>Inserir Cumpom <i id="section-arrow" className="fas fa-chevron-down"></i></button>
+        {couponSection && (
           <div
             className={`border-bottom border-white p-4 flex center between gap-24 ${
               window.mobileMode() ? "flex-column" : ""
@@ -223,15 +220,17 @@ export function EventOrderItems(props) {
         )}
       </div>
 
-      <p className="text-center text-white mt-5">
-        <i className="fas fa-shopping-cart fs-30 mr-3"></i>
-        <span className="px-3">
-          {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })}
-        </span>
-      </p>
+      <div classname="border border-bottom-0 border border-top-0 border-white">
+        <p className="text-center text-white mt-3">
+          <i className="fas fa-shopping-cart fs-30 mr-3"></i>
+          <span className="px-3">
+            {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
