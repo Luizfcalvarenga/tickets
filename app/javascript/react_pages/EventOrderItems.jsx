@@ -220,8 +220,8 @@ export function EventOrderItems(props) {
         )}
       </div>
 
-      <div classname="border border-bottom-0 border border-top-0 border-white">
-        <p className="text-center text-white mt-3">
+      <div className="cart-section border border-bottom-0 border border-top-0 border-white">
+        <p className="text-center text-white mb-0">
           <i className="fas fa-shopping-cart fs-30 mr-3"></i>
           <span className="px-3">
             {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
