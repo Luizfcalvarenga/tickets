@@ -10,7 +10,7 @@
   <% if  @user.present? %>
     <div class="d-flex mb-2">
       <input type="checkbox" id="fillUserInfoCheckbox" />
-      <p id="user-text-infos" class="mb-0 ms-2">Preencher com meus dados </p>
+      <p id="user-text-infos" class="mb-0 ms-2">Preencher 1º ingresso com meus dados </p>
     </div>
   <% end %>
 
@@ -87,15 +87,13 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Code to access and modify the input elements
     document.getElementById('fillUserInfoCheckbox').addEventListener('change', function() {
-      if (this.checked) {
-        console.log(document.getElementById('Nome Completo'))
+      if (this && this.checked) {
         document.getElementById('Nome completo').value = '<%= @user.name %>';
         document.getElementById('CPF').value = '<%= @user.document_number %>';
         document.getElementById('CEP').value = '<%= @user.cep %>';
         document.getElementById('Telefone').value = '<%= @user.phone_number %>';
-        document.getElementById('user-text-infos').classList.add("text-success");
+        document.getElementById('user-text-infos').classList.add("text-success") ;
 
       } else {
         document.getElementById('Nome completo').value = '';
