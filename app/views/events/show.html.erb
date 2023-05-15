@@ -91,7 +91,7 @@
             <i class="fa fa-info-circle my-3 pe-2"></i>Essse evento é um evento em grupo. Quando você comprar um ingresso e a compra for confirmada, o evento será reservado para você e apenas pessoas com o link que você compartilhar poderão comprar ingressos para fechar o grupo. Se o grupo não for fechado em 48h, a reserva será cancelada.
           </p>
         <% end %>
-        <div  id="scrollspyHeading1">
+        <div  id="buy-section">
           <%= simple_form_for(@order) do |f| %>
             <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>"></react>
 
@@ -179,7 +179,7 @@
 </div>
 
 <div id="scroll-btn" class="float-buyer-btn text-success">
-  <a class="" href="#scrollspyHeading1">
+  <a class="" href="#buy-section">
     <span class="inner"></span>
     <i class="fas fa-credit-card"></i>
     <span class="d-none buy-text">COMPRAR</span>

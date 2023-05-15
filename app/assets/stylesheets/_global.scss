@@ -18,15 +18,16 @@ $hover-margin: -40px;
   margin-left: 90%;
   a {
     background-color: $color-primary;
-    color: $dark;
+    color: $color-darker;
     display: block;
     height: $spacing * 2;
     position: relative;
     text-decoration: none;
     width: $spacing * 2;
+    border-radius: 50%;
+    transition: color 0.1s;
 
-    @include border-radius(50%);
-    @include transition(color 0.1s);
+
 
     i {
       position: relative;
@@ -38,7 +39,7 @@ $hover-margin: -40px;
     }
 
     .inner {
-      background-color: $dark;
+      background-color: $color-darker;
       display: block;
       height: 0;
       left: 70%;
@@ -46,9 +47,8 @@ $hover-margin: -40px;
       position: absolute;
       top: 70%;
       width: 0;
-
-      @include border-radius(50%);
-      @include transition(all 0.1s);
+      border-radius: 50%;
+      transition: all 0.1s;
     }
 
     &:hover {
@@ -61,7 +61,7 @@ $hover-margin: -40px;
         width: $hover-size;
       }
       i {
-        display: none; /* Hide the icon */
+        display: none;
       }
 
       .buy-text {

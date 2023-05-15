@@ -7,6 +7,14 @@
     <p class="p-3 bg-danger br-8 text-white">Alguma resposta não foi preenchida corretamente. Favor rever os erros abaixo:</p>
   <% end %>
 
+  <% if  @user.present? %>
+    <div class="d-flex mb-2">
+      <input type="checkbox" id="fillUserInfoCheckbox" />
+      <p id="user-text-infos" class="mb-0 ms-2">Preencher com meus dados </p>
+    </div>
+  <% end %>
+
+
   <%= simple_form_for([@order, @question_answer]) do |f| %>
     <% @order_items.each_with_index do |order_item, index| %>
       <div class="mb-5 p-4 bg-dark">
@@ -51,6 +59,7 @@
                   name="user_answers[][value]"
                   data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
                   class="w-100 form-control"
+                  id="<%= question.prompt %>"
                 />
               <% else %>
                 <textarea
@@ -68,10 +77,34 @@
         <% end %>
       </div>
     <% end %>
-    
+
     <div class="text-center">
       <%= f.submit "Enviar respostas", class: "btn btn-success mt-5" %>
     </div>
 
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Code to access and modify the input elements
+    document.getElementById('fillUserInfoCheckbox').addEventListener('change', function() {
+      if (this.checked) {
+        console.log(document.getElementById('Nome Completo'))
+        document.getElementById('Nome completo').value = '<%= @user.name %>';
+        document.getElementById('CPF').value = '<%= @user.document_number %>';
+        document.getElementById('CEP').value = '<%= @user.cep %>';
+        document.getElementById('Telefone').value = '<%= @user.phone_number %>';
+        document.getElementById('user-text-infos').classList.add("text-success");
+
+      } else {
+        document.getElementById('Nome completo').value = '';
+        document.getElementById('CPF').value = '';
+        document.getElementById('CEP').value = '';
+        document.getElementById('Telefone').value = '';
+        document.getElementById('user-text-infos').classList.remove("text-success");
+
+      }
+    });
+  });
+</script>

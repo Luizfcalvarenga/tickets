@@ -1,17 +1,18 @@
 
 class QuestionAnswersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
-  
+
   def new
     @order = Order.find(params[:order_id])
     @order_items = @order.order_items
     @question_answer = QuestionAnswer.new
+    @user = current_user
   end
 
   def create
     @order = Order.find(params[:order_id])
     @order_items = @order.order_items
-    
+
     begin
       ActiveRecord::Base.transaction do
         @order_items.each { |order_item| order_item.question_answers.each(&:destroy) }
