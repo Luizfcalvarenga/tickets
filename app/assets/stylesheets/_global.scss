@@ -17,7 +17,7 @@ $hover-margin: -40px;
   bottom: 30px;
   margin-left: 90%;
   a {
-    background-color: $light;
+    background-color: $color-primary;
     color: $dark;
     display: block;
     height: $spacing * 2;
@@ -31,9 +31,10 @@ $hover-margin: -40px;
     i {
       position: relative;
       z-index: 1;
-      top: 32%;
-      left: 32%;
+      top: 33.5%;
+      left: 31.5%;
       font-size: 20px;
+      color: $color-darker;
     }
 
     .inner {
@@ -59,10 +60,31 @@ $hover-margin: -40px;
         margin-top: $hover-margin;
         width: $hover-size;
       }
+      i {
+        display: none; /* Hide the icon */
+      }
+
+      .buy-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 14px;
+        z-index: 1;
+        color: $color-primary;
+        font-size: 9px;
+        display: block !important;
+      }
     }
   }
 }
 
+@media (max-width: 768px) {
+  .float-buyer-btn {
+
+    margin-left: 80%;
+  }
+}
 
 
 
