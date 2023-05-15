@@ -12,9 +12,14 @@
 
   <div class="second-section-event-show">
     <div class="row mt-5 <%= mobile_device? && 'flex-column' %>">
-      <h1 class="title align-middle mb-0 text-success col-12 col-md-9"><%= @event.name %></h1>
+      <h1 class="title align-middle mb-0 text-success col-12 col-md-6"><%= @event.name %></h1>
       <div class="col-12 col-md-3">
         <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
+      </div>
+      <div class="col-12 col-md-3">
+        <a class="" href="#buy-section">
+          COMPRAR INGRESSO
+        </a>
       </div>
       <script>
         document.querySelector("#copy-paste").addEventListener("click", (e) => {

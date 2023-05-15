@@ -93,15 +93,14 @@
         document.getElementById('CPF').value = '<%= @user.document_number %>';
         document.getElementById('CEP').value = '<%= @user.cep %>';
         document.getElementById('Telefone').value = '<%= @user.phone_number %>';
-        document.getElementById('user-text-infos').classList.add("text-success") ;
+        if (document.getElementById('user-text-infos')) document.getElementById('user-text-infos').classList.add("text-success") ;
 
       } else {
         document.getElementById('Nome completo').value = '';
         document.getElementById('CPF').value = '';
         document.getElementById('CEP').value = '';
         document.getElementById('Telefone').value = '';
-        document.getElementById('user-text-infos').classList.remove("text-success");
-
+        if (document.getElementById('user-text-infos')) document.getElementById('user-text-infos').classList.remove("text-success");
       }
     });
   });
