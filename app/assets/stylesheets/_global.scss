@@ -4,6 +4,67 @@ $color-primary: #00c454;
 $color-darker: #101010;
 $color-dark: #222320;
 $white: #fff;
+$light: #fff;
+
+$spacing: 30px;
+$border: 2px;
+
+$hover-size: $spacing * 2 - $border * 2;
+$hover-margin: -40px;
+
+.float-buyer-btn {
+  position: sticky;
+  bottom: 30px;
+  margin-left: 90%;
+  a {
+    background-color: $light;
+    color: $dark;
+    display: block;
+    height: $spacing * 2;
+    position: relative;
+    text-decoration: none;
+    width: $spacing * 2;
+
+    @include border-radius(50%);
+    @include transition(color 0.1s);
+
+    i {
+      position: relative;
+      z-index: 1;
+      top: 32%;
+      left: 32%;
+      font-size: 20px;
+    }
+
+    .inner {
+      background-color: $dark;
+      display: block;
+      height: 0;
+      left: 70%;
+      margin: 0;
+      position: absolute;
+      top: 70%;
+      width: 0;
+
+      @include border-radius(50%);
+      @include transition(all 0.1s);
+    }
+
+    &:hover {
+      color: $color-primary;
+
+      .inner {
+        height: $hover-size;
+        margin-left: $hover-margin;
+        margin-top: $hover-margin;
+        width: $hover-size;
+      }
+    }
+  }
+}
+
+
+
 
 h1 {
   font-size: 70px;
