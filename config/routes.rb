@@ -1,4 +1,4 @@
-Rails.application.routes.draw do  
+Rails.application.routes.draw do
   devise_for :users, controllers: {
     passwords: 'users/passwords',
     registrations: 'users/registrations',
@@ -35,9 +35,9 @@ Rails.application.routes.draw do
   end
   
   resources :payment_methods
-  
+
   resource :profiles
-  
+
   namespace :partner_admin do
     resources :events
     patch "events/:id/delete_attachments", to: "events#delete_attachments", as: "event_delete_attachments"
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
       resources :day_use_blocks, only: [ :new, :create, :destroy ]
       resources :day_use_packages, only: [ :new, :create, :edit, :update, :destroy ]
     end
-    
+
     patch "day_uses/:id/toggle_activity", to: "day_uses#toggle_activity", as: "day_use_toggle_activity"
     resources :partners
     resources :orders
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
     resources :orders
     resources :partners
     resources :users, only: [:index, :new, :create]
-    
+
     get 'partners/:slug/edit', to: 'partners#edit', as: "partner_slug_edit"
     patch 'partners/:slug/toggle_active', to: 'partners#toggle_active', as: "partner_toggle_active"
 
@@ -91,10 +91,10 @@ Rails.application.routes.draw do
 
   resources :memberships, only: [:show]
   resources :user_memberships
-  
+
   get '/cities_by_state' => 'cities#cities_by_state'
-  
-  get "passes/scanner", to: "passes#scanner", as: "pass_scanner" 
+
+  get "passes/scanner", to: "passes#scanner", as: "pass_scanner"
   resources :passes
   get "passes/:id/read", to: "passes#read", as: "read_pass"
   get 'passes/:identifier/download', to: 'passes#download', as: "pass_download"

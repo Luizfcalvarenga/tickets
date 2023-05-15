@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
+  const [applyCouponCode, setApplyCouponCode] = useState(false)
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
       return {
@@ -40,6 +41,14 @@ export function EventOrderItems(props) {
 
     setBatchesInfosAndQuantities(currentBatches);
   };
+
+  const showApplyCouponCode = () => {
+    if (applyCouponCode === false) {
+      setApplyCouponCode(true)
+    } else {
+      setApplyCouponCode(true)
+    }
+  }
 
   const cartTotalInCents = () => {
     return batchesInfosAndQuantities.reduce(
@@ -172,43 +181,46 @@ export function EventOrderItems(props) {
             </div>
           );
         })}
-        <div
-          className={`border-bottom border-white p-4 flex center between gap-24 ${
-            window.mobileMode() ? "flex-column" : ""
-          }`}
-        >
-          <p className="f-20 m-0 text-white">Cupom de desconto</p>
-          <input
-            type="text"
-            name="coupon_code"
-            value={couponCode}
-            className="f-20"
-            onChange={(e) => setCouponCode(e.target.value)}
-          />
-          <p
-            className="btn btn-underline f-10 m-0 px-5"
-            onClick={() => applyCoupon()}
+        <button onClick={() => showApplyCouponCode()}>Aplicar Cumpom</button>
+        {applyCouponCode && (
+          <div
+            className={`border-bottom border-white p-4 flex center between gap-24 ${
+              window.mobileMode() ? "flex-column" : ""
+            }`}
           >
-            Aplicar
-          </p>
-          <div className="f-40 text-center">
-            {couponResult && (
-              <div>
-                {!couponResult.success ? (
-                  <div className="flex center gap-24">
-                    <i className="fa fa-times-circle f-24 text-danger"></i>
-                    <p className="m-0 text-danger">{couponResult.message}</p>
-                  </div>
-                ) : (
-                  <div className="flex center gap-24">
-                    <i className="fa fa-check-circle f-24 text-success"></i>
-                    <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
-                  </div>
-                )}
-              </div>
-            )}
+            <p className="f-20 m-0 text-white">Cupom de desconto</p>
+            <input
+              type="text"
+              name="coupon_code"
+              value={couponCode}
+              className="f-20"
+              onChange={(e) => setCouponCode(e.target.value)}
+            />
+            <p
+              className="btn btn-underline f-10 m-0 px-5"
+              onClick={() => applyCoupon()}
+            >
+              Aplicar
+            </p>
+            <div className="f-40 text-center">
+              {couponResult && (
+                <div>
+                  {!couponResult.success ? (
+                    <div className="flex center gap-24">
+                      <i className="fa fa-times-circle f-24 text-danger"></i>
+                      <p className="m-0 text-danger">{couponResult.message}</p>
+                    </div>
+                  ) : (
+                    <div className="flex center gap-24">
+                      <i className="fa fa-check-circle f-24 text-success"></i>
+                      <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <p className="text-center text-white mt-5">
