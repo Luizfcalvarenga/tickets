@@ -3,6 +3,9 @@ const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
   const [couponSection, setCouponSection] = useState(false)
+  // const [selectedInputs, setSelectedInputs] = useState(
+  //   JSON.parse(sessionStorage.getItem("selected_tickets")) || []
+  // );
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
       return {
@@ -29,6 +32,8 @@ export function EventOrderItems(props) {
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState(null);
 
+
+
   const updateQuantity = (batchIndex, amount) => {
     const currentBatches = [...batchesInfosAndQuantities];
 
@@ -37,10 +42,29 @@ export function EventOrderItems(props) {
     if (editedBatchItem.quantity === 0 && amount < 0) return;
 
     currentBatches[batchIndex].quantity =
-      currentBatches[batchIndex].quantity + amount;
+      currentBatches[batchIndex].quantity + amount ;
 
     setBatchesInfosAndQuantities(currentBatches);
+
+    // const updatedTicketQuantities = updatedBatches.map((batch) => ({
+    //   event_batch_id: batch.id,
+    //   quantity: batch.quantity,
+    // }));
+
+    // sessionStorage.setItem(
+    //   "selected_tickets",
+    //   JSON.stringify(updatedTicketQuantities)
+    // );
   };
+
+  // useEffect(() => {
+  //   const storedSelectedInputs = JSON.parse(
+  //     sessionStorage.getItem("selected_tickets")
+  //   );
+  //   if (storedSelectedInputs) {
+  //     setSelectedInputs(storedSelectedInputs);
+  //   }
+  // }, []);
 
   const toggleCouponSection = (e) => {
     e.currentTarget.classList.toggle('btn-clicked')

@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       get 'users/me', to: 'users#me'
     end
   end
-  
+
   resources :payment_methods
 
   resource :profiles
@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   end
   get "orders/:id/status", to: "orders#status", as: "order_status"
   post "orders/:id/pay_with_card", to: "orders#pay_with_card", as: "order_pay_with_card"
+
 
   namespace :admin do
     resources :orders

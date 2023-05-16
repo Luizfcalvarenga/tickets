@@ -6,6 +6,7 @@ class QuestionAnswersController < ApplicationController
     @order = Order.find(params[:order_id])
     @order_items = @order.order_items
     @question_answer = QuestionAnswer.new
+    # @selected_tickets = params[:tickets].map { |ticket| JSON.parse(ticket) } if params[:tickets]
     @user = current_user
   end
 

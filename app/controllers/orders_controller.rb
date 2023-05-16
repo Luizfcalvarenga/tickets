@@ -1,7 +1,7 @@
 
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  
+
   def show
     @order = Order.find(params[:id])
 
@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
       flash[:notice] = "Passes retirados com sucesso"
       redirect_to dashboard_path_for_user(current_user) and return
     end
-    
+
     if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else
@@ -19,14 +19,14 @@ class OrdersController < ApplicationController
       rescue Iugu::ObjectNotFound
         begin
           ::NovaIugu::InvoiceGenerator.new(@order).call
-        rescue 
+        rescue
           raise
         end
       end
     end
 
     NovaIugu::CustomerCreator.new(current_user).call if current_user.iugu_customer_id.blank?
-    
+
     @payment_methods = Iugu::PaymentMethod.fetch({customer_id: current_user.iugu_customer_id}).results
     @iugu_customer_id = current_user.iugu_customer_id
   end
@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
   def restore
     @order_item_params = params[:order_restore_params]
   end
-  
+
   def create
     if params[:order].blank? || order_items_params.map { |order_item_params| order_item_params["quantity"].to_i }.sum.zero?
       flash[:alert] = "Você não selecionou nenhum ingresso"
@@ -50,7 +50,7 @@ class OrdersController < ApplicationController
     @order = Order.create(user: current_user)
 
     OrderProcessor.new(@order, order_items_params, params[:coupon_code]).call
-    
+
     if @order.should_generate_new_invoice?
       ::NovaIugu::InvoiceGenerator.new(@order).call
     else
@@ -59,7 +59,7 @@ class OrdersController < ApplicationController
       rescue Iugu::ObjectNotFound
         begin
           ::NovaIugu::InvoiceGenerator.new(@order).call
-        rescue 
+        rescue
           raise
         end
       end
@@ -80,7 +80,7 @@ class OrdersController < ApplicationController
 
   def pay_with_card
     order = Order.find(params[:id])
-    
+
     customer_payment_method_id = params[:customer_payment_method_id]
 
     delete_card_after_payment = false
@@ -134,6 +134,8 @@ class OrdersController < ApplicationController
 
     render json: { status: @order.status, button_url: button_url }
   end
+
+
 
   private
 

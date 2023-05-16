@@ -6,7 +6,6 @@
       <button class="btn btn-success f-1x" id="nav-login-tab" data-bs-toggle="tab" data-bs-target="#nav-login" type="button" role="tab" aria-controls="nav-login" aria-selected="true">LOGIN</button>
       <button class="btn btn-success f-1x" id="nav-signup-tab" data-bs-toggle="tab" data-bs-target="#nav-signup" type="button" role="tab" aria-controls="nav-signup" aria-selected="true">CRIAR CONTA</button>
     </div>
-
     <div class="tab-content mt-5" id="nav-tabContent">
       <div class="tab-pane fade" id="nav-login" role="tabpanel" aria-labelledby="nav-login-tab">
         <div id="sign-in" class="mb-4 bg-dark p-3">
@@ -22,8 +21,8 @@
                               required: false,
                               input_html: { autocomplete: "current-password", id: "password_signin" } %>
                   <%= f.input :remember_me, label: 'Continuar logado', as: :boolean, input_html: { checked: true } if devise_mapping.rememberable? %>
-                  
-                  <label for="toggle-password-signin" class="mt-3">Mostrar senha</label> 
+
+                  <label for="toggle-password-signin" class="mt-3">Mostrar senha</label>
                   <input type="checkbox" id="toggle-password-signin" />
                 <div class="py-2">
                   <%= render "devise/shared/links" %>
@@ -105,8 +104,8 @@
                             required: false,
                             input_html: { autocomplete: "current-password", id: "password_signin" } %>
                 <%= f.input :remember_me, label: 'Continuar logado', as: :boolean, input_html: { checked: true } if devise_mapping.rememberable? %>
-                
-                <label for="toggle-password-signin" class="mt-3">Mostrar senha</label> 
+
+                <label for="toggle-password-signin" class="mt-3">Mostrar senha</label>
                 <input type="checkbox" id="toggle-password-signin" />
               <div class="py-2">
                 <%= render "devise/shared/links" %>
