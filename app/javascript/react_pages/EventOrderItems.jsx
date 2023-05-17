@@ -3,9 +3,9 @@ const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
   const [couponSection, setCouponSection] = useState(false)
-  // const [selectedInputs, setSelectedInputs] = useState(
-  //   JSON.parse(sessionStorage.getItem("selected_tickets")) || []
-  // );
+  const [selectedInputs, setSelectedInputs] = useState(
+    JSON.parse(localStorage.getItem("selected_tickets")) || []
+  );
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
       return {
@@ -19,7 +19,7 @@ export function EventOrderItems(props) {
         totalInCents:
           eventBatch.price_in_cents *
           (1 + parseFloat(props.feePercentage / 100)),
-        quantity: 0,
+        quantity: selectedInputs.find(element => element.event_batch_id === eventBatch.id).quantity || 0,
       };
     })
   );
@@ -46,25 +46,25 @@ export function EventOrderItems(props) {
 
     setBatchesInfosAndQuantities(currentBatches);
 
-    // const updatedTicketQuantities = updatedBatches.map((batch) => ({
-    //   event_batch_id: batch.id,
-    //   quantity: batch.quantity,
-    // }));
+    const updatedTicketQuantities = currentBatches.map((batch) => ({
+      event_batch_id: batch.id,
+      quantity: batch.quantity,
+    }));
 
-    // sessionStorage.setItem(
-    //   "selected_tickets",
-    //   JSON.stringify(updatedTicketQuantities)
-    // );
+    localStorage.setItem(
+      "selected_tickets",
+      JSON.stringify(updatedTicketQuantities)
+    );
+
+    setSelectedInputs(updatedTicketQuantities);
   };
 
-  // useEffect(() => {
-  //   const storedSelectedInputs = JSON.parse(
-  //     sessionStorage.getItem("selected_tickets")
-  //   );
-  //   if (storedSelectedInputs) {
-  //     setSelectedInputs(storedSelectedInputs);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const storedSelectedInputs = JSON.parse(localStorage.getItem("selected_tickets"));
+    if (storedSelectedInputs) {
+      setSelectedInputs(storedSelectedInputs);
+    }
+  }, []);
 
   const toggleCouponSection = (e) => {
     e.currentTarget.classList.toggle('btn-clicked')
