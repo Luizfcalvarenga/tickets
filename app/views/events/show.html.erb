@@ -99,16 +99,10 @@
           <%= simple_form_for(@order, html: { id: 'order-form' }) do |f| %>
             <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>" data-user="<%= @user.to_json %>"></react>
 
+            <div class="text-center">
+              <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3", onclick: "clearLocalStorage()" %>
+            </div>
 
-            <% if current_user.blank? %>
-              <div class="text-center">
-                <%= button_to 'Comprar', '#', onclick: 'submitTickets()', class: "btn btn-success w-100 text-white p-3" %>
-              </div>
-            <% else %>
-              <div class="text-center">
-                <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
-              </div>
-            <% end %>
           <% end %>
         </div>
       <% else %>
@@ -196,25 +190,16 @@
     <span class="d-none buy-text">COMPRAR</span>
   </a>
 </div>
-
 <script>
-  function submitTickets() {
-    const form = document.getElementById('order-form');
-    const formData = new FormData(form);
+  function clearLocalStorage() {
+    // Clear the selected tickets from local storage
+    console.log(localStorage)
+    localStorage.removeItem("selected_tickets");
+    '<% @event.event_batches.each do |event_batch| %>'
+      localStorage.removeItem("selected_tickets_<%= event_batch.id %>");
+    '<% end %>'
 
-    // Access the form data
-    for (let [name, value] of formData.entries()) {
-      console.log(`${name}: ${value}`);
-      // Do whatever you need with the form data
-    }
-    // Perform any additional actions before submitting the form
-    // ...
+    // Clear individual ticket quantities from local storage
 
-    // Store the form data in localStorage
-    const serializedData = JSON.stringify(Array.from(formData.entries()));
-    localStorage.setItem('formData', serializedData);
-
-    // Submit the form
-    form.submit();
   }
 </script>

@@ -3,26 +3,48 @@ const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
   const [couponSection, setCouponSection] = useState(false)
-  const [selectedInputs, setSelectedInputs] = useState(
-    JSON.parse(localStorage.getItem("selected_tickets")) || []
-  );
+  
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
+      const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
+      const quantity = storedQuantity || 0;
+      const feePercentage = props.feePercentage || 0;
+      const priceInCents = eventBatch.price_in_cents || 0;
+      const feeInCents = priceInCents * parseFloat(feePercentage / 100);
+      const totalInCents = priceInCents * (1 + parseFloat(feePercentage / 100));
+
       return {
         id: eventBatch.id,
         passType: eventBatch.pass_type,
         name: eventBatch.name,
         ends_at: eventBatch.ends_at,
-        priceInCents: eventBatch.price_in_cents,
-        feeInCents:
-          eventBatch.price_in_cents * parseFloat(props.feePercentage / 100),
-        totalInCents:
-          eventBatch.price_in_cents *
-          (1 + parseFloat(props.feePercentage / 100)),
-        quantity: selectedInputs.find(element => element.event_batch_id === eventBatch.id).quantity || 0,
+        priceInCents: priceInCents,
+        feeInCents: feeInCents,
+        totalInCents: totalInCents,
+        quantity: quantity,
       };
     })
   );
+  // const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
+  //   props.eventBatches.map((eventBatch) => {
+  //     const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
+  //     const quantity = storedQuantity || 0;
+  //     return {
+  //       id: eventBatch.id,
+  //       passType: eventBatch.pass_type,
+  //       name: eventBatch.name,
+  //       ends_at: eventBatch.ends_at,
+  //       priceInCents: eventBatch.price_in_cents,
+  //       feeInCents:
+  //         eventBatch.price_in_cents * parseFloat(props.feePercentage / 100),
+  //       totalInCents:
+  //         eventBatch.price_in_cents *
+  //         (1 + parseFloat(props.feePercentage / 100)),
+  //       quantity: quantity,
+  //       // quantity: selectedInputs?.find(element => element.event_batch_id === eventBatch.id).quantity || 0,
+  //     };
+  //   })
+  // );
 
   const [
     originalBatchesInfosAndQuantitIes,
@@ -34,37 +56,75 @@ export function EventOrderItems(props) {
 
 
 
+  // const updateQuantity = (batchIndex, amount) => {
+  //   const currentBatches = [...batchesInfosAndQuantities];
+
+  //   const editedBatchItem = currentBatches[batchIndex];
+
+  //   if (editedBatchItem.quantity === 0 && amount < 0) return;
+
+  //   currentBatches[batchIndex].quantity =
+  //     currentBatches[batchIndex].quantity + amount ;
+
+  //   setBatchesInfosAndQuantities(currentBatches);
+
+
+  //   const updatedTicketQuantities = currentBatches.map((batch) => ({
+  //     event_batch_id: batch.id,
+  //     quantity: batch.quantity,
+  //   }));
+
+  //   localStorage.setItem(
+  //     "selected_tickets",
+  //     JSON.stringify(updatedTicketQuantities)
+  //   );
+
+  //   setSelectedInputs(updatedTicketQuantities);
+  // };
   const updateQuantity = (batchIndex, amount) => {
     const currentBatches = [...batchesInfosAndQuantities];
-
     const editedBatchItem = currentBatches[batchIndex];
 
     if (editedBatchItem.quantity === 0 && amount < 0) return;
 
-    currentBatches[batchIndex].quantity =
-      currentBatches[batchIndex].quantity + amount ;
+    const updatedQuantity = editedBatchItem.quantity + amount;
+    currentBatches[batchIndex].quantity = updatedQuantity;
 
     setBatchesInfosAndQuantities(currentBatches);
 
-    const updatedTicketQuantities = currentBatches.map((batch) => ({
-      event_batch_id: batch.id,
-      quantity: batch.quantity,
-    }));
-
     localStorage.setItem(
-      "selected_tickets",
-      JSON.stringify(updatedTicketQuantities)
+      `selected_tickets_${editedBatchItem.id}`,
+      JSON.stringify(updatedQuantity)
     );
-
-    setSelectedInputs(updatedTicketQuantities);
   };
 
   useEffect(() => {
-    const storedSelectedInputs = JSON.parse(localStorage.getItem("selected_tickets"));
-    if (storedSelectedInputs) {
-      setSelectedInputs(storedSelectedInputs);
-    }
+    const updatedBatches = props.eventBatches.map((eventBatch) => {
+      const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
+      const quantity = storedQuantity || 0;
+      const feePercentage = props.feePercentage || 0;
+      const priceInCents = eventBatch.price_in_cents || 0;
+      const feeInCents = priceInCents * parseFloat(feePercentage / 100);
+      const totalInCents = priceInCents * (1 + parseFloat(feePercentage / 100));
+
+      return {
+        ...eventBatch,
+        priceInCents: priceInCents,
+        feeInCents: feeInCents,
+        totalInCents: totalInCents,
+        quantity: quantity,
+      };
+    });
+
+  setBatchesInfosAndQuantities(updatedBatches);
   }, []);
+
+  // useEffect(() => {
+  //   const storedSelectedInputs = JSON.parse(localStorage.getItem("selected_tickets"));
+  //   if (storedSelectedInputs) {
+  //     setSelectedInputs(storedSelectedInputs);
+  //   }
+  // }, []);
 
   const toggleCouponSection = (e) => {
     e.currentTarget.classList.toggle('btn-clicked')
@@ -108,7 +168,7 @@ export function EventOrderItems(props) {
               feeInCents: newPrice * parseFloat(props.feePercentage / 100),
               totalInCents:
                 newPrice * (1 + parseFloat(props.feePercentage / 100)),
-              quantity: batchesInfosAndQuantities.find(b => b.id === eventBatch.id).quantity,
+              quantity: batchesInfosAndQuantities?.find(b => b.id === eventBatch.id).quantity,
             };
           })
         );
