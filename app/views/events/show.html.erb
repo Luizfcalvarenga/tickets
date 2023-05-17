@@ -99,7 +99,7 @@
           <%= simple_form_for(@order, html: { id: 'order-form' }) do |f| %>
             <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>" data-user="<%= @user.to_json %>"></react>
 
-            <div class="text-center">
+            <div class="text-center border border-top-0 border-white">
               <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
             </div>
 

@@ -105,7 +105,6 @@
   });
 
   function clearLocalStorage() {
-    console.log(localStorage)
     localStorage.removeItem("selected_tickets");
     '<% @order.order_items.each do |order_item| %>'
       localStorage.removeItem("selected_tickets_<%= order_item.event_batch_id %>");
