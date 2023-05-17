@@ -3,7 +3,7 @@ const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
   const [couponSection, setCouponSection] = useState(false)
-  
+
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
       const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
@@ -116,7 +116,7 @@ export function EventOrderItems(props) {
       };
     });
 
-  setBatchesInfosAndQuantities(updatedBatches);
+    setBatchesInfosAndQuantities(updatedBatches);
   }, []);
 
   // useEffect(() => {

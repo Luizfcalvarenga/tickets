@@ -14,7 +14,6 @@
     </div>
   <% end %>
 
-
   <%= simple_form_for([@order, @question_answer]) do |f| %>
     <% @order_items.each_with_index do |order_item, index| %>
       <div class="mb-5 p-4 bg-dark">
@@ -79,7 +78,7 @@
     <% end %>
 
     <div class="text-center">
-      <%= f.submit "Enviar respostas", class: "btn btn-success mt-5" %>
+      <%= f.submit "Enviar respostas", class: "btn btn-success mt-5", onclick: "clearLocalStorage()" %>
     </div>
 
   <% end %>
@@ -104,4 +103,12 @@
       }
     });
   });
+
+  function clearLocalStorage() {
+    console.log(localStorage)
+    localStorage.removeItem("selected_tickets");
+    '<% @order.order_items.each do |order_item| %>'
+      localStorage.removeItem("selected_tickets_<%= order_item.event_batch_id %>");
+    '<% end %>'
+  }
 </script>

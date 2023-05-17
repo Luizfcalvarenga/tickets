@@ -100,7 +100,7 @@
             <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>" data-user="<%= @user.to_json %>"></react>
 
             <div class="text-center">
-              <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3", onclick: "clearLocalStorage()" %>
+              <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
             </div>
 
           <% end %>
@@ -190,16 +190,3 @@
     <span class="d-none buy-text">COMPRAR</span>
   </a>
 </div>
-<script>
-  function clearLocalStorage() {
-    // Clear the selected tickets from local storage
-    console.log(localStorage)
-    localStorage.removeItem("selected_tickets");
-    '<% @event.event_batches.each do |event_batch| %>'
-      localStorage.removeItem("selected_tickets_<%= event_batch.id %>");
-    '<% end %>'
-
-    // Clear individual ticket quantities from local storage
-
-  }
-</script>
