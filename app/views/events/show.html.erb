@@ -16,7 +16,7 @@
       <div class="col-12 col-md-3">
         <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
       </div>
-      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center <%= mobile_device? && 'my-3 w-75' %>" href="#buy-section">
+      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center bg-success text-white <%= mobile_device? && 'my-3 w-75' %>" href="#buy-section">
         Comprar Ingresso
       </a>
 
@@ -182,10 +182,8 @@
   </div>
 </div>
 
-<div id="scroll-btn" class="float-buyer-btn text-success">
-  <a class="" href="#buy-section">
-    <span class="inner"></span>
-    <i class="fas fa-credit-card"></i>
-    <span class="d-none buy-text">COMPRAR</span>
+<div id="scroll-btn" class="float-buyer-btn text-success align-middle">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section">
+    COMPRAR INGRESSO
   </a>
 </div>

@@ -14,67 +14,18 @@ $hover-margin: -40px;
 
 .float-buyer-btn {
   position: sticky;
-  bottom: 30px;
-  margin-left: 90%;
+  bottom: 0;
+  background-color: #050505;
+  height: 80px;
+  padding: 1.5%;
+
   a {
-    background-color: $color-primary;
-    color: $color-darker;
-    display: block;
-    height: $spacing * 2;
-    position: relative;
-    text-decoration: none;
-    width: $spacing * 2;
-    border-radius: 50%;
-    transition: color 0.1s;
-
-
-
-    i {
-      position: relative;
-      z-index: 1;
-      top: 33.5%;
-      left: 31.5%;
-      font-size: 20px;
-      color: $color-darker;
-    }
-
-    .inner {
-      background-color: $color-darker;
-      display: block;
-      height: 0;
-      left: 70%;
-      margin: 0;
-      position: absolute;
-      top: 70%;
-      width: 0;
-      border-radius: 50%;
-      transition: all 0.1s;
-    }
-
     &:hover {
-      color: $color-primary;
+      color: $color-primary !important;
+      background-color: $color-dark !important;
+      border-color: $color-dark !important;
 
-      .inner {
-        height: $hover-size;
-        margin-left: $hover-margin;
-        margin-top: $hover-margin;
-        width: $hover-size;
-      }
-      i {
-        display: none;
-      }
 
-      .buy-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 14px;
-        z-index: 1;
-        color: $color-primary;
-        font-size: 9px;
-        display: block !important;
-      }
     }
   }
 }
@@ -82,7 +33,6 @@ $hover-margin: -40px;
 @media (max-width: 768px) {
   .float-buyer-btn {
 
-    margin-left: 80%;
   }
 }
 
@@ -259,17 +209,17 @@ form {
   color: $color-primary !important;
 }
 
-// .btn-primary {
-//   color: white !important;
-//   background-color: $color-primary !important;
-//   border-color: $color-primary !important;
-//   font-weight: 700 !important;
-//   border-radius: 8px !important;
-//   &:hover {
-//     opacity: 0.9;
-//     transition: 300ms;
-//   }
-// }
+.btn-primary {
+  color: white !important;
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  &:hover {
+    opacity: 0.9;
+    transition: 300ms;
+  }
+}
 .btn-outline {
   color: $color-primary !important;
   background-color: transparent !important;
