@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get "admin_dashboard", to: "dashboards#admin_dashboard", as: "admin_dashboard"
 
   get "terms_and_conditions", to: "pages#terms_and_conditions", as: "terms_and_conditions"
+  get "privacy_policy", to: "pages#privacy_policy", as: "privacy_policy"
+
 
 
   require "sidekiq/web"
