@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 const moment = require("moment-strftime");
 
 export function EventOrderItems(props) {
+  const [couponSection, setCouponSection] = useState(false)
   const [batchesInfosAndQuantities, setBatchesInfosAndQuantities] = useState(
     props.eventBatches.map((eventBatch) => {
+      const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
+      const quantity = storedQuantity || 0;
+      const feePercentage = props.feePercentage || 0;
+      const priceInCents = eventBatch.price_in_cents || 0;
+      const feeInCents = priceInCents * parseFloat(feePercentage / 100);
+      const totalInCents = priceInCents * (1 + parseFloat(feePercentage / 100));
+
       return {
         id: eventBatch.id,
         passType: eventBatch.pass_type,
         name: eventBatch.name,
         ends_at: eventBatch.ends_at,
-        priceInCents: eventBatch.price_in_cents,
-        feeInCents:
-          eventBatch.price_in_cents * parseFloat(props.feePercentage / 100),
-        totalInCents:
-          eventBatch.price_in_cents *
-          (1 + parseFloat(props.feePercentage / 100)),
-        quantity: 0,
+        priceInCents: priceInCents,
+        feeInCents: feeInCents,
+        totalInCents: totalInCents,
+        quantity: quantity,
       };
     })
   );
@@ -30,15 +35,45 @@ export function EventOrderItems(props) {
 
   const updateQuantity = (batchIndex, amount) => {
     const currentBatches = [...batchesInfosAndQuantities];
-
     const editedBatchItem = currentBatches[batchIndex];
 
     if (editedBatchItem.quantity === 0 && amount < 0) return;
 
-    currentBatches[batchIndex].quantity =
-      currentBatches[batchIndex].quantity + amount;
+    const updatedQuantity = editedBatchItem.quantity + amount;
+    currentBatches[batchIndex].quantity = updatedQuantity;
 
     setBatchesInfosAndQuantities(currentBatches);
+
+    localStorage.setItem(
+      `selected_tickets_${editedBatchItem.id}`,
+      JSON.stringify(updatedQuantity)
+    );
+  };
+
+  useEffect(() => {
+    const updatedBatches = props.eventBatches.map((eventBatch) => {
+      const storedQuantity = JSON.parse(localStorage.getItem(`selected_tickets_${eventBatch.id}`));
+      const quantity = storedQuantity || 0;
+      const feePercentage = props.feePercentage || 0;
+      const priceInCents = eventBatch.price_in_cents || 0;
+      const feeInCents = priceInCents * parseFloat(feePercentage / 100);
+      const totalInCents = priceInCents * (1 + parseFloat(feePercentage / 100));
+
+      return {
+        ...eventBatch,
+        priceInCents: priceInCents,
+        feeInCents: feeInCents,
+        totalInCents: totalInCents,
+        quantity: quantity,
+      };
+    });
+
+    setBatchesInfosAndQuantities(updatedBatches);
+  }, []);
+
+  const toggleCouponSection = (e) => {
+    e.currentTarget.classList.toggle('btn-clicked')
+    setCouponSection((prevCouponSection) => !prevCouponSection);
   };
 
   const cartTotalInCents = () => {
@@ -78,7 +113,7 @@ export function EventOrderItems(props) {
               feeInCents: newPrice * parseFloat(props.feePercentage / 100),
               totalInCents:
                 newPrice * (1 + parseFloat(props.feePercentage / 100)),
-              quantity: batchesInfosAndQuantities.find(b => b.id === eventBatch.id).quantity,
+              quantity: batchesInfosAndQuantities?.find(b => b.id === eventBatch.id).quantity,
             };
           })
         );
@@ -172,54 +207,59 @@ export function EventOrderItems(props) {
             </div>
           );
         })}
-        <div
-          className={`border-bottom border-white p-4 flex center between gap-24 ${
-            window.mobileMode() ? "flex-column" : ""
-          }`}
-        >
-          <p className="f-20 m-0 text-white">Cupom de desconto</p>
-          <input
-            type="text"
-            name="coupon_code"
-            value={couponCode}
-            className="f-20"
-            onChange={(e) => setCouponCode(e.target.value)}
-          />
-          <p
-            className="btn btn-underline f-10 m-0 px-5"
-            onClick={() => applyCoupon()}
+        <button type="button" className="toggle-coupon-btn w-100 d-flex justify-content-around" onClick={(e) => toggleCouponSection(e)}>Inserir Cumpom <i id="section-arrow" className="fas fa-chevron-down"></i></button>
+        {couponSection && (
+          <div
+            className={`border-bottom border-white p-4 flex center between gap-24 ${
+              window.mobileMode() ? "flex-column" : ""
+            }`}
           >
-            Aplicar
-          </p>
-          <div className="f-40 text-center">
-            {couponResult && (
-              <div>
-                {!couponResult.success ? (
-                  <div className="flex center gap-24">
-                    <i className="fa fa-times-circle f-24 text-danger"></i>
-                    <p className="m-0 text-danger">{couponResult.message}</p>
-                  </div>
-                ) : (
-                  <div className="flex center gap-24">
-                    <i className="fa fa-check-circle f-24 text-success"></i>
-                    <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
-                  </div>
-                )}
-              </div>
-            )}
+            <p className="f-20 m-0 text-white">Cupom de desconto</p>
+            <input
+              type="text"
+              name="coupon_code"
+              value={couponCode}
+              className="f-20"
+              onChange={(e) => setCouponCode(e.target.value)}
+            />
+            <p
+              className="btn btn-underline f-10 m-0 px-5"
+              onClick={() => applyCoupon()}
+            >
+              Aplicar
+            </p>
+            <div className="f-40 text-center">
+              {couponResult && (
+                <div>
+                  {!couponResult.success ? (
+                    <div className="flex center gap-24">
+                      <i className="fa fa-times-circle f-24 text-danger"></i>
+                      <p className="m-0 text-danger">{couponResult.message}</p>
+                    </div>
+                  ) : (
+                    <div className="flex center gap-24">
+                      <i className="fa fa-check-circle f-24 text-success"></i>
+                      <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <p className="text-center text-white mt-5">
-        <i className="fas fa-shopping-cart fs-30 mr-3"></i>
-        <span className="px-3">
-          {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })}
-        </span>
-      </p>
+      <div className="cart-section border border-bottom-0 border border-top-0 border-white">
+        <p className="text-center text-white mb-0">
+          <i className="fas fa-shopping-cart fs-30 mr-3"></i>
+          <span className="px-3">
+            {(cartTotalInCents() / 100).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

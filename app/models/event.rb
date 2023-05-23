@@ -15,7 +15,7 @@ class Event < ApplicationRecord
 
   has_many :questions, dependent: :destroy
   has_many :event_communications
-  has_many :coupons, as: :entity  
+  has_many :coupons, as: :entity
   has_many :accesses
   has_many :membership_discounts
   has_many :memberships, through: :membership_discounts
@@ -32,7 +32,7 @@ class Event < ApplicationRecord
     allow_blank: true,
     length: {minimum: 2, maximum: 30},
     format: {with: /\A[a-zA-Z0-9\-]+\Z/}
-    
+
   scope :upcoming, -> { where("scheduled_end > ?", Time.current) }
   scope :happening_now, -> { where("scheduled_start > ? and scheduled_end < ?", Time.current, Time.current) }
   scope :past, -> { where("scheduled_end < ?", Time.current) }
@@ -54,7 +54,7 @@ class Event < ApplicationRecord
   def create_default_questions
     Question.create!(
       event: self,
-      kind: "open",   
+      kind: "open",
       prompt: "Nome completo",
       optional: false,
       order: questions.count,
@@ -91,15 +91,15 @@ class Event < ApplicationRecord
 
   def open_batches
     # TODO: Refatorar para uma solução SQL melhor
-    
+
     available_batches = event_batches.select(&:available?)
     available_pass_types = available_batches.pluck(:pass_type).uniq
-    
+
     available_pass_types.map do |pass_type|
       available_batches
         .select { |available_batch| available_batch.pass_type == pass_type}
         .sort_by(&:order)
-        .first      
+        .first
     end
   end
 

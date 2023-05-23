@@ -2,15 +2,15 @@ require Rails.root.join('db/seeds/states_and_cities_populate')
 require 'faker'
 require 'uri'
 
-User.create!(email: "galo@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31981981981", name: Faker::Name.name)
+# User.create!(email: "galo@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31981981981", name: Faker::Name.name)
 
-# NUMBER_OF_USERS = 0
-# NUMBER_OF_EVENTS = 0
-# NUMBER_OF_DAY_USES = 0
+NUMBER_OF_USERS = 1
+NUMBER_OF_EVENTS = 1
+NUMBER_OF_DAY_USES = 1
 
-# puts "Criando lista de estados e cidades..."
-# StatesAndCitiesPopulate.populate!
-# puts "-- OK!"
+puts "Criando lista de estados e cidades..."
+StatesAndCitiesPopulate.populate!
+puts "-- OK!"
 
 # Partner.destroy_all
 # Read.destroy_all
@@ -23,59 +23,60 @@ User.create!(email: "galo@app.com", password: "123456", access: "user", document
 
 # puts "Criando usuários e parceiros..."
 
-# admin_user = User.create!(email: "admin@app.com", password: "123456", access: "admin", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31994717196", name: "Admin Plataforma")
- 
-# User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Name.name)
+admin_user = User.create!(email: "admin@app.com", password: "123456", access: "admin", document_type: "CPF", document_number: "11598323660", cep: "30310700", phone_number: "31994717196", name: "Admin Plataforma")
 
-# (1..NUMBER_OF_USERS).each do |counter|
-#   user = User.create!(email: "user#{counter}@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "12345678901", name: Faker::Fantasy::Tolkien.character)
+User.create!(email: "user@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "11264067674", name: Faker::Name.name, cep: "30310700", phone_number: "31994717196")
+cpf_numbers = ["62160592030", "32543268065", "85710659002"]
+(1..NUMBER_OF_USERS).each do |counter|
+  user = User.create!(email: "user#{counter}@app.com", password: "123456", access: "user", document_type: "CPF", document_number: "85710659002", name: "Frodo Bolseiro", cep: "30310700", phone_number: "31994717196")
 
-#   # url = "https://placebeard.it/640x360"
-#   # filename = File.basename(URI.parse(url).path)
-#   # file = URI.open(url.to_s)
-#   # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
-#   p "Usuário comum #{user.email} criado"
-# end
+  # url = "https://placebeard.it/640x360"
+  # filename = File.basename(URI.parse(url).path)
+  # file = URI.open(url.to_s)
+  # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+  p "Usuário comum #{user.email} criado"
+end
 
 # (1..5).each do |partner|
 #   if partner == 1
-#     User.create!(email: "partner@app.com", password: "123456", access: "partner_admin")
-#   else
-#     User.create!(email: "partner" + partner.to_s + "@app.com", password: "123456", access: "partner_admin")
-#   end
-  
-#   user = User.last
-#   # url = "https://placebeard.it/640x360"
-#   # filename = File.basename(URI.parse(url).path)
-#   # file = URI.open(url.to_s)
-#   # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+    User.create!(email: "partner@app.com", password: "123456", access: "partner_admin", document_type: "CPF", document_number: "91467688070", name: "Gandalf the Gray", cep: "30310700", phone_number: "31994717196")
+  # else
+    User.create!(email: "partner1@app.com", password: "123456", access: "partner_admin", document_type: "CPF", document_number: "27067411041", name: "Samwise Gamgee
+      ", cep: "30310700", phone_number: "31994717196")
+  # end
 
-#   p "Usuário parceiro #{user.email} criado"
+  user = User.last
+  # url = "https://placebeard.it/640x360"
+  # filename = File.basename(URI.parse(url).path)
+  # file = URI.open(url.to_s)
+  # user.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
+
+  p "Usuário parceiro #{user.email} criado"
 # end
 
-# state = State.find_by(acronym: "MG")
-# city = City.find_by(name: "Nova Lima")
-# partner = Partner.create!(name: "Layback Park",
-#                           cnpj: "44.716.365/0001-92",
-#                           contact_phone_1: "3132235655",
-#                           cep: "34006057",
-#                           street_name: "Rod. Januário Carneiro",
-#                           street_number: "20",
-#                           neighborhood: "Vale do Sereno",
-#                           address_complement: "",
-#                           city: city,
-#                           state: state,
-#                           about: "Um espaço para todos, feito para celebrar o espírito e a cultura do skate. Os Parks, Casas Dipraia, Basement, Brewpub e Surf House, são os ambientes de experimentação da nossa vibe, a materialização de tudo o que acreditamos e da cultura RTMF. Mais que uma pista de skate, é um espaço inclusivo, feito para criar momentos únicos. É um ambiente aberto, que traz tudo o que amamos e onde promovemos nosso estilo de vida: conectando, inspirando e abraçando todos os tipos de pessoas. Quer beber com os amigos? Temos cerveja. Quer andar de skate (ou aprender)? Temos pista. Quer comer? Temos um centro gastronômico. Tattoo? Passeio em família? Shows? Rolê com os amigos? Arte urbana? Estaremos sempre de portas abertas. ",
-#                           kind: "bike_park",
-#                           )
-                          
-# partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/laybacklogo.png')),
-#                   filename: 'laybacklogo.png')
-# partner.update(main_contact: User.where(access: "partner_admin").first)
+state = State.find_by(acronym: "MG")
+city = City.find_by(name: "Nova Lima")
+partner = Partner.create!(name: "Layback Park",
+                          cnpj: "44.716.365/0001-92",
+                          contact_phone_1: "3132235655",
+                          cep: "34006057",
+                          street_name: "Rod. Januário Carneiro",
+                          street_number: "20",
+                          neighborhood: "Vale do Sereno",
+                          address_complement: "",
+                          city: city,
+                          state: state,
+                          about: "Um espaço para todos, feito para celebrar o espírito e a cultura do skate. Os Parks, Casas Dipraia, Basement, Brewpub e Surf House, são os ambientes de experimentação da nossa vibe, a materialização de tudo o que acreditamos e da cultura RTMF. Mais que uma pista de skate, é um espaço inclusivo, feito para criar momentos únicos. É um ambiente aberto, que traz tudo o que amamos e onde promovemos nosso estilo de vida: conectando, inspirando e abraçando todos os tipos de pessoas. Quer beber com os amigos? Temos cerveja. Quer andar de skate (ou aprender)? Temos pista. Quer comer? Temos um centro gastronômico. Tattoo? Passeio em família? Shows? Rolê com os amigos? Arte urbana? Estaremos sempre de portas abertas. ",
+                          kind: "bike_park",
+                          )
 
-# User.partner_admin.update(partner: Partner.first)
+partner.logo.attach(io: File.open(Rails.root.join('app/assets/images/laybacklogo.png')),
+                  filename: 'laybacklogo.png')
+partner.update(main_contact_id: User.where(access: "partner_admin").first.id)
 
-# p "Parceiro #{partner.name} criado"
+User.partner_admin.update(partner: Partner.first)
+
+p "Parceiro #{partner.name} criado"
 
 # ["Mensalista básico", "Mensalista premium", "Mensalista VIP"].each do |assinatura|
 #   puts "Criando assinatura " + assinatura.to_s + "..."
@@ -86,7 +87,7 @@ User.create!(email: "galo@app.com", password: "123456", access: "user", document
 #     absorb_fee: false,
 #     approved_at: Time.current,
 #     approved_by: admin_user,
-#     description: "Esta é a assinatura de nível " + assinatura.to_s) 
+#     description: "Esta é a assinatura de nível " + assinatura.to_s)
 
 #   min_count = (NUMBER_OF_USERS * 0.2).to_i
 #   max_count = min_count + 5
@@ -114,102 +115,102 @@ User.create!(email: "galo@app.com", password: "123456", access: "user", document
 
 #     print "."
 #   end
-  
+
 #   p "Mensalidade #{membership.name} criada"
 # end
 
 # puts "-- OK!"
 
-# puts 'Criando eventos...'
-# NUMBER_OF_EVENTS.times do |i|
-#   scheduled_start = Faker::Date.between(from: Date.today, to: rand(0..15).days.from_now)
+puts 'Criando eventos...'
+NUMBER_OF_EVENTS.times do |i|
+  scheduled_start = Faker::Date.between(from: Date.today, to: rand(0..15).days.from_now)
 
-#   scheduled_start = Date.today if i == 0
+  scheduled_start = Date.today if i == 0
 
-#   event = Event.create!(name: Faker::BossaNova.song,
-#     description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
-#     scheduled_start: scheduled_start,
-#     scheduled_end: scheduled_start + rand(5..9).hours,
-#     partner: Partner.first,
-#     state: state,
-#     city: city,
-#     street_name: "Av. Antônio Abrahão Caram",
-#     street_number: "1001",
-#     neighborhood: "São José",
-#     cep: "30310700",
-#     address_complement: "Mais próximo do que longe!",
-#     created_by: User.where(access: "partner_admin").sample,
-#     partner_id: Partner.first.id,
-#     fee_percentage: rand(0..10),
-#     absorb_fee: rand < 0.5,
-#     approved_at: Time.current,
-#     approved_by: admin_user,
-#   )
-  
-#   url = Faker::LoremFlickr.image(size: "640x480", search_terms: ['bike+race'])
-#   filename = File.basename(URI.parse(url.to_s).path)
-#   file = URI.open(url.to_s)
-#   event.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
-  
-#   puts 'Criando batches do evento '+ event.name.to_s + '...'
-#   ends_at = Faker::Date.between(from: Date.today, to: rand(5..60).days.from_now)
-#   %w[Arquibancada Pista Camarote VIP].shuffle.first(rand(2..4)).each do |pass_type|
-#     (1..3).each do |i|
-#       EventBatch.create!(event: event,
-#         name: "Lote #{i}",
-#         quantity: [5, 10, 20, 40].sample,
-#         pass_type: pass_type,
-#         price_in_cents: [2000, 5000, 7500, 10000].sample,
-#         ends_at: ends_at + (20*i).days,
-#       )
-#     end
-#   end
+  event = Event.create!(name: Faker::BossaNova.song,
+    description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
+    scheduled_start: scheduled_start,
+    scheduled_end: scheduled_start + rand(5..9).hours,
+    partner: Partner.first,
+    state: state,
+    city: city,
+    street_name: "Av. Antônio Abrahão Caram",
+    street_number: "1001",
+    neighborhood: "São José",
+    cep: "30310700",
+    address_complement: "Mais próximo do que longe!",
+    created_by: User.where(access: "partner_admin").sample,
+    partner_id: Partner.first.id,
+    fee_percentage: rand(0..10),
+    absorb_fee: rand < 0.5,
+    approved_at: Time.current,
+    approved_by: admin_user,
+  )
 
-#   event.create_default_questions
+  url = Faker::LoremFlickr.image(size: "640x480", search_terms: ['bike+race'])
+  filename = File.basename(URI.parse(url.to_s).path)
+  file = URI.open(url.to_s)
+  event.photo.attach(io: file, filename: filename, content_type: 'image/jpg')
 
-#   min_count = (NUMBER_OF_USERS * 0.6).to_i
-#   max_count = min_count + 5
-#   max_count = NUMBER_OF_USERS if max_count > NUMBER_OF_USERS
+  puts 'Criando batches do evento '+ event.name.to_s + '...'
+  ends_at = Faker::Date.between(from: Date.today, to: rand(5..60).days.from_now)
+  %w[Arquibancada Pista Camarote VIP].shuffle.first(rand(2..4)).each do |pass_type|
+    (1..3).each do |i|
+      EventBatch.create!(event: event,
+        name: "Lote #{i}",
+        quantity: [5, 10, 20, 40].sample,
+        pass_type: pass_type,
+        price_in_cents: [2000, 5000, 7500, 10000].sample,
+        ends_at: ends_at + (20*i).days,
+      )
+    end
+  end
 
-#   User.user.sample((min_count..max_count).to_a.sample).each do |user|
-#     order = Order.create(user: user)
+  event.create_default_questions
 
-#     entity = event.reload.open_batches.to_a.sample
-#     start_time = event.scheduled_start
-#     end_time = event.scheduled_end
-#     order_item = OrderItem.create(order: order,
-#       event_batch_id: entity.id,
-#       price_in_cents: entity.price_in_cents,
-#       fee_percentage: entity.fee_percentage,
-#       absorb_fee: entity.absorb_fee,
-#       total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
-#       start_time: start_time,
-#       end_time: end_time,
-#     )
+  min_count = (NUMBER_OF_USERS * 0.6).to_i
+  max_count = min_count + 5
+  max_count = NUMBER_OF_USERS if max_count > NUMBER_OF_USERS
 
-#     event.questions.each do |question|
-#       value = if question.prompt == "Nome completo"
-#         Faker::Name.name
-#       elsif question.prompt == "CPF"
-#         ["03162488001", "48537826057", "96582679040", "33114131050", "10993508081", "36428679019", "17831332014"].sample
-#       elsif question.prompt == "CEP"
-#         (0..7).to_a.map { |i| rand(9) }.join
-#       end
+  User.user.sample((min_count..max_count).to_a.sample).each do |user|
+    order = Order.create(user: user)
 
-#       QuestionAnswer.create(
-#         order_item: order_item,
-#         question_id: question.id,
-#         value: value,
-#       )
-#     end
+    entity = event.reload.open_batches.to_a.sample
+    start_time = event.scheduled_start
+    end_time = event.scheduled_end
+    order_item = OrderItem.create(order: order,
+      event_batch_id: entity.id,
+      price_in_cents: entity.price_in_cents,
+      fee_percentage: entity.fee_percentage,
+      absorb_fee: entity.absorb_fee,
+      total_in_cents: entity.price_in_cents * (1 + entity.partner.fee_percentage / 100),
+      start_time: start_time,
+      end_time: end_time,
+    )
 
-#     order.perform_after_payment_confirmation_actions
+    event.questions.each do |question|
+      value = if question.prompt == "Nome completo"
+        Faker::Name.name
+      elsif question.prompt == "CPF"
+        ["03162488001", "48537826057", "96582679040", "33114131050", "10993508081", "36428679019", "17831332014"].sample
+      elsif question.prompt == "CEP"
+        (0..7).to_a.map { |i| rand(9) }.join
+      end
 
-#     print "."
-#   end
+      QuestionAnswer.create(
+        order_item: order_item,
+        question_id: question.id,
+        value: value,
+      )
+    end
 
-#   p "Evento #{event.name} populado"
-# end
+    order.perform_after_payment_confirmation_actions
+
+    print "."
+  end
+
+  p "Evento #{event.name} populado"
+end
 
 # puts 'Criando Agendamentos...'
 
@@ -252,7 +253,7 @@ User.create!(email: "galo@app.com", password: "123456", access: "user", document
 #       description: (1..20).map { |i| Faker::TvShows::Suits.quote}.join(". "),
 #       opens_at: nil,
 #       closes_at: nil)
-    
+
 #     DayUseSchedulePassType.create(
 #       name: "Individual",
 #       price_in_cents: [2500, 5000, 7500, 10000].sample,

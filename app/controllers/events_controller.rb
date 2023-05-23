@@ -6,7 +6,7 @@ class EventsController < ApplicationController
     @events = Event.active.not_hidden.where("scheduled_end > ?", Time.current).order(:scheduled_start)
     @past_events = Event.active.where("scheduled_end < ?", Time.current).order(scheduled_start: :desc)
   end
-  
+
   def show
     @event = Event.find_by(id: params[:id]) || Event.find_by(slug: params[:id])
     if @event.blank?
@@ -24,8 +24,8 @@ class EventsController < ApplicationController
     @partner = @event.partner
 
     @events_with_same_experience = @event.partner.events.where(experience: @event.experience).order(:scheduled_start).where("events.scheduled_start > ?", Time.current.at_beginning_of_day).select { |event| event.experience.present? }
-
-    # session[:restore_order] = nil if current_user.present?
+    @user = current_user
+    
     if !current_user
       session[:fall_back_url] = request.url
     end

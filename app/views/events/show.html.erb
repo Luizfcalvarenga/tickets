@@ -1,6 +1,6 @@
 <% if @event.photo.attached? %>
   <% if mobile_device? %>
-    <%= cl_image_tag @event.photo.key, crop: :fill, class:"mw-100" %>   
+    <%= cl_image_tag @event.photo.key, crop: :fill, class:"mw-100" %>
   <% else %>
     <div class="flex center around mt-5">
         <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= @event.photo.url %>')">
@@ -11,25 +11,29 @@
 <div class="page-wrapper">
 
   <div class="second-section-event-show">
-    <div class="row mt-5 <%= mobile_device? && 'flex-column' %>">
-      <h1 class="title align-middle mb-0 text-success col-12 col-md-9"><%= @event.name %></h1>
+    <div class="row mt-5 <%= mobile_device? && 'flex-column g-1' %>">
+      <h1 class="title align-middle mb-0 text-success col-12 col-md-6"><%= @event.name %></h1>
       <div class="col-12 col-md-3">
         <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
       </div>
+      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center bg-success text-white <%= mobile_device? && 'my-3 w-75' %>" href="#buy-section">
+        Comprar Ingresso
+      </a>
+
       <script>
         document.querySelector("#copy-paste").addEventListener("click", (e) => {
           navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
             e.target.innerHTML = "Link copiado!"
-          })  
+          })
         });
       </script>
     </div>
-    <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop">
+    <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop ">
       <div class="f-1x flex center around p-4 f-1x">
         <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
-        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-calendar-alt px-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
+        <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-calendar-alt pe-3"></i><span> <%= @event.scheduled_start.strftime('%d/%m/%Y') %></span></p>
       </div>
       <div class="vbar2 flex center around p-4 f-1x">
         <p class="m-0 text-center text-white"><i aria-hidden="true" class="far fa-clock px-3"></i><span><%=  @event.scheduled_start.strftime("%H:%M") %></span></p>
@@ -83,7 +87,7 @@
 
   <h1 class="title mt-4">Ingressos</h1>
 
-  <div class="mb-5">
+  <div class="mb-5" data-bs-spy="scroll" data-bs-target="#scroll-btn" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
     <% if @current_batches.present?  %>
       <% if @event.group_buy_code.blank? || @event.group_buy_code == params[:group_buy_code] %>
         <% if @event.group_buy %>
@@ -91,14 +95,15 @@
             <i class="fa fa-info-circle my-3 pe-2"></i>Essse evento é um evento em grupo. Quando você comprar um ingresso e a compra for confirmada, o evento será reservado para você e apenas pessoas com o link que você compartilhar poderão comprar ingressos para fechar o grupo. Se o grupo não for fechado em 48h, a reserva será cancelada.
           </p>
         <% end %>
+        <div  id="buy-section">
+          <%= simple_form_for(@order, html: { id: 'order-form' }) do |f| %>
+            <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>" data-user="<%= @user.to_json %>"></react>
 
-        <%= simple_form_for(@order) do |f| %>
-          <react data-component="EventOrderItems" data-event="<%= @event.to_json %>" data-event-batches="<%= @current_batches.to_json %>" data-fee-percentage="<%= @event.absorb_fee ? 0 : @event.fee_percentage %>"></react>
-
-          <div class="text-center">
-            <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
-          </div>
-        <% end %>
+            <div class="text-center border border-top-0 border-white">
+              <%= f.submit "Comprar ingressos", class: "btn btn-success w-100 text-white p-3" %>
+            </div>
+          <% end %>
+        </div>
       <% else %>
       <p class="danger-text p-4 br-8">Esse evento já está reservado para um grupo.</p>
       <% end %>
@@ -175,4 +180,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div id="scroll-btn" class="float-buyer-btn text-success align-middle">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section">
+    COMPRAR INGRESSO
+  </a>
 </div>

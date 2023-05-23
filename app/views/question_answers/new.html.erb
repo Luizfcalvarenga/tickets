@@ -7,10 +7,19 @@
     <p class="p-3 bg-danger br-8 text-white">Alguma resposta não foi preenchida corretamente. Favor rever os erros abaixo:</p>
   <% end %>
 
+
+
+
   <%= simple_form_for([@order, @question_answer]) do |f| %>
-    <% @order_items.each_with_index do |order_item, index| %>
+    <% @order_items.each_with_index do |order_item, idx| %>
+      <% if  @user.present? %>
+        <div class="d-flex mb-2">
+          <input type="checkbox" id="fillUserInfoCheckbox" />
+          <p id="user-text-infos-<%= idx + 1 %>" class="mb-0 ms-2">Preencher <%= idx + 1 %>º ingresso com meus dados </p>
+        </div>
+      <% end %>
       <div class="mb-5 p-4 bg-dark">
-        <p><span class="fw-700">Ingresso #<%= index + 1 %>:</span> <%= order_item.full_description %></p>
+        <p><span class="fw-700">Ingresso #<%= idx + 1 %>:</span> <%= order_item.full_description %></p>
 
         <% order_item.questions.active.each_with_index do |question, index| %>
           <p class="mb-3"><%= question.prompt %></p>
@@ -51,6 +60,7 @@
                   name="user_answers[][value]"
                   data-fill-inner-html="<%= @question_answers&.find { |qa| qa.order_item == order_item && qa.question == question }&.value || "" %>"
                   class="w-100 form-control"
+                  id="<%= question.prompt %>-<%= idx + 1 %>"
                 />
               <% else %>
                 <textarea
@@ -68,10 +78,58 @@
         <% end %>
       </div>
     <% end %>
-    
+
     <div class="text-center">
-      <%= f.submit "Enviar respostas", class: "btn btn-success mt-5" %>
+      <%= f.submit "Enviar respostas", class: "btn btn-success mt-5", onclick: "clearLocalStorage()" %>
     </div>
 
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('#fillUserInfoCheckbox');
+    for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].addEventListener('change', function() {
+        var index = getIndexFromCheckbox(this);
+
+        if (this.checked) {
+          document.getElementById('Nome completo-' + (index + 1)).value = '<%= @user.name %>';
+          document.getElementById('CPF-' + (index + 1)).value = '<%= @user.document_number %>';
+          document.getElementById('CEP-' + (index + 1)).value = '<%= @user.cep %>';
+          document.getElementById('Telefone-' + (index + 1)).value = '<%= @user.phone_number %>';
+
+          if (document.getElementById('user-text-infos-' + (index + 1))) {
+            document.getElementById('user-text-infos-' + (index + 1)).classList.add("text-success");
+          }
+        } else {
+          document.getElementById('Nome completo-' + (index + 1)).value = '';
+          document.getElementById('CPF-' + (index + 1)).value = '';
+          document.getElementById('CEP-' + (index + 1)).value = '';
+          document.getElementById('Telefone-' + (index + 1)).value = '';
+
+          if (document.getElementById('user-text-infos-' + (index + 1))) {
+            document.getElementById('user-text-infos-' + (index + 1)).classList.remove("text-success");
+          }
+        }
+      });
+    }
+
+    function getIndexFromCheckbox(checkbox) {
+      var checkboxes = document.querySelectorAll('#fillUserInfoCheckbox');
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] === checkbox) {
+          return i;
+        }
+      }
+      return -1;
+    }
+  });
+
+  function clearLocalStorage() {
+    localStorage.removeItem("selected_tickets");
+    '<% @order.order_items.each do |order_item| %>'
+      localStorage.removeItem("selected_tickets_<%= order_item.event_batch_id %>");
+    '<% end %>'
+  }
+</script>

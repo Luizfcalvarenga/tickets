@@ -4,6 +4,39 @@ $color-primary: #00c454;
 $color-darker: #101010;
 $color-dark: #222320;
 $white: #fff;
+$light: #fff;
+
+$spacing: 30px;
+$border: 2px;
+
+$hover-size: $spacing * 2 - $border * 2;
+$hover-margin: -40px;
+
+.float-buyer-btn {
+  position: sticky;
+  bottom: 0;
+  background-color: #050505;
+  height: 80px;
+  padding: 1.5%;
+
+  a {
+    &:hover {
+      color: $color-primary !important;
+      background-color: $color-dark !important;
+      border-color: $color-dark !important;
+
+
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .float-buyer-btn {
+
+  }
+}
+
+
 
 h1 {
   font-size: 70px;
@@ -176,17 +209,17 @@ form {
   color: $color-primary !important;
 }
 
-// .btn-primary {
-//   color: white !important;
-//   background-color: $color-primary !important;
-//   border-color: $color-primary !important;
-//   font-weight: 700 !important;
-//   border-radius: 8px !important;
-//   &:hover {
-//     opacity: 0.9;
-//     transition: 300ms;
-//   }
-// }
+.btn-primary {
+  color: white !important;
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  &:hover {
+    opacity: 0.9;
+    transition: 300ms;
+  }
+}
 .btn-outline {
   color: $color-primary !important;
   background-color: transparent !important;
@@ -687,4 +720,35 @@ hr {
     width: 160px;
     margin-top: 20px;
   }
+}
+
+.buy-scroll-btn {
+  padding: 1rem;
+  border: 2px solid $color-primary;
+
+}
+
+.toggle-coupon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  align-items: center;
+  padding: 8px;
+
+  &:hover {
+    color: $color-primary;
+
+  }
+}
+
+.btn-clicked {
+  color: $color-primary;
+  i {
+    transform: rotate(-180deg);
+  }
+}
+
+.cart-section {
+  height: 4rem;
+  padding: 2% 0;
 }
