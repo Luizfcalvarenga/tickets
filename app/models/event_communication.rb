@@ -8,7 +8,7 @@ class EventCommunication < ApplicationRecord
   def send_emails
     users = User.joins(passes: :event_batch).where(event_batches: {event_id: event.id})
     users.each do |user|
-      EventMailer.send_event_communication(user, self).deliver_now
+      EventMailer.send_event_communication(user, self).deliver_later
     end
   end
 end
