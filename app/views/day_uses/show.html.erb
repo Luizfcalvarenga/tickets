@@ -1,6 +1,6 @@
 <% if @day_use.photo.attached? %>
   <% if mobile_device? %>
-    <%= cl_image_tag @day_use.photo.key, crop: :fill, class:"mw-100" %>   
+    <%= cl_image_tag @day_use.photo.key, crop: :fill, class:"mw-100" %>
   <% else %>
     <div class="flex center around mt-5">
         <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= cl_image_path @day_use.photo.key, crop: :fit %>')">
@@ -10,7 +10,12 @@
 <% end %>
 <div class="page-wrapper">
   <div class="text-center">
-    <h1 class="title"><%= @day_use.name %></h1>
+    <div class="<%= mobile_device? ? "d-block" : "d-flex justify-content-center gap-3"%> ">
+      <h1 class="title"><%= @day_use.name %></h1>
+      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center bg-success text-white <%= mobile_device? ? "my-3 w-75" : "mt-2"%>" href="#buy-section">
+        Comprar Ingresso
+      </a>
+    </div>
 
     <p class="fs-18 text-white">
       <%= @day_use.description %>
@@ -31,10 +36,13 @@
     </div>
   <% end %>
 
-  <react data-component="DayUseOrderItems" 
-    data-day-use="<%= @day_use.to_json %>" 
-    data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
-
+  <div class="mb-5" data-bs-spy="scroll" data-bs-target="#scroll-btn" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+    <div  id="buy-section">
+      <react data-component="DayUseOrderItems"
+        data-day-use="<%= @day_use.to_json %>"
+        data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
+    </div>
+  </div>
   <div class="third-section-event-show container bg-dark p-5 text-center text-md-start mt-5">
     <div class="mb-3">
       <h3>SOBRE O ORGANIZADOR</h3>
@@ -83,3 +91,26 @@
     </div>
   </div>
 </div>
+
+<div id="scroll-btn" class="float-buyer-btn text-success align-middle">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section">
+    COMPRAR INGRESSO
+  </a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var targetSection = document.getElementById('buy-section');
+    var targetPosition = targetSection.offsetTop;
+
+    window.addEventListener('scroll', function() {
+      var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollPosition >= targetPosition) {
+        document.getElementById('scroll-btn').style.display = 'none';
+      } else {
+        document.getElementById('scroll-btn').style.display = 'block';
+      }
+    });
+  });
+</script>

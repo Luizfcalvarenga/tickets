@@ -105,10 +105,12 @@
           <% end %>
         </div>
       <% else %>
-      <p class="danger-text p-4 br-8">Esse evento já está reservado para um grupo.</p>
+        <p class="danger-text p-4 br-8">Esse evento já está reservado para um grupo.</p>
       <% end %>
     <% else %>
-      <p class="danger-text p-4 br-8">Evento esgotado</p>
+      <div id="buy-section">
+        <p class="danger-text p-4 br-8">Evento esgotado</p>
+      </div>
     <% end %>
   </div>
 
@@ -189,19 +191,18 @@
 </div>
 
 <script>
-    window.onscroll = function() { scrollFunction() };
+  document.addEventListener('DOMContentLoaded', function() {
+    var targetSection = document.getElementById('buy-section');
+    var targetPosition = targetSection.offsetTop;
 
-    function scrollFunction() {
-      var btn = document.getElementById("scroll-btn");
-      if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
-        btn.style.opacity = "0";
+    window.addEventListener('scroll', function() {
+      var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollPosition >= targetPosition) {
+        document.getElementById('scroll-btn').style.display = 'none';
       } else {
-        btn.style.opacity = "1";
+        document.getElementById('scroll-btn').style.display = 'block';
       }
-    }
-
-    function scrollToTop() {
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }
-  </script>
+    });
+  });
+</script>
