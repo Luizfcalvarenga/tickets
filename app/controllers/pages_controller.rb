@@ -8,4 +8,7 @@ class PagesController < ApplicationController
 
   def partnership
   end
+
+  def terms_and_conditions
+  end
 end

@@ -187,3 +187,21 @@
     COMPRAR INGRESSO
   </a>
 </div>
+
+<script>
+    window.onscroll = function() { scrollFunction() };
+
+    function scrollFunction() {
+      var btn = document.getElementById("scroll-btn");
+      if (document.documentElement.scrollTop > 300 || document.body.scrollTop > 300) {
+        btn.style.opacity = "0";
+      } else {
+        btn.style.opacity = "1";
+      }
+    }
+
+    function scrollToTop() {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
+  </script>

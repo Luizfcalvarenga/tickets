@@ -12,6 +12,9 @@ $border: 2px;
 $hover-size: $spacing * 2 - $border * 2;
 $hover-margin: -40px;
 
+.terms-line {
+  border: 1px solid #04c454
+}
 .float-buyer-btn {
   position: sticky;
   bottom: 0;

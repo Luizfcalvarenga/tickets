@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   get "partner_admin_dashboard", to: "dashboards#partner_admin_dashboard", as: "partner_admin_dashboard"
   get "admin_dashboard", to: "dashboards#admin_dashboard", as: "admin_dashboard"
 
+  get "terms_and_conditions", to: "pages#terms_and_conditions", as: "terms_and_conditions"
+
+
   require "sidekiq/web"
   authenticate :user, ->(user) { user.admin? } do
     mount Sidekiq::Web => '/sidekiq'
