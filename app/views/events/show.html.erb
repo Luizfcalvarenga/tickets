@@ -11,20 +11,18 @@
 <div class="page-wrapper">
 
   <div class="second-section-event-show">
-    <div class="row mt-5 <%= mobile_device? && 'flex-column g-1' %>">
-      <h1 class="title align-middle mb-0 text-success col-12 col-md-6"><%= @event.name %></h1>
-      <div class="col-12 col-md-3">
-        <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
-      </div>
-
-      <script>
-        document.querySelector("#copy-paste").addEventListener("click", (e) => {
-          navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
-            e.target.innerHTML = "Link copiado!"
-          })
-        });
-      </script>
+    <h1 class="title align-middle mb-0 text-success "><%= @event.name %></h1>
+    <div class="">
+      <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
     </div>
+    <script>
+      document.querySelector("#copy-paste").addEventListener("click", (e) => {
+        navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
+          e.target.innerHTML = "Link copiado!"
+        })
+      });
+    </script>
+    
     <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop ">
       <div class="f-1x flex center around p-4 f-1x">
         <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
