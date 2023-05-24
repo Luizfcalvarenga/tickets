@@ -99,18 +99,19 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var targetSection = document.getElementById('buy-section');
-    var targetPosition = targetSection.offsetTop;
+  window.onscroll = function() { scrollFunction() };
 
-    window.addEventListener('scroll', function() {
-      var scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+  function scrollFunction() {
+    var btn = document.getElementById("scroll-btn");
+    if (document.documentElement.scrollTop > 700 || document.body.scrollTop > 700) {
+      btn.style.opacity = "0";
+    } else {
+      btn.style.opacity = "1";
+    }
+  }
 
-      if (scrollPosition >= targetPosition) {
-        document.getElementById('scroll-btn').style.display = 'none';
-      } else {
-        document.getElementById('scroll-btn').style.display = 'block';
-      }
-    });
-  });
+  function scrollToTop() {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
 </script>
