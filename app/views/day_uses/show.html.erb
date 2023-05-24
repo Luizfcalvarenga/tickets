@@ -9,25 +9,22 @@
   <% end %>
 <% end %>
 <div class="page-wrapper">
-  <div class="text-center">
-    
-    <h1 class="title align-middle mb-0 text-success "><%= @day_use.name %></h1>
-    <div class="">
-      <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
-    </div>
-    <script>
-      document.querySelector("#copy-paste").addEventListener("click", (e) => {
-        navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
-          e.target.innerHTML = "Link copiado!"
-        })
-      });
-    </script>
-    <p class="fs-18 text-white">
-      <%= @day_use.description %>
-    </p>
-
-    <div class="spacer-50"></div>
+  <h1 class="title align-middle mb-0 text-success "><%= @day_use.name %></h1>
+  <div class="">
+    <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
   </div>
+  <script>
+    document.querySelector("#copy-paste").addEventListener("click", (e) => {
+      navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
+        e.target.innerHTML = "Link copiado!"
+      })
+    });
+  </script>
+  <p class="fs-18 text-white">
+    <%= @day_use.description %>
+  </p>
+  <div class="spacer-50"></div>
+  
 
   <% if @day_use.day_use_packages.active.present? %>
     <div class="info-text p-4 my-4 br-8">
