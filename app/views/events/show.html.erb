@@ -16,9 +16,6 @@
       <div class="col-12 col-md-3">
         <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
       </div>
-      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center bg-success text-white <%= mobile_device? && 'my-3 w-75' %>" href="#buy-section">
-        Comprar Ingresso
-      </a>
 
       <script>
         document.querySelector("#copy-paste").addEventListener("click", (e) => {
@@ -185,17 +182,28 @@
 </div>
 
 <div id="scroll-btn" class="float-buyer-btn text-success align-middle">
-  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 btn <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section" onclick="scrollToTarget()">
     COMPRAR INGRESSO
   </a>
 </div>
 
 <script>
+  let isButtonClicked = false;
   window.onscroll = function() { scrollFunction() };
 
   function scrollFunction() {
-    var btn = document.getElementById("scroll-btn");
-    if (document.documentElement.scrollTop > 700 || document.body.scrollTop > 700) {
+    let btn = document.getElementById("scroll-btn");
+    let targetDiv = document.getElementById("buy-section");
+    let scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    let divTopPosition = targetDiv.getBoundingClientRect().top;
+    let divBottomPosition = targetDiv.getBoundingClientRect().bottom;
+
+    if (isButtonClicked) {
+      btn.style.opacity = "0";
+    } else if (
+      (divTopPosition < window.innerHeight && divTopPosition > 0) ||
+      (divBottomPosition > 0 && divBottomPosition < window.innerHeight)
+    ) {
       btn.style.opacity = "0";
     } else {
       btn.style.opacity = "1";
@@ -205,5 +213,15 @@
   function scrollToTop() {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+  }
+
+  function scrollToTarget() {
+    isButtonClicked = true;
+    let targetDiv = document.getElementById("buy-section");
+    targetDiv.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(function() {
+      isButtonClicked = false;
+    }, 3000);
   }
 </script>

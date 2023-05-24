@@ -10,12 +10,7 @@
 <% end %>
 <div class="page-wrapper">
   <div class="text-center">
-    <div class="<%= mobile_device? ? "d-block" : "d-flex justify-content-center gap-3"%> ">
-      <h1 class="title"><%= @day_use.name %></h1>
-      <a class="col-12 col-md-3 border border-success border-2 align-middle p-3 h-50 text-center bg-success text-white <%= mobile_device? ? "my-3 w-75" : "mt-2"%>" href="#buy-section">
-        Comprar Ingresso
-      </a>
-    </div>
+    <h1 class="title"><%= @day_use.name %></h1>
 
     <p class="fs-18 text-white">
       <%= @day_use.description %>
@@ -93,17 +88,28 @@
 </div>
 
 <div id="scroll-btn" class="float-buyer-btn text-success align-middle">
-  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section" onclick="scrollToTarget()">
     COMPRAR INGRESSO
   </a>
 </div>
 
 <script>
+  let isButtonClicked = false;
   window.onscroll = function() { scrollFunction() };
 
   function scrollFunction() {
-    var btn = document.getElementById("scroll-btn");
-    if (document.documentElement.scrollTop > 700 || document.body.scrollTop > 700) {
+    let btn = document.getElementById("scroll-btn");
+    let targetDiv = document.getElementById("buy-section");
+    let scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    let divTopPosition = targetDiv.getBoundingClientRect().top;
+    let divBottomPosition = targetDiv.getBoundingClientRect().bottom;
+
+    if (isButtonClicked) {
+      btn.style.opacity = "0";
+    } else if (
+      (divTopPosition < window.innerHeight && divTopPosition > 0) ||
+      (divBottomPosition > 0 && divBottomPosition < window.innerHeight)
+    ) {
       btn.style.opacity = "0";
     } else {
       btn.style.opacity = "1";
@@ -113,5 +119,15 @@
   function scrollToTop() {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+  }
+
+  function scrollToTarget() {
+    isButtonClicked = true;
+    let targetDiv = document.getElementById("buy-section");
+    targetDiv.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(function() {
+      isButtonClicked = false;
+    }, 3000);
   }
 </script>
