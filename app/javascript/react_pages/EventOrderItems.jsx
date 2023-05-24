@@ -207,7 +207,7 @@ export function EventOrderItems(props) {
             </div>
           );
         })}
-        <button type="button" className="toggle-coupon-btn w-100 d-flex justify-content-around" onClick={(e) => toggleCouponSection(e)}>Inserir Cumpom <i id="section-arrow" className="fas fa-chevron-down"></i></button>
+        <button type="button" className={`toggle-coupon-btn w-100 d-flex justify-content-around ${screen.width > 768 ? "fs-18" : "fs-14"}`} onClick={(e) => toggleCouponSection(e)}>Inserir cupom de desconto <i id="section-arrow" className="fas fa-chevron-down"></i></button>
         {couponSection && (
           <div
             className={`border-bottom border-white p-4 flex center between gap-24 ${

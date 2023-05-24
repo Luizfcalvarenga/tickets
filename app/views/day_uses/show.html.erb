@@ -1,6 +1,6 @@
 <% if @day_use.photo.attached? %>
   <% if mobile_device? %>
-    <%= cl_image_tag @day_use.photo.key, crop: :fill, class:"mw-100" %>   
+    <%= cl_image_tag @day_use.photo.key, crop: :fill, class:"mw-100" %>
   <% else %>
     <div class="flex center around mt-5">
         <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= cl_image_path @day_use.photo.key, crop: :fit %>')">
@@ -9,15 +9,22 @@
   <% end %>
 <% end %>
 <div class="page-wrapper">
-  <div class="text-center">
-    <h1 class="title"><%= @day_use.name %></h1>
-
-    <p class="fs-18 text-white">
-      <%= @day_use.description %>
-    </p>
-
-    <div class="spacer-50"></div>
+  <h1 class="title align-middle mb-0 text-success "><%= @day_use.name %></h1>
+  <div class="">
+    <p class="share-button border border-success border-2 text-success p-3 flex justify-content-center align-items-center clickable" id="copy-paste" data-copy-text="<%= request.url %>"><i class="fa fa-share-alt me-3"></i></i>Compartilhar</p>
   </div>
+  <script>
+    document.querySelector("#copy-paste").addEventListener("click", (e) => {
+      navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
+        e.target.innerHTML = "Link copiado!"
+      })
+    });
+  </script>
+  <p class="fs-18 text-white">
+    <%= @day_use.description %>
+  </p>
+  <div class="spacer-50"></div>
+  
 
   <% if @day_use.day_use_packages.active.present? %>
     <div class="info-text p-4 my-4 br-8">
@@ -31,10 +38,13 @@
     </div>
   <% end %>
 
-  <react data-component="DayUseOrderItems" 
-    data-day-use="<%= @day_use.to_json %>" 
-    data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
-
+  <div class="mb-5" data-bs-spy="scroll" data-bs-target="#scroll-btn" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+    <div  id="buy-section">
+      <react data-component="DayUseOrderItems"
+        data-day-use="<%= @day_use.to_json %>"
+        data-fee-percentage="<%= @day_use.absorb_fee ? 0 : @day_use.fee_percentage %>"></react>
+    </div>
+  </div>
   <div class="third-section-event-show container bg-dark p-5 text-center text-md-start mt-5">
     <div class="mb-3">
       <h3>SOBRE O ORGANIZADOR</h3>
@@ -83,3 +93,48 @@
     </div>
   </div>
 </div>
+
+<div id="scroll-btn" class="float-buyer-btn text-success align-middle">
+  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section" onclick="scrollToTarget()">
+    COMPRAR INGRESSO
+  </a>
+</div>
+
+<script>
+  let isButtonClicked = false;
+  window.onscroll = function() { scrollFunction() };
+
+  function scrollFunction() {
+    let btn = document.getElementById("scroll-btn");
+    let targetDiv = document.getElementById("buy-section");
+    let scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    let divTopPosition = targetDiv.getBoundingClientRect().top;
+    let divBottomPosition = targetDiv.getBoundingClientRect().bottom;
+
+    if (isButtonClicked) {
+      btn.style.opacity = "0";
+    } else if (
+      (divTopPosition < window.innerHeight && divTopPosition > 0) ||
+      (divBottomPosition > 0 && divBottomPosition < window.innerHeight)
+    ) {
+      btn.style.opacity = "0";
+    } else {
+      btn.style.opacity = "1";
+    }
+  }
+
+  function scrollToTop() {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+
+  function scrollToTarget() {
+    isButtonClicked = true;
+    let targetDiv = document.getElementById("buy-section");
+    targetDiv.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(function() {
+      isButtonClicked = false;
+    }, 3000);
+  }
+</script>

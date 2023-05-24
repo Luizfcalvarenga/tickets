@@ -17,10 +17,17 @@ export function DayUseOrderItems(props) {
   const [waitingSubmit, setWaitingSubmit] = useState(false);
   const [waitingForPasses, setWaitingForPasses] = useState(true);
   const [dayUsePackages, setDayUsePackages] = useState([]);
+  const [couponSection, setCouponSection] = useState(false)
+
 
   useEffect(() => {
     fetchAvailablePasses();
   }, []);
+
+  const toggleCouponSection = (e) => {
+    e.currentTarget.classList.toggle('btn-clicked')
+    setCouponSection((prevCouponSection) => !prevCouponSection);
+  };
 
   const fetchAvailablePasses = async () => {
     const response = await axios(`/api/v1/day_uses/${props.dayUse.id}`);
@@ -303,7 +310,7 @@ export function DayUseOrderItems(props) {
         newCurrentDate.open_slots_for_date[0]
     );
   };
-  
+
   const changeWeekAvailable = (amount) => {
     return availablePassTypes.find((date) => {
       return moment(date.date).format("YYYY-MM-DD") === moment(currentDate.date).add(amount, "weeks").format(
@@ -535,80 +542,84 @@ export function DayUseOrderItems(props) {
                 </div>
               )}
 
-            <div
-              className={`border-bottom border-white p-4 flex center between gap-24 ${
-                window.mobileMode() ? "flex-column" : ""
-              }`}
-            >
-              <p className="f-20 m-0 text-white">Cupom de desconto</p>
-              <input
-                type="text"
-                name="coupon_code"
-                value={couponCode}
-                className="f-20"
-                onChange={(e) => setCouponCode(e.target.value)}
-              />
-              <p
-                className="btn btn-underline text-underline f-10 m-0 px-5"
-                onClick={() => applyCoupon()}
+            <button type="button" className={`toggle-coupon-btn w-100 d-flex justify-content-around ${screen.width > 768 ? "fs-18" : "fs-14"}`} onClick={(e) => toggleCouponSection(e)}>Inserir cupom de desconto <i id="section-arrow" className="fas fa-chevron-down"></i></button>
+            {couponSection && (
+              <div
+                className={`border-bottom border-white p-4 flex center between gap-24 ${
+                  window.mobileMode() ? "flex-column" : ""
+                }`}
               >
-                Aplicar
-              </p>
-              <div className="f-40 text-center">
-                {couponResult && (
-                  <div>
-                    {!couponResult.success ? (
-                      <div className="flex center gap-24">
-                        <i className="fa fa-times-circle f-24 text-danger"></i>
-                        <p className="m-0 text-danger">
-                          {couponResult.message}
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex center gap-24">
-                        <i className="fa fa-check-circle f-24 text-success"></i>
-                        <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                <p className="f-20 m-0 text-white">Cupom de desconto</p>
+                <input
+                  type="text"
+                  name="coupon_code"
+                  value={couponCode}
+                  className="f-20"
+                  onChange={(e) => setCouponCode(e.target.value)}
+                />
+                <p
+                  className="btn btn-underline text-underline f-10 m-0 px-5"
+                  onClick={() => applyCoupon()}
+                >
+                  Aplicar
+                </p>
+                <div className="f-40 text-center">
+                  {couponResult && (
+                    <div>
+                      {!couponResult.success ? (
+                        <div className="flex center gap-24">
+                          <i className="fa fa-times-circle f-24 text-danger"></i>
+                          <p className="m-0 text-danger">
+                            {couponResult.message}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="flex center gap-24">
+                          <i className="fa fa-check-circle f-24 text-success"></i>
+                          <p className="m-0 text-success">{`Desconto de ${couponResult.discount_display} aplicado a cada passe`}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+          <div className="h-auto p-3 border border-bottom-0 border border-top-0 border-white">
+            <p className="text-center text-white">Resumo do pedido</p>
+            <p className="text-center text-white mt-1">
+              <i className="fas fa-shopping-cart fs-30 mr-3"></i>
+              <span className="px-3">
+                {(calculateCartTotalInCents() / 100).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </span>
+            </p>
+            {appliedPackage() && (
+              <div className="flex center around gap-24 mb-3">
+                <p className="m-0 text-success">
+                  <i className="fa fa-check-circle f-24 text-success me-3"></i>
+                  {`Pacote aplicado: ${appliedPackage().description}`}
+                </p>
+              </div>
+            )}
+            {orderItems.map((orderItem) => {
+              return (
+                <p className="text-center text-white fs-14">
+                  {orderItem.name} -{" "}
+                  {moment(orderItem.slot.start_time).strftime("%d/%m/%Y")} -{" "}
+                  {moment(orderItem.slot.start_time).strftime("%H:%M")} -{" "}
+                  {moment(orderItem.slot.end_time).strftime("%H:%M")}
+                </p>
+              );
+            })}
           </div>
 
-          <p className="text-center text-white mt-5">Resumo do pedido</p>
 
-          <p className="text-center text-white mt-1">
-            <i className="fas fa-shopping-cart fs-30 mr-3"></i>
-            <span className="px-3">
-              {(calculateCartTotalInCents() / 100).toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })}
-            </span>
-          </p>
-          {appliedPackage() && (
-            <div className="flex center around gap-24 mb-3">
-              <p className="m-0 text-success">
-                <i className="fa fa-check-circle f-24 text-success me-3"></i>
-                {`Pacote aplicado: ${appliedPackage().description}`}
-              </p>
-            </div>
-          )}
-          {orderItems.map((orderItem) => {
-            return (
-              <p className="text-center text-white fs-14">
-                {orderItem.name} -{" "}
-                {moment(orderItem.slot.start_time).strftime("%d/%m/%Y")} -{" "}
-                {moment(orderItem.slot.start_time).strftime("%H:%M")} -{" "}
-                {moment(orderItem.slot.end_time).strftime("%H:%M")}
-              </p>
-            );
-          })}
-
-          <div class="text-center">
+          <div className="text-center">
             <p
-              class={`btn btn-success w-100 mt-2 p-3 ${
+              className={`btn btn-success w-100 p-3 border border-top-0 border-white ${
                 waitingSubmit && "disabled"
               }`}
               onClick={submitForm}
@@ -616,9 +627,9 @@ export function DayUseOrderItems(props) {
               Comprar ingressos
             </p>
           </div>
-          <div class="text-center">
+          <div className="text-center">
             <p
-              class={`btn btn-secondary w-100 mt-2 p-3 ${
+              className={`btn btn-secondary w-100 mt-2 p-3 ${
                 waitingSubmit && "disabled"
               }`}
               onClick={() => {

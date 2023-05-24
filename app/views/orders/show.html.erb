@@ -60,7 +60,7 @@
           <td data-label=""></td>
           <td data-label=""></td>
           <% if !mobile_device? %>
-            <td data-label="">Total: </td> 
+            <td data-label="">Total: </td>
           <% end %>
           <td data-label="Total"><%= display_price(@order.total_in_cents) %></td>
         </tr>
@@ -70,12 +70,26 @@
     <% if @order.related_entity.terms_of_use.present? %>
       <div class="my-5">
         <p class="text-white">Ao fazer o pagamento, concordo com os seguintes termos de uso:</p>
-
         <div class="text-white scrollable vh-30 p-5 bg-dark">
-          <%= @order.related_entity.terms_of_use.body.html_safe %>
+          <%= @order.related_entity.terms_of_use.body.html_safe %> <br>
+          <div class="mt-5">
+            <%= link_to "Termos e condições de uso da NuFlow Pass", terms_and_conditions_path, class: "fs-18 me-3" %> <br>
+            <%= link_to "Politica de privacidade da NuFlow Pass", privacy_policy_path, class: "fs-18" %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="my-5">
+        <p class="text-white">Ao fazer o pagamento, concordo com os seguintes termos de uso:</p>
+        <div class="text-white p-3 bg-dark">
+          <%= link_to "Termos e condições de uso da NuFlow Pass", terms_and_conditions_path, class: "fs-18 me-3" %>
+          <%= link_to "Politica de privacidade da NuFlow Pass", privacy_policy_path, class: "fs-18" %>
         </div>
       </div>
     <% end %>
+
+
+
 
     <nav>
       <div class="nav nav-tabs underlined mt-5" id="nav-tab" role="tablist">
@@ -95,7 +109,7 @@
             <img src="<%= @order.invoice_pix_qrcode_url %>" alt="" class="w-100 h-100">
           </div>
           <p class="btn btn-success px-5 mt-4" id="pix-copy-paste" data-copy-text="<%= @order.invoice_pix_qrcode_text %>">Clique aqui para copiar o código PIX</p>
-        
+
           <p>Ou então copie o código abaixo:</p>
 
           <div class="flex center around">
@@ -126,8 +140,8 @@
             })
           </script>
         </div>
-        
-        
+
+
         <% @payment_methods.each do |payment_method| %>
           <div class="border p-3 br-8 mb-4 row">
             <div class="col-12 col-md-7 my-3">
@@ -179,10 +193,10 @@
             />
             <span className="text-white fs-24">Salvar cartão para facilitar compras futuras</span>
           </div>
-            
+
           <div class="w-100 flex center around my-4">
             <button id="submit-button" type="submit" class="btn btn-success px-5">Pagar</button>
-          </div>   
+          </div>
         </form>
       </div>
       </div>
@@ -201,6 +215,6 @@
   document.querySelector("#pix-copy-paste").addEventListener("click", (e) => {
     navigator.clipboard.writeText(e.target.dataset.copyText).then((error) => {
       e.target.innerHTML = "Copiado!"
-    })  
+    })
   });
 </script>

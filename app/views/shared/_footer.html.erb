@@ -24,7 +24,7 @@
       <div class="page-desktop">
         <ul class="list-unstyled">
           <a href="https://api.whatsapp.com/send/?phone=553196225074&text=Oi,+preciso+de+ajuda+com+meu+ingresso&type=phone_number&app_absent=0&utm=nuflowpass" target="_blank" class="text-success clickable text-uppercase page-desktop">Fale conosco</a>
-          
+
           <% if user_signed_in? %>
             <li class="">
               <%= link_to "LOGOUT", destroy_user_session_path, method: :delete %>
@@ -41,7 +41,14 @@
         </ul>
       </div>
     </div>
-    <p class="text-white">CNPJ: 38.559.372/0001-25</li>
+    <div class="<%= mobile_device? ? 'd-block' : 'd-flex justify-content-between' %>">
+      <p class="text-white">CNPJ: 38.559.372/0001-25</li>
+      <div >
+        <%= link_to "Termos e condições de uso", terms_and_conditions_path, class: "fs-18 me-3" %> <br>
+        <%= link_to "Politica de privacidade", privacy_policy_path, class: " fs-18" %>
+      </div>
+    </div>
+
     <div>
       <a href="https://api.whatsapp.com/send/?phone=553196225074&text=Oi,+preciso+de+ajuda+com+meu+ingresso&type=phone_number&app_absent=0&utm=nuflowpass" target="_blank" class="text-success clickable text-uppercase page-mobile">Fale conosco</a>
     </div>
