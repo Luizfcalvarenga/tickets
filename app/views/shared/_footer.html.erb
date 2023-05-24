@@ -41,11 +41,11 @@
         </ul>
       </div>
     </div>
-    <div class="d-flex justify-content-between">
+    <div class="<%= mobile_device? ? 'd-block' : 'd-flex justify-content-between' %>">
       <p class="text-white">CNPJ: 38.559.372/0001-25</li>
-      <div>
-        <%= link_to "Termos e condições de uso", terms_and_conditions_path, class: "fs-18 me-3" %>
-        <%= link_to "Politica de privacidade", privacy_policy_path, class: "ms-3 fs-18" %>
+      <div >
+        <%= link_to "Termos e condições de uso", terms_and_conditions_path, class: "fs-18 me-3" %> <br>
+        <%= link_to "Politica de privacidade", privacy_policy_path, class: " fs-18" %>
       </div>
     </div>
 
