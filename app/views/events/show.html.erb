@@ -22,7 +22,7 @@
         })
       });
     </script>
-    
+
     <div class="d-flex justify-content-between my-5 rectangle br-8 page-desktop ">
       <div class="f-1x flex center around p-4 f-1x">
         <p class="m-0 text-center text-white"><i aria-hidden="true" class="fas fa-book-open px-3"></i><span><%= if @current_batches.present? then " Disponível" else " Esgotado" end %> </span></p>
@@ -196,12 +196,9 @@
     let divTopPosition = targetDiv.getBoundingClientRect().top;
     let divBottomPosition = targetDiv.getBoundingClientRect().bottom;
 
-    if (isButtonClicked) {
+    if (isButtonClicked || divTopPosition <= 0) {
       btn.style.opacity = "0";
-    } else if (
-      (divTopPosition < window.innerHeight && divTopPosition > 0) ||
-      (divBottomPosition > 0 && divBottomPosition < window.innerHeight)
-    ) {
+    } else if (divTopPosition < window.innerHeight) {
       btn.style.opacity = "0";
     } else {
       btn.style.opacity = "1";
@@ -222,4 +219,11 @@
       isButtonClicked = false;
     }, 3000);
   }
+
+  // Add event listener to hide the button when clicked
+  let btn = document.getElementById("scroll-btn");
+  btn.addEventListener("click", function() {
+    btn.style.opacity = "0";
+    scrollToTarget();
+  });
 </script>

@@ -24,7 +24,7 @@
     <%= @day_use.description %>
   </p>
   <div class="spacer-50"></div>
-  
+
 
   <% if @day_use.day_use_packages.active.present? %>
     <div class="info-text p-4 my-4 br-8">
@@ -111,12 +111,9 @@
     let divTopPosition = targetDiv.getBoundingClientRect().top;
     let divBottomPosition = targetDiv.getBoundingClientRect().bottom;
 
-    if (isButtonClicked) {
+    if (isButtonClicked || divTopPosition <= 0) {
       btn.style.opacity = "0";
-    } else if (
-      (divTopPosition < window.innerHeight && divTopPosition > 0) ||
-      (divBottomPosition > 0 && divBottomPosition < window.innerHeight)
-    ) {
+    } else if (divTopPosition < window.innerHeight) {
       btn.style.opacity = "0";
     } else {
       btn.style.opacity = "1";
@@ -137,4 +134,11 @@
       isButtonClicked = false;
     }, 3000);
   }
+
+  // Add event listener to hide the button when clicked
+  let btn = document.getElementById("scroll-btn");
+  btn.addEventListener("click", function() {
+    btn.style.opacity = "0";
+    scrollToTarget();
+  });
 </script>
