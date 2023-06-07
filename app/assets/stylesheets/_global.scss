@@ -20,7 +20,7 @@ $hover-margin: -40px;
   position: sticky;
   bottom: 0;
   background-color: #050505;
-  height: 80px;
+  height: 90px;
   padding: 1.5%;
 
   a {
@@ -28,15 +28,14 @@ $hover-margin: -40px;
       color: $color-primary !important;
       background-color: $color-dark !important;
       border-color: $color-dark !important;
-
-
     }
   }
 }
 
 @media (max-width: 768px) {
   .float-buyer-btn {
-
+    height: 70px;
+    padding: 2%;
   }
 }
 

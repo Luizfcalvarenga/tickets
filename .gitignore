@@ -44,3 +44,4 @@ dump.rdb
 .dump*
 *.dump.*
 .env*
+.env*
