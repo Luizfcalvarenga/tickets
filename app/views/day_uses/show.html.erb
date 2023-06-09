@@ -113,32 +113,13 @@
 
     if (isButtonClicked || divTopPosition <= 0) {
       btn.style.opacity = "0";
-    } else if (divTopPosition < window.innerHeight) {
+      btn.style.display = "none";
+    } else if (divTopPosition < window.innerHeight && divBottomPosition > 0) {
       btn.style.opacity = "0";
+      btn.style.display = "none";
     } else {
       btn.style.opacity = "1";
+      btn.style.display = "block";
     }
   }
-
-  function scrollToTop() {
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }
-
-  function scrollToTarget() {
-    isButtonClicked = true;
-    let targetDiv = document.getElementById("buy-section");
-    targetDiv.scrollIntoView({ behavior: 'smooth' });
-
-    setTimeout(function() {
-      isButtonClicked = false;
-    }, 3000);
-  }
-
-  // Add event listener to hide the button when clicked
-  let btn = document.getElementById("scroll-btn");
-  btn.addEventListener("click", function() {
-    btn.style.opacity = "0";
-    scrollToTarget();
-  });
 </script>
