@@ -180,7 +180,7 @@
 </div>
 
 <div id="scroll-btn" class="float-buyer-btn text-success align-middle">
-  <a class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 btn <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section" onclick="scrollToTarget()">
+  <a id="buy-btn-target" class="border border-success border-2 text-center bg-success text-white m-auto w-50 d-block p-2 btn <%= mobile_device? ? 'h-75 mt-2 mx-auto' : 'h-100 m-auto' %>" href="#buy-section" onclick="scrollToTarget()">
     COMPRAR INGRESSO
   </a>
 </div>
@@ -198,32 +198,13 @@
 
     if (isButtonClicked || divTopPosition <= 0) {
       btn.style.opacity = "0";
-    } else if (divTopPosition < window.innerHeight) {
+      btn.style.display = "none";
+    } else if (divTopPosition < window.innerHeight && divBottomPosition > 0) {
       btn.style.opacity = "0";
+      btn.style.display = "none";
     } else {
       btn.style.opacity = "1";
+      btn.style.display = "block";
     }
   }
-
-  function scrollToTop() {
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }
-
-  function scrollToTarget() {
-    isButtonClicked = true;
-    let targetDiv = document.getElementById("buy-section");
-    targetDiv.scrollIntoView({ behavior: 'smooth' });
-
-    setTimeout(function() {
-      isButtonClicked = false;
-    }, 3000);
-  }
-
-  // Add event listener to hide the button when clicked
-  let btn = document.getElementById("scroll-btn");
-  btn.addEventListener("click", function() {
-    btn.style.opacity = "0";
-    scrollToTarget();
-  });
 </script>
