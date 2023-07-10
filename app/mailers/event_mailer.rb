@@ -1,5 +1,5 @@
 class EventMailer < ApplicationMailer
-  default from: 'NuflowPass <naoresponda@nuflowpass.com.br>'
+  default from: 'NuflowPass <mail@nuflow.com.br>'
 
   def send_event_communication(user, event_communication)
     @user = user
@@ -9,7 +9,7 @@ class EventMailer < ApplicationMailer
     event_communication.files.each do |file|
       attachments[file.filename.to_s] = file.download
     end
-    
+
     mail(to: @user.email, subject: "Comunicado para seu evento #{event_communication.event.name}: #{event_communication.subject}")
   end
 end

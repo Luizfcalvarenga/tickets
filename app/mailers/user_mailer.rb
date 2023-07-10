@@ -2,7 +2,7 @@ require "open-uri"
 
 class UserMailer < ApplicationMailer
   include Devise::Controllers::UrlHelpers
-  default from: 'NuflowPass <naoresponda@nuflowpass.com.br>'
+  default from: 'NuflowPass <mail@nuflow.com.br>'
 
   def welcome(user, token)
     @user = user
@@ -19,7 +19,7 @@ class UserMailer < ApplicationMailer
   def pass_generated(user, pass)
     @user = user
     @pass = pass
-    
+
     mail(to: @user.email, subject: "Seu passe #{pass.name} foi gerado!")
   end
 end
