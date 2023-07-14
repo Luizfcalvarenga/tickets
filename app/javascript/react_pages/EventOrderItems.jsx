@@ -137,6 +137,7 @@ export function EventOrderItems(props) {
     if (couponCodeFromParams) {
       setCouponCode(couponCodeFromParams);
       applyCoupon(couponCodeFromParams);
+      setCouponSection(true)
     }
   }, []);
 
