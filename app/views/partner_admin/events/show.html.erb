@@ -1,9 +1,9 @@
-<div id="event-show-page" class="page-wrapper">
+<div id="event-show-page" class="" style="padding: 60px 50px">
   <h1 class="title"><%= @event.name %></h1>
 
   <% if @event.photo.attached? %>
     <% if mobile_device? %>
-      <%= cl_image_tag @event.photo.key, crop: :fill, class:"mw-100" %>   
+      <%= cl_image_tag @event.photo.key, crop: :fill, class:"mw-100" %>
     <% else %>
       <div class="flex center around mt-5">
           <div class="event-photo" style="background-image: linear-gradient(rgba(0,0,0,0.0), rgba(0,0,0,0.0)), url('<%= cl_image_path @event.photo.key, crop: :fit %>')">
@@ -61,7 +61,7 @@
         <%= render partial: "partner_admin/events/user_list", locals: { event: @event, passes: @passes } %>
       </div>
     </div>
-    
+
     <div class="tab-pane fade <%= 'show active' if params[:current_tab] == 'batches-tab' %>" id="batches" role="tabpanel" aria-labelledby="profile-tab">
       <% @event.event_batches.each do |event_batch| %>
         <div class="bg-primary-color flex center around p-4 br-8 my-4">
@@ -109,7 +109,7 @@
           </div>
         </div>
       </div>
-            
+
       <h3 class="text-success">Geração de passes</h3>
       <%= line_chart @passes.group_by_day(:created_at).count, colors: ["#00c454"], height: mobile_device? ? "250px" : "500px" %>
 

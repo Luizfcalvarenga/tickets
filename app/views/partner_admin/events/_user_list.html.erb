@@ -10,6 +10,7 @@
     <tr>
       <th scope="col"># pedido</th>
       <th scope="col">Usuário</th>
+      <th scope="col">Passe</th>
       <% questions = event.questions.order(:order) %>
       <% questions.order(:order).each do |question| %>
         <td><%= question.prompt %></td>
@@ -22,7 +23,12 @@
     <% passes.each do |pass| %>
       <tr>
         <td><%= pass.order.id %></td>
-        <td data-label="Usuário"><%= pass.user.email %></td>
+        <% if mobile_device? %>
+          <td data-label="Usuário"><%= pass.user.email %></td>
+        <% else %>
+          <td data-label="Usuário"><%= pass.user.email.truncate(15, separator: ' ') %></td>
+        <% end %>
+        <td data-label="Passe"><%= pass.name %></td>
         <% questions.each do |question| %>
           <td><%= pass.question_answers.joins(:question).find_by(questions: {id: question.id})&.value %></td>
         <% end %>
